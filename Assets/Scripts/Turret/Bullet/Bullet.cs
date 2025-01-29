@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 [RequireComponent(typeof(BulletPhysics))]
 public abstract class Bullet : MonoBehaviour, IBullet
@@ -45,7 +44,7 @@ public abstract class Bullet : MonoBehaviour, IBullet
     {
         _bulletPhysics.HandleCollision(collision);
 
-        TryApplyDamage(collision);
+        ApplyDamage(collision);
     }
 
     public void Move(Vector3 startPoint, Vector3 direction)
@@ -64,7 +63,7 @@ public abstract class Bullet : MonoBehaviour, IBullet
         Finished?.Invoke(this);
     }
 
-    private void TryApplyDamage(Collision collision)
+    private void ApplyDamage(Collision collision)
     {
         if (collision.gameObject.TryGetComponent(out IDamagedObject damagedObject))
             _damage.Apply(damagedObject);

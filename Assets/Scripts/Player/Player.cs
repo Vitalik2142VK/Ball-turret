@@ -8,6 +8,7 @@ public class Player : MonoBehaviour
 
     private Transform _transform;
     private PlayerTouchInput _touchInput;
+    private bool _isWait = false;
 
     private void OnValidate()
     {
@@ -32,7 +33,7 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        if (_touchInput.IsPress)
+        if (_touchInput.IsPress && _isWait == false)
         {
             Vector3 touchMapPosition = _touchInput.TouchPositionInMap;
 
@@ -43,6 +44,11 @@ public class Player : MonoBehaviour
     private void OnDisable()
     {
         _touchInput.PressFinished -= OnFinishPress;
+    }
+
+    public void SetWaiting(bool isWait)
+    {
+        _isWait = isWait;
     }
 
     private TargetPoint GetTargetPoint()

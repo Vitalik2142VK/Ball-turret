@@ -7,6 +7,8 @@ public class Turret : MonoBehaviour
 
     private TargetPoint _torgetPoint;
 
+    public event Action GunFired;
+
     private void OnValidate()
     {
         if (_tower == null)
@@ -31,7 +33,11 @@ public class Turret : MonoBehaviour
     public void FixTargetPostion()
     {
         if (_torgetPoint.IsInsideZoneEnemy)
+        {
             _tower.Shoot();
+
+            GunFired?.Invoke();
+        }
 
         _torgetPoint.SaveLastPosition();
         _tower.SetTargertPosition(_torgetPoint.Position);

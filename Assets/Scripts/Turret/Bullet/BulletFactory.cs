@@ -2,11 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BulletFactory : MonoBehaviour
+public class BulletFactory : MonoBehaviour, IBulletFactory
 {
+    [SerializeField] private Transform _containerBullets;
     [SerializeField] private Bullet[] _bulletPrefabs;
 
     private Dictionary<BulletType, Bullet> _bullets;
+
+    private void OnValidate()
+    {
+        if (_containerBullets == null)
+            throw new NullReferenceException(nameof(_containerBullets));
+    }
 
     private void Awake()
     {
@@ -34,6 +41,7 @@ public class BulletFactory : MonoBehaviour
 
         Bullet bullet = Instantiate(_bullets[type]);
         bullet.gameObject.SetActive(false);
+        bullet.transform.SetParent(_containerBullets);
 
         return bullet;
     }

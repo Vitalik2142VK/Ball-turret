@@ -2,16 +2,20 @@
 using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(BulletFactory))]
-public class DefaultGun : MonoBehaviour, IGun
+public class DefaultGun : MonoBehaviour, IGun, IGunLoader
 {
+    [Header("Bullets")]
+    [SerializeField] private BulletFactory _bulletFactory;
+    [SerializeField, Min(1)] private int _startingCountBullets;
+
+    [Header("Shot")]
     [SerializeField] private Transform _pointSpawnBullets;
     [SerializeField, Range(0.1f, 2.0f)] private float _waitingBetweenShots;
-    [SerializeField, Min(1)] private int _coutnBullet;
 
-    private BulletFactory _bulletFactory;
     private GunMagazine _magazine;
     private WaitForSeconds _waitBetweenShots;
+
+    public event Action MagazineFilled;
 
     private void OnValidate()
     {
@@ -21,15 +25,35 @@ public class DefaultGun : MonoBehaviour, IGun
 
     private void Awake()
     {
-        _bulletFactory = GetComponent<BulletFactory>();
+        if (_bulletFactory == null)
+            throw new NullReferenceException(nameof(_bulletFactory));
+
         _magazine = GetGunMagazine();
 
         _waitBetweenShots = new WaitForSeconds(_waitingBetweenShots);
     }
 
+    private void OnEnable()
+    {
+        _magazine.Filled += MagazineFilled;
+    }
+
+    private void OnDisable()
+    {
+        _magazine.Filled -= MagazineFilled;
+    }
+
     public void Shoot(Vector3 direction)
     {
         StartCoroutine(ShootBurst(direction));
+    }
+
+    public void AddBullet(IBullet bullet)
+    {
+        if (bullet == null)
+            throw new ArgumentNullException(nameof(bullet));
+
+        _magazine.AddBullet(bullet);
     }
 
     private IEnumerator ShootBurst(Vector3 direction)
@@ -47,10 +71,14 @@ public class DefaultGun : MonoBehaviour, IGun
 
     private GunMagazine GetGunMagazine()
     {
-        GunMagazine magazine = new GunMagazine(_coutnBullet);
+        GunMagazine magazine = new GunMagazine(_startingCountBullets);
 
-        for (int i = 0; i < _coutnBullet; i++)
-            magazine.AddBullet(_bulletFactory.Create(BulletType.Default));
+        for (int i = 0; i < _startingCountBullets; i++)
+        {
+            IBullet bullet = _bulletFactory.Create(BulletType.Default);
+
+            magazine.AddBullet(bullet);
+        }
 
         return magazine;
     }

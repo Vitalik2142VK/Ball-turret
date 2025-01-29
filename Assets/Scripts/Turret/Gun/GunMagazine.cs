@@ -1,25 +1,32 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
-public class GunMagazine
+public class GunMagazine : IGunMagazine
 {
     private List<IBullet> _bullets;
+    private int _countBullets;
 
-    public GunMagazine(int initialQuantity)
+    public GunMagazine(int countBullets)
     {
-        _bullets = new List<IBullet>(initialQuantity);
+        _countBullets = countBullets;
+        _bullets = new List<IBullet>(_countBullets);
     }
 
+    public event Action Filled;
+
     public bool IsThereBullets => _bullets.Count > 0;
+    public bool IsFull => _countBullets == _bullets.Count;
 
     public void AddBullet(IBullet bullet)
     {
         _bullets.Add(bullet);
+        _countBullets = _bullets.Count;
     }
 
     public IBullet GetBullet() 
     {
         if (IsThereBullets == false)
-            throw new System.InvalidOperationException($"IsThereBullets == {IsThereBullets}");
+            throw new System.InvalidOperationException("The count of bullets is 0");
 
         IBullet bullet = _bullets[0];
         bullet.SetActive(true);
@@ -36,5 +43,8 @@ public class GunMagazine
         bullet.Finished -= OnPutBullet;
 
         _bullets.Add(bullet);
+
+        if (_countBullets == _bullets.Count)
+            Filled?.Invoke();
     }
 }

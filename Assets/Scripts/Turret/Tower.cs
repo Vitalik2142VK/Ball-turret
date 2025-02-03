@@ -1,25 +1,32 @@
 ﻿using UnityEngine;
 
-[RequireComponent(typeof(DefaultGun))]
-public class Tower : MonoBehaviour
+public class Tower : MonoBehaviour, ITower
 {
-    private IGun _gun;
+    private ITargetPoint _targetPoint;
     private Transform _transform;
+
+    public Vector3 Direction => _transform.forward;
+    public bool IsReadyShoot => _targetPoint.IsInsideZoneEnemy;
 
     private void Awake()
     {
         _transform = transform;
+    }
 
-        _gun = GetComponent<DefaultGun>();
+    public void Initialize(ITargetPoint targetPoint)
+    {
+        _targetPoint = targetPoint ?? throw new System.ArgumentNullException(nameof(targetPoint));
     }
 
     public void SetTargertPosition(Vector3 targertPosition)
     {
-        _transform.LookAt(targertPosition);
+        _targetPoint.SetPosition(targertPosition);
+        _transform.LookAt(_targetPoint.Position);
     }
 
-    public void Shoot()
+    public void SaveDirection()
     {
-        _gun.Shoot(_transform.forward);
+        _targetPoint.SaveLastPosition();
+        _transform.LookAt(_targetPoint.Position);
     }
 }

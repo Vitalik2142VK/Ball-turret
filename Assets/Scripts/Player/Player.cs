@@ -1,29 +1,14 @@
-using System;
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerTouchInput))]
 public class Player : MonoBehaviour
 {
-    [SerializeField] private Turret _turret;
-
-    private Transform _transform;
+    private ITurret _turret;
     private PlayerTouchInput _touchInput;
-    private bool _isWait = false;
-
-    private void OnValidate()
-    {
-        if (_turret == null)
-            throw new NullReferenceException(nameof(_turret));
-    }
 
     private void Awake()
     {
-        _transform = transform;
-
         _touchInput = GetComponent<PlayerTouchInput>();
-
-        TargetPoint targetPoint = GetTargetPoint();
-        _turret.SetTargetPoint(targetPoint);
     }
 
     private void OnEnable()
@@ -33,7 +18,7 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        if (_touchInput.IsPress && _isWait == false)
+        if (_touchInput.IsPress)
         {
             Vector3 touchMapPosition = _touchInput.TouchPositionInMap;
 
@@ -46,16 +31,9 @@ public class Player : MonoBehaviour
         _touchInput.PressFinished -= OnFinishPress;
     }
 
-    public void SetWaiting(bool isWait)
+    public void Initialize(ITurret turret)
     {
-        _isWait = isWait;
-    }
-
-    private TargetPoint GetTargetPoint()
-    {
-        TargetPoint target = _transform.GetComponentInChildren<TargetPoint>();
-
-        return target == null ? throw new InvalidOperationException() : target;
+        _turret = turret ?? throw new System.ArgumentNullException(nameof(turret));
     }
 
     private void OnFinishPress()

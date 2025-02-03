@@ -7,4 +7,3 @@ public interface IBulletPhysicsAttributes
     public float BounceForce { get; }
     public LayerMask LayerMaskBounce { get; }
 }
-

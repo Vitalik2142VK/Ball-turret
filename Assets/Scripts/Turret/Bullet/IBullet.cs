@@ -3,7 +3,7 @@ using UnityEngine;
 
 public interface IBullet
 {
-    public event Action<Bullet> Finished;
+    public event Action<IBullet> Finished;
 
     public BulletType BulletType { get; }
 

@@ -11,7 +11,7 @@ public abstract class Bullet : MonoBehaviour, IBullet
     private IDamage _damage;
     private IBulletPhysics _bulletPhysics;
 
-    public event Action<Bullet> Finished;
+    public event Action<IBullet> Finished;
 
     public abstract BulletType BulletType { get; }
 

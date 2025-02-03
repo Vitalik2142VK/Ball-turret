@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class TargetPoint : MonoBehaviour 
+public class TargetPoint : MonoBehaviour, ITargetPoint
 {
     [SerializeField] private ZoneEnemy _zoneEnemy;
 

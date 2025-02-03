@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 public class GunMagazine : IGunMagazine
 {
@@ -11,8 +10,6 @@ public class GunMagazine : IGunMagazine
         _countBullets = countBullets;
         _bullets = new List<IBullet>(_countBullets);
     }
-
-    public event Action Filled;
 
     public bool IsThereBullets => _bullets.Count > 0;
     public bool IsFull => _countBullets == _bullets.Count;
@@ -43,8 +40,5 @@ public class GunMagazine : IGunMagazine
         bullet.Finished -= OnPutBullet;
 
         _bullets.Add(bullet);
-
-        if (_countBullets == _bullets.Count)
-            Filled?.Invoke();
     }
 }

@@ -21,7 +21,7 @@ public class PlayerTouchInput : MonoBehaviour
         _touchscreen = Touchscreen.current;
     }
 
-    private void Update()
+    public void LaunchTouchscreenToMap()
     {
         bool isPress = _touchscreen.primaryTouch.press.isPressed;
 
@@ -35,13 +35,12 @@ public class PlayerTouchInput : MonoBehaviour
         {
             if (IsPress)
             {
-                IsPress = false;
+                IsPress = _touchscreen.primaryTouch.press.isPressed;
 
                 PressFinished?.Invoke();
             }
         }
     }
-
 
     private void FindTouchPosition()
     {

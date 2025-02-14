@@ -1,1 +1,4 @@
-﻿public interface IBonus { }
+﻿public interface IBonus 
+{
+    public void Activate();
+}

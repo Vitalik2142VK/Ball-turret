@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 public class GunMagazine : IGunMagazine
 {
@@ -12,7 +13,7 @@ public class GunMagazine : IGunMagazine
     }
 
     public bool IsThereBullets => _bullets.Count > 0;
-    public bool IsFull => _countBullets == _bullets.Count;
+    public bool IsFull => _bullets.Count == _countBullets;
 
     public void AddBullet(IBullet bullet)
     {
@@ -23,7 +24,7 @@ public class GunMagazine : IGunMagazine
     public IBullet GetBullet() 
     {
         if (IsThereBullets == false)
-            throw new System.InvalidOperationException("The count of bullets is 0");
+            throw new InvalidOperationException("The count of bullets is 0");
 
         IBullet bullet = _bullets[0];
         bullet.SetActive(true);
@@ -36,6 +37,9 @@ public class GunMagazine : IGunMagazine
 
     private void OnPutBullet(IBullet bullet)
     {
+        if (bullet == null)
+            throw new ArgumentNullException(nameof(bullet));
+
         bullet.SetActive(false);
         bullet.Finished -= OnPutBullet;
 

@@ -1,25 +1,18 @@
-using System;
+﻿using System;
 using UnityEngine;
 
-public class EntryPoint : MonoBehaviour
+public class TurretConfigurator : MonoBehaviour
 {
-    [Header("Player")]
-    [SerializeField] private Player _player;
-
-    [Header("Turret")]
     [SerializeField] private Tower _tower;
     [SerializeField] private TargetPoint _targetPoint;
-
-    [Header("Gun")]
     [SerializeField] private GunAttributes _gunAttributes;
     [SerializeField] private DefaultGun _gun;
     [SerializeField] private BulletFactory _bulletFactory;
 
+    public ITurret Turret { get; private set; }
+
     private void OnValidate()
     {
-        if (_player == null)
-            throw new NullReferenceException(nameof(_player));
-
         if (_tower == null)
             throw new NullReferenceException(nameof(_tower));
 
@@ -36,20 +29,14 @@ public class EntryPoint : MonoBehaviour
             throw new NullReferenceException(nameof(_bulletFactory));
     }
 
-    private void Start()
-    {
-        ITurret turret = CreateTurret();
-        _player.Initialize(turret);
-    }
-
-    private ITurret CreateTurret()
+    public void Configure()
     {
         IGunMagazine gunMagazine = CreateGunMagazine(_gunAttributes.InitialCountBulltes);
 
         _gun.Initialize(gunMagazine, _gunAttributes.TimeBetweenShots);
         _tower.Initialize(_targetPoint);
 
-        return new Turret(_gun, _tower);
+        Turret = new Turret(_gun, _tower);
     }
 
     private IGunMagazine CreateGunMagazine(int initialCountBullets)

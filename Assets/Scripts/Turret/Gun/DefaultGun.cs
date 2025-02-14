@@ -12,6 +12,8 @@ public class DefaultGun : MonoBehaviour, IGun, IGunLoader
     private IGunMagazine _magazine;
     private WaitForSeconds _waitBetweenShots;
 
+    public bool IsShooting { get; private set; }
+
     private void OnValidate()
     {
         if (_pointSpawnBullets == null)
@@ -45,6 +47,8 @@ public class DefaultGun : MonoBehaviour, IGun, IGunLoader
     {
         Vector3 startPoint = _pointSpawnBullets.position;
 
+        IsShooting = true;
+
         while (_magazine.IsThereBullets)
         {
             IBullet bullet = _magazine.GetBullet();
@@ -52,5 +56,17 @@ public class DefaultGun : MonoBehaviour, IGun, IGunLoader
 
             yield return _waitBetweenShots;
         }
+
+        yield return StartCoroutine(CheckFullMagazine());
+    }
+
+    private IEnumerator CheckFullMagazine()
+    {
+        while (_magazine.IsFull == false)
+        {
+            yield return null;
+        }
+
+        IsShooting = false;
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(BulletPhysics))]
@@ -10,6 +11,7 @@ public abstract class Bullet : MonoBehaviour, IBullet
     private Transform _transform;
     private IDamage _damage;
     private IBulletPhysics _bulletPhysics;
+    private IBonusGatherer _gatherer;
 
     public event Action<IBullet> Finished;
 
@@ -33,6 +35,7 @@ public abstract class Bullet : MonoBehaviour, IBullet
         _bulletPhysics = bulletPhysics;
 
         _damage = new Damage(_damageAttributes);
+        _gatherer = new BonusGathererBullet();
     }
 
     private void FixedUpdate()
@@ -61,6 +64,16 @@ public abstract class Bullet : MonoBehaviour, IBullet
     public void EndFlight()
     {
         Finished?.Invoke(this);
+    }
+
+    public void Gather(IBonus bonus)
+    {
+        _gatherer.Gather(bonus);
+    }
+
+    public bool TryGetBonuses(out List<IBonus> bonuses)
+    {
+        return _gatherer.TryGetBonuses(out bonuses);
     }
 
     private void ApplyDamage(Collision collision)

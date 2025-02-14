@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-public interface IBullet
+public interface IBullet : IBonusGatherer
 {
     public event Action<IBullet> Finished;
 

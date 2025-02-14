@@ -3,31 +3,38 @@ using UnityEngine;
 
 public class AddBulletBonus : MonoBehaviour, IBonus
 {
+    [SerializeField] private BulletFactory _bulletFactoryMono;
     [SerializeField] private DefaultGun _gun;
-    [SerializeField] private BulletFactory _bulletFactory;
 
+    private IBulletFactory _bulletFactory;
     private IGunLoader _gunLoader;
 
     private void Awake()
     {
-        if (_gun == null)
-            throw new NullReferenceException(nameof(_gun));
-
-        if (_bulletFactory == null)
-            throw new NullReferenceException(nameof(_bulletFactory));
-
+        _bulletFactory = _bulletFactoryMono;
         _gunLoader = _gun;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent(out Bullet _))
+        if (other.TryGetComponent(out IBonusGatherer gatheringBonus))
         {
-            _gunLoader.AddBullet(_bulletFactory.Create(BulletType.Default));
+            gatheringBonus.Gather(this);
 
             Remove();
         }
+    }
 
+    public void Initialize(IBulletFactory bulletFactory, IGunLoader gunLoader)
+    {
+        _bulletFactory = bulletFactory ?? throw new ArgumentNullException(nameof(bulletFactory));
+        _gunLoader = gunLoader ?? throw new ArgumentNullException(nameof(gunLoader));
+    }
+
+    public void Activate()
+    {
+        IBullet bullet = _bulletFactory.Create(BulletType.Default);
+        _gunLoader.AddBullet(bullet);
     }
 
     private void Remove()

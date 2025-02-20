@@ -1,18 +1,35 @@
 ﻿using System;
 using UnityEngine;
 
-public class AddBulletBonus : MonoBehaviour, IBonus
+[RequireComponent(typeof(Mover))]
+public class AddBulletBonus : MonoBehaviour, IBonus, IActor
 {
     [SerializeField] private BulletFactory _bulletFactoryMono;
     [SerializeField] private DefaultGun _gun;
 
+    private IMover _mover;
     private IBulletFactory _bulletFactory;
     private IGunLoader _gunLoader;
 
+    public IMover Mover => _mover;
+    public bool IsEnable { get; private set; }
+
     private void Awake()
     {
+        _mover = GetComponent<Mover>();
+
         _bulletFactory = _bulletFactoryMono;
         _gunLoader = _gun;
+    }
+
+    private void OnEnable()
+    {
+        IsEnable = true;
+    }
+
+    private void OnDisable()
+    {
+        IsEnable = false;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -21,7 +38,7 @@ public class AddBulletBonus : MonoBehaviour, IBonus
         {
             gatheringBonus.Gather(this);
 
-            Remove();
+            Destroy();
         }
     }
 
@@ -37,7 +54,7 @@ public class AddBulletBonus : MonoBehaviour, IBonus
         _gunLoader.AddBullet(bullet);
     }
 
-    private void Remove()
+    public void Destroy()
     {
         Destroy(gameObject);
     }

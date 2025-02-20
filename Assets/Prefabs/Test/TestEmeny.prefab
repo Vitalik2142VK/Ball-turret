@@ -11,8 +11,10 @@ GameObject:
   - component: {fileID: 5417278110168042379}
   - component: {fileID: 648612249810092992}
   - component: {fileID: 2395161563998292479}
-  - component: {fileID: 1362722396295292562}
+  - component: {fileID: 541341189185339268}
+  - component: {fileID: 9037920280076363008}
   - component: {fileID: 5996981755374069977}
+  - component: {fileID: 3210671800369145974}
   m_Layer: 9
   m_Name: TestEmeny
   m_TagString: Untagged
@@ -87,8 +89,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &1362722396295292562
-SphereCollider:
+--- !u!136 &541341189185339268
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -105,9 +107,38 @@ SphereCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 2
   m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &9037920280076363008
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 745273243005993462}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!114 &5996981755374069977
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -120,8 +151,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b11c6b197c3e0743b3b7ecf6f6740a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _attributes: {fileID: 11400000, guid: 01fae53ec91b83f4ba42cf6a66f21738, type: 2}
+  _damageAttributes: {fileID: 11400000, guid: 394bc19756be15b43a64a93b62d9898b, type: 2}
+  _healthAttributes: {fileID: 11400000, guid: 01fae53ec91b83f4ba42cf6a66f21738, type: 2}
   _healthBar: {fileID: 1128223725284750384}
+--- !u!114 &3210671800369145974
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 745273243005993462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a3ccb44b215d8f4b945acbc3a6427b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1299797617199402078
 GameObject:
   m_ObjectHideFlags: 0

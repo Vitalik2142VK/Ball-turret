@@ -13,7 +13,7 @@ public class Health : IHealth
         HealthBar = healthBar ?? throw new ArgumentNullException(nameof(healthBar));
     }
 
-    public event Action Died;
+    public bool IsAlive => _currentHealth > 0;
 
     public void Restore()
     {
@@ -28,16 +28,9 @@ public class Health : IHealth
 
         _currentHealth -= damage;
 
-        if (_currentHealth <= 0)
-            Die();
+        if (IsAlive == false)
+            _currentHealth = 0;
 
         HealthBar.UpdateDataHealth(_currentHealth);
-    }
-
-    private void Die()
-    {
-        _currentHealth = 0;
-
-        Died?.Invoke();
     }
 }

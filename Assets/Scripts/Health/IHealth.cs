@@ -1,8 +1,6 @@
-﻿using System;
-
-public interface IHealth : IDamagedObject
+﻿public interface IHealth : IDamagedObject
 {
-    public event Action Died;
+    public bool IsAlive { get; }
 
     public void Restore();
 }

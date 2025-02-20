@@ -3,11 +3,18 @@ using UnityEngine;
 
 public class TurretConfigurator : MonoBehaviour
 {
+    [Header("Turret")]
     [SerializeField] private Tower _tower;
     [SerializeField] private TargetPoint _targetPoint;
-    [SerializeField] private GunAttributes _gunAttributes;
     [SerializeField] private DefaultGun _gun;
+    [SerializeField] private HealthBar _healthBar;
+
+    [Header("Bullets")]
     [SerializeField] private BulletFactory _bulletFactory;
+
+    [Header("Attributes")]
+    [SerializeField] private GunAttributes _gunAttributes;
+    [SerializeField] private HealthAttributes _turretHealthAttributes;
 
     public ITurret Turret { get; private set; }
 
@@ -19,14 +26,20 @@ public class TurretConfigurator : MonoBehaviour
         if (_targetPoint == null)
             throw new NullReferenceException(nameof(_targetPoint));
 
-        if (_gunAttributes == null)
-            throw new NullReferenceException(nameof(_gunAttributes));
-
         if (_gun == null)
             throw new NullReferenceException(nameof(_gun));
 
         if (_bulletFactory == null)
             throw new NullReferenceException(nameof(_bulletFactory));
+
+        if (_healthBar == null)
+            throw new NullReferenceException(nameof(_healthBar));
+
+        if (_gunAttributes == null)
+            throw new NullReferenceException(nameof(_gunAttributes));
+
+        if (_turretHealthAttributes == null)
+            throw new NullReferenceException(nameof(_turretHealthAttributes));
     }
 
     public void Configure()
@@ -36,7 +49,10 @@ public class TurretConfigurator : MonoBehaviour
         _gun.Initialize(gunMagazine, _gunAttributes.TimeBetweenShots);
         _tower.Initialize(_targetPoint);
 
-        Turret = new Turret(_gun, _tower);
+        IHealth health = new Health(_turretHealthAttributes, _healthBar);
+        health.Restore();
+
+        Turret = new Turret(_gun, _tower, health);
     }
 
     private IGunMagazine CreateGunMagazine(int initialCountBullets)

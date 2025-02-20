@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Slider))]
-public class EnemyHealthBar : MonoBehaviour, IHealthBarView
+public class HealthBar : MonoBehaviour, IHealthBarView
 {
     private const float MaxSliderValue = 1.0f;
     private const float MinSliderValue = 0.0f;

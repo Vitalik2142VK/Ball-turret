@@ -11,8 +11,10 @@ GameObject:
   - component: {fileID: 3171818621711019576}
   - component: {fileID: 5590610411673595023}
   - component: {fileID: 1867432336074093307}
-  - component: {fileID: 3063781424255172338}
+  - component: {fileID: 2275135608088284261}
+  - component: {fileID: 5281274731394670629}
   - component: {fileID: 5217973507592596023}
+  - component: {fileID: 4302467720087310448}
   m_Layer: 0
   m_Name: TestBonusBall
   m_TagString: Untagged
@@ -85,8 +87,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &3063781424255172338
-SphereCollider:
+--- !u!136 &2275135608088284261
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -103,9 +105,38 @@ SphereCollider:
   m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.5
+  serializedVersion: 2
+  m_Radius: 0.49999997
+  m_Height: 2
+  m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &5281274731394670629
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6972228633587166588}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!114 &5217973507592596023
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -118,5 +149,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7f11afdece69b244b4f28b044e94a92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bulletFactoryMono: {fileID: 0}
   _gun: {fileID: 0}
-  _bulletFactory: {fileID: 0}
+--- !u!114 &4302467720087310448
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6972228633587166588}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a3ccb44b215d8f4b945acbc3a6427b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

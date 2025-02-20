@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public interface ITurret
+public interface ITurret : IDamagedObject
 {
     public bool IsInProcessShooting { get; }
 

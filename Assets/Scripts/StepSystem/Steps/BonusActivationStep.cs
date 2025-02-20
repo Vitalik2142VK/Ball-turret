@@ -1,15 +1,14 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
 
-public class BonusActivationStep : IStep
+public class BonusActivationStep : IStep, IEndPointStep
 {
     private IEndStep _endStep;
     private IBonusStorage _bonusStorage;
 
-    public BonusActivationStep(IEndStep endStep, IBonusStorage bonusStorage)
+    public BonusActivationStep(IBonusStorage bonusStorage)
     {
-        _endStep = endStep ?? throw new System.ArgumentNullException(nameof(endStep));
-        _bonusStorage = bonusStorage ?? throw new System.ArgumentNullException(nameof(bonusStorage));
+        _bonusStorage = bonusStorage ?? throw new ArgumentNullException(nameof(bonusStorage));
     }
 
     public void Action()
@@ -22,6 +21,11 @@ public class BonusActivationStep : IStep
         {
             _endStep.End();
         }
+    }
+
+    public void SetEndStep(IEndStep endStep)
+    {
+        _endStep = endStep ?? throw new ArgumentNullException(nameof(endStep));
     }
 
     private void ActiovateBonuses(List<IBonus> bonuses)

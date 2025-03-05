@@ -2,21 +2,28 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ActorsMover : MonoBehaviour, IActorsMover
+public class ActorsMover : IActorsMover
 {
-    [SerializeField] private Vector3 _distance;
-    [SerializeField] private float _speed;
-
     private List<IMovableObject> _movableObjects;
+    private IMoveAttributes _moveAttributes;
+
+    public ActorsMover()
+    {
+        _movableObjects = new List<IMovableObject>();
+    }
 
     public bool AreMovesFinished { get; private set; }
 
     private void Start()
     {
-        _movableObjects = new List<IMovableObject>();
     }
 
-    public void SetMovableObject(IEnumerable<IMovableObject> movableObjects)
+    public void SetMoveAttributes(IMoveAttributes moveAttributes)
+    {
+        _moveAttributes = moveAttributes ?? throw new ArgumentNullException(nameof(moveAttributes));
+    }
+
+    public void SetMovableObjects(IEnumerable<IMovableObject> movableObjects)
     {
         if (movableObjects == null)
             throw new ArgumentNullException(nameof(movableObjects));
@@ -57,7 +64,7 @@ public class ActorsMover : MonoBehaviour, IActorsMover
         foreach (IMovableObject movableObject in _movableObjects)
         {
             IMover mover = movableObject.Mover ?? throw new NullReferenceException(nameof(movableObject.Mover));
-            mover.SetParameters(_distance, _speed);
+            mover.SetParameters(_moveAttributes.Distance, _moveAttributes.Speed);
         }
     }
 }

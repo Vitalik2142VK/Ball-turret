@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Gun/Gun Attributes", fileName = "GunAttributes", order = 51)]
+[CreateAssetMenu(menuName = "Attributes/Gun Attributes", fileName = "GunAttributes", order = 51)]
 public class GunAttributes : ScriptableObject, IGunAttributes
 {
     [SerializeField, Range(0.1f, 2.0f)] private float _timeBetweenShots;

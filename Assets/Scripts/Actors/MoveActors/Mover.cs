@@ -13,6 +13,12 @@ public class Mover : MonoBehaviour, IMover
         _transform = transform;
     }
 
+    public void SetStartPosition(Vector3 startPosition)
+    {
+        float y = _transform.position.y;
+        _transform.position = new Vector3(startPosition.x, y, startPosition.z);
+    }
+
     public void SetParameters(Vector3 distance, float speed)
     {
         if (speed <= 0f)
@@ -39,5 +45,5 @@ public class Mover : MonoBehaviour, IMover
 
             IsFinished = true;
         }
-    }  
+    }
 }

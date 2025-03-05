@@ -23,15 +23,7 @@ public class BulletFactory : MonoBehaviour, IBulletFactory
         if (_bulletPrefabs.Length == 0)
             throw new InvalidOperationException(nameof(_bulletPrefabs));
 
-        _bullets = new Dictionary<BulletType, Bullet>();
-
-        foreach (Bullet bullet in _bulletPrefabs)
-        {
-            if (bullet == null)
-                throw new NullReferenceException(nameof(bullet));
-
-            _bullets.Add(bullet.BulletType, bullet);
-        }
+        _bullets = CreateDictionaryPrefabs();
     }
 
     public IBullet Create(BulletType type)
@@ -44,5 +36,20 @@ public class BulletFactory : MonoBehaviour, IBulletFactory
         bullet.transform.SetParent(_containerBullets);
 
         return bullet;
+    }
+
+    private Dictionary<BulletType, Bullet> CreateDictionaryPrefabs()
+    {
+        Dictionary<BulletType, Bullet> prefabs = new Dictionary<BulletType, Bullet>(_bulletPrefabs.Length);
+
+        foreach (Bullet bullet in _bulletPrefabs)
+        {
+            if (bullet == null)
+                throw new NullReferenceException(nameof(bullet));
+
+            prefabs.Add(bullet.BulletType, bullet);
+        }
+
+        return prefabs;
     }
 }

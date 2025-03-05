@@ -15,6 +15,8 @@ public class Enemy : MonoBehaviour, IEnemy
     public IMover Mover => _mover;
     public bool IsEnable { get; private set; }
 
+    public string Name => name;
+
     private void OnValidate()
     {
         if (_damageAttributes == null)
@@ -66,5 +68,10 @@ public class Enemy : MonoBehaviour, IEnemy
     public void Destroy()
     {
         Destroy(gameObject);
+    }
+
+    public void SetStartPosition(Vector3 startPosition)
+    {
+        _mover.SetStartPosition(startPosition);
     }
 }

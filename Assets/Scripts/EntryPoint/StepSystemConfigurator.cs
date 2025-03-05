@@ -36,7 +36,7 @@ public class StepSystemConfigurator : MonoBehaviour
         CreateSteps();
         ConnectSteps();
 
-        _stepSystem.EstablishNextStep(_playerShotStep);
+        _stepSystem.EstablishNextStep(_prepareActorsStep);
     }
 
     private void CreateSteps()

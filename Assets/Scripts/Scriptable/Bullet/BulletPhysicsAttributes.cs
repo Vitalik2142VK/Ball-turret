@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(menuName = "Physics Attributes/Bullet Physics Attributes", fileName = "BulletPhysicsAttributes", order = 51)]
+[CreateAssetMenu(menuName = "Attributes/Bullet Physics Attributes", fileName = "BulletPhysicsAttributes", order = 51)]
 public class BulletPhysicsAttributes : ScriptableObject, IBulletPhysicsAttributes
 {
     [SerializeField, Min(0.1f)] private float _speed;

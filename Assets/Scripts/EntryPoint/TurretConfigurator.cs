@@ -16,7 +16,9 @@ public class TurretConfigurator : MonoBehaviour
     [SerializeField] private GunAttributes _gunAttributes;
     [SerializeField] private HealthAttributes _turretHealthAttributes;
 
-    public ITurret Turret { get; private set; }
+    private Turret _turret;
+
+    public ITurret Turret => _turret;
 
     private void OnValidate()
     {
@@ -42,6 +44,11 @@ public class TurretConfigurator : MonoBehaviour
             throw new NullReferenceException(nameof(_turretHealthAttributes));
     }
 
+    private void OnDisable()
+    {
+        _turret.Disable();
+    }
+
     public void Configure()
     {
         IGunMagazine gunMagazine = CreateGunMagazine(_gunAttributes.InitialCountBulltes);
@@ -52,7 +59,8 @@ public class TurretConfigurator : MonoBehaviour
         IHealth health = new Health(_turretHealthAttributes, _healthBar);
         health.Restore();
 
-        Turret = new Turret(_gun, _tower, health);
+        _turret = new Turret(_gun, _tower, health);
+        _turret.Enable();
     }
 
     private IGunMagazine CreateGunMagazine(int initialCountBullets)

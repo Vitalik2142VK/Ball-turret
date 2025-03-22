@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-public interface ITurret : IDamagedObject
+public interface ITurret : IDamagedObject, IEndPointStep
 {
-    public bool IsInProcessShooting { get; }
+    public bool IsReadyShoot { get; }
 
     public void SetTouchPoint(Vector3 touchPoint);
 

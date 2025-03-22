@@ -1,79 +1,57 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
-public class ActorsController : IActorsController
+public class ActorsController : IActorsController, IActorsPreparator, IActorsMover, IActorsRemover, IEnemiesAttacker
 {
-    private List<IActor> _actors;
-    private IActorSpawner _spawner;
-    private ILevelActorsPlanner _levelActorsPlanner;
-    private IMoveAttributes _startMoveAttributes;
-    private IMoveAttributes _defaultMoveAttributes;
-    private int _currentWaveNumber;
+    private IAdvancedActorPreparator _actorsPreparator;
+    private IRemovedActorsRepository _removedActorsRepository;
+    private IActorsMover _actorsMover;
+    private IEnemiesAttacker _enemyAttacker;
 
-    public IActorsMover ActorsMover { get; private set; }
-    public IActorsRemover ActorsRemover { get; private set; }
-    public IEnemiesAttacker EnemyAttacker { get; private set; }
+    public bool AreNoEnemies => _actorsPreparator.EnemiesCount == 0;
+    public bool AreWavesOver => _actorsPreparator.AreWavesOver;
+    public bool AreMovesFinished => _actorsMover.AreMovesFinished;
 
-    public ActorsController()
+    public ActorsController(IAdvancedActorPreparator actorsPreparator, IRemovedActorsRepository removedActorsRepository, IEnemiesAttacker enemiesAttacker)
     {
-        _actors = new List<IActor>();
-        _currentWaveNumber = 0;
+        _actorsPreparator = actorsPreparator ?? throw new ArgumentNullException(nameof(actorsPreparator));
+        _removedActorsRepository = removedActorsRepository ?? throw new ArgumentNullException(nameof(removedActorsRepository));
+        _enemyAttacker = enemiesAttacker ?? throw new ArgumentNullException(nameof(enemiesAttacker));
+
+        _actorsMover = _actorsPreparator.ActorsMover ?? throw new NullReferenceException(nameof(_actorsPreparator.ActorsMover));
     }
 
-    public void SetLevelActorsPlanner(ILevelActorsPlanner levelActorsPlanner)
+    public void Reboot()
     {
-        _levelActorsPlanner ??= levelActorsPlanner ?? throw new ArgumentNullException(nameof(levelActorsPlanner));
+        List<IActor> removedActors = _actorsPreparator.PopActors();
+        _removedActorsRepository.AddRange(removedActors);
+        _removedActorsRepository.RemoveAll();
     }
 
-    public void SetActorSpawner(IActorSpawner spawner)
+    public void Prepare()
     {
-        _spawner ??= spawner ?? throw new ArgumentNullException(nameof(spawner));
+        _actorsPreparator.CountRemainingEnemies();
+
+        if (AreNoEnemies)
+            Reboot();
+
+        _actorsPreparator.Prepare();
     }
 
-    public void SetActorsMover(IActorsMover actorsMover, IMoveAttributes startMoveAttributes, IMoveAttributes defaultMoveAttributes)
+    public void MoveAll()
     {
-        ActorsMover ??= actorsMover ?? throw new ArgumentNullException(nameof(actorsMover));
-        _startMoveAttributes ??= startMoveAttributes ?? throw new ArgumentNullException(nameof(startMoveAttributes));
-        _defaultMoveAttributes ??= defaultMoveAttributes ?? throw new ArgumentNullException(nameof(defaultMoveAttributes));
+        _actorsMover.MoveAll();
     }
 
-    public void SetActorsRemover(IActorsRemover actorsRemover)
+    public void RemoveAll()
     {
-        ActorsRemover ??= actorsRemover ?? throw new ArgumentNullException(nameof(actorsRemover));
+        _removedActorsRepository.RemoveAll();
+        _actorsPreparator.CountRemainingEnemies();
     }
 
-    public void SetEnemiesAttacker(IEnemiesAttacker enemiesAttacker)
+    public void AttackAll()
     {
-        EnemyAttacker ??= enemiesAttacker ?? throw new ArgumentNullException(nameof(enemiesAttacker));
-    }
-
-    public void PrepareActors()
-    {
-        RemoveDisabledActors();
-
-        if (_actors.Count == 0)
-        {
-            IWaveActorsPlanner waveActorsPlanner = _levelActorsPlanner.GetWaveActorsPlanner(++_currentWaveNumber);
-            _actors = _spawner.Spawn(waveActorsPlanner);
-            ActorsMover.SetMoveAttributes(_startMoveAttributes);
-        }
-        else
-        {
-            ActorsMover.SetMoveAttributes(_defaultMoveAttributes);
-        }
-
-        ActorsMover.SetMovableObjects(_actors);
-    }
-
-    private void RemoveDisabledActors()
-    {
-        for (int i = 0; i < _actors.Count; i++)
-        {
-            if (_actors[i].IsEnable == false)
-            {
-                _actors.RemoveAt(i);
-                i--;
-            }
-        }
+        _enemyAttacker.AttackAll();
     }
 }

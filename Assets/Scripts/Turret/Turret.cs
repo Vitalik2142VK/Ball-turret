@@ -6,8 +6,9 @@ public class Turret : ITurret
     private IGun _gun;
     private ITower _tower;
     private IHealth _health;
+    private IEndStep _endStep;
 
-    public bool IsInProcessShooting => _gun.IsShooting;
+    public bool IsReadyShoot => _gun.IsRecharged;
 
     public Turret(IGun gun, ITower tower, IHealth health)
     {
@@ -16,9 +17,25 @@ public class Turret : ITurret
         _health = health ?? throw new ArgumentNullException(nameof(health));
     }
 
+    public void Enable()
+    {
+        _gun.ShootingCompleted += OnEndStep;
+    }
+
+    public void Disable()
+    {
+        _gun.ShootingCompleted -= OnEndStep;
+    }
+
+    public void SetEndStep(IEndStep endStep)
+    {
+        _endStep = endStep ?? throw new ArgumentNullException(nameof(endStep));
+    }
+
     public void SetTouchPoint(Vector3 touchPoint)
     {
         _tower.TakeAim(touchPoint);  
+        _gun.TakeAim(_tower.Direction);
     }
 
     public void FixTargetPostion()
@@ -29,15 +46,8 @@ public class Turret : ITurret
         _tower.SaveDirection();
     }
 
-    public void Restore()
-    {
-        _health.Restore();
-    }
-
     public void TakeDamage(int damage)
     {
-        Debug.Log($"Turret.TakeDamage({damage})");
-
         _health.TakeDamage(damage);
 
         if (_health.IsAlive == false)
@@ -47,5 +57,10 @@ public class Turret : ITurret
     public void Destroy()
     {
         Debug.Log("Turret is destroy");
+    }
+
+    private void OnEndStep()
+    {
+        _endStep.End();
     }
 }

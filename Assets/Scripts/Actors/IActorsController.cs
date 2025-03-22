@@ -1,4 +1,8 @@
 ﻿public interface IActorsController
 {
-    public void PrepareActors();
+    public bool AreNoEnemies { get; }
+
+    public bool AreWavesOver { get; }
+
+    public void Reboot();
 }

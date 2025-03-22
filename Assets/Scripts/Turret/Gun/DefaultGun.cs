@@ -12,7 +12,9 @@ public class DefaultGun : MonoBehaviour, IGun, IGunLoader
     private IGunMagazine _magazine;
     private WaitForSeconds _waitBetweenShots;
 
-    public bool IsShooting { get; private set; }
+    public event Action ShootingCompleted;
+
+    public bool IsRecharged { get; private set; }
 
     private void OnValidate()
     {
@@ -28,6 +30,13 @@ public class DefaultGun : MonoBehaviour, IGun, IGunLoader
             throw new ArgumentOutOfRangeException(nameof(waitingBetweenShots));
 
         _waitBetweenShots = new WaitForSeconds(waitingBetweenShots);
+
+        IsRecharged = true;
+    }
+
+    public void TakeAim(Vector3 direction)
+    {
+        //Просчет траектории палета пули
     }
 
     public void Shoot(Vector3 direction)
@@ -47,7 +56,7 @@ public class DefaultGun : MonoBehaviour, IGun, IGunLoader
     {
         Vector3 startPoint = _pointSpawnBullets.position;
 
-        IsShooting = true;
+        IsRecharged = false;
 
         while (_magazine.IsThereBullets)
         {
@@ -63,10 +72,10 @@ public class DefaultGun : MonoBehaviour, IGun, IGunLoader
     private IEnumerator CheckFullMagazine()
     {
         while (_magazine.IsFull == false)
-        {
             yield return null;
-        }
 
-        IsShooting = false;
+        IsRecharged = true;
+
+        ShootingCompleted?.Invoke();
     }
 }

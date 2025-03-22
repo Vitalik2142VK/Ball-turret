@@ -15,6 +15,7 @@ MonoBehaviour:
   _speed: 15
   _gravity: 20
   _bounceForce: 500
+  _minBounceAngle: 20
   _layerMaskBounce:
     serializedVersion: 2
     m_Bits: 768

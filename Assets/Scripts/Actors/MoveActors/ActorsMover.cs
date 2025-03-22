@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
-public class ActorsMover : IActorsMover
+public class ActorsMover : IAdvancedActorsMover
 {
     private List<IMovableObject> _movableObjects;
     private IMoveAttributes _moveAttributes;
@@ -13,10 +12,6 @@ public class ActorsMover : IActorsMover
     }
 
     public bool AreMovesFinished { get; private set; }
-
-    private void Start()
-    {
-    }
 
     public void SetMoveAttributes(IMoveAttributes moveAttributes)
     {

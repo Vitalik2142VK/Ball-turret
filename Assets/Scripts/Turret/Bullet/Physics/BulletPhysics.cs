@@ -59,17 +59,23 @@ public class BulletPhysics : MonoBehaviour, IBulletPhysics
 
     private bool IsInLayerMask(GameObject gameObject)
     {
-        bool result = (1 << gameObject.layer & _attributes.LayerMaskBounce) != 0;
-
-        return result;
+        return (1 << gameObject.layer & _attributes.LayerMaskBounce) != 0;
     }
 
-    private Vector3 GetBounce(ContactPoint contact, Vector3 currentDirection)
+    private Vector3 GetBounce(ContactPoint contact, Vector3 direction)
     {
         Vector3 normal = contact.normal;
-        Vector3 bounceDirection = Vector3.Reflect(currentDirection, normal).normalized;
+        Vector3 bounceDirection = Vector3.Reflect(direction, normal).normalized;
+        float angle = Vector3.Angle(bounceDirection, normal);
+
+        if (angle < _attributes.MinBounceAngle)
+        {
+            float correctAngle = _attributes.MinBounceAngle - angle;
+            Vector3 axis = Vector3.Cross(normal, direction).normalized;
+            Quaternion rotation = Quaternion.AngleAxis(correctAngle, axis);
+            bounceDirection = rotation * bounceDirection;
+        }
 
         return _attributes.BounceForce * bounceDirection;
     }
 }
-

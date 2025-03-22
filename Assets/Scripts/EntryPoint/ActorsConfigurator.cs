@@ -12,9 +12,6 @@ public class ActorsConfigurator : MonoBehaviour
     [SerializeField] private MoveAttributes _startMoveAttributes;
     [SerializeField] private MoveAttributes _defaultMoveAttributes;
 
-    [Header("LevelActorsPlanner (Change to data player)")]
-    [SerializeField] private LevelActorsPlanner _levelActorsPlanner;
-
     public ActorsController ActorsController { get; private set; }
 
     private void OnValidate()
@@ -35,28 +32,24 @@ public class ActorsConfigurator : MonoBehaviour
             throw new NullReferenceException(nameof(_defaultMoveAttributes));
     }
 
-    public void Configure(IDamagedObject turret)
+    public void Configure(IDamagedObject turret, ILevelActorsPlanner levelActorsPlanner)
     {
         if (turret == null)
             throw new ArgumentNullException(nameof(turret));
 
+        if (levelActorsPlanner == null)
+            throw new ArgumentNullException(nameof(levelActorsPlanner));
+
         IActorSpawner actorSpawner = CreatActorSpawner();
-        IActorsMover actorMover = new ActorsMover();
-        ActorsRemover actorsRemover = new ActorsRemover();
+        IAdvancedActorsMover actorMover = new ActorsMover();
+        IRemovedActorsRepository removedActorsRepository = new ActorsRemover();
         EnemiesAttacker enemiesAttacker = new EnemiesAttacker(turret);
+        ActorsPreparator actorsPreparator = new ActorsPreparator(actorSpawner, actorMover, _startMoveAttributes, _defaultMoveAttributes);
+        actorsPreparator.SetLevelActorsPlanner(levelActorsPlanner);
 
-        _zoneEnemy.Initialize(actorsRemover, enemiesAttacker);
+        _zoneEnemy.Initialize(removedActorsRepository, enemiesAttacker);
 
-        ActorsControllerBuilder builder = new ActorsControllerBuilder();
-        ActorsController = builder
-            .LevelActorsPlanner(_levelActorsPlanner)
-            .ActorSpawner(actorSpawner)
-            .ActorsMover(actorMover)
-            .ActorsRemover(actorsRemover)
-            .EnemiesAttacker(enemiesAttacker)
-            .StartMoveAttributes(_startMoveAttributes)
-            .DefaultMoveAttributes(_defaultMoveAttributes)
-            .Build();
+        ActorsController = new ActorsController(actorsPreparator, removedActorsRepository, enemiesAttacker);
     }
 
     private IActorSpawner CreatActorSpawner()

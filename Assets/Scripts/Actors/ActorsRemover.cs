@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-public class ActorsRemover : IActorsRemover, IRemovedActorsCollector
+public class ActorsRemover : IRemovedActorsRepository
 {
     private List<IActor> _removedActors;
 
@@ -15,6 +15,11 @@ public class ActorsRemover : IActorsRemover, IRemovedActorsCollector
             throw new System.ArgumentNullException(nameof(actor));
 
         _removedActors.Add(actor);
+    }
+
+    public void AddRange(IEnumerable<IActor> actors)
+    {
+        _removedActors.AddRange(actors);
     }
 
     public void RemoveAll()

@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿using System;
 
 public class PlayerShotStep : IStep
 {
@@ -6,7 +6,7 @@ public class PlayerShotStep : IStep
 
     public PlayerShotStep(IPlayer player)
     {
-        _player = player ?? throw new System.ArgumentNullException(nameof(player));
+        _player = player ?? throw new ArgumentNullException(nameof(player));
     }
 
     public void Action()

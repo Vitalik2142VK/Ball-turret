@@ -3,16 +3,16 @@
 public class PrepareActorsStep : IStep, IEndPointStep
 {
     private IEndStep _endStep;
-    private IActorsController _dynamicObjectsController;
+    private IActorsPreparator _actorsPreparator;
 
-    public PrepareActorsStep(IActorsController dynamicObjectsController)
+    public PrepareActorsStep(IActorsPreparator actorsPreparator)
     {
-        _dynamicObjectsController = dynamicObjectsController ?? throw new ArgumentNullException(nameof(dynamicObjectsController));
+        _actorsPreparator = actorsPreparator ?? throw new ArgumentNullException(nameof(actorsPreparator));
     }
 
     public void Action()
     {
-        _dynamicObjectsController.PrepareActors();
+        _actorsPreparator.Prepare();
         _endStep.End();
     }
 

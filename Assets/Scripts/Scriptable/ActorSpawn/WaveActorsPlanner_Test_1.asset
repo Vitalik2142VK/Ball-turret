@@ -22,3 +22,6 @@ MonoBehaviour:
   - _actor: {fileID: 6972228633587166588, guid: bc277cfd70e12ec42aff8149012548b8, type: 3}
     _lineNumber: 1
     _columnNumber: 2
+  - _actor: {fileID: 745273243005993462, guid: 722469e244419cb44a48f19da38f5e83, type: 3}
+    _lineNumber: 3
+    _columnNumber: 2

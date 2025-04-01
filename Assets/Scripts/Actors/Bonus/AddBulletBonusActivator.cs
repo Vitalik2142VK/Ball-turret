@@ -3,13 +3,13 @@ using UnityEngine;
 
 public class AddBulletBonusActivator : MonoBehaviour, IBonusActivator
 {
-    public IBulletFactory BulletFactory { get; private set; }
-    public IGunLoader GunLoader { get; private set; }
+    private IBulletFactory _bulletFactory;
+    private IGunLoader _gunLoader;
 
     public void Initialize(IBulletFactory bulletFactory, IGunLoader gunLoader)
     {
-        BulletFactory = bulletFactory ?? throw new ArgumentNullException(nameof(bulletFactory));
-        GunLoader = gunLoader ?? throw new ArgumentNullException(nameof(gunLoader));
+        _bulletFactory = bulletFactory ?? throw new ArgumentNullException(nameof(bulletFactory));
+        _gunLoader = gunLoader ?? throw new ArgumentNullException(nameof(gunLoader));
     }
 
     public void Initialize(IBonusActivator bonusActivator)
@@ -19,8 +19,8 @@ public class AddBulletBonusActivator : MonoBehaviour, IBonusActivator
 
         if (bonusActivator is AddBulletBonusActivator addBulletActivator)
         {
-            BulletFactory = addBulletActivator.BulletFactory ?? throw new NullReferenceException(nameof(addBulletActivator.BulletFactory));
-            GunLoader = addBulletActivator.GunLoader ?? throw new NullReferenceException(nameof(addBulletActivator.GunLoader));
+            _bulletFactory = addBulletActivator._bulletFactory ?? throw new NullReferenceException(nameof(addBulletActivator._bulletFactory));
+            _gunLoader = addBulletActivator._gunLoader ?? throw new NullReferenceException(nameof(addBulletActivator._gunLoader));
         }
         else
         {
@@ -30,7 +30,7 @@ public class AddBulletBonusActivator : MonoBehaviour, IBonusActivator
 
     public void Activate()
     {
-        IBullet bullet = BulletFactory.Create(BulletType.Default);
-        GunLoader.AddBullet(bullet);
+        IBullet bullet = _bulletFactory.Create(BulletType.Default);
+        _gunLoader.AddBullet(bullet);
     }
 }

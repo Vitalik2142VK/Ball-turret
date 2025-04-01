@@ -8,6 +8,7 @@ public class BulletFactory : MonoBehaviour, IBulletFactory
     [SerializeField] private Bullet[] _bulletPrefabs;
 
     private Dictionary<BulletType, Bullet> _bullets;
+    private IDamageImprover _damageImprover;
 
     private void OnValidate()
     {
@@ -26,12 +27,18 @@ public class BulletFactory : MonoBehaviour, IBulletFactory
         _bullets = CreateDictionaryPrefabs();
     }
 
+    public void Initialize(IDamageImprover damageImprover)
+    {
+        _damageImprover = damageImprover ?? throw new ArgumentNullException(nameof(damageImprover));
+    }
+
     public IBullet Create(BulletType type)
     {
         if (_bullets.ContainsKey(type) == false)
             throw new ArgumentOutOfRangeException(nameof(type));
 
         Bullet bullet = Instantiate(_bullets[type]);
+        bullet.Initialize(_damageImprover);
         bullet.gameObject.SetActive(false);
         bullet.transform.SetParent(_containerBullets);
 

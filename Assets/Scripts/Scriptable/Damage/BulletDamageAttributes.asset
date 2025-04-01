@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc86648799ba1664e8278c65d0954ae8, type: 3}
+  m_Script: {fileID: 11500000, guid: c19ff4ecf4c6bc240a0415b67f24e2b0, type: 3}
   m_Name: BulletDamageAttributes
   m_EditorClassIdentifier: 
   _damage: 10

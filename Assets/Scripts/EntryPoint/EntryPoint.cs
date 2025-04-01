@@ -8,8 +8,9 @@ public class EntryPoint : MonoBehaviour
     [SerializeField] private StepSystemConfigurator _stepSystemConfigurator;
     [SerializeField] private ActorsConfigurator _actorsConfigurator;
     [SerializeField] private BonusPrefabConfigurator _bonusPrefabConfigurator;
+    [SerializeField] private BulletConfigurator _bulletConfigurator;
 
-    [Header("LevelActorsPlanner (Change to data player)")]
+    [Header("LevelActorsPlanner (Change to select player)")]
     [SerializeField] private LevelActorsPlanner _levelActorsPlanner;
 
     private void OnValidate()
@@ -28,10 +29,14 @@ public class EntryPoint : MonoBehaviour
 
         if (_bonusPrefabConfigurator == null)
             throw new NullReferenceException(nameof(_bonusPrefabConfigurator));
+
+        if (_bulletConfigurator == null)
+            throw new NullReferenceException(nameof(_bulletConfigurator));
     }
 
     private void Start()
     {
+        _bulletConfigurator.Configure(_player);
         _turretConfigurator.Configure();
 
         ITurret turret = _turretConfigurator.Turret;

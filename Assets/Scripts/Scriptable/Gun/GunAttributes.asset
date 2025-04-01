@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: GunAttributes
   m_EditorClassIdentifier: 
   _timeBetweenShots: 0.2
-  _initialCountBulltes: 2
+  _initialCountBulltes: 1

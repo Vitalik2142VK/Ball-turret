@@ -1,16 +1,20 @@
 using System;
 using UnityEngine;
 
+[RequireComponent(typeof(Collider))]
 public class ZoneEnemy : MonoBehaviour
 {
     private IAttackingEnemiesCollector _attackingEnemies;
     private IRemovedActorsCollector _removedActors;
+    private Collider _collider;
 
-    public event Action TargetPointExited;
+    private void Awake()
+    {
+        _collider = GetComponent<Collider>();
+    }
 
     private void OnTriggerExit(Collider other)
     {
-        CheckExitTargetPoint(other);
         CheckExitActor(other);
     }
 
@@ -20,10 +24,9 @@ public class ZoneEnemy : MonoBehaviour
         _removedActors = removedActorsCollector ?? throw new ArgumentNullException(nameof(removedActorsCollector));
     }
 
-    private void CheckExitTargetPoint(Collider other)
+    public bool IsPointInside(Vector3 point)
     {
-        if (other.gameObject.TryGetComponent(out ITargetPoint _))
-            TargetPointExited?.Invoke();
+        return _collider.bounds.Contains(point);
     }
 
     private void CheckExitActor(Collider other)

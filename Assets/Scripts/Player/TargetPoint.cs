@@ -28,11 +28,6 @@ public class TargetPoint : MonoBehaviour, ITargetPoint
         _startPosition = _transform.localPosition;
     }
 
-    private void OnEnable()
-    {
-        _zoneEnemy.TargetPointExited += OnReturnToStartPosotion;
-    }
-
     private void OnDrawGizmos()
     {
         if (_isDebugOn)
@@ -41,26 +36,19 @@ public class TargetPoint : MonoBehaviour, ITargetPoint
             Gizmos.DrawWireSphere(transform.position, _radusSphere);
         }
     }
-    private void OnDisable()
-    {
-        _zoneEnemy.TargetPointExited -= OnReturnToStartPosotion;
-    }
 
     public void SetPosition(Vector3 position)
     {
+        IsInsideZoneEnemy = _zoneEnemy.IsPointInside(position);
+
         if (IsInsideZoneEnemy)
             _transform.localPosition = new Vector3(position.x, _startPosition.y, position.z);
+        else
+            _transform.localPosition = _startPosition;
     }
 
     public void SaveLastPosition()
     {
         _startPosition = _transform.localPosition;
-        IsInsideZoneEnemy = true;
-    }
-
-    private void OnReturnToStartPosotion()
-    {
-        IsInsideZoneEnemy = false;
-        _transform.localPosition = _startPosition;
     }
 }

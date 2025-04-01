@@ -1,12 +1,15 @@
 using System;
-using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerTouchInput))]
 public class Player : MonoBehaviour, IPlayer
 {
+    [SerializeField] private DamageAttributes _defaultDamageImprover;
+
     private PlayerTouchInput _touchInput;
     private ITurret _turret;
+
+    public IDamageAttributes DamageImprover => _defaultDamageImprover;
 
     private void Awake()
     {

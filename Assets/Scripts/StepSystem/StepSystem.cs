@@ -6,7 +6,8 @@ public class StepSystem : MonoBehaviour, IStepSystem
 
     private void Update()
     {
-        _step.Action();
+        if (Time.timeScale != 0f)
+            _step.Action();
     }
 
     public void EstablishNextStep(IStep step)

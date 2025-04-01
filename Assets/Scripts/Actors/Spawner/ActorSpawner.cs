@@ -44,13 +44,4 @@ public class ActorSpawner : IActorSpawner
 
         return actor;
     }
-
-    //Debug
-    private void DebugActorPlanners(IReadOnlyCollection<IActorPlanner> actorPlanners)
-    {
-        foreach (var actorPlanner in actorPlanners)
-        {
-            Debug.Log($"NameActor - {actorPlanner.NameActor} | columnNum - {actorPlanner.ColumnNumber} | lineNum - {actorPlanner.LineNumber}");
-        }
-    }
 }

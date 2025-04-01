@@ -29,13 +29,6 @@ public abstract class Bullet : MonoBehaviour, IBullet
     private void Awake()
     {
         _transform = transform;
-
-        BulletPhysics bulletPhysics = GetComponent<BulletPhysics>();
-        bulletPhysics.Initialize(_physicsAttributes);
-        _bulletPhysics = bulletPhysics;
-
-        _damage = new Damage(_damageAttributes);
-        _gatherer = new BonusGathererBullet();
     }
 
     private void FixedUpdate()
@@ -50,6 +43,20 @@ public abstract class Bullet : MonoBehaviour, IBullet
         ApplyDamage(collision);
     }
 
+    public void Initialize(IDamageImprover damageImprover)
+    {
+        if (damageImprover == null)
+            throw new ArgumentNullException(nameof(damageImprover));
+
+        BulletPhysics bulletPhysics = GetComponent<BulletPhysics>();
+        bulletPhysics.Initialize(_physicsAttributes);
+        _bulletPhysics = bulletPhysics;
+
+        damageImprover.Improve(_damageAttributes);
+        _damage = new Damage(damageImprover);
+        _gatherer = new BonusGathererBullet();
+    }
+ 
     public void Move(Vector3 startPoint, Vector3 direction)
     {
         _transform.position = startPoint;

@@ -2,18 +2,22 @@
 
 public class DamageImprover : IDamageImprover
 {
-    private IDamageAttributes _defalutDamageImprover;
-    private IDamageAttributes _damageAttributes;
+    private IDamageAttributes _attributes;
+    private float _damage;
 
     public DamageImprover(IDamageAttributes attributes)
     {
-        _defalutDamageImprover = attributes ?? throw new ArgumentNullException(nameof(attributes));
+        _attributes = attributes ?? throw new ArgumentNullException(nameof(attributes));
+        _damage = _attributes.Damage;
     }
 
-    public int Damage => _defalutDamageImprover.Damage + _damageAttributes.Damage;
+    public float Damage => _damage;
 
-    public void Improve(IDamageAttributes attributes)
+    public void Improve(IDamageImproverAttributes damageImproverAttributes)
     {
-        _damageAttributes = attributes ?? throw new ArgumentNullException(nameof(attributes));
+        if (damageImproverAttributes == null)
+            throw new ArgumentNullException(nameof(damageImproverAttributes));
+
+        _damage *= damageImproverAttributes.DamageСoefficient;
     }
 }

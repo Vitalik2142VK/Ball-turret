@@ -14,8 +14,8 @@ GameObject:
   - component: {fileID: 2275135608088284261}
   - component: {fileID: 5281274731394670629}
   - component: {fileID: 5217973507592596023}
-  - component: {fileID: 4302467720087310448}
   - component: {fileID: 8158855036971508430}
+  - component: {fileID: 4302467720087310448}
   m_Layer: 0
   m_Name: TestBonusBall
   m_TagString: Untagged
@@ -151,18 +151,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _bonusActivator: {fileID: 6972228633587166588}
---- !u!114 &4302467720087310448
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6972228633587166588}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a3ccb44b215d8f4b945acbc3a6427b5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &8158855036971508430
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -173,5 +161,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 09ee7fcce9dd7d8489d955bdd5150b27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4302467720087310448
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6972228633587166588}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a3ccb44b215d8f4b945acbc3a6427b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

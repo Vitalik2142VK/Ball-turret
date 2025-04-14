@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class AddBulletBonusConfigurator : BonusConfigurator
 {
+    [Header("Add bullet")]
     [SerializeField] private BulletFactory _bulletFactory;
     [SerializeField] private DefaultGun _gun;
 

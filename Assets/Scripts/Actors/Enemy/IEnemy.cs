@@ -1,4 +1,4 @@
-﻿public interface IEnemy : IActor, IDamagedObject
+﻿public interface IEnemy : IActor, IDamagedObject, IDebuffable
 {
     public void ApplyDamage(IDamagedObject damagedObject);
 }

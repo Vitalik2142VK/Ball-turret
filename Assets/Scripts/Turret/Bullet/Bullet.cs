@@ -3,25 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(BulletPhysics))]
-public abstract class Bullet : MonoBehaviour, IBullet
+public class Bullet : MonoBehaviour, IBullet
 {
-    [SerializeField] private DamageAttributes _damageAttributes;
-    [SerializeField] private BulletPhysicsAttributes _physicsAttributes;
+    [SerializeField] private Scriptable.BulletPhysicsAttributes _physicsAttributes;
+    [SerializeField] private BulletType _bulletType;
 
     private Transform _transform;
     private IDamage _damage;
     private IBulletPhysics _bulletPhysics;
     private IBonusGatherer _gatherer;
 
-    public event Action<IBullet> Finished;
+    public BulletType BulletType => _bulletType;
 
-    public abstract BulletType BulletType { get; }
+    public IDamageAttributes DamageAttributes { get; private set; }
 
     private void OnValidate()
     {
-        if (_damageAttributes == null)
-            throw new NullReferenceException(nameof(_damageAttributes));
-
         if (_physicsAttributes == null)
             throw new NullReferenceException(nameof(_physicsAttributes));
     }
@@ -43,40 +40,39 @@ public abstract class Bullet : MonoBehaviour, IBullet
         ApplyDamage(collision);
     }
 
-    public void Initialize(IDamageImprover damageImprover)
+    public void Initialize(IDamageAttributes damageBulletAttributes)
     {
-        if (damageImprover == null)
-            throw new ArgumentNullException(nameof(damageImprover));
+        DamageAttributes = damageBulletAttributes ?? throw new ArgumentNullException(nameof(damageBulletAttributes));
 
         BulletPhysics bulletPhysics = GetComponent<BulletPhysics>();
         bulletPhysics.Initialize(_physicsAttributes);
         _bulletPhysics = bulletPhysics;
 
-        damageImprover.Improve(_damageAttributes);
-        _damage = new Damage(damageImprover);
+        _damage = new Damage(DamageAttributes);
         _gatherer = new BonusGathererBullet();
     }
  
+    public void ChangeDamage(IDamageImproverAttributes damageImproverAttributes)
+    {
+        if (damageImproverAttributes == null)
+            throw new ArgumentNullException(nameof(damageImproverAttributes));
+
+        IDamageImprover damageImprover = new DamageImprover(DamageAttributes);
+        damageImprover.Improve(damageImproverAttributes);
+        DamageAttributes = damageImprover;
+
+        _damage = new Damage(DamageAttributes);
+    }
+
     public void Move(Vector3 startPoint, Vector3 direction)
     {
         _transform.position = startPoint;
         _bulletPhysics.MoveToDirection(direction);
     }
 
-    public void SetActive(bool isActive)
-    {
-        gameObject.SetActive(isActive);
-    }
+    public void SetActive(bool isActive) => gameObject.SetActive(isActive);
 
-    public void EndFlight()
-    {
-        Finished?.Invoke(this);
-    }
-
-    public void Gather(IBonus bonus)
-    {
-        _gatherer.Gather(bonus);
-    }
+    public void Gather(IBonus bonus) => _gatherer.Gather(bonus);
 
     public bool TryGetBonuses(out List<IBonus> bonuses)
     {

@@ -11,4 +11,6 @@ public interface IAdvancedActorPreparator : IActorsPreparator
     public List<IActor> PopActors();
 
     public void CountRemainingEnemies();
+
+    public void ActivateDebuffablies();
 }

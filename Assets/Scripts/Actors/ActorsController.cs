@@ -31,6 +31,7 @@ public class ActorsController : IActorsController, IActorsPreparator, IActorsMov
 
     public void Prepare()
     {
+        _actorsPreparator.ActivateDebuffablies();
         _actorsPreparator.CountRemainingEnemies();
 
         if (AreNoEnemies)

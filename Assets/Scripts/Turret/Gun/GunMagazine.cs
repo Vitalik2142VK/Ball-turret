@@ -1,48 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-
-public class GunMagazine : IGunMagazine
+﻿public class GunMagazine : IGunMagazine
 {
-    private List<IBullet> _bullets;
-    private int _countBullets;
+    private IBulletRepository _bulletRepository;
 
-    public GunMagazine(int countBullets)
+    public GunMagazine(IBulletRepository bulletRepository)
     {
-        _countBullets = countBullets;
-        _bullets = new List<IBullet>(_countBullets);
+        _bulletRepository = bulletRepository ?? throw new System.ArgumentNullException(nameof(bulletRepository));
     }
 
-    public bool IsThereBullets => _bullets.Count > 0;
-    public bool IsFull => _bullets.Count == _countBullets;
+    public bool AreThereBullets => _bulletRepository.AreThereFreeBullets;
+    public bool IsFull => _bulletRepository.AreBulletsReturned;
 
     public void AddBullet(IBullet bullet)
     {
-        _bullets.Add(bullet);
-        _countBullets = _bullets.Count;
+        _bulletRepository.Add(bullet);
     }
 
     public IBullet GetBullet() 
     {
-        if (IsThereBullets == false)
-            throw new InvalidOperationException("The count of bullets is 0");
-
-        IBullet bullet = _bullets[0];
-        bullet.SetActive(true);
-        bullet.Finished += OnPutBullet;
-
-        _bullets.RemoveAt(0);
-
-        return bullet;
-    }
-
-    private void OnPutBullet(IBullet bullet)
-    {
-        if (bullet == null)
-            throw new ArgumentNullException(nameof(bullet));
-
-        bullet.SetActive(false);
-        bullet.Finished -= OnPutBullet;
-
-        _bullets.Add(bullet);
+        return _bulletRepository.Get();
     }
 }

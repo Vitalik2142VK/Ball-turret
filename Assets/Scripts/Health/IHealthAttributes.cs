@@ -1,4 +1,4 @@
 ﻿public interface IHealthAttributes
 {
-    public int MaxHealth { get; }
+    public float MaxHealth { get; }
 }

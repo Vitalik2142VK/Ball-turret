@@ -58,7 +58,7 @@ public class DefaultGun : MonoBehaviour, IGun, IGunLoader
 
         IsRecharged = false;
 
-        while (_magazine.IsThereBullets)
+        while (_magazine.AreThereBullets)
         {
             IBullet bullet = _magazine.GetBullet();
             bullet.Move(startPoint, direction);

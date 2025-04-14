@@ -7,11 +7,11 @@ public class EntryPoint : MonoBehaviour
     [SerializeField] private TurretConfigurator _turretConfigurator;
     [SerializeField] private StepSystemConfigurator _stepSystemConfigurator;
     [SerializeField] private ActorsConfigurator _actorsConfigurator;
-    [SerializeField] private BonusPrefabConfigurator _bonusPrefabConfigurator;
+    [SerializeField] private BonusesPrefabConfigurator _bonusPrefabConfigurator;
     [SerializeField] private BulletConfigurator _bulletConfigurator;
 
     [Header("LevelActorsPlanner (Change to select player)")]
-    [SerializeField] private LevelActorsPlanner _levelActorsPlanner;
+    [SerializeField] private Scriptable.LevelActorsPlanner _levelActorsPlanner;
 
     private void OnValidate()
     {
@@ -37,7 +37,7 @@ public class EntryPoint : MonoBehaviour
     private void Start()
     {
         _bulletConfigurator.Configure(_player);
-        _turretConfigurator.Configure();
+        _turretConfigurator.Configure(_bulletConfigurator.BulletFactory);
 
         ITurret turret = _turretConfigurator.Turret;
 

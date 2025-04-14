@@ -2,35 +2,38 @@
 
 public class Health : IHealth
 {
-    private readonly IHealthAttributes Attributes;
-    private readonly IHealthBarView HealthBar;
+    private IHealthAttributes _attributes;
+    private IHealthBarView _healthBar;
 
-    private int _currentHealth;
+    private float _currentHealth;
 
     public Health(IHealthAttributes attributes, IHealthBarView healthBar)
     {
-        Attributes = attributes ?? throw new ArgumentNullException(nameof(attributes));
-        HealthBar = healthBar ?? throw new ArgumentNullException(nameof(healthBar));
+        _attributes = attributes ?? throw new ArgumentNullException(nameof(attributes));
+        _healthBar = healthBar ?? throw new ArgumentNullException(nameof(healthBar));
     }
 
     public bool IsAlive => _currentHealth > 0;
 
     public void Restore()
     {
-        _currentHealth = Attributes.MaxHealth;
-        HealthBar.SetMaxHealth(_currentHealth);
+        _currentHealth = _attributes.MaxHealth;
+        _healthBar.SetMaxHealth(_currentHealth);
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(IDamageAttributes damage)
     {
-        if (damage < 0)
-            throw new ArgumentOutOfRangeException(nameof(damage));
+        if (damage == null) 
+            throw new ArgumentNullException(nameof(damage));
 
-        _currentHealth -= damage;
+        if (damage.Damage < 0)
+            throw new ArgumentOutOfRangeException(nameof(damage.Damage));
+
+        _currentHealth -= damage.Damage;
 
         if (IsAlive == false)
             _currentHealth = 0;
 
-        HealthBar.UpdateDataHealth(_currentHealth);
+        _healthBar.UpdateDataHealth(_currentHealth);
     }
 }

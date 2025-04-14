@@ -2,11 +2,11 @@
 
 public class Damage : IDamage
 {
-    private readonly IDamageAttributes Attributes;
+    private IDamageAttributes _attributes;
 
     public Damage(IDamageAttributes attributes)
     {
-        Attributes = attributes ?? throw new ArgumentNullException(nameof(attributes));
+        _attributes = attributes ?? throw new ArgumentNullException(nameof(attributes));
     }
 
     public void Apply(IDamagedObject damagedObject)
@@ -14,6 +14,6 @@ public class Damage : IDamage
         if (damagedObject == null)
             throw new ArgumentNullException(nameof(damagedObject));
 
-        damagedObject.TakeDamage(Attributes.Damage);
+        damagedObject.TakeDamage(_attributes);
     }
 }

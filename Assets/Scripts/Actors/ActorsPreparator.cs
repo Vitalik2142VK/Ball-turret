@@ -64,6 +64,15 @@ public class ActorsPreparator : IAdvancedActorPreparator
         CountEnemies();
     }
 
+    public void ActivateDebuffablies()
+    {
+        foreach (var actor in _actors)
+        {
+            if (actor is IDebuffable debuffable && actor.IsEnable == true)
+                debuffable.ActivateDebuffs();
+        }
+    }
+
     private void RemoveDisabledActors()
     {
         for (int i = 0; i < _actors.Count; i++)

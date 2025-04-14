@@ -46,7 +46,7 @@ public class Turret : ITurret
         _tower.SaveDirection();
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(IDamageAttributes damage)
     {
         _health.TakeDamage(damage);
 

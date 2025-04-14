@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BonusFactory : MonoBehaviour, IActorFactory
 {
-    [SerializeField] private BonusPrefabConfigurator _bonusPrefabConfigurator;
+    [SerializeField] private BonusesPrefabConfigurator _bonusPrefabConfigurator;
 
     private Dictionary<string, Bonus> _prefabs;
 
@@ -26,18 +26,21 @@ public class BonusFactory : MonoBehaviour, IActorFactory
 
     public IActor Create(string nameTypeActor)
     {
+        if (nameTypeActor == null)
+            throw new ArgumentNullException(nameof(nameTypeActor));
+
         if (_prefabs.ContainsKey(nameTypeActor) == false)
             throw new ArgumentOutOfRangeException(nameof(nameTypeActor));
 
-        Bonus bonus = _prefabs[nameTypeActor];
-        Bonus newBonus = Instantiate(bonus, bonus.transform.position, transform.rotation);
+        Bonus prefab = _prefabs[nameTypeActor];
+        Bonus bonus = Instantiate(prefab, prefab.transform.position, transform.rotation);
 
-        if (bonus.TryGetComponent(out IBonusActivator bonusActivator))
-            newBonus.SetBonusActivator(bonusActivator);
+        if (prefab.TryGetComponent(out IBonusActivator bonusActivator))
+            bonus.SetBonusActivator(bonusActivator);
         else
             throw new InvalidOperationException();
 
-        return newBonus;
+        return bonus;
     }
 
     private Dictionary<string, Bonus> CreateDictionaryPrefabs()

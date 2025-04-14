@@ -1,6 +1,6 @@
 ﻿public interface IHealthBarView
 {
-    void SetMaxHealth(int health);
+    void SetMaxHealth(float health);
 
-    void UpdateDataHealth(int health);
+    void UpdateDataHealth(float health);
 }

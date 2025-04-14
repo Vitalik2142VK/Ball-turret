@@ -4,7 +4,7 @@ using UnityEngine;
 public class StepSystemConfigurator : MonoBehaviour
 {
     [SerializeField] private StepSystem _stepSystem;
-    [SerializeField] private BulletCollector _bulletCollector;
+    [SerializeField] private BulletsCollector _bulletCollector;
 
     private IPlayer _player;
     private ITurret _turret;

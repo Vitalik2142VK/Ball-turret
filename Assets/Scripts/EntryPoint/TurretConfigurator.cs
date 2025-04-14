@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using Scriptable;
 
 public class TurretConfigurator : MonoBehaviour
 {
@@ -10,7 +11,7 @@ public class TurretConfigurator : MonoBehaviour
     [SerializeField] private HealthBar _healthBar;
 
     [Header("Bullets")]
-    [SerializeField] private BulletFactory _bulletFactory;
+    [SerializeField] private BulletsCollector _bulletCollector;
 
     [Header("Attributes")]
     [SerializeField] private GunAttributes _gunAttributes;
@@ -31,11 +32,11 @@ public class TurretConfigurator : MonoBehaviour
         if (_gun == null)
             throw new NullReferenceException(nameof(_gun));
 
-        if (_bulletFactory == null)
-            throw new NullReferenceException(nameof(_bulletFactory));
-
         if (_healthBar == null)
             throw new NullReferenceException(nameof(_healthBar));
+
+        if (_bulletCollector == null)
+            throw new NullReferenceException(nameof(_bulletCollector));
 
         if (_gunAttributes == null)
             throw new NullReferenceException(nameof(_gunAttributes));
@@ -49,9 +50,12 @@ public class TurretConfigurator : MonoBehaviour
         _turret.Disable();
     }
 
-    public void Configure()
+    public void Configure(IBulletFactory bulletFactory)
     {
-        IGunMagazine gunMagazine = CreateGunMagazine(_gunAttributes.InitialCountBulltes);
+        if (bulletFactory == null)
+            throw new NullReferenceException(nameof(bulletFactory));
+
+        IGunMagazine gunMagazine = CreateGunMagazine(bulletFactory);
 
         _gun.Initialize(gunMagazine, _gunAttributes.TimeBetweenShots);
         _tower.Initialize(_targetPoint);
@@ -63,13 +67,14 @@ public class TurretConfigurator : MonoBehaviour
         _turret.Enable();
     }
 
-    private IGunMagazine CreateGunMagazine(int initialCountBullets)
+    private IGunMagazine CreateGunMagazine(IBulletFactory bulletFactory)
     {
-        GunMagazine magazine = new GunMagazine(initialCountBullets);
+        int initialCountBullets = _gunAttributes.InitialCountBulltes;
+        GunMagazine magazine = new GunMagazine(_bulletCollector);
 
         for (int i = 0; i < initialCountBullets; i++)
         {
-            IBullet bullet = _bulletFactory.Create(BulletType.Default);
+            IBullet bullet = bulletFactory.Create(BulletType.Poison);
 
             magazine.AddBullet(bullet);
         }

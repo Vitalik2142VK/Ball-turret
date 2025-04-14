@@ -1,11 +1,14 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Attributes/Move Attributes", fileName = "MoveAttributes", order = 51)]
-public class MoveAttributes : ScriptableObject, IMoveAttributes
+namespace Scriptable
 {
-    [SerializeField] private Vector3 _distance;
-    [SerializeField] private float _speed;
+    [CreateAssetMenu(menuName = "Attributes/Move Attributes", fileName = "MoveAttributes", order = 51)]
+    public class MoveAttributes : ScriptableObject, IMoveAttributes
+    {
+        [SerializeField] private Vector3 _distance;
+        [SerializeField] private float _speed;
 
-    Vector3 IMoveAttributes.Distance => _distance;
-    float IMoveAttributes.Speed => _speed;
+        Vector3 IMoveAttributes.Distance => _distance;
+        float IMoveAttributes.Speed => _speed;
+    }
 }

@@ -9,7 +9,7 @@ public class HealthBar : MonoBehaviour, IHealthBarView
     private const float MinSliderValue = 0.0f;
 
     private Slider _slider;
-    private int _maxHealth;
+    private float _maxHealth;
 
     private void Awake()
     {
@@ -18,7 +18,7 @@ public class HealthBar : MonoBehaviour, IHealthBarView
         _slider.minValue = MinSliderValue;
     }
 
-    public void SetMaxHealth(int health)
+    public void SetMaxHealth(float health)
     {
         if (health <= 0)
             throw new ArgumentOutOfRangeException(nameof(health)); 
@@ -27,7 +27,7 @@ public class HealthBar : MonoBehaviour, IHealthBarView
         _slider.value = MaxSliderValue;
     }
 
-    public void UpdateDataHealth(int currentHealth)
+    public void UpdateDataHealth(float currentHealth)
     {
         if (currentHealth > _maxHealth || currentHealth < 0)
             throw new ArgumentOutOfRangeException(nameof(currentHealth));

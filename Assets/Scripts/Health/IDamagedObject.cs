@@ -1,4 +1,4 @@
 ﻿public interface IDamagedObject
 {
-    public void TakeDamage(int damage);
+    public void TakeDamage(IDamageAttributes damage);
 }

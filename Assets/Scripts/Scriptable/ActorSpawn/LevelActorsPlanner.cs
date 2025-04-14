@@ -1,19 +1,23 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(menuName = "Level Actors Planner/Level Actors Planner", fileName = "LevelActorsPlanner", order = 51)]
-public class LevelActorsPlanner : ScriptableObject, ILevelActorsPlanner
+namespace Scriptable
 {
-    [SerializeField] private WaveActorsPlanner[] _waveis;
-
-    public int CountWaves => _waveis.Length;
-
-    public IWaveActorsPlanner GetWaveActorsPlanner(int waveNumber)
+    [CreateAssetMenu(menuName = "Level Actors Planner/Level Actors Planner", fileName = "LevelActorsPlanner", order = 51)]
+    public class LevelActorsPlanner : ScriptableObject, ILevelActorsPlanner
     {
-        int index = waveNumber - 1;
+        [SerializeField] private WaveActorsPlanner[] _waveis;
 
-        if (index < 0 || index >= CountWaves)
-            throw new System.ArgumentOutOfRangeException(nameof(waveNumber));
+        public int CountWaves => _waveis.Length;
 
-        return _waveis[index];
+        public IWaveActorsPlanner GetWaveActorsPlanner(int waveNumber)
+        {
+            int index = waveNumber - 1;
+
+            if (index < 0 || index >= CountWaves)
+                throw new System.ArgumentOutOfRangeException(nameof(waveNumber));
+
+            return _waveis[index];
+        }
     }
 }
+

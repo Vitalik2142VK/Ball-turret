@@ -1,18 +1,26 @@
-﻿using UnityEngine;
+﻿using System;
 
-[System.Serializable]
 public class ActorPlanner : IActorPlanner
 {
-    private const int MinSizeLine = 1;
-    private const int MaxSizeLine = 3;
-    private const int MinSizeColumn = 1;
-    private const int MaxSizeColumn = 3;
+    private const int MinIndexInLine = 0;
+    private const int MaxIndexInLine = 2;
+    private const int MinIndexInColumn = 0;
+    private const int MaxIndexInColumn = 2;
 
-    [SerializeField, SerializeIterface(typeof(IActor))] private GameObject _actor;
-    [SerializeField, Range(MinSizeLine, MaxSizeLine)] private int _lineNumber;
-    [SerializeField, Range(MinSizeColumn, MaxSizeColumn)] private int _columnNumber;
+    public ActorPlanner(string nameActor, int lineNumber, int columnNumber)
+    {
+        if (lineNumber < MinIndexInLine || lineNumber > MaxIndexInLine)
+            throw new ArgumentOutOfRangeException(nameof(lineNumber));
 
-    public string NameActor => _actor.GetComponent<IActor>().Name;
-    public int LineNumber => _lineNumber - 1;
-    public int ColumnNumber => _columnNumber - 1;
+        if (columnNumber < MinIndexInColumn || columnNumber > MaxIndexInColumn)
+            throw new ArgumentOutOfRangeException(nameof(columnNumber));
+
+        NameActor = nameActor ?? throw new ArgumentNullException(nameof(nameActor));
+        LineNumber = lineNumber;
+        ColumnNumber = columnNumber;
+    }
+
+    public string NameActor { get; }
+    public int LineNumber { get; }
+    public int ColumnNumber { get; }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-[RequireComponent(typeof(Mover))]
+[RequireComponent(typeof(Mover), typeof(CapsuleCollider), typeof(Rigidbody))]
 public class Enemy : MonoBehaviour, IEnemy
 {
     [SerializeField] private Scriptable.DamageAttributes _damageAttributes;

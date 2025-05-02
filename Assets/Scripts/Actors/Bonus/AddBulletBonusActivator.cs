@@ -1,36 +1,26 @@
 ﻿using System;
-using UnityEngine;
 
-public class AddBulletBonusActivator : MonoBehaviour, IBonusActivator
+public class AddBulletBonusActivator : IBonusActivator
 {
     private IBulletFactory _bulletFactory;
     private IGunLoader _gunLoader;
+    private BulletType _bulletType;
 
-    public void Initialize(IBulletFactory bulletFactory, IGunLoader gunLoader)
+    public AddBulletBonusActivator(IBulletFactory bulletFactory, IGunLoader gunLoader, BulletType bulletType)
     {
         _bulletFactory = bulletFactory ?? throw new ArgumentNullException(nameof(bulletFactory));
         _gunLoader = gunLoader ?? throw new ArgumentNullException(nameof(gunLoader));
-    }
-
-    public void Initialize(IBonusActivator bonusActivator)
-    {
-        if (bonusActivator == null) 
-            throw new ArgumentNullException(nameof(bonusActivator));
-
-        if (bonusActivator is AddBulletBonusActivator addBulletActivator)
-        {
-            _bulletFactory = addBulletActivator._bulletFactory ?? throw new NullReferenceException(nameof(addBulletActivator._bulletFactory));
-            _gunLoader = addBulletActivator._gunLoader ?? throw new NullReferenceException(nameof(addBulletActivator._gunLoader));
-        }
-        else
-        {
-            throw new ArgumentOutOfRangeException();
-        }
+        _bulletType = bulletType;
     }
 
     public void Activate()
     {
-        IBullet bullet = _bulletFactory.Create(BulletType.Default);
+        IBullet bullet = _bulletFactory.Create(_bulletType);
         _gunLoader.AddBullet(bullet);
+    }
+
+    public IBonusActivator Clone()
+    {
+        return new AddBulletBonusActivator(_bulletFactory, _gunLoader, _bulletType);
     }
 }

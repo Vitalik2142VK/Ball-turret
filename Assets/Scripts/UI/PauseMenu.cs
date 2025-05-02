@@ -23,6 +23,11 @@ public class PauseMenu : MonoBehaviour, IMenu
         _gameObject.SetActive(false);
     }
 
+    public void Enable()
+    {
+        _gameObject.SetActive(true);
+    }
+
     public void Open()
     {
         _pause.Enable();
@@ -44,10 +49,5 @@ public class PauseMenu : MonoBehaviour, IMenu
     public void Exit()
     {
         Debug.Log("Change scene to Main menu.");
-    }
-
-    public void Enable()
-    {
-        _gameObject?.SetActive(true);
     }
 }

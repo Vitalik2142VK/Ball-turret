@@ -7,19 +7,45 @@ namespace Scriptable
     [CreateAssetMenu(menuName = "Level Actors Planner/Wave Actors Planner", fileName = "WaveActorsPlanner", order = 51)]
     public class WaveActorsPlanner : ScriptableObject, IWaveActorsPlanner
     {
-        private const int MaxActors = 9;
+        private const int CountLines = 3;
 
-        [SerializeField] private ActorPlanner[] _actorPlanners;
+        [SerializeField] private LineActorPlaner[] _lines;
 
         private void OnValidate()
         {
-            if (_actorPlanners.Length > MaxActors)
-                throw new InvalidOperationException($"There can be no more than {MaxActors} actors in one wave.");
+            if (_lines == null || _lines.Length != CountLines)
+                _lines = new LineActorPlaner[CountLines];
+
+            foreach (var line in _lines)
+                line.Validate();
+
+            if (IsEmpty())
+                throw new InvalidOperationException($"There must be at least 1 actor in the wave.");
         }
 
         public IReadOnlyCollection<IActorPlanner> GetActorPlanners()
         {
-            return new List<IActorPlanner>(_actorPlanners);
+            List<IActorPlanner> planners = new List<IActorPlanner>();
+
+            for (int i = 0; i < _lines.Length; i++)
+            {
+                if (_lines[i].IsEmpty() == false)
+                {
+                    List<IActorPlanner> actorPlanners = _lines[i].GetActorPlanners(i);
+                    planners.AddRange(actorPlanners);
+                }
+            }
+
+            return planners;
+        }
+
+        private bool IsEmpty()
+        {
+            foreach (var line in _lines)
+                if (line.IsEmpty() == false)
+                    return false;
+
+            return true;
         }
     }
 }

@@ -6,6 +6,7 @@ public class AddBulletBonusConfigurator : BonusConfigurator
     [Header("Add bullet")]
     [SerializeField] private BulletFactory _bulletFactory;
     [SerializeField] private DefaultGun _gun;
+    [SerializeField] private BulletType _bulletType;
 
     private void OnValidate()
     {
@@ -18,9 +19,8 @@ public class AddBulletBonusConfigurator : BonusConfigurator
 
     public override void Configure()
     {
-        if (BonusPrefab.TryGetComponent(out AddBulletBonusActivator addBulletBonusActivator) == false)
-            throw new InvalidOperationException();
+        AddBulletBonusActivator addBulletBonusActivator = new AddBulletBonusActivator(_bulletFactory, _gun, _bulletType);
 
-        addBulletBonusActivator.Initialize(_bulletFactory, _gun);
+        BonusPrefab.Initialize(addBulletBonusActivator);
     }
 }

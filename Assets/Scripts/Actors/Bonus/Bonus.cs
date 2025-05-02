@@ -1,9 +1,12 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(Mover))]
 public class Bonus : MonoBehaviour, IBonus
 {
-    [SerializeField, SerializeIterface(typeof(IBonusActivator))] private GameObject _bonusActivator;
+    [SerializeField] private Image _image;
+    [SerializeField] private Scriptable.BonusCard _bonusCard;
 
     private IMover _mover;
     private IBonusActivator _activator;
@@ -11,12 +14,22 @@ public class Bonus : MonoBehaviour, IBonus
     public IMover Mover => _mover;
     public bool IsEnable { get; private set; }
 
-    public string Name => name;
+    public string Name => _bonusCard.Name;
+    public IBonusCard BonusCard => _bonusCard;
+
+    private void OnValidate()
+    {
+        if (_image == null)
+            throw new NullReferenceException(nameof(_image));
+
+        if (_bonusCard == null)
+            throw new NullReferenceException(nameof(_bonusCard));
+    }
 
     private void Awake()
     {
         _mover = GetComponent<Mover>();
-        _activator = _bonusActivator.GetComponent<IBonusActivator>();
+        _image.sprite = _bonusCard.Icon;
     }
 
     private void OnEnable()
@@ -39,9 +52,9 @@ public class Bonus : MonoBehaviour, IBonus
         }
     }
 
-    public void SetBonusActivator(IBonusActivator bonusActivator)
+    public void Initialize(IBonusActivator bonusActivator)
     {
-        _activator.Initialize(bonusActivator);
+        _activator = bonusActivator ?? throw new ArgumentNullException(nameof(bonusActivator));
     }
 
     public void SetStartPosition(Vector3 startPosition)
@@ -52,6 +65,11 @@ public class Bonus : MonoBehaviour, IBonus
     public void Activate()
     {
         _activator.Activate();
+    }
+
+    public IBonusActivator GetCloneBonusActivator()
+    {
+        return _activator.Clone();
     }
 
     public void Destroy()

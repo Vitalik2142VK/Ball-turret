@@ -16,6 +16,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ExplodingBullet
       objectReference: {fileID: 0}
+    - target: {fileID: 2844714841655934074, guid: 163cd43076eecd94ab9d152a4ab0f8f2, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 4711208715938537054, guid: 3c67242a9125e704aad4cb468186947f, type: 3}
     - target: {fileID: 4263260762200817227, guid: 163cd43076eecd94ab9d152a4ab0f8f2, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

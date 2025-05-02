@@ -74,7 +74,7 @@ public class TurretConfigurator : MonoBehaviour
 
         for (int i = 0; i < initialCountBullets; i++)
         {
-            IBullet bullet = bulletFactory.Create(BulletType.Poison);
+            IBullet bullet = bulletFactory.Create(BulletType.Default);
 
             magazine.AddBullet(bullet);
         }

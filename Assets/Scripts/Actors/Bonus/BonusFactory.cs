@@ -4,16 +4,14 @@ using UnityEngine;
 
 public class BonusFactory : MonoBehaviour, IActorFactory
 {
-    [SerializeField] private BonusesPrefabConfigurator _bonusPrefabConfigurator;
-
     private Dictionary<string, Bonus> _prefabs;
 
-    private void Awake()
+    public void Initialize(Bonus[] bonusPrefabs)
     {
-        if (_bonusPrefabConfigurator == null)
-            throw new NullReferenceException(nameof(_bonusPrefabConfigurator));
+        if (bonusPrefabs == null || bonusPrefabs.Length == 0)
+            throw new ArgumentOutOfRangeException(nameof(bonusPrefabs));
 
-        _prefabs = CreateDictionaryPrefabs();
+        _prefabs = CreateDictionaryPrefabs(bonusPrefabs);
     }
 
     public bool IsCanCreate(string nameTypeActor)
@@ -33,19 +31,15 @@ public class BonusFactory : MonoBehaviour, IActorFactory
             throw new ArgumentOutOfRangeException(nameof(nameTypeActor));
 
         Bonus prefab = _prefabs[nameTypeActor];
+        IBonusActivator bonusActivator = prefab.GetCloneBonusActivator();
         Bonus bonus = Instantiate(prefab, prefab.transform.position, transform.rotation);
-
-        if (prefab.TryGetComponent(out IBonusActivator bonusActivator))
-            bonus.SetBonusActivator(bonusActivator);
-        else
-            throw new InvalidOperationException();
+        bonus.Initialize(bonusActivator);
 
         return bonus;
     }
 
-    private Dictionary<string, Bonus> CreateDictionaryPrefabs()
+    private Dictionary<string, Bonus> CreateDictionaryPrefabs(Bonus[] bonusPrefabs)
     {
-        Bonus[] bonusPrefabs = _bonusPrefabConfigurator.GetBonusPrefabs();
         int lenght = bonusPrefabs.Length;
         Dictionary<string, Bonus> prefabs = new Dictionary<string, Bonus>(lenght);
 

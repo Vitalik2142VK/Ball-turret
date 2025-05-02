@@ -44,7 +44,7 @@ public class ActorsMover : IAdvancedActorsMover
     {
         AreMovesFinished = true;
 
-        foreach (IMovableObject movableObject in _movableObjects)
+        foreach (var movableObject in _movableObjects)
         {
             IMover mover = movableObject.Mover ?? throw new NullReferenceException(nameof(movableObject.Mover));
             mover.Move();
@@ -56,7 +56,7 @@ public class ActorsMover : IAdvancedActorsMover
 
     private void SpecifyNewPosition()
     {
-        foreach (IMovableObject movableObject in _movableObjects)
+        foreach (var movableObject in _movableObjects)
         {
             IMover mover = movableObject.Mover ?? throw new NullReferenceException(nameof(movableObject.Mover));
             mover.SetParameters(_moveAttributes.Distance, _moveAttributes.Speed);

@@ -6,9 +6,10 @@ namespace Scriptable
     public class DamageImproverAttributes : ScriptableObject, IDamageImproverAttributes
     {
         private const float DefaultСoefficient = 1f;
+        private const float MinPersent = -99.9f;
         private const float Percent = 0.01f;
 
-        [SerializeField, Min(-99)] private int _percentageDamageIncrease;
+        [SerializeField, Min(MinPersent)] private float _percentageDamageIncrease = 0f;
 
         public float DamageСoefficient => DefaultСoefficient + _percentageDamageIncrease * Percent;
     }

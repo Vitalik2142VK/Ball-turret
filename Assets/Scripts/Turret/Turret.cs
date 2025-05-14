@@ -59,6 +59,11 @@ public class Turret : ITurret
         Debug.Log("Turret is destroy");
     }
 
+    public void RestoreHealth()
+    {
+        _health.Restore();
+    }
+
     private void OnEndStep()
     {
         _endStep.End();

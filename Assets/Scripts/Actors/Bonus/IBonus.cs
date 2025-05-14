@@ -1,4 +1,4 @@
-﻿public interface IBonus : IActor
+﻿public interface IBonus
 {
     public IBonusCard BonusCard { get; }
 

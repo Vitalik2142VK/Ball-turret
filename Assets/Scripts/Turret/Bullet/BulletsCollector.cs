@@ -23,12 +23,10 @@ public class BulletsCollector : MonoBehaviour, IBulletRepository, IBonusStorage
     private void OnTriggerEnter(Collider other)
     {
         if (other.TryGetComponent(out IBullet bullet))
-        {
             Put(bullet);
-        }
     }
 
-    public bool TryGetBonuses(out List<IBonus> bonuses)
+    public bool TryGetBonuses(out IReadOnlyCollection<IBonus> bonuses)
     {
         bonuses = null;
 
@@ -79,7 +77,7 @@ public class BulletsCollector : MonoBehaviour, IBulletRepository, IBonusStorage
 
     private void TakeBonuses(IBullet bullet)
     {
-        if (bullet.TryGetBonuses(out List<IBonus> selectedBonuses))
+        if (bullet.TryGetBonuses(out IReadOnlyCollection<IBonus> selectedBonuses))
             _selectedBonuses.AddRange(selectedBonuses);
     }
 }

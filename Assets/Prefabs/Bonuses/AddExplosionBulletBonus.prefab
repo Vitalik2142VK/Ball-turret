@@ -60,6 +60,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: AddExplosionBulletBonus
       objectReference: {fileID: 0}
+    - target: {fileID: 8411047152606389449, guid: bc277cfd70e12ec42aff8149012548b8, type: 3}
+      propertyPath: _bonusCard
+      value: 
+      objectReference: {fileID: 11400000, guid: 7dad3c853e9fb9b4ba4eadcbd274cfe2, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

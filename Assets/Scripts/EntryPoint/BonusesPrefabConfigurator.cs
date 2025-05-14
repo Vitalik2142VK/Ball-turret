@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -7,6 +8,8 @@ public class BonusesPrefabConfigurator : MonoBehaviour
     [SerializeField] private BonusConfigurator[] _bonusConfigurators;
     [SerializeField] private BonusFactory _bonusFactory;
     [SerializeField] private ChoiceBonusMenu _choiceBonusMenu;
+
+    private ITurret _turret;
 
     private void OnValidate()
     {
@@ -23,15 +26,44 @@ public class BonusesPrefabConfigurator : MonoBehaviour
             throw new NullReferenceException(nameof(_choiceBonusMenu));
     }
 
-    public void Configure()
+    public void Configure(ITurret turret)
     {
+        _turret = turret ?? throw new ArgumentNullException(nameof(turret));
+
         foreach (var bonusConfigurator in _bonusConfigurators)
+        {
+            ConfigureAdditionally(bonusConfigurator);
+
             bonusConfigurator.Configure();
+        }
 
+        InitializeBonusFactory();
+        InitializeChoiceBonusMenu();
+    }
+
+    private void ConfigureAdditionally(BonusConfigurator configurator)
+    {
+        if (configurator is FullHealthTurretBonusConfigurator fullHealthTurretBonusConfigurator)
+            fullHealthTurretBonusConfigurator.SetHealthTurret(_turret);
+    }
+
+    private void InitializeBonusFactory()
+    {
         var bonusPrefabs = _bonusConfigurators.Select(bc => bc.BonusPrefab).ToArray();
-        _bonusFactory.Initialize(bonusPrefabs);
+        List<CollisionBonus> collisionBonuses = new List<CollisionBonus>();
 
-        bonusPrefabs = _bonusConfigurators.Where(bc => bc.IsItRandom).Select(bc => bc.BonusPrefab).ToArray();
+        foreach (var bonusPrefab in bonusPrefabs)
+        {
+            if (bonusPrefab.TryGetComponent(out CollisionBonus collisionBonus))
+                collisionBonuses.Add(collisionBonus);
+        }
+
+        _bonusFactory.Initialize(collisionBonuses);
+    }
+
+    private void InitializeChoiceBonusMenu()
+    {
+        var bonusPrefabs = _bonusConfigurators.Where(bc => bc.IsItRandom).Select(bc => bc.BonusPrefab).ToArray();
         BonusRandomizer bonusRandomizer = new BonusRandomizer(bonusPrefabs);
         _choiceBonusMenu.Initialize(bonusRandomizer);
     }

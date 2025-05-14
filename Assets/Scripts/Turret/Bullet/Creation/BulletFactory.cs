@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class BulletFactory : MonoBehaviour, IBulletFactory
@@ -14,7 +13,7 @@ public class BulletFactory : MonoBehaviour, IBulletFactory
     private void OnValidate()
     {
         if (_containerBullets == null)
-            throw new NullReferenceException(nameof(_containerBullets));
+            _containerBullets = transform;
     }
 
     private void Awake()
@@ -46,21 +45,26 @@ public class BulletFactory : MonoBehaviour, IBulletFactory
         if (_bullets.ContainsKey(type) == false)
             throw new ArgumentOutOfRangeException(nameof(type));
 
-        Bullet bullet = Instantiate(_bullets[type]);
+        Bullet prefab = _bullets[type];
+        Bullet bullet = Instantiate(prefab);
         bullet.Initialize(_damageBulletAttributes);
         bullet.gameObject.SetActive(false);
         bullet.transform.SetParent(_containerBullets);
 
-        if (type == BulletType.Bomb)
-            InitializeBomb(bullet);
+        InitializeBullet(prefab, bullet);
 
         return bullet;
     }
 
-    private void InitializeBomb(Bullet bullet)
+    private void InitializeBullet(Bullet prefab, Bullet bullet)
     {
-        if (bullet.TryGetComponent(out ExplodingBullet explodingBullet) && _bullets[BulletType.Bomb].TryGetComponent(out ExplodingBullet bulletPrefab))
-            explodingBullet.Initialize(bulletPrefab.BulletRepository);
+        var initializes = prefab.GetComponents<IBulletInitializer>();
+
+        if (initializes == null || initializes.Length == 0)
+            return;
+
+        foreach (var initializer in initializes)
+            initializer.Initialize(bullet);
     }
 
     private Dictionary<BulletType, Bullet> CreateDictionaryPrefabs()

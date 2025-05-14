@@ -4,7 +4,7 @@ using UnityEngine;
 [RequireComponent(typeof(PlayerTouchInput))]
 public class Player : MonoBehaviour, IPlayer
 {
-    [SerializeField] private Scriptable.DamageImproverAttributes _damageImproverAttributes;
+    [SerializeField] private Scriptable.PlayerDamageImproverAttributes _damageImproverAttributes;
 
     private PlayerTouchInput _touchInput;
     private ITurret _turret;

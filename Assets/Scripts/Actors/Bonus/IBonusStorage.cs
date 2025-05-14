@@ -2,5 +2,5 @@
 
 public interface IBonusStorage
 {
-    public bool TryGetBonuses(out List<IBonus> bonuses);
+    public bool TryGetBonuses(out IReadOnlyCollection<IBonus> bonuses);
 }

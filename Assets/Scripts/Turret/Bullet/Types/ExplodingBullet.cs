@@ -2,7 +2,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Bullet), typeof(Exploder))]
-public class ExplodingBullet : MonoBehaviour, IBullet
+public class ExplodingBullet : MonoBehaviour, IBullet, IInitializer
 {
     [SerializeField] private Scriptable.DamageImproverAttributes _damageImproverAttributes;
 
@@ -29,7 +29,7 @@ public class ExplodingBullet : MonoBehaviour, IBullet
         }
     }
 
-    private void Start()
+    public void Initialize()
     {
         Bullet bullet = GetComponent<Bullet>();
         Exploder exploder = GetComponent<Exploder>();
@@ -40,7 +40,7 @@ public class ExplodingBullet : MonoBehaviour, IBullet
         _exploder = exploder;
     }
 
-    public void Initialize(IBulletRepository bulletRepository)
+    public void SetBulletRepository(IBulletRepository bulletRepository)
     {
         _bulletRepository = bulletRepository ?? throw new System.ArgumentNullException(nameof(bulletRepository));
     }
@@ -51,5 +51,5 @@ public class ExplodingBullet : MonoBehaviour, IBullet
 
     public void Gather(IBonus bonus) => _bullet.Gather(bonus);
 
-    public bool TryGetBonuses(out List<IBonus> bonuses) => _bullet.TryGetBonuses(out bonuses);
+    public bool TryGetBonuses(out IReadOnlyCollection<IBonus> bonuses) => _bullet.TryGetBonuses(out bonuses);
 }

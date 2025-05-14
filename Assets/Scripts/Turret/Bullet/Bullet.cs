@@ -74,7 +74,7 @@ public class Bullet : MonoBehaviour, IBullet
 
     public void Gather(IBonus bonus) => _gatherer.Gather(bonus);
 
-    public bool TryGetBonuses(out List<IBonus> bonuses)
+    public bool TryGetBonuses(out IReadOnlyCollection<IBonus> bonuses)
     {
         return _gatherer.TryGetBonuses(out bonuses);
     }

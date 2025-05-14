@@ -44,6 +44,6 @@ public class EntryPoint : MonoBehaviour
         _player.Initialize(turret);
         _actorsConfigurator.Configure(turret, _levelActorsPlanner);
         _stepSystemConfigurator.Configure(_player, turret, _actorsConfigurator.ActorsController);
-        _bonusPrefabConfigurator.Configure();
+        _bonusPrefabConfigurator.Configure(turret);
     }
 }

@@ -34,7 +34,7 @@ public class EnemyFactory : MonoBehaviour, IActorFactory
 
         Enemy enemy = _prefabs[nameTypeActor];
 
-        return Instantiate(enemy);
+        return Instantiate(enemy, Vector3.zero, enemy.transform.rotation);
     }
 
     private Dictionary<string, Enemy> CreateDictionaryPrefabs()

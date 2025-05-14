@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-[RequireComponent(typeof(Mover), typeof(CapsuleCollider), typeof(Rigidbody))]
+[RequireComponent(typeof(CapsuleCollider), typeof(Rigidbody), typeof(Mover))]
 public class Enemy : MonoBehaviour, IEnemy
 {
     [SerializeField] private Scriptable.DamageAttributes _damageAttributes;
@@ -35,6 +35,10 @@ public class Enemy : MonoBehaviour, IEnemy
 
     private void Awake()
     {
+        Rigidbody rigidbody = GetComponent<Rigidbody>();
+        rigidbody.isKinematic = true;
+        rigidbody.useGravity = false;
+
         _mover = GetComponent<Mover>();
 
         _damage = new Damage(_damageAttributes);

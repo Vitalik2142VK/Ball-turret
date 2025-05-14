@@ -14,7 +14,7 @@ public class BonusGathererBullet : IBonusGatherer
         _selectedBonuses.Add(bonus);
     }
 
-    public bool TryGetBonuses(out List<IBonus> bonuses)
+    public bool TryGetBonuses(out IReadOnlyCollection<IBonus> bonuses)
     {
         bonuses = null;
 

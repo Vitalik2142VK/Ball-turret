@@ -60,6 +60,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: AddFireBulletBonus
       objectReference: {fileID: 0}
+    - target: {fileID: 8411047152606389449, guid: bc277cfd70e12ec42aff8149012548b8, type: 3}
+      propertyPath: _bonusCard
+      value: 
+      objectReference: {fileID: 11400000, guid: fd9198b553c41694ba421cd082aecb8a, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

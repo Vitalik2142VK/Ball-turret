@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class BonusFactory : MonoBehaviour, IActorFactory
 {
-    private Dictionary<string, Bonus> _prefabs;
+    private Dictionary<string, CollisionBonus> _prefabs;
 
-    public void Initialize(Bonus[] bonusPrefabs)
+    public void Initialize(IEnumerable<CollisionBonus> bonusPrefabs)
     {
-        if (bonusPrefabs == null || bonusPrefabs.Length == 0)
-            throw new ArgumentOutOfRangeException(nameof(bonusPrefabs));
+        if (bonusPrefabs == null)
+            throw new ArgumentNullException(nameof(bonusPrefabs));
 
         _prefabs = CreateDictionaryPrefabs(bonusPrefabs);
     }
@@ -30,21 +30,24 @@ public class BonusFactory : MonoBehaviour, IActorFactory
         if (_prefabs.ContainsKey(nameTypeActor) == false)
             throw new ArgumentOutOfRangeException(nameof(nameTypeActor));
 
-        Bonus prefab = _prefabs[nameTypeActor];
+        CollisionBonus prefab = _prefabs[nameTypeActor];
         IBonusActivator bonusActivator = prefab.GetCloneBonusActivator();
-        Bonus bonus = Instantiate(prefab, prefab.transform.position, transform.rotation);
-        bonus.Initialize(bonusActivator);
+        CollisionBonus collisionBonus = Instantiate(prefab, prefab.transform.position, transform.rotation);
+        collisionBonus.Initialize(bonusActivator);
 
-        return bonus;
+        return collisionBonus;
     }
 
-    private Dictionary<string, Bonus> CreateDictionaryPrefabs(Bonus[] bonusPrefabs)
+    private Dictionary<string, CollisionBonus> CreateDictionaryPrefabs(IEnumerable<CollisionBonus> bonusPrefabs)
     {
-        int lenght = bonusPrefabs.Length;
-        Dictionary<string, Bonus> prefabs = new Dictionary<string, Bonus>(lenght);
+        Dictionary<string, CollisionBonus> prefabs = new Dictionary<string, CollisionBonus>();
 
         foreach (var prefab in bonusPrefabs)
             prefabs.Add(prefab.Name, prefab);
+                
+
+        if (prefabs.Count == 0)
+            throw new InvalidOperationException($"{nameof(bonusPrefabs)} should not be empty");
 
         return prefabs;
     }

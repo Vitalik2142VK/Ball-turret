@@ -5,6 +5,7 @@ public class BonusActivationStep : IStep, IEndPointStep
 {
     private IEndStep _endStep;
     private IBonusStorage _bonusStorage;
+    private Queue<IBonus> _bonuses;
 
     public BonusActivationStep(IBonusStorage bonusStorage)
     {
@@ -13,14 +14,13 @@ public class BonusActivationStep : IStep, IEndPointStep
 
     public void Action()
     {
-        if (_bonusStorage.TryGetBonuses(out List<IBonus> bonuses))
-        {
-            ActiovateBonuses(bonuses);
-        }
+        if (_bonuses == null || _bonuses.Count == 0)
+            if (_bonusStorage.TryGetBonuses(out IReadOnlyCollection<IBonus> bonuses))
+                _bonuses = new Queue<IBonus>(bonuses);
+            else
+                _endStep.End();
         else
-        {
-            _endStep.End();
-        }
+            ActiovateBonuses();
     }
 
     public void SetEndStep(IEndStep endStep)
@@ -28,11 +28,9 @@ public class BonusActivationStep : IStep, IEndPointStep
         _endStep = endStep ?? throw new ArgumentNullException(nameof(endStep));
     }
 
-    private void ActiovateBonuses(List<IBonus> bonuses)
+    private void ActiovateBonuses()
     {
-        foreach (var bonus in bonuses)
-            bonus.Activate();
-
-        _endStep.End();
+        var bonus = _bonuses.Dequeue();
+        bonus.Activate();
     }
 }

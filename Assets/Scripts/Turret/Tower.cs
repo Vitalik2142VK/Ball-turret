@@ -3,6 +3,7 @@
 public class Tower : MonoBehaviour, ITower
 {
     private const float MaxDistance = 100f;
+    private const float CoefficientOffsetTorget = 0.5f;
 
     [SerializeField] private LayerMask _layerMask;
 
@@ -45,9 +46,15 @@ public class Tower : MonoBehaviour, ITower
         Vector3 direction = (_touchPosition - _transform.position);
 
         if (Physics.Raycast(_transform.position, direction, out RaycastHit hitInfo, MaxDistance, _layerMask))
-            _targetPoint.SetPosition(hitInfo.point);
+        {
+            Vector3 offset = (hitInfo.point - _transform.position).normalized * CoefficientOffsetTorget;
+
+            _targetPoint.SetPosition(hitInfo.point - offset);
+        }
         else
+        {
             _targetPoint.SetPosition(_touchPosition);
+        }
 
         _transform.LookAt(_targetPoint.Position);
     }

@@ -1,4 +1,6 @@
-﻿public class ChoiceBonusActivator : IBonusActivator
+﻿using UnityEngine;
+
+public class ChoiceBonusActivator : IBonusActivator
 {
     private IMenu _choiceBonusMenu;
 

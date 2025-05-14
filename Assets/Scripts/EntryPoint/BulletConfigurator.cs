@@ -36,7 +36,7 @@ public class BulletConfigurator : MonoBehaviour
         improveDamageBullet.Improve(player.DamageImproverAttributes);
 
         _bulletFactory.Initialize(improveDamageBullet);
-        _explodingBulletPrefab.Initialize(_bulletsCollector);
+        _explodingBulletPrefab.SetBulletRepository(_bulletsCollector);
 
         if (_explodingBulletPrefab.TryGetComponent(out Bullet bullet))
             _bulletFactory.AddPrefab(bullet);

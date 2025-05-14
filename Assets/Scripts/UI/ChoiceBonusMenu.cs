@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Reflection;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ChoiceBonusMenu : MonoBehaviour, IMenu
 {
@@ -11,6 +11,7 @@ public class ChoiceBonusMenu : MonoBehaviour, IMenu
 
     [SerializeField] private ChoiceBonusButton[] _choiceBonusButtons;
     [SerializeField] private Pause _pause;
+    [SerializeField] private Button _confirmationButton;
 
     private GameObject _gameObject;
     private IBonusRandomizer _randomizer;
@@ -27,6 +28,9 @@ public class ChoiceBonusMenu : MonoBehaviour, IMenu
 
         if (_pause == null)
             throw new NullReferenceException(nameof(_pause));
+
+        if (_confirmationButton == null)
+            throw new NullReferenceException(nameof(_confirmationButton));
     }
 
     private void Awake()
@@ -44,6 +48,7 @@ public class ChoiceBonusMenu : MonoBehaviour, IMenu
     {
         _pause.Enable();
         _gameObject.SetActive(true);
+        _confirmationButton.interactable = false;
 
         FillButtons();
     }
@@ -99,6 +104,8 @@ public class ChoiceBonusMenu : MonoBehaviour, IMenu
             else 
                 button.Enable();
         }
+
+        _confirmationButton.interactable = true;
     }
 
     private void DisableAllButton()

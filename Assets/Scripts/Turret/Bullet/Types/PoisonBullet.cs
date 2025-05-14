@@ -2,7 +2,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Bullet), typeof(PoisonBulletDebuff))]
-public class PoisonBullet : MonoBehaviour, IBullet
+public class PoisonBullet : MonoBehaviour, IBullet, IInitializer
 {
     [SerializeField] private Scriptable.DamageImproverAttributes _damageImproverAttributes;
 
@@ -23,7 +23,7 @@ public class PoisonBullet : MonoBehaviour, IBullet
             _bulletDebaff.ApplyDebuff(enemy);
     }
 
-    private void Start()
+    public void Initialize()
     {
         Bullet bullet = GetComponent<Bullet>();
         bullet.ChangeDamage(_damageImproverAttributes);
@@ -41,5 +41,5 @@ public class PoisonBullet : MonoBehaviour, IBullet
 
     public void Gather(IBonus bonus) => _bullet.Gather(bonus);
 
-    public bool TryGetBonuses(out List<IBonus> bonuses) => _bullet.TryGetBonuses(out bonuses);
+    public bool TryGetBonuses(out IReadOnlyCollection<IBonus> bonuses) => _bullet.TryGetBonuses(out bonuses);
 }

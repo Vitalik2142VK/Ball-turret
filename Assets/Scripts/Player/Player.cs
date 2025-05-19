@@ -4,17 +4,17 @@ using UnityEngine;
 [RequireComponent(typeof(PlayerTouchInput))]
 public class Player : MonoBehaviour, IPlayer
 {
-    [SerializeField] private Scriptable.PlayerDamageImproverAttributes _damageImproverAttributes;
+    [SerializeField] private Scriptable.CachedUser _cachedUser;
 
     private PlayerTouchInput _touchInput;
     private ITurret _turret;
 
-    public IDamageImproverAttributes DamageImproverAttributes => _damageImproverAttributes;
+    public IUser User => _cachedUser;
 
     private void OnValidate()
     {
-        if (_damageImproverAttributes == null)
-            throw new ArgumentNullException(nameof(_damageImproverAttributes));
+        if (_cachedUser == null)
+            throw new ArgumentNullException(nameof(_cachedUser));
     }
 
     private void Awake()

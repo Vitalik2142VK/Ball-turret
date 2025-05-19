@@ -1021,8 +1021,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b11c6b197c3e0743b3b7ecf6f6740a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _damageAttributes: {fileID: 11400000, guid: 394bc19756be15b43a64a93b62d9898b, type: 2}
-  _healthAttributes: {fileID: 11400000, guid: 01fae53ec91b83f4ba42cf6a66f21738, type: 2}
+  _enemyAttributes: {fileID: 11400000, guid: 403887e3ecd6513478d7711c8e8f8625, type: 2}
   _healthBar: {fileID: 5858925435622462030}
   _debuffReceiver: {fileID: 5004439833874589554}
 --- !u!1001 &7284512010677431830

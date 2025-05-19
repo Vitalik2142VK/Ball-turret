@@ -70,7 +70,7 @@ public class BulletPhysics : MonoBehaviour, IBulletPhysics
 
         if (angle < _attributes.MinBounceAngle)
         {
-            float correctAngle = _attributes.MinBounceAngle - angle;
+            float correctAngle = _attributes.MinBounceAngle;
             Vector3 axis = Vector3.Cross(normal, direction).normalized;
             Quaternion rotation = Quaternion.AngleAxis(correctAngle, axis);
             bounceDirection = rotation * bounceDirection;

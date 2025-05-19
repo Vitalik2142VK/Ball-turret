@@ -13,6 +13,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4766163456513359886, guid: 8c2be75b0d25c44408ce1522d55ba06c, type: 3}
+      propertyPath: _enemyAttributes
+      value: 
+      objectReference: {fileID: 11400000, guid: 2c39cb40aea8e4440b72358c7428b44a, type: 2}
+    - target: {fileID: 4766163456513359886, guid: 8c2be75b0d25c44408ce1522d55ba06c, type: 3}
       propertyPath: _damageAttributes
       value: 
       objectReference: {fileID: 11400000, guid: 9ee000bc0b299884384b08d0f3ea00e0, type: 2}

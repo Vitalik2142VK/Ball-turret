@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(CanvasGroup))]
-public class ChoiceBonusButton : MonoBehaviour, IChoiceBonusButton
+public class ChoiceBonusButton : MonoBehaviour
 {
     private const float AphaEnable = 1f;
     private const float AphaDisable = 0.5f;

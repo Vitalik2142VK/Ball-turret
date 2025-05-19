@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.UI;
 
 public class PauseMenu : MonoBehaviour, IMenu
 {
@@ -7,6 +6,7 @@ public class PauseMenu : MonoBehaviour, IMenu
     [SerializeField] private SettingMenu _settingMenu;
 
     private GameObject _gameObject;
+    private CloseSceneStep _closeSceneStep;
 
     private void OnValidate()
     {
@@ -21,6 +21,11 @@ public class PauseMenu : MonoBehaviour, IMenu
     {
         _gameObject = gameObject;
         _gameObject.SetActive(false);
+    }
+
+    public void Initialize(CloseSceneStep closeSceneStep)
+    {
+        _closeSceneStep = closeSceneStep ?? throw new System.ArgumentNullException(nameof(closeSceneStep)); 
     }
 
     public void Enable()
@@ -48,6 +53,6 @@ public class PauseMenu : MonoBehaviour, IMenu
 
     public void Exit()
     {
-        Debug.Log("Change scene to Main menu.");
+        _closeSceneStep.OnClose();
     }
 }

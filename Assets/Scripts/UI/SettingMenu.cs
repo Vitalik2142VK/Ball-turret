@@ -3,7 +3,6 @@ using UnityEngine;
 public class SettingMenu : MonoBehaviour
 {
     private IMenu _previousMenu;
-
     private GameObject _gameObject;
 
     private void Awake()
@@ -12,7 +11,7 @@ public class SettingMenu : MonoBehaviour
         _gameObject.SetActive(false);
     }
 
-    public void Back()
+    public void Close()
     {
         _gameObject.SetActive(false);
         _previousMenu.Enable();

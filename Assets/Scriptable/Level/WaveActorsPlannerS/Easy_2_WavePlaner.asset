@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 099a4bc78e4679d46b6d4e4e77209302, type: 3}
+  m_Name: Easy_2_WavePlaner
+  m_EditorClassIdentifier: 
+  _lines:
+  - _actors:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+  - _actors:
+    - {fileID: 0}
+    - {fileID: 4310026885427982331, guid: a2cc5a0f368930444be5124d8a13f7c1, type: 3}
+    - {fileID: 0}
+  - _actors:
+    - {fileID: 7690942557182064526, guid: 8c2be75b0d25c44408ce1522d55ba06c, type: 3}
+    - {fileID: 0}
+    - {fileID: 7690942557182064526, guid: 8c2be75b0d25c44408ce1522d55ba06c, type: 3}

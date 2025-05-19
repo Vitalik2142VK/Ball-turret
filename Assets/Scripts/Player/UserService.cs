@@ -1,0 +1,12 @@
+﻿public class UserService : IUserService
+{
+    public void Save(IUser user)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public IUser Load()
+    {
+        throw new System.NotImplementedException();
+    }
+}

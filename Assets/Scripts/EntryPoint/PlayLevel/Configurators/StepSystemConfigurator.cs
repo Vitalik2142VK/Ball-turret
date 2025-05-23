@@ -8,8 +8,10 @@ namespace PlayLevel
         [SerializeField] private StepSystem _stepSystem;
         [SerializeField] private BulletsCollector _bulletCollector;
         [SerializeField] private MainMenuLoader _mainMenuLoader;
+        [SerializeField] private FinishWindow _finishWindow;
 
         private ITurret _turret;
+        private IWinState _winStat;
         private Player _player;
         private ActorsController _actorsController;
 
@@ -19,30 +21,42 @@ namespace PlayLevel
         private ActorsMoveStep _objectsMoveStep;
         private EnemyAttackStep _enemyAttackStep;
         private RemoveActorsStep _removeActorsStep;
-        private FinalStep _finalStep;
+        private CyclicalStep _finalStep;
+        private RewardStep _rewardStep;
+        private CloseSceneStep _closeSceneStep;
 
-        public CloseSceneStep CloseSceneStep { get; private set; }
+        public IStep CloseSceneStep => _closeSceneStep;
 
         private void OnValidate()
         {
             if (_stepSystem == null)
                 throw new NullReferenceException(nameof(_stepSystem));
+
+            if (_bulletCollector == null)
+                throw new NullReferenceException(nameof(_bulletCollector));
+
+            if (_mainMenuLoader == null)
+                throw new NullReferenceException(nameof(_mainMenuLoader));
+
+            if (_finishWindow == null)
+                throw new NullReferenceException(nameof(_finishWindow));
         }
 
         private void OnDisable()
         {
-            CloseSceneStep.Disable();
+            _rewardStep.Disable();
         }
 
-        public void Configure(ITurret turret, Player player, ActorsController actorsController)
+        public void Configure(ITurret turret, IWinState winStat, Player player, ActorsController actorsController)
         {
             _player = player != null ? player : throw new NullReferenceException(nameof(player));
             _turret = turret ?? throw new NullReferenceException(nameof(turret));
+            _winStat = winStat ?? throw new NullReferenceException(nameof(winStat));
             _actorsController = actorsController ?? throw new NullReferenceException(nameof(actorsController));
 
             CreateSteps();
-            ConnectSteps();
             CreateFinalSteps();
+            ConnectSteps();
 
             _stepSystem.EstablishNextStep(_finalStep);
         }
@@ -55,7 +69,8 @@ namespace PlayLevel
             _objectsMoveStep = new ActorsMoveStep(_actorsController);
             _enemyAttackStep = new EnemyAttackStep(_actorsController);
             _removeActorsStep = new RemoveActorsStep(_actorsController);
-            CloseSceneStep = new CloseSceneStep(_mainMenuLoader, _player.User, _turret);
+            _rewardStep = new RewardStep(_winStat, _finishWindow, _turret);
+            _closeSceneStep = new CloseSceneStep(_mainMenuLoader);
         }
 
         private void ConnectSteps()
@@ -65,6 +80,7 @@ namespace PlayLevel
             AddNextStepToEndPoint(_prepareActorsStep, _objectsMoveStep);
             AddNextStepToEndPoint(_objectsMoveStep, _enemyAttackStep);
             AddNextStepToEndPoint(_enemyAttackStep, _removeActorsStep);
+            AddNextStepToEndPoint(_rewardStep, _closeSceneStep);
         }
 
         private void AddNextStepToEndPoint(IEndPointStep endPointStep, IStep nextStep)
@@ -76,10 +92,10 @@ namespace PlayLevel
         private void CreateFinalSteps()
         {
             DynamicNextStep nextStep = new DynamicNextStep(_stepSystem);
-            _finalStep = new FinalStep(_actorsController, nextStep);
+            _finalStep = new CyclicalStep(_actorsController, nextStep);
             _finalStep.SetStartStep(_prepareActorsStep);
             _finalStep.SetPlayerStep(_playerShotStep);
-            _finalStep.SetCloseSceneStep(CloseSceneStep);
+            _finalStep.SetFinishStep(_rewardStep);
 
             AddNextStepToEndPoint(_removeActorsStep, _finalStep);
         }

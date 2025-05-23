@@ -11,6 +11,7 @@ namespace Scriptable
         public float ActorsHealthCoefficient => _level.ActorsHealthCoefficient;
         public int CountCoinsWin => _level.CountCoinsWin;
         public int CountCoinsDefeat => _level.CountCoinsDefeat;
+        public int Index => _level.Index;
 
         public void SetLevel(ILevel level)
         {

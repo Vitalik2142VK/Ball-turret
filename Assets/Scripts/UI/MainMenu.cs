@@ -4,6 +4,7 @@ using UnityEngine;
 public class MainMenu : MonoBehaviour, IMenu
 {
     [SerializeField] private PlayMenu _playMenu;
+    [SerializeField] private ImprovementMenu _improvementMenu;
     [SerializeField] private SettingMenu _settingMenu;
 
     private GameObject _gameObject;
@@ -12,6 +13,9 @@ public class MainMenu : MonoBehaviour, IMenu
     {
         if (_playMenu == null)
             throw new NullReferenceException(nameof(_playMenu));
+
+        if (_improvementMenu == null)
+            throw new NullReferenceException(nameof(_improvementMenu));
 
         if (_settingMenu == null)
             throw new NullReferenceException(nameof(_settingMenu));
@@ -22,18 +26,19 @@ public class MainMenu : MonoBehaviour, IMenu
         _gameObject = gameObject;
     }
 
-    public void OpenPlayMenu()
+    public void OnOpenPlayMenu()
     {
         _gameObject.SetActive(false);
         _playMenu.Open(this);
     }
 
-    public void OpenShopMenu()
+    public void OnOpenShopMenu()
     {
-        Debug.Log("Open shop menu");
+        _gameObject.SetActive(false);
+        _improvementMenu.Open(this);
     }
 
-    public void OpenSettingMenu()
+    public void OnOpenSettingMenu()
     {
         _gameObject.SetActive(false);
         _settingMenu.Open(this);

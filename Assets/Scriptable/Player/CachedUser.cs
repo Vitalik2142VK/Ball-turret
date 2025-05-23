@@ -8,8 +8,9 @@ namespace Scriptable
         public IUser User { get; private set; }
 
         public IWallet Wallet => User.Wallet;
-        public float TurretHealthCoefficient => User.TurretHealthCoefficient;
-        public float BulletDamageCoefficient => User.BulletDamageCoefficient;
+        public ITurretImprover TurretImprover => User.TurretImprover;
+        public float HealthCoefficient => User.HealthCoefficient;
+        public float DamageCoefficient => User.DamageCoefficient;
         public int AchievedLevelIndex => User.AchievedLevelIndex;
         public bool AreAdsDisabled => User.AreAdsDisabled;
         public bool IsSaved => User != null;

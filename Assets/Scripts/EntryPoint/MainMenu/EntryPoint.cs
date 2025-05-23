@@ -7,6 +7,7 @@ namespace MainMenuSpace
     {
         [SerializeField] private UserConfigurator _userConfigurator;
         [SerializeField] private LevelPlannerConfigurator _levelsPlannerConfigurator;
+        [SerializeField] private ShopConfigurator _shopConfigurator;
         [SerializeField] private UIConfigurator _userInterfaseConfigurator;
 
         private void OnValidate()
@@ -16,6 +17,9 @@ namespace MainMenuSpace
 
             if (_levelsPlannerConfigurator == null)
                 throw new NullReferenceException(nameof(_levelsPlannerConfigurator));
+
+            if (_shopConfigurator == null)
+                throw new NullReferenceException(nameof(_shopConfigurator));
 
             if (_userInterfaseConfigurator == null)
                 throw new NullReferenceException(nameof(_userInterfaseConfigurator));
@@ -27,8 +31,14 @@ namespace MainMenuSpace
             _levelsPlannerConfigurator.Configure();
 
             var user = _userConfigurator.User;
+            var turretImprover = _userConfigurator.TurretImprover;
+
+            _shopConfigurator.Configure(user, turretImprover);
+
             var levelFactory = _levelsPlannerConfigurator.LevelFactory;
-            _userInterfaseConfigurator.Configure(user, levelFactory);
+            var improvementShop = _shopConfigurator.ImprovementShop;
+
+            _userInterfaseConfigurator.Configure(user, levelFactory, improvementShop);
         }
     }
 }

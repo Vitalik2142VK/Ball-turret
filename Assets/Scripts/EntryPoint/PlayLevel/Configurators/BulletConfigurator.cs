@@ -35,7 +35,7 @@ namespace PlayLevel
                 throw new ArgumentNullException(nameof(user));
 
             DamageImprover improveDamageBullet = new DamageImprover(_damageBulletAttributes);
-            improveDamageBullet.Improve(user.BulletDamageCoefficient);
+            improveDamageBullet.Improve(user.DamageCoefficient);
 
             _bulletFactory.Initialize(improveDamageBullet);
             _explodingBulletPrefab.SetBulletRepository(_bulletsCollector);

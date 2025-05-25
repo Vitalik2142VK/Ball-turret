@@ -6,6 +6,7 @@ public class Tower : MonoBehaviour, ITower
     private const float CoefficientOffsetTorget = 0.5f;
 
     [SerializeField] private LayerMask _layerMask;
+    [SerializeField] private TrajectoryRenderer _trajectoryRenderer;
 
     private ITargetPoint _targetPoint;
     private Transform _transform;
@@ -27,11 +28,13 @@ public class Tower : MonoBehaviour, ITower
     public void Initialize(ITargetPoint targetPoint)
     {
         _targetPoint = targetPoint ?? throw new System.ArgumentNullException(nameof(targetPoint));
+        _trajectoryRenderer.ShowTrajectory(_transform.position, _transform.forward);
     }
 
     public void TakeAim(Vector3 touchPosition)
     {
         _touchPosition = touchPosition;
+        _trajectoryRenderer.ShowTrajectory(_transform.position, _transform.forward);
     }
 
     public void SaveDirection()
@@ -57,5 +60,6 @@ public class Tower : MonoBehaviour, ITower
         }
 
         _transform.LookAt(_targetPoint.Position);
+
     }
 }

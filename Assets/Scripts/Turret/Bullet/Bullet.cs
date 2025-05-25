@@ -5,7 +5,6 @@ using UnityEngine;
 [RequireComponent(typeof(BulletPhysics))]
 public class Bullet : MonoBehaviour, IBullet
 {
-    [SerializeField] private Scriptable.BulletPhysicsAttributes _physicsAttributes;
     [SerializeField] private BulletType _bulletType;
 
     private Transform _transform;
@@ -17,36 +16,31 @@ public class Bullet : MonoBehaviour, IBullet
 
     public IDamageAttributes DamageAttributes { get; private set; }
 
-    private void OnValidate()
-    {
-        if (_physicsAttributes == null)
-            throw new NullReferenceException(nameof(_physicsAttributes));
-    }
-
     private void Awake()
     {
         _transform = transform;
+
+        _bulletPhysics = GetComponent<IBulletPhysics>();
+    }
+
+    private void OnEnable()
+    {
+        _bulletPhysics.EnteredCollision += OnApplyDamage;
     }
 
     private void FixedUpdate()
     {
-        _bulletPhysics.UseGravity();
+        _bulletPhysics.Activate();
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnDisable()
     {
-        _bulletPhysics.HandleCollision(collision);
-
-        ApplyDamage(collision);
+        _bulletPhysics.EnteredCollision -= OnApplyDamage;
     }
 
     public void Initialize(IDamageAttributes damageBulletAttributes)
     {
         DamageAttributes = damageBulletAttributes ?? throw new ArgumentNullException(nameof(damageBulletAttributes));
-
-        BulletPhysics bulletPhysics = GetComponent<BulletPhysics>();
-        bulletPhysics.Initialize(_physicsAttributes);
-        _bulletPhysics = bulletPhysics;
 
         _damage = new Damage(DamageAttributes);
         _gatherer = new BonusGathererBullet();
@@ -79,9 +73,9 @@ public class Bullet : MonoBehaviour, IBullet
         return _gatherer.TryGetBonuses(out bonuses);
     }
 
-    private void ApplyDamage(Collision collision)
+    private void OnApplyDamage(GameObject gameObject)
     {
-        if (collision.gameObject.TryGetComponent(out IDamagedObject damagedObject))
+        if (gameObject.TryGetComponent(out IDamagedObject damagedObject))
             _damage.Apply(damagedObject);
     }
 }

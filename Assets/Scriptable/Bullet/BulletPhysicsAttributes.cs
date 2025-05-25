@@ -9,12 +9,14 @@ namespace Scriptable
         [SerializeField, Min(0.1f)] private float _gravity;
         [SerializeField, Min(0.1f)] private float _bounceForce;
         [SerializeField, Range(0.1f, 45f)] private float _minBounceAngle;
+        [SerializeField, Range(90f, 180f)] private float _maxBounceAngle;
         [SerializeField] private LayerMask _layerMaskBounce;
 
         public float Speed => _speed;
         public float Gravity => _gravity;
         public float BounceForce => _bounceForce;
         public float MinBounceAngle => _minBounceAngle;
+        public float MaxBounceAngle => _maxBounceAngle;
         public LayerMask LayerMaskBounce => _layerMaskBounce;
     }
 }

@@ -11,7 +11,7 @@ public class SettingMenu : MonoBehaviour
         _gameObject.SetActive(false);
     }
 
-    public void Close()
+    public void OnClose()
     {
         _gameObject.SetActive(false);
         _previousMenu.Enable();

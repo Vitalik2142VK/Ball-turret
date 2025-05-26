@@ -63,7 +63,7 @@ namespace PlayLevel
             _tower.Initialize(_targetPoint);
 
             IHealthImprover healthImprover = new HealthImprover(_turretHealthAttributes);
-            healthImprover.Improve(user.TurretHealthCoefficient);
+            healthImprover.Improve(user.HealthCoefficient);
             IHealth health = new Health(healthImprover, _healthBar);
             health.Restore();
 

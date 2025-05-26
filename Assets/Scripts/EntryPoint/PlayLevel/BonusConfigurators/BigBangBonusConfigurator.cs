@@ -23,7 +23,7 @@ namespace PlayLevel
         {
             Exploder exploder = GetComponent<Exploder>();
             DamageImprover improvingDamage = new DamageImprover(_explosionDamageAttributes);
-            float damageCoefficient = _player.User.BulletDamageCoefficient;
+            float damageCoefficient = _player.User.DamageCoefficient;
             improvingDamage.Improve(damageCoefficient);
             exploder.Initialize(improvingDamage);
 

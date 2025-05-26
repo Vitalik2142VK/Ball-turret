@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a6ac9adbf374864aa2d38f2dfd19f49, type: 3}
   m_Name: BulletPhysicsAttributes
   m_EditorClassIdentifier: 
-  _speed: 15
-  _gravity: 30
-  _bounceForce: 650
+  _speed: 20
+  _gravity: 25
+  _bounceForce: 600
   _minBounceAngle: 15
+  _maxBounceAngle: 150
   _layerMaskBounce:
     serializedVersion: 2
     m_Bits: 768

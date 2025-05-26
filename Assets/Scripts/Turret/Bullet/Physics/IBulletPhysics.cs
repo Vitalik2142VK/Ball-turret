@@ -1,10 +1,11 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public interface IBulletPhysics
 {
-    public void UseGravity();
+    public event Action<GameObject> EnteredCollision;
+
+    public void Activate();
 
     public void MoveToDirection(Vector3 direction);
-
-    public void HandleCollision(Collision collision);
 }

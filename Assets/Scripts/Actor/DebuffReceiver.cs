@@ -23,9 +23,14 @@ public class DebuffReceiver : MonoBehaviour, IDebuffReceiver
         if (debuff == null)
             throw new System.ArgumentNullException(nameof(debuff));
 
-        _debuffs.Add(debuff);
+        var debuffType = debuff.DebuffType;
 
-        ActivateViewDebuff(debuff.DebuffType);
+        if (_viewDebuffs.ContainsKey(debuffType))
+        {
+            _debuffs.Add(debuff);
+
+            ActivateViewDebuff(debuff.DebuffType);
+        }
     }
 
     public void ActivateDebuffs()

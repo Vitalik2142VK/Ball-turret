@@ -4,4 +4,5 @@
     public float ActorsHealthCoefficient { get; }
     public int CountCoinsWin { get; }
     public int CountCoinsDefeat { get; }
+    public int Index {  get; }
 }

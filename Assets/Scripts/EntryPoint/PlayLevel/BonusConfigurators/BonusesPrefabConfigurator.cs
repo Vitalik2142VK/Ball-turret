@@ -9,7 +9,7 @@ namespace PlayLevel
     {
         [SerializeField] private BonusConfigurator[] _bonusConfigurators;
         [SerializeField] private BonusFactory _bonusFactory;
-        [SerializeField] private ChoiceBonusMenu _choiceBonusMenu;
+        [SerializeField] private BonusChoiceMenu _bonusChoiceMenu;
 
         private ITurret _turret;
 
@@ -24,8 +24,8 @@ namespace PlayLevel
             if (_bonusFactory == null)
                 throw new NullReferenceException(nameof(_bonusFactory));
 
-            if (_choiceBonusMenu == null)
-                throw new NullReferenceException(nameof(_choiceBonusMenu));
+            if (_bonusChoiceMenu == null)
+                throw new NullReferenceException(nameof(_bonusChoiceMenu));
         }
 
         public void Configure(ITurret turret)
@@ -67,7 +67,7 @@ namespace PlayLevel
         {
             var bonusPrefabs = _bonusConfigurators.Where(bc => bc.IsItRandom).Select(bc => bc.BonusPrefab).ToArray();
             BonusRandomizer bonusRandomizer = new BonusRandomizer(bonusPrefabs);
-            _choiceBonusMenu.Initialize(bonusRandomizer);
+            _bonusChoiceMenu.Initialize(bonusRandomizer);
         }
     }
 }

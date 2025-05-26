@@ -1,27 +1,28 @@
 ﻿using System;
-using TMPro;
 using UnityEngine;
 
 public class PlayMenu : MonoBehaviour
 {
     [SerializeField] private SelectLevelScroll _selectLevelScroll;
+    [SerializeField] private WalletView _walletView;
 
-    private GameObject _gameObject;
-    private PlaySceneLoader _sceneLoader;
     private IMenu _previousMenu;
     private ILevelFactory _levelFactory;
+    private PlaySceneLoader _sceneLoader;
     private int _achievedLevelIndex;
 
     private void OnValidate()
     {
         if (_selectLevelScroll == null)
             throw new NullReferenceException(nameof(_selectLevelScroll));
+
+        if (_walletView == null)
+            throw new NullReferenceException(nameof(_walletView));
     }
 
     private void Awake()
     {
-        _gameObject = gameObject;
-        _gameObject.SetActive(false);
+        gameObject.SetActive(false);
     }
 
     public void Initialize(IUser user, ILevelFactory levelFactory, PlaySceneLoader sceneLoader)
@@ -36,13 +37,14 @@ public class PlayMenu : MonoBehaviour
         _achievedLevelIndex = user.AchievedLevelIndex;
     }
 
-    public void Close()
+    public void OnClose()
     {
-        _gameObject.SetActive(false);
+        gameObject.SetActive(false);
         _previousMenu.Enable();
+        _walletView.Enable();
     }
 
-    public void Play()
+    public void OnPlay()
     {
         var indexLevel = _selectLevelScroll.SelectedLevelIndex;
         var level = _levelFactory.Create(indexLevel);
@@ -53,7 +55,8 @@ public class PlayMenu : MonoBehaviour
     public void Open(IMenu previousMenu)
     {
         _previousMenu = previousMenu ?? throw new ArgumentNullException(nameof(previousMenu));
-        _gameObject.SetActive(true);
-        _selectLevelScroll.SelectButton(_achievedLevelIndex);
+        gameObject.SetActive(true);
+        _selectLevelScroll.SelectButton(_achievedLevelIndex); 
+        _walletView.Disable();
     }
 }

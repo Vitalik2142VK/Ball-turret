@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4818e4af7bc9424fb870c62e3c778b9, type: 3}
+  m_Name: AdvancedBulletPhysicsAttributes
+  m_EditorClassIdentifier: 
+  _attributes: {fileID: 11400000, guid: f005f4c1509f0b14e81911ac23ab243d, type: 2}
+  _coefficientDeltaTime: 0.02
+  _coefficientBounceForce: 0.02

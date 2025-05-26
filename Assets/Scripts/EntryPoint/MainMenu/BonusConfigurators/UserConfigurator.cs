@@ -7,10 +7,11 @@ namespace MainMenuSpace
     public class UserConfigurator : MonoBehaviour
     {
         [SerializeField] private CachedUser _cachedUser;
-        [SerializeField] private TurretImprover _turretImprover;
+        [SerializeField] private ImprovementTurretAttributes _improvementTurretAttributes;
 
         private IUserService _userService;
 
+        public ITurretImprover TurretImprover => _cachedUser.TurretImprover;
         public IUser User => _cachedUser.User;
 
         private void OnValidate()
@@ -18,13 +19,13 @@ namespace MainMenuSpace
             if (_cachedUser == null)
                 throw new NullReferenceException(nameof(_cachedUser));
 
-            if (_turretImprover == null)
-                throw new NullReferenceException(nameof(_turretImprover));
+            if (_improvementTurretAttributes == null)
+                throw new NullReferenceException(nameof(_improvementTurretAttributes));
         }
 
         private void Awake()
         {
-            _userService = new CashUserService(_turretImprover);
+            _userService = new CashUserService(_improvementTurretAttributes);
         }
 
         public void Configure()

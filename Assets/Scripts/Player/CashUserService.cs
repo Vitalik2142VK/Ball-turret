@@ -3,11 +3,11 @@
 //todo Remove late (for test)
 public class CashUserService : IUserService
 {
-    private ITurretImprover _turretImprover;
+    private IImprovementTurretAttributes _turretImproverAttributes;
 
-    public CashUserService(ITurretImprover turretImprover)
+    public CashUserService(IImprovementTurretAttributes turretImproverAttributes)
     {
-        _turretImprover = turretImprover ?? throw new System.ArgumentNullException(nameof(turretImprover));
+        _turretImproverAttributes = turretImproverAttributes ?? throw new System.ArgumentNullException(nameof(turretImproverAttributes));
     }
 
     public void Save(IUser user)
@@ -17,9 +17,10 @@ public class CashUserService : IUserService
 
     public IUser Load()
     {
-        int coins = 1000;
+        int coins = 1_000;
         Wallet wallet = new Wallet(coins);
+        ITurretImprover turretImprover = new TurretImprover(_turretImproverAttributes);
 
-        return new User(_turretImprover, wallet);
+        return new User(turretImprover, wallet);
     }
 }

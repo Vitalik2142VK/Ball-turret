@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Bullet), typeof(Exploder))]
+[RequireComponent(typeof(Bullet), typeof(Exploder), typeof(BulletPhysics))]
 public class ExplodingBullet : MonoBehaviour, IBullet, IInitializer
 {
     [SerializeField] private Scriptable.DamageImproverAttributes _damageImproverAttributes;
@@ -9,6 +9,7 @@ public class ExplodingBullet : MonoBehaviour, IBullet, IInitializer
     private IBullet _bullet;
     private IExploder _exploder;
     private IBulletRepository _bulletRepository;
+    private IBulletPhysics _bulletPhysics;
 
     public BulletType BulletType => _bullet.BulletType;
     public IBulletRepository BulletRepository => _bulletRepository;
@@ -19,20 +20,26 @@ public class ExplodingBullet : MonoBehaviour, IBullet, IInitializer
             throw new System.NullReferenceException(nameof(_damageImproverAttributes));
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void Awake()
     {
-        if (collision.gameObject.TryGetComponent(out IEnemy _))
-        {
-            Vector3 point = collision.contacts[0].point;
-            _exploder.Explode(point);
-            _bulletRepository.Put(_bullet);
-        }
+        _bulletPhysics = GetComponent<IBulletPhysics>();
+    }
+
+    private void OnEnable()
+    {
+        _bulletPhysics.EnteredCollision += OnExplode;
+    }
+
+    private void OnDisable()
+    {
+        _bulletPhysics.EnteredCollision -= OnExplode;
     }
 
     public void Initialize()
     {
         Bullet bullet = GetComponent<Bullet>();
         Exploder exploder = GetComponent<Exploder>();
+
         exploder.Initialize(bullet.DamageAttributes);
         bullet.ChangeDamage(_damageImproverAttributes);
 
@@ -52,4 +59,13 @@ public class ExplodingBullet : MonoBehaviour, IBullet, IInitializer
     public void Gather(IBonus bonus) => _bullet.Gather(bonus);
 
     public bool TryGetBonuses(out IReadOnlyCollection<IBonus> bonuses) => _bullet.TryGetBonuses(out bonuses);
+
+    private void OnExplode(GameObject gameObject)
+    {
+        if (gameObject.TryGetComponent(out IEnemy _))
+        {
+            _exploder.Explode(transform.position);
+            _bulletRepository.Put(_bullet);
+        }
+    }
 }

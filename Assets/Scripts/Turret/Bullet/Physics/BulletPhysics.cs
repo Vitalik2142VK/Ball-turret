@@ -1,81 +1,218 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
+using Scriptable;
 
 [RequireComponent(typeof(Rigidbody))]
 public class BulletPhysics : MonoBehaviour, IBulletPhysics
 {
-    private IBulletPhysicsAttributes _attributes;
+    [SerializeField] private AdvancedBulletPhysicsAttributes _attributes;
+    [SerializeField] private TrajectoryBullet _trajectory;
+    [SerializeField] private LayerMask _collisionMask;
+
+    public event Action<GameObject> EnteredCollision;
+
+    private Vector3 _velocity;
+    private RaycastHit[] _hitsArray;
+    private Transform _transform;
     private Rigidbody _rigidbody;
-    private Vector3 _currentDirection;
-    private bool _isThereCollision = false;
+    private int _frame;
+    private bool _isThereCollision;
+
+    private void OnValidate()
+    {
+        if (_attributes == null)
+            throw new NullReferenceException(nameof(_attributes));
+
+        if (_trajectory == null)
+            throw new NullReferenceException(nameof(_trajectory));
+    }
 
     private void Awake()
     {
+        _transform = transform;
+
+        _hitsArray = new RaycastHit[1];
+
         _rigidbody = GetComponent<Rigidbody>();
-        _rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
+        _rigidbody.isKinematic = true;
     }
 
-    private void OnDisable()
+    public void Activate()
     {
-        _rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
-    }
+        float deltaTime = Time.fixedDeltaTime;
 
-    public void Initialize(IBulletPhysicsAttributes attributes)
-    {
-        if (attributes == null)
-            throw new System.ArgumentNullException(nameof(attributes));
+        if (_trajectory.IsEmpty || deltaTime != _trajectory.DeltaTime)
+            Activate(deltaTime);
 
-        _attributes ??= attributes;
-    }
-
-    public void UseGravity()
-    {
-        Vector3 gravity = _attributes.Gravity * Vector3.back;
-        _rigidbody.AddForce(gravity);
-
-        _currentDirection = _rigidbody.velocity;
+        if (_trajectory.HasFrame(_frame))
+            MoveToPoint(deltaTime);
+        else
+            Activate(deltaTime);
     }
 
     public void MoveToDirection(Vector3 direction)
     {
-        _rigidbody.velocity = _attributes.Speed * direction;
+        _velocity = direction.normalized * _attributes.Speed;
+        _isThereCollision = false;
+        _frame = 0;
     }
 
-    public void HandleCollision(Collision collision)
+    public void RecordPoint(float deltaTime)
     {
+        if (_trajectory.IsEmpty || deltaTime != _trajectory.DeltaTime)
+            CreateNewTrajectory(deltaTime);
+
+        BulletTrajectoryPoint point = new BulletTrajectoryPoint(_frame++);
+
+        UseGravity(deltaTime);
+
+        if (TryGetCollision(out GameObject gameObject))
+            if (LayerMaskTool.IsInLayerMask(gameObject, _attributes.LayerMaskBounce))
+            {
+                point.SetCollidedGameObject(gameObject);
+
+                _trajectory.RecordCollision();
+            }
+
+        _rigidbody.MovePosition(_transform.position + _velocity);
+
+        point.Position = _transform.position;
+        point.Velocity = _velocity;
+        _trajectory.AddPoint(point);
+    }
+
+    private void MoveToPoint(float deltaTime)
+    {
+        var point = _trajectory.GetPoint(_frame);
+
+        if (point.IsThereCollision)
+        {
+            _isThereCollision = point.IsThereCollision;
+
+            var gameObject = point.CollidedGameObject;
+
+            if (gameObject == null || gameObject.activeSelf == false)
+            {
+                _trajectory.DeleteAfterFrame(_frame);
+
+                Activate(deltaTime);
+
+                return;
+            }
+            else
+            {
+                EnteredCollision?.Invoke(gameObject);
+            }
+        }
+
+        _velocity = point.Velocity;
+        _rigidbody.MovePosition(point.Position);
+        _frame++;
+    }
+
+    private void CreateNewTrajectory(float deltaTime)
+    {
+        _trajectory.CreateNewTrajectory(deltaTime);
+        _trajectory.AddPoint(new BulletTrajectoryPoint(_frame, _velocity, _transform.position));
+        _frame++;
+    }
+
+    private void Activate(float deltaTime)
+    {
+        UseGravity(deltaTime);
+
+        if (TryGetCollision(out GameObject gameObject))
+            EnteredCollision?.Invoke(gameObject);
+
+        _rigidbody.MovePosition(_transform.position + _velocity);
+    }
+
+    private void UseGravity(float deltaTime)
+    {
+        if (_isThereCollision)
+            _velocity.y = 0f;
+        else
+            _velocity += deltaTime * _attributes.Gravity * Vector3.down;
+
+        _velocity += deltaTime * _attributes.Gravity * Vector3.back;
+    }
+
+    private bool TryGetCollision(out GameObject gameObject)
+    {
+        gameObject = null;
+
+        if (HasRaycastHit())
+        {
+            var hit = _hitsArray[0];
+            gameObject = hit.transform.gameObject;
+            HandleCollision(hit);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    private bool HasRaycastHit()
+    {
+        float distance = _velocity.magnitude;
+        Vector3 direction = _velocity.normalized;
+
         if (_isThereCollision == false)
+            direction += Vector3.down;
+
+        if (Physics.RaycastNonAlloc(_transform.position, direction, _hitsArray, distance, _collisionMask, QueryTriggerInteraction.Ignore) != 0)
+            return true;
+        else
+            return false;
+    }
+
+    private void HandleCollision(RaycastHit hit)
+    {
+        var gameObject = hit.transform.gameObject;
+
+        CheckIsGroundCollision(gameObject);
+
+        if (LayerMaskTool.IsInLayerMask(gameObject, _attributes.LayerMaskBounce))
         {
+            Vector3 direction = _velocity.normalized;
+            Vector3 bounceDirection = GetBounce(hit.normal, direction);
+
+            _velocity = bounceDirection;
+        }
+    }
+
+    private void CheckIsGroundCollision(GameObject gameObject)
+    {
+        if (_isThereCollision)
+            return;
+
+        if (LayerMaskTool.IsInLayerMask(gameObject, _collisionMask))
             _isThereCollision = true;
-            _rigidbody.constraints |= RigidbodyConstraints.FreezePositionY;
-        }
-
-        if (IsInLayerMask(collision.gameObject))
-        {
-            Vector3 bounce = GetBounce(collision.contacts[0], _currentDirection);
-
-            _rigidbody.velocity = Vector3.zero;
-            _rigidbody.AddForce(bounce);
-        }
     }
 
-    private bool IsInLayerMask(GameObject gameObject)
+    private Vector3 GetBounce(Vector3 normal, Vector3 direction)
     {
-        return (1 << gameObject.layer & _attributes.LayerMaskBounce) != 0;
-    }
-
-    private Vector3 GetBounce(ContactPoint contact, Vector3 direction)
-    {
-        Vector3 normal = contact.normal;
+        normal = new Vector3(normal.x, 0f, normal.z);
+        direction = new Vector3(direction.x, 0f, direction.z);
+        Quaternion rotation = Quaternion.identity;
         Vector3 bounceDirection = Vector3.Reflect(direction, normal).normalized;
         float angle = Vector3.Angle(bounceDirection, normal);
 
         if (angle < _attributes.MinBounceAngle)
-        {
-            float correctAngle = _attributes.MinBounceAngle;
-            Vector3 axis = Vector3.Cross(normal, direction).normalized;
-            Quaternion rotation = Quaternion.AngleAxis(correctAngle, axis);
-            bounceDirection = rotation * bounceDirection;
-        }
+            rotation = CalculateRotation(normal, direction, _attributes.MinBounceAngle);
+        else if (angle > _attributes.MaxBounceAngle)
+            rotation = CalculateRotation(normal, direction, _attributes.MaxBounceAngle);
+
+        bounceDirection = rotation * bounceDirection;
 
         return _attributes.BounceForce * bounceDirection;
+    }
+
+    private Quaternion CalculateRotation(Vector3 normal, Vector3 direction, float correctAngle)
+    {
+        Vector3 axis = Vector3.Cross(normal, direction).normalized;
+
+        return Quaternion.AngleAxis(correctAngle, axis);
     }
 }

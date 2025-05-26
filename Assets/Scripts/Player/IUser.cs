@@ -1,8 +1,9 @@
 ﻿public interface IUser
 {
     public IWallet Wallet { get; }
-    public float TurretHealthCoefficient { get; }
-    public float BulletDamageCoefficient { get; }
+    public ITurretImprover TurretImprover { get; }
+    public float HealthCoefficient { get; }
+    public float DamageCoefficient { get; }
     public int AchievedLevelIndex { get; }
     public bool AreAdsDisabled { get; }
 

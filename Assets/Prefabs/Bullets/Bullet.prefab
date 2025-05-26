@@ -161,6 +161,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _attributes: {fileID: 11400000, guid: 7b671c5c287f6794b9aaca6a709612a9, type: 2}
+  _trajectory: {fileID: 11400000, guid: 2a0a0022c8245fc47a5e4974d22abcb6, type: 2}
   _collisionMask:
     serializedVersion: 2
     m_Bits: 832

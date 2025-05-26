@@ -1,3 +1,4 @@
+using Scriptable;
 using System;
 using UnityEngine;
 
@@ -5,8 +6,9 @@ using UnityEngine;
 public class TrajectoryRenderer : MonoBehaviour
 {
     [SerializeField] private BulletPhysics _bulletPhysics;
+    [SerializeField] private TrajectoryBullet _trajectoryBullet;
+    [SerializeField] private bool _isInstallFixUpdate = true;
     [SerializeField, Range(0.01f, 0.03f)] private float _timeStep = 0.02f;
-    [SerializeField, Min(30)] private int _countCalculations = 100;
 
     private LineRenderer _lineRenderer;
     private Transform _bulletPhysicsTransform;
@@ -15,6 +17,12 @@ public class TrajectoryRenderer : MonoBehaviour
     {
         if (_bulletPhysics == null)
             throw new NullReferenceException(nameof(_bulletPhysics));
+
+        if (_trajectoryBullet == null)
+            throw new NullReferenceException(nameof(_trajectoryBullet));
+
+        if (_isInstallFixUpdate)
+            _timeStep = Time.fixedDeltaTime;
     }
 
     private void Awake()
@@ -26,24 +34,35 @@ public class TrajectoryRenderer : MonoBehaviour
 
     public void ShowTrajectory(Vector3 origin, Vector3 direction)
     {
-        Vector3[] points = new Vector3[_countCalculations];
+        _bulletPhysicsTransform.position = origin;
+        _bulletPhysics.MoveToDirection(direction);
+        _trajectoryBullet.Clear();
+        _trajectoryBullet.CreateNewTrajectory(_timeStep);
 
         Physics.simulationMode = SimulationMode.Script;
 
-        _bulletPhysicsTransform.position = origin;
-        _bulletPhysics.MoveToDirection(direction);
-
-        for (int i = 0; i < _countCalculations; i++)
+        for (int i = 0; i < _trajectoryBullet.MaxCountPoints && _trajectoryBullet.IsFinished == false; i++)
         {
             Physics.Simulate(_timeStep);
 
-            _bulletPhysics.Activate();
-            points[i] = _bulletPhysicsTransform.position;
+            _bulletPhysics.RecordPoint(_timeStep);
         }
 
+        Physics.simulationMode = SimulationMode.FixedUpdate;
+
+        Vector3[] points = _trajectoryBullet.GetPointsPosition();
         _lineRenderer.positionCount = points.Length;
         _lineRenderer.SetPositions(points);
+    }
 
-        Physics.simulationMode = SimulationMode.FixedUpdate;
+    public void Enable()
+    {
+        if (_lineRenderer.enabled == false)
+            _lineRenderer.enabled = true;
+    }
+
+    public void Disable()
+    {
+        _lineRenderer.enabled = false;
     }
 }

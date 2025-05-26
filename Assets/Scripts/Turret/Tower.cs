@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class Tower : MonoBehaviour, ITower
 {
@@ -17,7 +18,11 @@ public class Tower : MonoBehaviour, ITower
 
     private void Awake()
     {
+        if (_trajectoryRenderer == null)
+            throw new NullReferenceException(nameof(_trajectoryRenderer));
+
         _transform = transform;
+        _trajectoryRenderer.Disable();
     }
 
     private void FixedUpdate()
@@ -27,18 +32,20 @@ public class Tower : MonoBehaviour, ITower
 
     public void Initialize(ITargetPoint targetPoint)
     {
-        _targetPoint = targetPoint ?? throw new System.ArgumentNullException(nameof(targetPoint));
+        _targetPoint = targetPoint ?? throw new ArgumentNullException(nameof(targetPoint));
         _trajectoryRenderer.ShowTrajectory(_transform.position, _transform.forward);
     }
 
     public void TakeAim(Vector3 touchPosition)
     {
         _touchPosition = touchPosition;
+        _trajectoryRenderer.Enable();
         _trajectoryRenderer.ShowTrajectory(_transform.position, _transform.forward);
     }
 
     public void SaveDirection()
     {
+        _trajectoryRenderer.Disable();
         _targetPoint.SaveLastPosition();
 
         LookAtTarget();

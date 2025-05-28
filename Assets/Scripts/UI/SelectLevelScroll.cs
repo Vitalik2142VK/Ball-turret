@@ -60,6 +60,7 @@ public class SelectLevelScroll : MonoBehaviour
             button.SetBlock(levelIndex < i);
             button.Clicked += OnSelectButton;
             button.transform.SetParent(_content.transform);
+            button.transform.localScale = _selectLevelButtonPrefab.transform.localScale;
             _selectLevelButtons.Add(button);
         }
     }

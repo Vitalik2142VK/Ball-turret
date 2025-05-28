@@ -7,15 +7,15 @@ public class Turret : ITurret
     private ITower _tower;
     private IHealth _health;
     private IEndStep _endStep;
+    private WinState _winState;
 
-    public Turret(IGun gun, ITower tower, IHealth health)
+    public Turret(IGun gun, ITower tower, IHealth health, WinState winState)
     {
         _gun = gun ?? throw new ArgumentNullException(nameof(gun));
         _tower = tower ?? throw new ArgumentNullException(nameof(tower));
         _health = health ?? throw new ArgumentNullException(nameof(health));
+        _winState = winState ?? throw new ArgumentNullException(nameof(winState));
     }
-
-    public event Action Destroyed;
 
     public bool IsReadyShoot => _gun.IsRecharged;
 
@@ -58,7 +58,7 @@ public class Turret : ITurret
 
     public void Destroy()
     {
-        Destroyed?.Invoke();
+        _winState.IsWin = false;
     }
 
     public void RestoreHealth()

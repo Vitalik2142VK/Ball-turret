@@ -20,8 +20,10 @@ namespace PlayLevel
         [SerializeField] private HealthAttributes _turretHealthAttributes;
 
         private Turret _turret;
+        private WinState _winState;
 
         public ITurret Turret => _turret;
+        public IWinState WinState => _winState;
 
         private void OnValidate()
         {
@@ -66,8 +68,9 @@ namespace PlayLevel
             healthImprover.Improve(user.HealthCoefficient);
             IHealth health = new Health(healthImprover, _healthBar);
             health.Restore();
+            _winState = new WinState();
 
-            _turret = new Turret(_gun, _tower, health);
+            _turret = new Turret(_gun, _tower, health, _winState);
             _turret.Enable();
         }
 

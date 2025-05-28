@@ -1,4 +1,4 @@
 ﻿public interface IWinState
 {
-    public bool IsWin { get; set; }
+    public bool IsWin { get; }
 }

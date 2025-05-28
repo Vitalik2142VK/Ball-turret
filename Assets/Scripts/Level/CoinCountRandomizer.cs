@@ -3,7 +3,7 @@
 public class CoinCountRandomizer : ICoinCountRandomizer
 {
     private const float DefaultCoefficient = 1f;
-    private const float CoinCoefficientByLevel = 0.1f;
+    private const float CoinCoefficientByLevel = 0.4f;
     private const int DefaultMaxCoinsWin = 1100;
     private const int DefaultMinCoinsWin = 1000;
     private const int DefaultMaxCoinsDefeat = 250;

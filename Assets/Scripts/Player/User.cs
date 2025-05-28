@@ -8,7 +8,7 @@ public class User : IUser
 
         Wallet = wallet ?? throw new ArgumentNullException(nameof(wallet));
 
-        AchievedLevelIndex = 0;
+        AchievedLevelIndex = 3;
         AreAdsDisabled = false;
     }
 

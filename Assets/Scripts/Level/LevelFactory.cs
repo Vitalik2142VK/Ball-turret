@@ -4,13 +4,17 @@ using System.Collections.Generic;
 public class LevelFactory : ILevelFactory
 {
     private const float DefaultCoefficient = 1f;
-    private const float ActorsHealthCoefficientByLevel = 0.25f;
+    private const float MinActorsHealthCoefficientByLevel = 0.3f;
 
     private List<ILevelActorsPlanner> _actorsPlanners;
     private ICoinCountRandomizer _coinCountRandomizer;
+    private float _actorsHealthCoefficientByLevel;
 
-    public LevelFactory(IEnumerable<ILevelActorsPlanner> actorsPlanners)
+    public LevelFactory(IEnumerable<ILevelActorsPlanner> actorsPlanners, float actorsHealthCoefficientByLevel = MinActorsHealthCoefficientByLevel)
     {
+        if (actorsHealthCoefficientByLevel < MinActorsHealthCoefficientByLevel)
+            throw new ArgumentOutOfRangeException(nameof(actorsHealthCoefficientByLevel));
+
         if (actorsPlanners == null)
             throw new ArgumentNullException(nameof(actorsPlanners));
 
@@ -18,6 +22,8 @@ public class LevelFactory : ILevelFactory
 
         if (_actorsPlanners.Count == 0)
             throw new ArgumentOutOfRangeException(nameof(actorsPlanners));
+
+        _actorsHealthCoefficientByLevel = actorsHealthCoefficientByLevel;
 
         _coinCountRandomizer = new CoinCountRandomizer();
     }
@@ -39,6 +45,6 @@ public class LevelFactory : ILevelFactory
 
     private float CalculateActorsHealthCoefficient(int indexLevel)
     {
-        return DefaultCoefficient + (ActorsHealthCoefficientByLevel * indexLevel);
+        return DefaultCoefficient + (_actorsHealthCoefficientByLevel * indexLevel);
     }
 }

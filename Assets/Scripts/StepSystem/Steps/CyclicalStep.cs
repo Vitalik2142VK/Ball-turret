@@ -4,15 +4,17 @@ public class CyclicalStep : IStep
 {
     private IActorsController _actorsController;
     private IDynamicEndStep _dynamicEndStep;
+    private IWinState _winState;
 
     private IStep _startStep;
     private IStep _playerStep;
     private IStep _finishStep;
 
-    public CyclicalStep(IActorsController actorController, IDynamicEndStep dynamicEndStep)
+    public CyclicalStep(IActorsController actorController, IDynamicEndStep dynamicEndStep, IWinState winState)
     {
         _actorsController = actorController ?? throw new ArgumentNullException(nameof(actorController));
         _dynamicEndStep = dynamicEndStep ?? throw new ArgumentNullException(nameof(dynamicEndStep));
+        _winState = winState ?? throw new ArgumentNullException(nameof(winState));
     }
 
     public void SetStartStep(IStep startStep)
@@ -32,7 +34,7 @@ public class CyclicalStep : IStep
 
     public void Action()
     {
-        if (_actorsController.AreNoEnemies && _actorsController.AreWavesOver)
+        if (_actorsController.AreNoEnemies && _actorsController.AreWavesOver || _winState.IsWin == false)
         {
             _dynamicEndStep.SetNextStep(_finishStep);
         }

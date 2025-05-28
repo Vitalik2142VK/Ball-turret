@@ -58,6 +58,8 @@ public class FinishWindow : MonoBehaviour, IMenu
     {
         _increaseRewardIssuer.AwardReward();
 
+        gameObject.SetActive(false);
+
         Time.timeScale = EnableTimeScale;
     }
 }

@@ -5,7 +5,10 @@ namespace MainMenuSpace
 {
     public class LevelPlannerConfigurator : MonoBehaviour
     {
-        [SerializeField] public Scriptable.LevelActorsPlanner[] _levelActorsPlanners;
+        [SerializeField] private Scriptable.LevelActorsPlanner[] _levelActorsPlanners;
+
+        [Header("Actors health coefficient by level")]
+        [SerializeField, Range(0.3f, 2f)] private float _healthCoefficient;
 
         public ILevelFactory LevelFactory { get; private set; }
 
@@ -20,7 +23,7 @@ namespace MainMenuSpace
 
         public void Configure()
         {
-            LevelFactory = new LevelFactory(_levelActorsPlanners);
+            LevelFactory = new LevelFactory(_levelActorsPlanners, _healthCoefficient);
         }
     }
 }

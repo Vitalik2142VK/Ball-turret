@@ -112,7 +112,7 @@ RectTransform:
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0.13861112, y: 0.065}
+  m_AnchorMax: {x: 0.1, y: 0.1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -146,7 +146,7 @@ MonoBehaviour:
       m_Calls: []
   m_Sprite: {fileID: 1068232040, guid: 657fde61289f15c4f8980d088661052b, type: 3}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -324,7 +324,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3514103277606644295, guid: 92bec8f101935ad47aab3a3cf65126b5, type: 3}
       propertyPath: m_fontSize
-      value: 108
+      value: 87.05
       objectReference: {fileID: 0}
     - target: {fileID: 3514103277606644295, guid: 92bec8f101935ad47aab3a3cf65126b5, type: 3}
       propertyPath: m_fontSizeMax

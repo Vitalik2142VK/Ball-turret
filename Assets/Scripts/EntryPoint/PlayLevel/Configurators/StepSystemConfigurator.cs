@@ -21,7 +21,7 @@ namespace PlayLevel
         private ActorsMoveStep _objectsMoveStep;
         private EnemyAttackStep _enemyAttackStep;
         private RemoveActorsStep _removeActorsStep;
-        private CyclicalStep _finalStep;
+        private CyclicalStep _cyclicalStep;
         private RewardStep _rewardStep;
         private CloseSceneStep _closeSceneStep;
 
@@ -42,11 +42,6 @@ namespace PlayLevel
                 throw new NullReferenceException(nameof(_finishWindow));
         }
 
-        private void OnDisable()
-        {
-            _rewardStep.Disable();
-        }
-
         public void Configure(ITurret turret, IWinState winStat, Player player, ActorsController actorsController)
         {
             _player = player != null ? player : throw new NullReferenceException(nameof(player));
@@ -58,7 +53,7 @@ namespace PlayLevel
             CreateFinalSteps();
             ConnectSteps();
 
-            _stepSystem.EstablishNextStep(_finalStep);
+            _stepSystem.EstablishNextStep(_cyclicalStep);
         }
 
         private void CreateSteps()
@@ -69,7 +64,7 @@ namespace PlayLevel
             _objectsMoveStep = new ActorsMoveStep(_actorsController);
             _enemyAttackStep = new EnemyAttackStep(_actorsController);
             _removeActorsStep = new RemoveActorsStep(_actorsController);
-            _rewardStep = new RewardStep(_winStat, _finishWindow, _turret);
+            _rewardStep = new RewardStep(_finishWindow);
             _closeSceneStep = new CloseSceneStep(_mainMenuLoader);
         }
 
@@ -91,13 +86,13 @@ namespace PlayLevel
 
         private void CreateFinalSteps()
         {
-            DynamicNextStep nextStep = new DynamicNextStep(_stepSystem);
-            _finalStep = new CyclicalStep(_actorsController, nextStep);
-            _finalStep.SetStartStep(_prepareActorsStep);
-            _finalStep.SetPlayerStep(_playerShotStep);
-            _finalStep.SetFinishStep(_rewardStep);
+            DynamicNextStep dynamicNextStep = new DynamicNextStep(_stepSystem);
+            _cyclicalStep = new CyclicalStep(_actorsController, dynamicNextStep, _winStat);
+            _cyclicalStep.SetStartStep(_prepareActorsStep);
+            _cyclicalStep.SetPlayerStep(_playerShotStep);
+            _cyclicalStep.SetFinishStep(_rewardStep);
 
-            AddNextStepToEndPoint(_removeActorsStep, _finalStep);
+            AddNextStepToEndPoint(_removeActorsStep, _cyclicalStep);
         }
     }
 }

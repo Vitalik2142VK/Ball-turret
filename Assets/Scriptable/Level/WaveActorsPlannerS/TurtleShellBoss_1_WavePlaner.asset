@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 099a4bc78e4679d46b6d4e4e77209302, type: 3}
-  m_Name: Test_WaveActorsPlanner
+  m_Name: TurtleShellBoss_1_WavePlaner
   m_EditorClassIdentifier: 
   _lines:
   - _actors:
@@ -19,9 +19,9 @@ MonoBehaviour:
     - {fileID: 0}
   - _actors:
     - {fileID: 0}
-    - {fileID: 0}
+    - {fileID: 924561467505206306, guid: 503bca5785b2f8143aa80da335479c92, type: 3}
     - {fileID: 0}
   - _actors:
     - {fileID: 0}
-    - {fileID: 823343203851408336, guid: ca763b6bd7eb253428d7fe53b9924d2c, type: 3}
+    - {fileID: 0}
     - {fileID: 0}

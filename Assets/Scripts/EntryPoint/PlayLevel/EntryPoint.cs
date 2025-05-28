@@ -55,17 +55,18 @@ namespace PlayLevel
             _turretConfigurator.Configure(user, _bulletConfigurator.BulletFactory);
 
             var turret = _turretConfigurator.Turret;
+            var winState = _turretConfigurator.WinState;
 
             _player.Initialize(turret);
             _actorsConfigurator.Configure(turret, _selectedLevel.ActorsPlanner);
             _improvedHealthConfigurator.Configure(_selectedLevel.ActorsHealthCoefficient);
 
             var actorsController = _actorsConfigurator.ActorsController;
-            RewardIssuer rewardIssuer = new RewardIssuer(user, _selectedLevel);
 
-            _stepSystemConfigurator.Configure(turret, rewardIssuer, _player, actorsController);
+            _stepSystemConfigurator.Configure(turret, winState, _player, actorsController);
             _bonusPrefabConfigurator.Configure(turret);
 
+            RewardIssuer rewardIssuer = new RewardIssuer(user, _selectedLevel, winState);
             var closeSceneStep = _stepSystemConfigurator.CloseSceneStep;
             _userInterfaceConfigurator.Configure(closeSceneStep, rewardIssuer);
         }

@@ -1,59 +1,46 @@
 using System;
-using UnityEngine;
 
-[RequireComponent(typeof(PlayerTouchInput))]
-public class Player : MonoBehaviour, IPlayer
+public class Player : IPlayer
 {
-    [SerializeField] private Scriptable.CachedUser _cachedUser;
-
-    private PlayerTouchInput _touchInput;
-    private ITurret _turret;
-
-    public IUser User => _cachedUser;
-
-    private void OnValidate()
+    public Player(ITurretImprover turretImprover, IWallet wallet)
     {
-        if (_cachedUser == null)
-            throw new ArgumentNullException(nameof(_cachedUser));
+        TurretImprover = turretImprover ?? throw new ArgumentNullException(nameof(turretImprover));
+
+        Wallet = wallet ?? throw new ArgumentNullException(nameof(wallet));
+
+        AchievedLevelIndex = 0;
+        AreAdsDisabled = false;
     }
 
-    private void Awake()
+    public Player(ITurretImprover turretImprover, IWallet wallet, int achievedLevel, bool areAdsDisabled)
     {
-        _touchInput = GetComponent<PlayerTouchInput>();
+        if (achievedLevel <= 0)
+            throw new ArgumentOutOfRangeException(nameof(achievedLevel));
+
+        TurretImprover = turretImprover ?? throw new ArgumentNullException(nameof(turretImprover));
+
+        Wallet = wallet ?? throw new ArgumentNullException(nameof(wallet));
+
+        AchievedLevelIndex = achievedLevel;
+        AreAdsDisabled = areAdsDisabled;
     }
 
-    private void OnEnable()
+    public IWallet Wallet { get; private set; }
+    public ITurretImprover TurretImprover { get; private set; }
+    public int AchievedLevelIndex { get; private set; }
+    public bool AreAdsDisabled { get; private set; }
+
+    public float HealthCoefficient => TurretImprover.HealthCoefficient;
+    public float DamageCoefficient => TurretImprover.DamageCoefficient;
+
+
+    public void IncreaseAchievedLevel()
     {
-        _touchInput.PressFinished += OnFinishPress;
+        AchievedLevelIndex++;
     }
 
-    private void OnDisable()
+    public void DisabledAds()
     {
-        _touchInput.PressFinished -= OnFinishPress;
-    }
-
-    public void Initialize(ITurret turret)
-    {
-        _turret = turret ?? throw new ArgumentNullException(nameof(turret));
-    }
-
-    public void SelectTarget()
-    {
-        _touchInput.LaunchTouchscreenToMap();
-
-        if (_touchInput.IsPress && _turret.IsReadyShoot)
-        {
-            Vector3 touchMapPosition = _touchInput.TouchPositionInMap;
-
-            _turret.SetTouchPoint(touchMapPosition);
-        }
-    }
-
-    private void OnFinishPress()
-    {
-        if (_turret.IsReadyShoot == false)
-            return;
-
-        _turret.FixTargetPostion();
+        AreAdsDisabled = true;
     }
 }

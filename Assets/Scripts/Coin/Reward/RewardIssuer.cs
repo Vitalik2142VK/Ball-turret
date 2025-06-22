@@ -3,58 +3,82 @@
 public class RewardIssuer : IRewardIssuer
 {
     private const float AdditionalRewardFirstPass = 0.5f;
-    private const int DoubleReward = 2;
 
-    private IUser _user;
+    private IPlayer _player;
     private ILevel _level;
     private IWinState _winState;
-    private int _rewardMultiplier;
-    private bool _rewardIssued;
+    private int _reward;
+    private int _bonusReward;
+    private int _maxReward;
 
-    public RewardIssuer(IUser user, ILevel level, IWinState winState)
+    public RewardIssuer(IPlayer player, ILevel level, IWinState winState)
     {
-        _user = user ?? throw new ArgumentNullException(nameof(user));
+        _player = player ?? throw new ArgumentNullException(nameof(player));
         _level = level ?? throw new ArgumentNullException(nameof(level));
         _winState = winState ?? throw new ArgumentNullException(nameof(winState));
-        _rewardMultiplier = 1;
-        _rewardIssued = false;
+        _reward = -1;
+        _bonusReward = -1;
+        _maxReward = -1;
+        IsRewardIssued = false;
     }
 
-    private bool IsFirstPass => _level.Index == _user.AchievedLevelIndex;
+    public bool IsRewardIssued { get; private set; }
+
+    private bool IsFirstPass => _level.Index == _player.AchievedLevelIndex;
 
     public void AwardReward()
     {
-        if (_rewardIssued)
-            throw new InvalidOperationException("Reward has already been issued.");
+        if (IsRewardIssued)
+            throw new InvalidOperationException("Reward has already been issued");
 
-        int reward = GetReward();
-        _user.Wallet.AddCoins(reward);
+        _player.Wallet.AddCoins(_reward);
+
+        IsRewardIssued = true;
 
         if (IsFirstPass && _winState.IsWin)
-            _user.IncreaseAchievedLevel();
+            _player.IncreaseAchievedLevel();
     }
 
-    public void ApplyDoublingReward()
+    public void ApplyMaxReward()
     {
-        if (DoubleReward <= _rewardMultiplier)
-            throw new InvalidOperationException($"The rewards cannot be increased by more than {DoubleReward} times.");
-
-        _rewardMultiplier = DoubleReward;
+        _reward = _maxReward;
     }
 
     public int GetReward()
     {
-        int reward;
+        if (_reward > 0)
+            return _reward;
+
+        CalculateRewards();
+
+        return _reward;
+    }
+
+    public int GetBonusReward()
+    {
+        if (_bonusReward > 0)
+            return _bonusReward;
+
+        CalculateRewards();
+
+        return _bonusReward;
+    }
+
+    private void CalculateRewards()
+    {
         int rewardFirstPass = 0;
 
         if (_winState.IsWin)
-            reward = _level.CountCoinsWin;
+            _reward = _level.CountCoinsWin;
         else
-            reward = _level.CountCoinsDefeat;
+            _reward = _level.CountCoinsDefeat;
 
-        if (IsFirstPass)
-            rewardFirstPass = (int)(AdditionalRewardFirstPass * reward);
+        _bonusReward = _reward;
 
-        return reward * _rewardMultiplier + rewardFirstPass;
+        if (IsFirstPass && _winState.IsWin)
+            rewardFirstPass = (int)(AdditionalRewardFirstPass * _reward);
+
+        _reward += rewardFirstPass;
+        _maxReward = _reward + _bonusReward;
     }
 }

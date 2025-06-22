@@ -11,6 +11,7 @@ namespace MainMenuSpace
         [SerializeField, Range(0.3f, 2f)] private float _healthCoefficient;
 
         public ILevelFactory LevelFactory { get; private set; }
+        public ICoinCountRandomizer CoinCountRandomizer { get; private set; }
 
         private void OnValidate()
         {
@@ -21,9 +22,13 @@ namespace MainMenuSpace
                 throw new InvalidOperationException(nameof(_levelActorsPlanners));
         }
 
-        public void Configure()
+        public void Configure(IPlayer player)
         {
-            LevelFactory = new LevelFactory(_levelActorsPlanners, _healthCoefficient);
+            if (player == null)
+                throw new ArgumentNullException(nameof(player));
+
+            CoinCountRandomizer = new CoinCountRandomizer(player.AchievedLevelIndex);
+            LevelFactory = new LevelFactory(_levelActorsPlanners, CoinCountRandomizer, _healthCoefficient);
         }
     }
 }

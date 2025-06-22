@@ -6,6 +6,7 @@ using UnityEngine.UI;
 [RequireComponent(typeof(ChoiceButton))]
 public class BonusChoiceButton : MonoBehaviour, IChoiceButton
 {
+    [SerializeField] private Scriptable.LocalizationData _localizationData;
     [SerializeField] private Image _icon;
     [SerializeField] private TextMeshProUGUI _description;
 
@@ -19,6 +20,9 @@ public class BonusChoiceButton : MonoBehaviour, IChoiceButton
 
     private void OnValidate()
     {
+        if (_localizationData == null)
+            throw new NullReferenceException(nameof(_localizationData));
+
         if (_icon == null)
             throw new NullReferenceException(nameof(_icon));
 
@@ -45,7 +49,7 @@ public class BonusChoiceButton : MonoBehaviour, IChoiceButton
         IBonusCard bonusCard = _bonus.BonusCard;
 
         _icon.sprite = bonusCard.Icon;
-        _description.text = bonusCard.Description;
+        _description.text = bonusCard.GetDescription(_localizationData.Language);
     }
 
     public void OnClick()

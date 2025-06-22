@@ -25,7 +25,7 @@ public class PlayMenu : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    public void Initialize(IUser user, ILevelFactory levelFactory, PlaySceneLoader sceneLoader)
+    public void Initialize(IPlayer user, ILevelFactory levelFactory, PlaySceneLoader sceneLoader)
     {
         if (user == null)
             throw new ArgumentNullException(nameof(user));

@@ -9,7 +9,11 @@ namespace PlayLevel
     {
         [SerializeField] private ZoneEnemy _zoneEnemy;
         [SerializeField] private SpawnPointsRepository _spawnPointsRepository;
-        [SerializeField, SerializeIterface(typeof(IActorFactory))] private GameObject[] _actorFactories;
+        [SerializeField] private Sound _deadSound;
+
+        [Header("Factories")]
+        [SerializeField] private BonusFactory _bonusFactory;
+        [SerializeField] private EnemyFactory _enemyFactory;
 
         [Header("Attributes")]
         [SerializeField] private MoveAttributes _startMoveAttributes;
@@ -25,8 +29,14 @@ namespace PlayLevel
             if (_spawnPointsRepository == null)
                 throw new NullReferenceException(nameof(_spawnPointsRepository));
 
-            if (_actorFactories == null || _actorFactories.Length == 0)
-                throw new InvalidOperationException(nameof(_actorFactories));
+            if (_deadSound == null)
+                throw new NullReferenceException(nameof(_deadSound));
+
+            if (_bonusFactory == null)
+                throw new NullReferenceException(nameof(_bonusFactory));
+
+            if (_enemyFactory == null)
+                throw new NullReferenceException(nameof(_enemyFactory));
 
             if (_startMoveAttributes == null)
                 throw new NullReferenceException(nameof(_startMoveAttributes));
@@ -43,6 +53,7 @@ namespace PlayLevel
             if (levelActorsPlanner == null)
                 throw new ArgumentNullException(nameof(levelActorsPlanner));
 
+            _enemyFactory.Initialize(_deadSound);
             IActorSpawner actorSpawner = CreatActorSpawner();
             IAdvancedActorsMover actorMover = new ActorsMover();
             IRemovedActorsRepository removedActorsRepository = new ActorsRemover();
@@ -57,10 +68,11 @@ namespace PlayLevel
 
         private IActorSpawner CreatActorSpawner()
         {
-            List<IActorFactory> factories = new List<IActorFactory>(_actorFactories.Length);
-
-            for (int i = 0; i < _actorFactories.Length; i++)
-                factories.Add(_actorFactories[i].GetComponent<IActorFactory>());
+            List<IActorFactory> factories = new List<IActorFactory>
+            {
+                _enemyFactory,
+                _bonusFactory
+            };
 
             IActorFactoriesRepository actorFactoriesRepository = new ActorFactoriesRepository(factories);
 

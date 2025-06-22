@@ -37,7 +37,6 @@ public class Turret : ITurret
     public void SetTouchPoint(Vector3 touchPoint)
     {
         _tower.TakeAim(touchPoint);  
-        _gun.TakeAim(_tower.Direction);
     }
 
     public void FixTargetPostion()

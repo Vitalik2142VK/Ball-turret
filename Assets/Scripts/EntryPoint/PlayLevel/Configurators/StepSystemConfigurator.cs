@@ -12,7 +12,7 @@ namespace PlayLevel
 
         private ITurret _turret;
         private IWinState _winStat;
-        private Player _player;
+        private PlayLevelPlayer _player;
         private ActorsController _actorsController;
 
         private PlayerShotStep _playerShotStep;
@@ -42,7 +42,7 @@ namespace PlayLevel
                 throw new NullReferenceException(nameof(_finishWindow));
         }
 
-        public void Configure(ITurret turret, IWinState winStat, Player player, ActorsController actorsController)
+        public void Configure(ITurret turret, IWinState winStat, PlayLevelPlayer player, ActorsController actorsController)
         {
             _player = player != null ? player : throw new NullReferenceException(nameof(player));
             _turret = turret ?? throw new NullReferenceException(nameof(turret));

@@ -1,8 +1,12 @@
 ﻿public interface IRewardIssuer
 {
+    public bool IsRewardIssued { get; }
+
     public void AwardReward();
 
-    public void ApplyDoublingReward();
+    public void ApplyMaxReward();
 
     public int GetReward();
+
+    public int GetBonusReward();
 }

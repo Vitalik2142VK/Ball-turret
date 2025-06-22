@@ -294,6 +294,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5a573c29237458478441d6106554697, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _localizationData: {fileID: 11400000, guid: 3033faf0983e88242bd11bedcc8b44e0, type: 2}
   _icon: {fileID: 7013343723799250766}
   _description: {fileID: 6721616405395464033}
 --- !u!1 &6569669644834637782

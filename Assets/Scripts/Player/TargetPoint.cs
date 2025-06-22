@@ -14,7 +14,7 @@ public class TargetPoint : MonoBehaviour, ITargetPoint
 
     public bool IsInsideZoneEnemy { get; private set; } = true;
 
-    public Vector3 Position => _transform.localPosition;
+    public Vector3 Position => _transform.position;
 
     private void OnValidate()
     {
@@ -25,7 +25,7 @@ public class TargetPoint : MonoBehaviour, ITargetPoint
     private void Awake()
     {
         _transform = transform;
-        _startPosition = _transform.localPosition;
+        _startPosition = _transform.position;
     }
 
     private void OnDrawGizmos()
@@ -42,13 +42,13 @@ public class TargetPoint : MonoBehaviour, ITargetPoint
         IsInsideZoneEnemy = _zoneEnemy.IsPointInside(position);
 
         if (IsInsideZoneEnemy)
-            _transform.localPosition = new Vector3(position.x, _startPosition.y, position.z);
+            _transform.position = new Vector3(position.x, _startPosition.y, position.z);
         else
-            _transform.localPosition = _startPosition;
+            _transform.position = _startPosition;
     }
 
     public void SaveLastPosition()
     {
-        _startPosition = _transform.localPosition;
+        _startPosition = _transform.position;
     }
 }

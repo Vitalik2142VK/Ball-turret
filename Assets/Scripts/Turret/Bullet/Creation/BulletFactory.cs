@@ -9,6 +9,7 @@ public class BulletFactory : MonoBehaviour, IBulletFactory
 
     private Dictionary<BulletType, Bullet> _bullets;
     private IDamageAttributes _damageBulletAttributes;
+    private ISound _hitBulletSound;
 
     private void OnValidate()
     {
@@ -27,9 +28,10 @@ public class BulletFactory : MonoBehaviour, IBulletFactory
         _bullets = CreateDictionaryPrefabs();
     }
 
-    public void Initialize(IDamageAttributes damageBulletAttributes)
+    public void Initialize(IDamageAttributes damageBulletAttributes, ISound hitBulletSound)
     {
         _damageBulletAttributes = damageBulletAttributes ?? throw new ArgumentNullException(nameof(damageBulletAttributes));
+        _hitBulletSound = hitBulletSound ?? throw new ArgumentNullException(nameof(hitBulletSound));
     }
 
     public void AddPrefab(Bullet bullet)
@@ -47,16 +49,16 @@ public class BulletFactory : MonoBehaviour, IBulletFactory
 
         Bullet prefab = _bullets[type];
         Bullet bullet = Instantiate(prefab);
-        bullet.Initialize(_damageBulletAttributes);
+        bullet.Initialize(_damageBulletAttributes, _hitBulletSound);
         bullet.gameObject.SetActive(false);
         bullet.transform.SetParent(_containerBullets);
 
-        InitializeBullet(prefab, bullet);
+        InitializeSpecialBullet(prefab, bullet);
 
         return bullet;
     }
 
-    private void InitializeBullet(Bullet prefab, Bullet bullet)
+    private void InitializeSpecialBullet(Bullet prefab, Bullet bullet)
     {
         var initializes = prefab.GetComponents<IBulletInitializer>();
 

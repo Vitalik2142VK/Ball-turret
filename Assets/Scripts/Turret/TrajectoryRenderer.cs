@@ -3,7 +3,7 @@ using System;
 using UnityEngine;
 
 [RequireComponent(typeof(LineRenderer))]
-public class TrajectoryRenderer : MonoBehaviour
+public class TrajectoryRenderer : MonoBehaviour, ITrajectoryRenderer
 {
     [SerializeField] private BulletPhysics _bulletPhysics;
     [SerializeField] private TrajectoryBullet _trajectoryBullet;
@@ -30,12 +30,18 @@ public class TrajectoryRenderer : MonoBehaviour
         _bulletPhysicsTransform = _bulletPhysics.transform;
 
         _lineRenderer = GetComponent<LineRenderer>();
+
+        Disable();
     }
 
     public void ShowTrajectory(Vector3 origin, Vector3 direction)
     {
+        if (direction == _trajectoryBullet.Direction)
+            return;
+
         _bulletPhysicsTransform.position = origin;
         _bulletPhysics.MoveToDirection(direction);
+        _trajectoryBullet.Direction = direction;
         _trajectoryBullet.Clear();
         _trajectoryBullet.CreateNewTrajectory(_timeStep);
 

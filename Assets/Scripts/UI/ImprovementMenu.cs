@@ -8,11 +8,12 @@ public class ImprovementMenu : MonoBehaviour
 
     [SerializeField] private ImprovementChoiseButton[] _improvementChoiseButtons;
     [SerializeField] private Button _updateButton;
+    [SerializeField] private AddCoinsButton _addCoinsButton;
 
     private IMenu _previousMenu;
     private IGamePayTransaction _selectTransaction;
     private IImprovementShop _improvementShop;
-    private GameObject _gameObject;
+    private IAdsViewer _adsViewer;
 
     private void OnValidate()
     {
@@ -25,12 +26,14 @@ public class ImprovementMenu : MonoBehaviour
 
         if (_updateButton == null)
             throw new NullReferenceException(nameof(_updateButton));
+
+        if (_addCoinsButton == null)
+            throw new NullReferenceException(nameof(_addCoinsButton));
     }
 
     private void Awake()
     {
-        _gameObject = gameObject;
-        _gameObject.SetActive(false);
+        gameObject.SetActive(false);
         _updateButton.interactable = false;
     }
 
@@ -38,17 +41,22 @@ public class ImprovementMenu : MonoBehaviour
     {
         foreach (var button in _improvementChoiseButtons)
             button.Clicked += OnSelectButton;
+
+        _addCoinsButton.VideoViewed += OnUpdateMenu;
     }
 
     private void OnDisable()
     {
         foreach (var button in _improvementChoiseButtons)
             button.Clicked -= OnSelectButton;
+
+        _addCoinsButton.VideoViewed -= OnUpdateMenu;
     }
 
-    public void Initialize(IImprovementShop improvementShop)
+    public void Initialize(IImprovementShop improvementShop, IAdsViewer adsViewer)
     {
         _improvementShop = improvementShop ?? throw new ArgumentNullException(nameof(improvementShop));
+        _adsViewer = adsViewer ?? throw new ArgumentNullException(nameof(adsViewer));
 
         for (int i = 0; i < _improvementChoiseButtons.Length; i++)
             _improvementChoiseButtons[i].SetIndex(i);
@@ -73,14 +81,15 @@ public class ImprovementMenu : MonoBehaviour
     public void OnClose()
     {
         _updateButton.interactable = false;
-        _gameObject.SetActive(false);
+        gameObject.SetActive(false);
         _previousMenu.Enable();
     }
 
     public void Open(IMenu previousMenu)
     {
         _previousMenu = previousMenu ?? throw new ArgumentNullException(nameof(previousMenu));
-        _gameObject.SetActive(true);
+        _adsViewer.ShowFullScreenAd();
+        gameObject.SetActive(true);
         _updateButton.interactable = false;
 
         foreach (var button in _improvementChoiseButtons)
@@ -104,5 +113,11 @@ public class ImprovementMenu : MonoBehaviour
         }
 
         _updateButton.interactable = true;
+    }
+
+    private void OnUpdateMenu()
+    {
+        foreach (var button in _improvementChoiseButtons)
+            button.Enable();       
     }
 }

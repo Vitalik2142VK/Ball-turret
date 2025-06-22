@@ -1,6 +1,6 @@
 ﻿public interface IBulletRepository
 {
-    public bool AreThereFreeBullets {  get; }
+    public bool HasFreeBullets {  get; }
 
     public bool AreBulletsReturned { get; }
 

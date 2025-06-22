@@ -52,6 +52,9 @@ public class BulletPhysics : MonoBehaviour, IBulletPhysics
 
     public void MoveToDirection(Vector3 direction)
     {
+        if (direction != _trajectory.Direction)
+            _trajectory.Clear();
+
         _velocity = direction.normalized * _attributes.Speed;
         _isThereCollision = false;
         _frame = 0;

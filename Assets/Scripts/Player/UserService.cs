@@ -1,13 +1,13 @@
-﻿public class UserService : IUserService
+﻿public class UserService : IPlayerService
 {
     public ITurretImprover TurretImprover => throw new System.NotImplementedException();
 
-    public void Save(IUser user)
+    public void Save(IPlayer user)
     {
         throw new System.NotImplementedException();
     }
 
-    public IUser Load()
+    public IPlayer Load()
     {
         throw new System.NotImplementedException();
     }

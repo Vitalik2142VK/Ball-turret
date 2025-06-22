@@ -7,6 +7,7 @@ public class EnemyFactory : MonoBehaviour, IActorFactory
     [SerializeField] private Enemy[] _enemyPrefabs;
 
     private Dictionary<string, Enemy> _prefabs;
+    private ISound _deadSound;
 
     private void Awake()
     {
@@ -17,6 +18,11 @@ public class EnemyFactory : MonoBehaviour, IActorFactory
             throw new InvalidOperationException(nameof(_enemyPrefabs));
 
         _prefabs = CreateDictionaryPrefabs();
+    }
+
+    public void Initialize(ISound deadSound)
+    {
+        _deadSound = deadSound ?? throw new ArgumentNullException(nameof(deadSound));
     }
 
     public bool IsCanCreate(string nameTypeActor)
@@ -34,7 +40,7 @@ public class EnemyFactory : MonoBehaviour, IActorFactory
 
         var prefab = _prefabs[nameTypeActor];
         var enemy = Instantiate(prefab, Vector3.zero, prefab.transform.rotation);
-        enemy.Initialize();
+        enemy.Initialize(_deadSound);
 
         return enemy;
     }

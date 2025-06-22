@@ -6,9 +6,10 @@ using UnityEngine.UI;
 public class CollisionBonus : MonoBehaviour, IBonus, IActor
 {
     [SerializeField] private Image _image;
-    [SerializeField] private Bonus _bonus;
 
     private IMover _mover;
+    private ISound _sound;
+    private Bonus _bonus;
 
     public string Name => _bonus.Name;
     public IBonusCard BonusCard => _bonus.BonusCard;
@@ -49,11 +50,17 @@ public class CollisionBonus : MonoBehaviour, IBonus, IActor
         {
             gatheringBonus.Gather(this);
 
+            _sound.Play();
+
             Destroy();
         }
     }
 
-    public void Initialize(IBonusActivator bonusActivator) => _bonus.Initialize(bonusActivator);
+    public void Initialize(IBonusActivator bonusActivator, ISound sound) {
+        _sound = sound ?? throw new ArgumentNullException(nameof(sound));
+
+        _bonus.Initialize(bonusActivator);
+    }
 
     public void SetStartPosition(Vector3 startPosition) => _mover.SetStartPosition(startPosition);
 

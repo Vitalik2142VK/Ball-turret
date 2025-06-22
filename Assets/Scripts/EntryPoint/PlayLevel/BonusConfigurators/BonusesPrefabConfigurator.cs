@@ -10,6 +10,7 @@ namespace PlayLevel
         [SerializeField] private BonusConfigurator[] _bonusConfigurators;
         [SerializeField] private BonusFactory _bonusFactory;
         [SerializeField] private BonusChoiceMenu _bonusChoiceMenu;
+        [SerializeField] private Sound _takenBonusSound;
 
         private ITurret _turret;
 
@@ -26,6 +27,9 @@ namespace PlayLevel
 
             if (_bonusChoiceMenu == null)
                 throw new NullReferenceException(nameof(_bonusChoiceMenu));
+
+            if (_takenBonusSound == null)
+                throw new NullReferenceException(nameof(_takenBonusSound));
         }
 
         public void Configure(ITurret turret)
@@ -60,7 +64,7 @@ namespace PlayLevel
                     collisionBonuses.Add(collisionBonus);
             }
 
-            _bonusFactory.Initialize(collisionBonuses);
+            _bonusFactory.Initialize(collisionBonuses, _takenBonusSound);
         }
 
         private void InitializeChoiceBonusMenu()

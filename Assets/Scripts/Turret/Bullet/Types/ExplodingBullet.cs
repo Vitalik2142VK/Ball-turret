@@ -1,23 +1,30 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Bullet), typeof(Exploder), typeof(BulletPhysics))]
+[RequireComponent(typeof(Renderer))]
 public class ExplodingBullet : MonoBehaviour, IBullet, IInitializer
 {
     [SerializeField] private Scriptable.DamageImproverAttributes _damageImproverAttributes;
+    [SerializeField, Range(0.2f, 3f)] private float _waitTimeToPut = 0.5f;
 
-    private IBullet _bullet;
     private IExploder _exploder;
-    private IBulletRepository _bulletRepository;
     private IBulletPhysics _bulletPhysics;
+    private Bullet _bullet;
+    private Renderer _renderer;
+    private WaitForSeconds _wait;
+
+    public ISound ExplosionSound { get; private set; }
+    public IBulletRepository BulletRepository { get; private set; }
 
     public BulletType BulletType => _bullet.BulletType;
-    public IBulletRepository BulletRepository => _bulletRepository;
 
     private void OnValidate()
     {
         if (_damageImproverAttributes == null)
-            throw new System.NullReferenceException(nameof(_damageImproverAttributes));
+            throw new NullReferenceException(nameof(_damageImproverAttributes));
     }
 
     private void Awake()
@@ -37,19 +44,37 @@ public class ExplodingBullet : MonoBehaviour, IBullet, IInitializer
 
     public void Initialize()
     {
-        Bullet bullet = GetComponent<Bullet>();
+        if (_bullet != null && _renderer != null)
+            return;
+
+        _renderer = GetComponent<Renderer>();
+        _bullet = GetComponent<Bullet>();
+        _bullet.ChangeDamage(_damageImproverAttributes);
+
+        _wait = new WaitForSeconds(_waitTimeToPut);
+    }
+
+    public void InitializeExploder(ISound explosionSound)
+    {
+        if (explosionSound == null)
+            throw new ArgumentNullException(nameof(explosionSound));
+
+        if (_bullet == null)
+            Initialize();
+
         Exploder exploder = GetComponent<Exploder>();
-
-        exploder.Initialize(bullet.DamageAttributes);
-        bullet.ChangeDamage(_damageImproverAttributes);
-
-        _bullet = bullet;
+        exploder.Initialize(_bullet.DamageAttributes, explosionSound);
         _exploder = exploder;
     }
 
     public void SetBulletRepository(IBulletRepository bulletRepository)
     {
-        _bulletRepository = bulletRepository ?? throw new System.ArgumentNullException(nameof(bulletRepository));
+        BulletRepository = bulletRepository ?? throw new ArgumentNullException(nameof(bulletRepository));
+    }
+
+    public void SetExplosionSound(ISound explosionSound)
+    {
+        ExplosionSound = explosionSound ?? throw new ArgumentNullException(nameof(explosionSound));
     }
 
     public void Move(Vector3 startPoint, Vector3 direction) => _bullet.Move(startPoint, direction);
@@ -62,10 +87,24 @@ public class ExplodingBullet : MonoBehaviour, IBullet, IInitializer
 
     private void OnExplode(GameObject gameObject)
     {
-        if (gameObject.TryGetComponent(out IEnemy _))
+        if (gameObject.TryGetComponent(out IDamagedObject _))
         {
             _exploder.Explode(transform.position);
-            _bulletRepository.Put(_bullet);
+
+            StartCoroutine(HideBeforePut());
         }
+    }
+
+    private IEnumerator HideBeforePut()
+    {
+        _renderer.enabled = false;
+        _bullet.enabled = false;
+
+        yield return _wait;
+
+        _renderer.enabled = true;
+        _bullet.enabled = true;
+
+        BulletRepository.Put(_bullet);
     }
 }

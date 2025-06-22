@@ -2,9 +2,9 @@
 
 public class PlayerShotStep : IStep
 {
-    private IPlayer _player;
+    private IDesignator _player;
 
-    public PlayerShotStep(IPlayer player)
+    public PlayerShotStep(IDesignator player)
     {
         _player = player ?? throw new ArgumentNullException(nameof(player));
     }

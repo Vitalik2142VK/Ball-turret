@@ -11,6 +11,8 @@ namespace PlayLevel
         [SerializeField] private TargetPoint _targetPoint;
         [SerializeField] private DefaultGun _gun;
         [SerializeField] private HealthBar _healthBar;
+        [SerializeField] private TrajectoryRenderer _trajectoryRenderer;
+        [SerializeField] private Sound _shootSound;
 
         [Header("Bullets")]
         [SerializeField] private BulletsCollector _bulletCollector;
@@ -39,6 +41,12 @@ namespace PlayLevel
             if (_healthBar == null)
                 throw new NullReferenceException(nameof(_healthBar));
 
+            if (_trajectoryRenderer == null)
+                throw new NullReferenceException(nameof(_trajectoryRenderer));
+
+            if (_shootSound == null)
+                throw new NullReferenceException(nameof(_shootSound));
+
             if (_bulletCollector == null)
                 throw new NullReferenceException(nameof(_bulletCollector));
 
@@ -54,15 +62,15 @@ namespace PlayLevel
             _turret.Disable();
         }
 
-        public void Configure(IUser user, IBulletFactory bulletFactory)
+        public void Configure(IPlayer user, IBulletFactory bulletFactory)
         {
             if (bulletFactory == null)
                 throw new NullReferenceException(nameof(bulletFactory));
 
             IGunMagazine gunMagazine = CreateGunMagazine(bulletFactory);
 
-            _gun.Initialize(gunMagazine, _gunAttributes.TimeBetweenShots);
-            _tower.Initialize(_targetPoint);
+            _gun.Initialize(gunMagazine, _shootSound, _gunAttributes.TimeBetweenShots);
+            _tower.Initialize(_targetPoint, _trajectoryRenderer);
 
             IHealthImprover healthImprover = new HealthImprover(_turretHealthAttributes);
             healthImprover.Improve(user.HealthCoefficient);

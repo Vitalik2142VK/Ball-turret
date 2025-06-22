@@ -28,7 +28,7 @@ namespace MainMenuSpace
 
         public IImprovementShop ImprovementShop { get; private set; }
 
-        public void Configure(IUser user, ITurretImprover turretImprover)
+        public void Configure(IPlayer user, ITurretImprover turretImprover)
         {
             if (user == null)
                 throw new ArgumentNullException(nameof(user));

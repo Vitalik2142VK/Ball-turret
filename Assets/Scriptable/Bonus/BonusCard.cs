@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace Scriptable
 {
@@ -7,19 +9,50 @@ namespace Scriptable
     {
         [SerializeField] private Sprite _icon;
         [SerializeField] private string _name;
-        [SerializeField] private string _description;
+
+        [Header("Description")]
+        [SerializeField] private string _enDescription;
+        [SerializeField] private string _ruDescription;
+        [SerializeField] private string _trDescription;
+
+        private Dictionary<Language, string> _descriptions;
 
         private void OnValidate()
         {
             if (_name.Length == 0)
-                throw new System.IndexOutOfRangeException(nameof(_name));
+                throw new IndexOutOfRangeException(nameof(_name));
 
-            if (_description.Length == 0)
-                throw new System.IndexOutOfRangeException(nameof(_description));
+            if (_enDescription.Length == 0)
+                throw new IndexOutOfRangeException(nameof(_enDescription));
+
+            if (_ruDescription.Length == 0)
+                throw new IndexOutOfRangeException(nameof(_ruDescription));
+
+            if (_trDescription.Length == 0)
+                throw new IndexOutOfRangeException(nameof(_trDescription));
         }
 
         public Sprite Icon => _icon;
         public string Name => _name;
-        public string Description => _description;
+
+        public string GetDescription(Language language)
+        {
+            _descriptions ??= CreateDescriptions();
+
+            if (_descriptions.ContainsKey(language) == false)
+                throw new ArgumentOutOfRangeException(nameof(language));
+
+            return _descriptions[language];
+        }
+
+        private Dictionary<Language, string> CreateDescriptions()
+        {
+            return new Dictionary<Language, string>()
+            {
+                { Language.EN, _enDescription },
+                { Language.RU, _ruDescription },
+                { Language.TR, _trDescription },
+            };
+        }
     }
 }

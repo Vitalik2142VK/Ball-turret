@@ -5,15 +5,15 @@ namespace MainMenuSpace
 {
     public class EntryPoint : MonoBehaviour
     {
-        [SerializeField] private UserConfigurator _userConfigurator;
+        [SerializeField] private PlayerConfigurator _playerConfigurator;
         [SerializeField] private LevelPlannerConfigurator _levelsPlannerConfigurator;
         [SerializeField] private ShopConfigurator _shopConfigurator;
         [SerializeField] private UIConfigurator _userInterfaseConfigurator;
 
         private void OnValidate()
         {
-            if (_userConfigurator == null)
-                throw new NullReferenceException(nameof(_userConfigurator));
+            if (_playerConfigurator == null)
+                throw new NullReferenceException(nameof(_playerConfigurator));
 
             if (_levelsPlannerConfigurator == null)
                 throw new NullReferenceException(nameof(_levelsPlannerConfigurator));
@@ -27,18 +27,19 @@ namespace MainMenuSpace
 
         private void Start()
         {
-            _userConfigurator.Configure();
-            _levelsPlannerConfigurator.Configure();
+            _playerConfigurator.Configure();
 
-            var user = _userConfigurator.User;
-            var turretImprover = _userConfigurator.TurretImprover;
+            var player = _playerConfigurator.Player;
+            var turretImprover = _playerConfigurator.TurretImprover;
 
-            _shopConfigurator.Configure(user, turretImprover);
+            _levelsPlannerConfigurator.Configure(player);
+            _shopConfigurator.Configure(player, turretImprover);
 
             var levelFactory = _levelsPlannerConfigurator.LevelFactory;
+            var coinCountRandomizer = _levelsPlannerConfigurator.CoinCountRandomizer;
             var improvementShop = _shopConfigurator.ImprovementShop;
 
-            _userInterfaseConfigurator.Configure(user, levelFactory, improvementShop);
+            _userInterfaseConfigurator.Configure(player, levelFactory, improvementShop, coinCountRandomizer);
         }
     }
 }

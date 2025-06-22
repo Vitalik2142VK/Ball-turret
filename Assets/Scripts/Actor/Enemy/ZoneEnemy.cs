@@ -1,16 +1,16 @@
 using System;
 using UnityEngine;
 
-[RequireComponent(typeof(Collider))]
+[RequireComponent(typeof(BoxCollider))]
 public class ZoneEnemy : MonoBehaviour
 {
     private IAttackingEnemiesCollector _attackingEnemies;
     private IRemovedActorsCollector _removedActors;
-    private Collider _collider;
+    private BoxCollider _boxCollider;
 
     private void Awake()
     {
-        _collider = GetComponent<Collider>();
+        _boxCollider = GetComponent<BoxCollider>();
     }
 
     private void OnTriggerExit(Collider other)
@@ -26,7 +26,7 @@ public class ZoneEnemy : MonoBehaviour
 
     public bool IsPointInside(Vector3 point)
     {
-        return _collider.bounds.Contains(point);
+        return _boxCollider.bounds.Contains(point);
     }
 
     private void CheckExitActor(Collider other)

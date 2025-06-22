@@ -4,16 +4,12 @@ public class DamageImprover : IDamageImprover
 {
     private const float MinDamageСoefficient = 1f;
 
-    //private IDamageAttributes _attributes;
     private float _damage;
 
     public DamageImprover(IDamageAttributes attributes)
     {
         if (attributes == null)
             throw new ArgumentNullException(nameof(attributes));
-
-        //_attributes = attributes ?? throw new ArgumentNullException(nameof(attributes));
-        //_damage = _attributes.Damage;
 
         _damage = attributes.Damage;
     }

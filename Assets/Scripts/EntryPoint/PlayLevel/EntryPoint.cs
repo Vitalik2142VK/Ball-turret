@@ -5,8 +5,8 @@ namespace PlayLevel
 {
     public class EntryPoint : MonoBehaviour
     {
-        [SerializeField] private Player _player;
         [SerializeField] private Scriptable.SelectedLevel _selectedLevel;
+        [SerializeField] private PlayLevelPlayer _player;
 
         [Header("Configurators")]
         [SerializeField] private TurretConfigurator _turretConfigurator;
@@ -19,11 +19,11 @@ namespace PlayLevel
 
         private void OnValidate()
         {
-            if (_player == null)
-                throw new NullReferenceException(nameof(_player));
-
             if (_selectedLevel == null)
                 throw new NullReferenceException(nameof(_selectedLevel));
+
+            if (_player == null)
+                throw new NullReferenceException(nameof(_player));
 
             if (_turretConfigurator == null)
                 throw new NullReferenceException(nameof(_turretConfigurator));
@@ -49,10 +49,8 @@ namespace PlayLevel
 
         private void Start()
         {
-            IUser user = _player.User;
-
-            _bulletConfigurator.Configure(user);
-            _turretConfigurator.Configure(user, _bulletConfigurator.BulletFactory);
+            _bulletConfigurator.Configure(_player);
+            _turretConfigurator.Configure(_player, _bulletConfigurator.BulletFactory);
 
             var turret = _turretConfigurator.Turret;
             var winState = _turretConfigurator.WinState;
@@ -66,7 +64,7 @@ namespace PlayLevel
             _stepSystemConfigurator.Configure(turret, winState, _player, actorsController);
             _bonusPrefabConfigurator.Configure(turret);
 
-            RewardIssuer rewardIssuer = new RewardIssuer(user, _selectedLevel, winState);
+            RewardIssuer rewardIssuer = new RewardIssuer(_player, _selectedLevel, winState);
             var closeSceneStep = _stepSystemConfigurator.CloseSceneStep;
             _userInterfaceConfigurator.Configure(closeSceneStep, rewardIssuer);
         }

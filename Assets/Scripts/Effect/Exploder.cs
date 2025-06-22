@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class Exploder : MonoBehaviour, IExploder
 {
@@ -9,14 +10,21 @@ public class Exploder : MonoBehaviour, IExploder
     [SerializeField] private bool _isDebugOn = false; 
 
     private IDamage _damage;
+    private ISound _sound;
 
-    public void Initialize(IDamageAttributes attributes)
+    public void Initialize(IDamageAttributes attributes, ISound sound)
     {
+        if (attributes == null)
+            throw new ArgumentNullException(nameof(attributes));
+
+        _sound = sound ?? throw new ArgumentNullException(nameof(sound)); ;
         _damage = new Damage(attributes);
     }
 
     public void Explode(Vector3 pointContact)
     {
+        _sound.Play();
+
         Collider[] colliders = Physics.OverlapSphere(pointContact, _explosionRadius, _layerMask, QueryTriggerInteraction.Ignore);
 
         foreach (var collider in colliders)

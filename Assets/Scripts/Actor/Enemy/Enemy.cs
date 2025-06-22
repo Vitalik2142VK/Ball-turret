@@ -1,4 +1,5 @@
 ﻿using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(CapsuleCollider), typeof(Rigidbody), typeof(Mover))]
@@ -11,6 +12,7 @@ public class Enemy : MonoBehaviour, IEnemy
     private IMover _mover;
     private IDamage _damage;
     private IHealth _health;
+    private ISound _sound;
 
     public IMover Mover => _mover;
     public bool IsEnable { get; private set; }
@@ -53,8 +55,10 @@ public class Enemy : MonoBehaviour, IEnemy
         IsEnable = false;
     }
 
-    public void Initialize()
+    public void Initialize(ISound sound)
     {
+        _sound = sound ?? throw new ArgumentNullException(nameof(sound));
+
         _damage = new Damage(_enemyAttributes);
         _health = new Health(_enemyAttributes, _healthBar);
     }
@@ -72,7 +76,11 @@ public class Enemy : MonoBehaviour, IEnemy
         _health.TakeDamage(damage);
 
         if (_health.IsAlive == false)
+        {
+            _sound.Play();
+
             Destroy();
+        }
     }
 
     public void ApplyDamage(IDamagedObject damagedObject) => _damage.Apply(damagedObject);

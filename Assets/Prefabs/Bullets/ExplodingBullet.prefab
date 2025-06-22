@@ -19,7 +19,7 @@ PrefabInstance:
     - target: {fileID: 2844714841655934074, guid: 163cd43076eecd94ab9d152a4ab0f8f2, type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: 4711208715938537054, guid: 3c67242a9125e704aad4cb468186947f, type: 3}
+      objectReference: {fileID: -3898018629433442424, guid: 955de4d875f67384da4db7fde9348084, type: 3}
     - target: {fileID: 4263260762200817227, guid: 163cd43076eecd94ab9d152a4ab0f8f2, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -63,7 +63,7 @@ PrefabInstance:
     - target: {fileID: 8234357827683552692, guid: 163cd43076eecd94ab9d152a4ab0f8f2, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 5622effd2c1d2704387dcb94f6e9b8a1, type: 2}
+      objectReference: {fileID: 2100000, guid: d9c0226bd4324f01bc178cf4a515ef84, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -99,6 +99,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _damageImproverAttributes: {fileID: 11400000, guid: 8de6b47e76a75e7489034f3152485df0, type: 2}
+  _waitTimeToPut: 0.5
 --- !u!114 &4149379811457251323
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -114,7 +115,7 @@ MonoBehaviour:
   _explosionRadius: 3
   _layerMask:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 768
   _isDebugOn: 0
 --- !u!114 &-4032897119483031087
 MonoBehaviour:

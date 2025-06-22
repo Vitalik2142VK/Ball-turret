@@ -5,13 +5,15 @@ using UnityEngine;
 public class BonusFactory : MonoBehaviour, IActorFactory
 {
     private Dictionary<string, CollisionBonus> _prefabs;
+    private ISound _takenBonusSound;
 
-    public void Initialize(IEnumerable<CollisionBonus> bonusPrefabs)
+    public void Initialize(IEnumerable<CollisionBonus> bonusPrefabs, ISound takenBonusSound)
     {
         if (bonusPrefabs == null)
             throw new ArgumentNullException(nameof(bonusPrefabs));
 
         _prefabs = CreateDictionaryPrefabs(bonusPrefabs);
+        _takenBonusSound = takenBonusSound ?? throw new ArgumentNullException(nameof(takenBonusSound)); ;
     }
 
     public bool IsCanCreate(string nameTypeActor)
@@ -33,7 +35,7 @@ public class BonusFactory : MonoBehaviour, IActorFactory
         CollisionBonus prefab = _prefabs[nameTypeActor];
         IBonusActivator bonusActivator = prefab.GetCloneBonusActivator();
         CollisionBonus collisionBonus = Instantiate(prefab, prefab.transform.position, transform.rotation);
-        collisionBonus.Initialize(bonusActivator);
+        collisionBonus.Initialize(bonusActivator, _takenBonusSound);
 
         return collisionBonus;
     }
@@ -44,7 +46,6 @@ public class BonusFactory : MonoBehaviour, IActorFactory
 
         foreach (var prefab in bonusPrefabs)
             prefabs.Add(prefab.Name, prefab);
-                
 
         if (prefabs.Count == 0)
             throw new InvalidOperationException($"{nameof(bonusPrefabs)} should not be empty");

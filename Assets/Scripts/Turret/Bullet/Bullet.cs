@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(BulletPhysics))]
@@ -11,6 +12,7 @@ public class Bullet : MonoBehaviour, IBullet
     private IDamage _damage;
     private IBulletPhysics _bulletPhysics;
     private IBonusGatherer _gatherer;
+    private ISound _sound;
 
     public BulletType BulletType => _bulletType;
 
@@ -38,9 +40,11 @@ public class Bullet : MonoBehaviour, IBullet
         _bulletPhysics.EnteredCollision -= OnApplyDamage;
     }
 
-    public void Initialize(IDamageAttributes damageBulletAttributes)
+    public void Initialize(IDamageAttributes damageBulletAttributes, ISound sound)
     {
         DamageAttributes = damageBulletAttributes ?? throw new ArgumentNullException(nameof(damageBulletAttributes));
+
+        _sound = sound ?? throw new ArgumentNullException(nameof(sound));
 
         _damage = new Damage(DamageAttributes);
         _gatherer = new BonusGathererBullet();
@@ -75,6 +79,8 @@ public class Bullet : MonoBehaviour, IBullet
 
     private void OnApplyDamage(GameObject gameObject)
     {
+        _sound.Play();
+
         if (gameObject.TryGetComponent(out IDamagedObject damagedObject))
             _damage.Apply(damagedObject);
     }

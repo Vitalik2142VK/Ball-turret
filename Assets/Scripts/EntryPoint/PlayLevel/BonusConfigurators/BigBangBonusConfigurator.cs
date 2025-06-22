@@ -6,8 +6,9 @@ namespace PlayLevel
     public class BigBangBonusConfigurator : BonusConfigurator
     {
         [Header("Explosion")]
-        [SerializeField] private Player _player;
+        [SerializeField] private PlayLevelPlayer _player;
         [SerializeField] private Transform _pointExplosion;
+        [SerializeField] private Sound _bigBangSound;
         [SerializeField] private Scriptable.DamageAttributes _explosionDamageAttributes;
 
         private IExploder _exploder;
@@ -15,17 +16,26 @@ namespace PlayLevel
 
         private void OnValidate()
         {
+            if (_player == null)
+                throw new System.NullReferenceException(nameof(_player));
+
             if (_pointExplosion == null)
                 throw new System.NullReferenceException(nameof(_pointExplosion));
+
+            if (_bigBangSound == null)
+                throw new System.NullReferenceException(nameof(_bigBangSound));
+
+            if (_explosionDamageAttributes == null)
+                throw new System.NullReferenceException(nameof(_explosionDamageAttributes));
         }
 
         private void Awake()
         {
             Exploder exploder = GetComponent<Exploder>();
             DamageImprover improvingDamage = new DamageImprover(_explosionDamageAttributes);
-            float damageCoefficient = _player.User.DamageCoefficient;
+            float damageCoefficient = _player.DamageCoefficient;
             improvingDamage.Improve(damageCoefficient);
-            exploder.Initialize(improvingDamage);
+            exploder.Initialize(improvingDamage, _bigBangSound);
 
             _exploder = exploder;
             _pointExplosionPosition = transform.position;

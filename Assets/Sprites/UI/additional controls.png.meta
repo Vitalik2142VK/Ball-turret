@@ -307,10 +307,10 @@ TextureImporter:
       name: additional controls_10
       rect:
         serializedVersion: 2
-        x: 1073
-        y: 1477
-        width: 149
-        height: 156
+        x: 1054
+        y: 1463
+        width: 190
+        height: 186
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}

@@ -6,10 +6,10 @@ using UnityEngine.UI;
 public class CollisionBonus : MonoBehaviour, IBonus, IActor
 {
     [SerializeField] private Image _image;
+    [SerializeField] private Bonus _bonus;
 
     private IMover _mover;
     private ISound _sound;
-    private Bonus _bonus;
 
     public string Name => _bonus.Name;
     public IBonusCard BonusCard => _bonus.BonusCard;
@@ -29,7 +29,6 @@ public class CollisionBonus : MonoBehaviour, IBonus, IActor
     private void Awake()
     {
         _mover = GetComponent<Mover>();
-        _bonus = GetComponent<Bonus>();
 
         _image.sprite = _bonus.BonusCard.Icon;
     }

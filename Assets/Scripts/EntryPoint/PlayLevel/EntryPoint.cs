@@ -49,6 +49,16 @@ namespace PlayLevel
 
         private void Start()
         {
+            //todo Remove try/catch in Realise
+            //try
+            //{
+
+            //}
+            //catch (SystemException ex)
+            //{
+            //    Console.GetException(ex);
+            //}
+
             _bulletConfigurator.Configure(_player);
             _turretConfigurator.Configure(_player, _bulletConfigurator.BulletFactory);
 
@@ -64,7 +74,9 @@ namespace PlayLevel
             _stepSystemConfigurator.Configure(turret, winState, _player, actorsController);
             _bonusPrefabConfigurator.Configure(turret);
 
-            RewardIssuer rewardIssuer = new RewardIssuer(_player, _selectedLevel, winState);
+            SavesData savesData = new SavesData();
+            PlayerSaver playerSaver = new PlayerSaver(_player, savesData);
+            RewardIssuer rewardIssuer = new RewardIssuer(playerSaver, _player, _selectedLevel, winState);
             var closeSceneStep = _stepSystemConfigurator.CloseSceneStep;
             _userInterfaceConfigurator.Configure(closeSceneStep, rewardIssuer);
         }

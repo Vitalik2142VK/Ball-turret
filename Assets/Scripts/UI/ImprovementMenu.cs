@@ -118,6 +118,6 @@ public class ImprovementMenu : MonoBehaviour
     private void OnUpdateMenu()
     {
         foreach (var button in _improvementChoiseButtons)
-            button.Enable();       
+            button.Enable();
     }
 }

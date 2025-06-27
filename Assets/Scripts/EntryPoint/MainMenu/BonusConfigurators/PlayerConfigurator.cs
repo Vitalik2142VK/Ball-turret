@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using Scriptable;
+using YG;
 
 namespace MainMenuSpace
 {
@@ -9,10 +10,13 @@ namespace MainMenuSpace
         [SerializeField] private CachedPlayer _cachedUser;
         [SerializeField] private ImprovementTurretAttributes _improvementTurretAttributes;
 
-        private IPlayerService _playerService;
+        private IPlayerLoader _playerLoader;
+        private ISavesData _savesData;
+
+        public IPlayerSaver PlayerSaver { get; private set; }
 
         public ITurretImprover TurretImprover => _cachedUser.TurretImprover;
-        public IPlayer Player => _cachedUser.Player;
+        public IPlayer Player => _cachedUser;
 
         private void OnValidate()
         {
@@ -23,22 +27,31 @@ namespace MainMenuSpace
                 throw new NullReferenceException(nameof(_improvementTurretAttributes));
         }
 
-        private void Awake()
+        private void OnEnable()
         {
-            _playerService = new CashPlayerService(_improvementTurretAttributes);
+            YandexGame.GetDataEvent += OnCreateSavesData;
+        }
+
+        private void OnDisable()
+        {
+            YandexGame.GetDataEvent -= OnCreateSavesData;
         }
 
         public void Configure()
         {
-            if (_cachedUser.IsSaved)
+            OnCreateSavesData();
+
+            _playerLoader = new PlayerLoader(_improvementTurretAttributes, _savesData);
+
+            if (_cachedUser.IsSaved == false)
             {
-                _playerService.Save(_cachedUser);
-            }
-            else
-            {
-                IPlayer player = _playerService.Load();
+                IPlayer player = _playerLoader.Load();
                 _cachedUser.SetUser(player);
             }
+
+            PlayerSaver = new PlayerSaver(_cachedUser, _savesData);
         }
+
+        private void OnCreateSavesData() => _savesData ??= new SavesData();
     }
 }

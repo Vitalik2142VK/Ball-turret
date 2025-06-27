@@ -1,10 +1,11 @@
 ﻿public interface IRewardIssuer
 {
     public bool IsRewardIssued { get; }
+    public bool IsBonusRewardIssued { get; }
 
     public void AwardReward();
 
-    public void ApplyMaxReward();
+    public void AwarBonusReward();
 
     public int GetReward();
 

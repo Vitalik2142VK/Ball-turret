@@ -11,19 +11,22 @@ public class Exploder : MonoBehaviour, IExploder
 
     private IDamage _damage;
     private ISound _sound;
+    private IExplosionView _explosionView;
 
-    public void Initialize(IDamageAttributes attributes, ISound sound)
+    public void Initialize(IDamageAttributes attributes, ISound sound, IExplosionView explosionView)
     {
         if (attributes == null)
             throw new ArgumentNullException(nameof(attributes));
 
-        _sound = sound ?? throw new ArgumentNullException(nameof(sound)); ;
+        _sound = sound ?? throw new ArgumentNullException(nameof(sound));
+        _explosionView = explosionView ?? throw new ArgumentNullException(nameof(explosionView));
         _damage = new Damage(attributes);
     }
 
     public void Explode(Vector3 pointContact)
     {
         _sound.Play();
+        _explosionView.Play();
 
         Collider[] colliders = Physics.OverlapSphere(pointContact, _explosionRadius, _layerMask, QueryTriggerInteraction.Ignore);
 

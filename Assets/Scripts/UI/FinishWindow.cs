@@ -5,10 +5,9 @@ using UnityEngine.UI;
 
 public class FinishWindow : MonoBehaviour, IMenu
 {
-    private const float EnableTimeScale = 1f;
-    private const float DisableTimeScale = 0f;
     private const RewardType PassingLevel = RewardType.PassingLevel;
 
+    [SerializeField] private Pause _pause;
     [SerializeField] private Button _videoViewingButton;
     [SerializeField] private TextMeshProUGUI _wonBonusCoinsText;
     [SerializeField] private TextMeshProUGUI _wonCoinsText;
@@ -18,6 +17,9 @@ public class FinishWindow : MonoBehaviour, IMenu
 
     private void OnValidate()
     {
+        if (_pause == null)
+            throw new ArgumentNullException(nameof(_pause));
+
         if (_videoViewingButton == null)
             throw new ArgumentNullException(nameof(_videoViewingButton));
 
@@ -58,8 +60,7 @@ public class FinishWindow : MonoBehaviour, IMenu
 
     public void Enable()
     {
-        Time.timeScale = DisableTimeScale;
-
+        _pause.Enable();
         gameObject.SetActive(true);
         _wonCoinsText.text = _increaseRewardIssuer.GetReward().ToString();
 
@@ -87,8 +88,7 @@ public class FinishWindow : MonoBehaviour, IMenu
 
         gameObject.SetActive(false);
         _adsViewer.ShowFullScreenAd();
-
-        Time.timeScale = EnableTimeScale;
+        _pause.Disable();
     }
 
     private void OnAddBonusReward(RewardType reward)
@@ -96,7 +96,7 @@ public class FinishWindow : MonoBehaviour, IMenu
         if (reward != PassingLevel)
             return;
 
-        _increaseRewardIssuer.ApplyMaxReward();
+        _increaseRewardIssuer.AwarBonusReward();
         _wonCoinsText.text = _increaseRewardIssuer.GetReward().ToString();
         _increaseRewardIssuer.AwardReward();
     }

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddffec690b9a64d4e80a879858b6c730, type: 3}
   m_Name: FullHealthTurretBonusCard
   m_EditorClassIdentifier: 
-  _icon: {fileID: 21300000, guid: 3104929523b49d84f991a5f804b68f9a, type: 3}
+  _icon: {fileID: 474603010, guid: b645c37e18763b54b9f01059629437e7, type: 3}
   _name: FullHealthTurretBonus
   _enDescription: Fully restores the turret's health
   _ruDescription: "\u041F\u043E\u043B\u043D\u043E\u0441\u0442\u044C\u044E \u0432\u043E\u0441\u0441\u0442\u0430\u043D\u0430\u0432\u043B\u0438\u0432\u0430\u0435\u0442

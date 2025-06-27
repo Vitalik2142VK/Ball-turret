@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddffec690b9a64d4e80a879858b6c730, type: 3}
   m_Name: AddPoisonBulletBonus
   m_EditorClassIdentifier: 
-  _icon: {fileID: 21300000, guid: 5e9150a7a9712bf4eb8192218196e040, type: 3}
+  _icon: {fileID: 468012911, guid: b645c37e18763b54b9f01059629437e7, type: 3}
   _name: AddPoisonBulletBonus
   _enDescription: Adds a poisonous projectile, deals additional poison damage
   _ruDescription: "\u0414\u043E\u0431\u0430\u0432\u043B\u044F\u0435\u0442 \u044F\u0434\u043E\u0432\u0438\u0442\u044B\u0439

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddffec690b9a64d4e80a879858b6c730, type: 3}
   m_Name: AddDualBulletBonusCard
   m_EditorClassIdentifier: 
-  _icon: {fileID: 21300000, guid: f55d89a09701825449c630f2ab005d9f, type: 3}
+  _icon: {fileID: 495947224, guid: b645c37e18763b54b9f01059629437e7, type: 3}
   _name: AddDualBulletBonus
   _enDescription: Adds two projectiles
   _ruDescription: "\u0414\u043E\u0431\u0430\u0432\u043B\u044F\u0435\u0442 \u0434\u0432\u0430

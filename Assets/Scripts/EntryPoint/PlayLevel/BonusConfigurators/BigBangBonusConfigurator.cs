@@ -9,6 +9,7 @@ namespace PlayLevel
         [SerializeField] private PlayLevelPlayer _player;
         [SerializeField] private Transform _pointExplosion;
         [SerializeField] private Sound _bigBangSound;
+        [SerializeField] private ExplosionView _explosionView;
         [SerializeField] private Scriptable.DamageAttributes _explosionDamageAttributes;
 
         private IExploder _exploder;
@@ -25,6 +26,9 @@ namespace PlayLevel
             if (_bigBangSound == null)
                 throw new System.NullReferenceException(nameof(_bigBangSound));
 
+            if (_explosionView == null)
+                throw new System.NullReferenceException(nameof(_explosionView));
+
             if (_explosionDamageAttributes == null)
                 throw new System.NullReferenceException(nameof(_explosionDamageAttributes));
         }
@@ -35,7 +39,7 @@ namespace PlayLevel
             DamageImprover improvingDamage = new DamageImprover(_explosionDamageAttributes);
             float damageCoefficient = _player.DamageCoefficient;
             improvingDamage.Improve(damageCoefficient);
-            exploder.Initialize(improvingDamage, _bigBangSound);
+            exploder.Initialize(improvingDamage, _bigBangSound, _explosionView);
 
             _exploder = exploder;
             _pointExplosionPosition = transform.position;

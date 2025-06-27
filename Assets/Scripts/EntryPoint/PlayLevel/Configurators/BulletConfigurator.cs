@@ -37,13 +37,13 @@ namespace PlayLevel
                 throw new NullReferenceException(nameof(_explosionSound));
         }
 
-        public void Configure(IPlayer user)
+        public void Configure(IPlayer player)
         {
-            if (user == null)
-                throw new ArgumentNullException(nameof(user));
+            if (player == null)
+                throw new ArgumentNullException(nameof(player));
 
             DamageImprover improveDamageBullet = new DamageImprover(_damageBulletAttributes);
-            improveDamageBullet.Improve(user.DamageCoefficient);
+            improveDamageBullet.Improve(player.DamageCoefficient);
 
             _bulletFactory.Initialize(improveDamageBullet, _hitBulletSound);
             _explodingBulletPrefab.SetExplosionSound(_explosionSound);

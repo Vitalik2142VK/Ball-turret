@@ -5,7 +5,6 @@ public class PauseMenu : MonoBehaviour, IMenu
     [SerializeField] private Pause _pause;
     [SerializeField] private SettingMenu _settingMenu;
 
-    private GameObject _gameObject;
     private IStep _closeSceneStep;
 
     private void OnValidate()
@@ -19,8 +18,7 @@ public class PauseMenu : MonoBehaviour, IMenu
 
     private void Awake()
     {
-        _gameObject = gameObject;
-        _gameObject.SetActive(false);
+        gameObject.SetActive(false);
     }
 
     public void Initialize(IStep closeSceneStep)
@@ -30,24 +28,24 @@ public class PauseMenu : MonoBehaviour, IMenu
 
     public void Enable()
     {
-        _gameObject.SetActive(true);
+        gameObject.SetActive(true);
     }
 
     public void OnOpen()
     {
         _pause.Enable();
-        _gameObject.SetActive(true);
+        gameObject.SetActive(true);
     }
 
     public void OnPlay()
     {
-        _gameObject.SetActive(false);
+        gameObject.SetActive(false);
         _pause.Disable();
     }
 
     public void OnOpenSettingMenu()
     {
-        _gameObject.SetActive(false);
+        gameObject.SetActive(false);
         _settingMenu.Open(this);
     }
 

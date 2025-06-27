@@ -81,7 +81,7 @@ public class AdsViewer : MonoBehaviour, IAdsViewer
     private IEnumerator WaitShowRewardAd(RewardType reward)
     {
         CanShowRewardAd = false;
-
+        
         YandexGame.RewVideoShow((int)reward);
 
         yield return _waitNextAdRewardAd;

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddffec690b9a64d4e80a879858b6c730, type: 3}
   m_Name: AddBulletBonusCard
   m_EditorClassIdentifier: 
-  _icon: {fileID: 21300000, guid: 2d41115a514ee9b4bac707e128eac56c, type: 3}
+  _icon: {fileID: 605684147, guid: b645c37e18763b54b9f01059629437e7, type: 3}
   _name: AddBulletBonus
   _enDescription: Adds one shell
   _ruDescription: "\u0414\u043E\u0431\u0430\u0432\u043B\u044F\u0435\u0442 \u043E\u0434\u0438\u043D

@@ -11,6 +11,7 @@ namespace MainMenuSpace
         [SerializeField] private TurretAttributes _turretAttributes;
         [SerializeField] private WalletView _walletView;
 
+        private IPlayerSaver _playerSaver;
         private IWallet _wallet;
         private ITurretImprover _turretImprover;
 
@@ -28,13 +29,14 @@ namespace MainMenuSpace
 
         public IImprovementShop ImprovementShop { get; private set; }
 
-        public void Configure(IPlayer user, ITurretImprover turretImprover)
+        public void Configure(IPlayerSaver playerSaver, IPlayer user, ITurretImprover turretImprover)
         {
             if (user == null)
                 throw new ArgumentNullException(nameof(user));
 
             _wallet = user.Wallet;
             _wallet.SetView(_walletView);
+            _playerSaver = playerSaver ?? throw new ArgumentNullException(nameof(playerSaver));
             _turretImprover = turretImprover ?? throw new ArgumentNullException(nameof(turretImprover));
 
             var transactions = CreateTransactions();
@@ -52,8 +54,8 @@ namespace MainMenuSpace
 
             return new List<IGamePayTransaction>
             {
-                new DamageImprovementTransaction(_wallet, _turretImprover, damagePriceEnlarger),
-                new HealthImprovementTransaction(_wallet, _turretImprover, healthPriceEnlarger)
+                new DamageImprovementTransaction(_playerSaver, _wallet, _turretImprover, damagePriceEnlarger),
+                new HealthImprovementTransaction(_playerSaver, _wallet, _turretImprover, healthPriceEnlarger)
             };
         }
 

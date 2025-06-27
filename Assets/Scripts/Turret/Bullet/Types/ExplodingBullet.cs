@@ -8,10 +8,12 @@ using UnityEngine;
 public class ExplodingBullet : MonoBehaviour, IBullet, IInitializer
 {
     [SerializeField] private Scriptable.DamageImproverAttributes _damageImproverAttributes;
+    [SerializeField, SerializeIterface(typeof(IExplosionView))] private GameObject _explosionParticle;
     [SerializeField, Range(0.2f, 3f)] private float _waitTimeToPut = 0.5f;
 
     private IExploder _exploder;
     private IBulletPhysics _bulletPhysics;
+    private IExplosionView _explosionView;
     private Bullet _bullet;
     private Renderer _renderer;
     private WaitForSeconds _wait;
@@ -25,11 +27,15 @@ public class ExplodingBullet : MonoBehaviour, IBullet, IInitializer
     {
         if (_damageImproverAttributes == null)
             throw new NullReferenceException(nameof(_damageImproverAttributes));
+
+        if (_explosionParticle == null)
+            throw new NullReferenceException(nameof(_explosionParticle));
     }
 
     private void Awake()
     {
         _bulletPhysics = GetComponent<IBulletPhysics>();
+        _explosionView = _explosionParticle.GetComponent<IExplosionView>();
     }
 
     private void OnEnable()
@@ -63,7 +69,7 @@ public class ExplodingBullet : MonoBehaviour, IBullet, IInitializer
             Initialize();
 
         Exploder exploder = GetComponent<Exploder>();
-        exploder.Initialize(_bullet.DamageAttributes, explosionSound);
+        exploder.Initialize(_bullet.DamageAttributes, explosionSound, _explosionView);
         _exploder = exploder;
     }
 

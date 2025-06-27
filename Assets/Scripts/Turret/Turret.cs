@@ -34,17 +34,17 @@ public class Turret : ITurret
         _endStep = endStep ?? throw new ArgumentNullException(nameof(endStep));
     }
 
-    public void SetTouchPoint(Vector3 touchPoint)
+    public void SetTouchPoint(Vector3 touchPosition)
     {
-        _tower.TakeAim(touchPoint);  
+        _tower.TakeAim(touchPosition);  
     }
 
-    public void FixTargetPostion()
+    public void FixTargetPostion(Vector3 targetPostion)
     {
         if (_tower.IsReadyShoot)
             _gun.Shoot(_tower.Direction);
 
-        _tower.SaveDirection();
+        _tower.SaveDirection(targetPostion);
     }
 
     public void TakeDamage(IDamageAttributes damage)

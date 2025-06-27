@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddffec690b9a64d4e80a879858b6c730, type: 3}
   m_Name: AddExplosionBulletBonus
   m_EditorClassIdentifier: 
-  _icon: {fileID: 21300000, guid: dfbf129e522582744a4dfbd1709887ee, type: 3}
+  _icon: {fileID: 605069473, guid: b645c37e18763b54b9f01059629437e7, type: 3}
   _name: AddExplosionBulletBonus
   _enDescription: Bomb. When it collides with an enemy, it explodes, causing damage
     to the area.

@@ -7,7 +7,7 @@ public interface ITurret : IDamagedObject, IEndPointStep
 
     public void SetTouchPoint(Vector3 touchPoint);
 
-    public void FixTargetPostion();
+    public void FixTargetPostion(Vector3 targetPostion);
 
     public void RestoreHealth();
 }

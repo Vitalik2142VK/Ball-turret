@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using YG;
 
 namespace MainMenuSpace
 {
@@ -27,19 +28,30 @@ namespace MainMenuSpace
 
         private void Start()
         {
+            //todo Remove try/catch in Relise
+            //try
+            //{
+
+            //}
+            //catch (Exception ex)
+            //{
+            //    Console.GetException(ex);
+            //}
+
             _playerConfigurator.Configure();
 
             var player = _playerConfigurator.Player;
+            var playerSaver = _playerConfigurator.PlayerSaver;
             var turretImprover = _playerConfigurator.TurretImprover;
 
             _levelsPlannerConfigurator.Configure(player);
-            _shopConfigurator.Configure(player, turretImprover);
+            _shopConfigurator.Configure(playerSaver, player, turretImprover);
 
             var levelFactory = _levelsPlannerConfigurator.LevelFactory;
-            var coinCountRandomizer = _levelsPlannerConfigurator.CoinCountRandomizer;
             var improvementShop = _shopConfigurator.ImprovementShop;
+            var coinCountRandomizer = _levelsPlannerConfigurator.CoinCountRandomizer;
 
-            _userInterfaseConfigurator.Configure(player, levelFactory, improvementShop, coinCountRandomizer);
+            _userInterfaseConfigurator.Configure(playerSaver, player, levelFactory, improvementShop, coinCountRandomizer);
         }
     }
 }

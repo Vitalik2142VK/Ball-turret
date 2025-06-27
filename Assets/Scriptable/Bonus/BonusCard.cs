@@ -19,6 +19,9 @@ namespace Scriptable
 
         private void OnValidate()
         {
+            if (_icon == null)
+                throw new NullReferenceException(nameof(_icon));
+
             if (_name.Length == 0)
                 throw new IndexOutOfRangeException(nameof(_name));
 

@@ -47,11 +47,7 @@ public class PlayLevelPlayer : MonoBehaviour, IPlayer, IDesignator
         _touchInput.LaunchTouchscreenToMap();
 
         if (_touchInput.IsPress && _turret.IsReadyShoot)
-        {
-            Vector3 touchMapPosition = _touchInput.TouchPositionInMap;
-
-            _turret.SetTouchPoint(touchMapPosition);
-        }
+            _turret.SetTouchPoint(_touchInput.TouchPositionInMap);
     }
 
     private void OnFinishPress()
@@ -59,7 +55,7 @@ public class PlayLevelPlayer : MonoBehaviour, IPlayer, IDesignator
         if (_turret.IsReadyShoot == false)
             return;
 
-        _turret.FixTargetPostion();
+        _turret.FixTargetPostion(_touchInput.TouchPositionInMap);
     }
 
     public void IncreaseAchievedLevel() => _cachedUser.IncreaseAchievedLevel();

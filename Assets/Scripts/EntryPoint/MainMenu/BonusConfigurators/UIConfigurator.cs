@@ -44,8 +44,11 @@ namespace MainMenuSpace
                 throw new NullReferenceException(nameof(_audioSetting));
         }
 
-        public void Configure(IPlayer player, ILevelFactory levelFactory, IImprovementShop improvementShop, ICoinCountRandomizer coinCountRandomizer)
+        public void Configure(IPlayerSaver playerSaver, IPlayer player, ILevelFactory levelFactory, IImprovementShop improvementShop, ICoinCountRandomizer coinCountRandomizer)
         {
+            if (playerSaver == null)
+                throw new ArgumentNullException(nameof(playerSaver));
+
             if (player == null)
                 throw new ArgumentNullException(nameof(player));
 
@@ -61,10 +64,13 @@ namespace MainMenuSpace
             if (_adsViewer == null)
                 throw new NullReferenceException(nameof(_adsViewer));
 
+            // todo Remove
+            Console.GetLog($"AdsViewer is null == {_adsViewer == null}");
+
             _playMenu.Initialize(player, levelFactory, _sceneLoader);
             _settingMenu.Initialize(_audioSetting);
             _improvementChoiseMenu.Initialize(improvementShop, _adsViewer);
-            _addCoinsButton.Initialize(player.Wallet, _adsViewer, coinCountRandomizer);
+            _addCoinsButton.Initialize(playerSaver, player.Wallet, _adsViewer, coinCountRandomizer);
 
             InitializeImprovementChoiseButtons();
         }

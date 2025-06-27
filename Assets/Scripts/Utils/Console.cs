@@ -1,9 +1,12 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Console : MonoBehaviour
 {
+    private const string s_EndText = "\n...|||...\n\n";
+
     private static Console s_Console;
 
     [SerializeField] private ContentSizeFitter _content;
@@ -15,6 +18,13 @@ public class Console : MonoBehaviour
             CreateSingleton();
 
         s_Console.Log(message);
+    }
+
+    public static void GetException(Exception ex)
+    {
+        string exceptionMessage = $"Exception: {ex.Message}\nStack:{ex.StackTrace}";
+
+        GetLog(exceptionMessage);
     }
 
     private static void CreateSingleton()
@@ -29,13 +39,13 @@ public class Console : MonoBehaviour
             _content = transform.GetComponentInChildren<ContentSizeFitter>();
 
         if (_content == null)
-            throw new System.NullReferenceException(nameof(_content));
+            throw new NullReferenceException(nameof(_content));
 
         if (_textPrefab == null)
             _textPrefab = transform.GetComponentInChildren<TextMeshProUGUI>();
 
         if (_textPrefab == null)
-            throw new System.NullReferenceException(nameof(_textPrefab));
+            throw new NullReferenceException(nameof(_textPrefab));
     }
 
     private void Awake()
@@ -44,9 +54,14 @@ public class Console : MonoBehaviour
             s_Console = this;
     }
 
+    private void OnDisable()
+    {
+        s_Console = null;
+    }
+
     private void Log(string message)
     {
         var text = Instantiate(_textPrefab, _content.transform);
-        text.text = message;
+        text.text = $"{message}{s_EndText}";
     }
 }

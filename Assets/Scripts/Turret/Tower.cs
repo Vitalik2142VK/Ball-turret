@@ -43,15 +43,16 @@ public class Tower : MonoBehaviour, ITower
         _trajectoryRenderer.ShowTrajectory(_muzzle.Position, Direction);
     }
 
-    public void TakeAim(Vector3 touchPosition)
+    public void TakeAim(Vector3 targertPosition)
     {
-        _touchPosition = touchPosition;
+        _touchPosition = targertPosition;
         _trajectoryRenderer.Enable();
         _trajectoryRenderer.ShowTrajectory(_muzzle.Position, Direction);
     }
 
-    public void SaveDirection()
+    public void SaveDirection(Vector3 targertPosition)
     {
+        _touchPosition = targertPosition;
         _trajectoryRenderer.Disable();
         _targetPoint.SaveLastPosition();
 

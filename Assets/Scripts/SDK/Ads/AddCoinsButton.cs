@@ -12,6 +12,7 @@ public class AddCoinsButton : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _addCoinsText;
     [SerializeField, Min(0.02f)] private float _timeWaitUpdate = 0.5f;
 
+    private IPlayerSaver _playerSaver;
     private IWallet _wallet;
     private IAdsViewer _adsViewer;
     private ICoinCountRandomizer _coinCountRandomizer;
@@ -64,8 +65,9 @@ public class AddCoinsButton : MonoBehaviour
             StopCoroutine(_videoViewingCoroutine);
     }
 
-    public void Initialize(IWallet wallet, IAdsViewer adsViewer, ICoinCountRandomizer coinCountRandomizer)
+    public void Initialize(IPlayerSaver playerSaver, IWallet wallet, IAdsViewer adsViewer, ICoinCountRandomizer coinCountRandomizer)
     {
+        _playerSaver = playerSaver ?? throw new ArgumentNullException(nameof(playerSaver));
         _wallet = wallet ?? throw new ArgumentNullException(nameof(wallet));
         _adsViewer = adsViewer ?? throw new ArgumentNullException(nameof(adsViewer));
         _coinCountRandomizer = coinCountRandomizer ?? throw new ArgumentNullException(nameof(coinCountRandomizer));
@@ -84,6 +86,7 @@ public class AddCoinsButton : MonoBehaviour
 
         int countCoins = _coinCountRandomizer.CountCoinsForRewardAd;
         _wallet.AddCoins(countCoins);
+        _playerSaver.Save();
         _videoViewingCoroutine = StartCoroutine(UpdateInteractable());
 
         VideoViewed?.Invoke();

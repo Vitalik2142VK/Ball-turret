@@ -2,19 +2,9 @@ using System;
 
 public class Player : IPlayer
 {
-    public Player(ITurretImprover turretImprover, IWallet wallet)
+    public Player(ITurretImprover turretImprover, IWallet wallet, int achievedLevel = 0, bool areAdsDisabled = false)
     {
-        TurretImprover = turretImprover ?? throw new ArgumentNullException(nameof(turretImprover));
-
-        Wallet = wallet ?? throw new ArgumentNullException(nameof(wallet));
-
-        AchievedLevelIndex = 0;
-        AreAdsDisabled = false;
-    }
-
-    public Player(ITurretImprover turretImprover, IWallet wallet, int achievedLevel, bool areAdsDisabled)
-    {
-        if (achievedLevel <= 0)
+        if (achievedLevel < 0)
             throw new ArgumentOutOfRangeException(nameof(achievedLevel));
 
         TurretImprover = turretImprover ?? throw new ArgumentNullException(nameof(turretImprover));
@@ -32,7 +22,6 @@ public class Player : IPlayer
 
     public float HealthCoefficient => TurretImprover.HealthCoefficient;
     public float DamageCoefficient => TurretImprover.DamageCoefficient;
-
 
     public void IncreaseAchievedLevel()
     {

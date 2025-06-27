@@ -3,28 +3,30 @@
 public class RewardIssuer : IRewardIssuer
 {
     private const float AdditionalRewardFirstPass = 0.5f;
+    private int _initialRewardValue = -1;
+    private int _paidRewardValue = 0;
 
+    private IPlayerSaver _playerSaver;
     private IPlayer _player;
     private ILevel _level;
     private IWinState _winState;
     private int _reward;
     private int _bonusReward;
-    private int _maxReward;
 
-    public RewardIssuer(IPlayer player, ILevel level, IWinState winState)
+    public RewardIssuer(IPlayerSaver playerSaver, IPlayer player, ILevel level, IWinState winState)
     {
+        _playerSaver = playerSaver ?? throw new ArgumentNullException(nameof(playerSaver));
         _player = player ?? throw new ArgumentNullException(nameof(player));
         _level = level ?? throw new ArgumentNullException(nameof(level));
         _winState = winState ?? throw new ArgumentNullException(nameof(winState));
-        _reward = -1;
-        _bonusReward = -1;
-        _maxReward = -1;
-        IsRewardIssued = false;
+        _reward = _initialRewardValue;
+        _bonusReward = _initialRewardValue;
     }
 
-    public bool IsRewardIssued { get; private set; }
-
+    public bool IsRewardIssued => _reward == _paidRewardValue;
+    public bool IsBonusRewardIssued => _bonusReward == _paidRewardValue;
     private bool IsFirstPass => _level.Index == _player.AchievedLevelIndex;
+
 
     public void AwardReward()
     {
@@ -32,21 +34,27 @@ public class RewardIssuer : IRewardIssuer
             throw new InvalidOperationException("Reward has already been issued");
 
         _player.Wallet.AddCoins(_reward);
-
-        IsRewardIssued = true;
+        _reward = _paidRewardValue;
 
         if (IsFirstPass && _winState.IsWin)
             _player.IncreaseAchievedLevel();
+
+        _playerSaver.Save();
     }
 
-    public void ApplyMaxReward()
+    public void AwarBonusReward()
     {
-        _reward = _maxReward;
+        if (IsBonusRewardIssued)
+            throw new InvalidOperationException("Bonys reward has already been issued");
+
+        _player.Wallet.AddCoins(_bonusReward);
+        _bonusReward = _paidRewardValue;
+        _playerSaver.Save();
     }
 
     public int GetReward()
     {
-        if (_reward > 0)
+        if (_reward >= _paidRewardValue)
             return _reward;
 
         CalculateRewards();
@@ -56,7 +64,7 @@ public class RewardIssuer : IRewardIssuer
 
     public int GetBonusReward()
     {
-        if (_bonusReward > 0)
+        if (_bonusReward >= _paidRewardValue)
             return _bonusReward;
 
         CalculateRewards();
@@ -79,6 +87,5 @@ public class RewardIssuer : IRewardIssuer
             rewardFirstPass = (int)(AdditionalRewardFirstPass * _reward);
 
         _reward += rewardFirstPass;
-        _maxReward = _reward + _bonusReward;
     }
 }

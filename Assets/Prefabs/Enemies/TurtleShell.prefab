@@ -111,6 +111,7 @@ GameObject:
   - component: {fileID: -7213859401256764012}
   - component: {fileID: 5685462170645546219}
   - component: {fileID: -6994984058696584189}
+  - component: {fileID: 201435754599198465}
   - component: {fileID: -2109719126461581933}
   m_Layer: 9
   m_Name: TurtleShell
@@ -221,6 +222,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a3ccb44b215d8f4b945acbc3a6427b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &201435754599198465
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 823343203851408336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8dee1f027b79a814e9c4a1dc777e9d75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _armorAttributes: {fileID: 11400000, guid: eaf34083836347b45b361d274a3e31e9, type: 2}
+  _enemy: {fileID: -2109719126461581933}
 --- !u!114 &-2109719126461581933
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -234,8 +249,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _enemyAttributes: {fileID: 11400000, guid: 6d08e35edae5c1745b4c30c0b146b440, type: 2}
+  _debuffReceiverGameObject: {fileID: 6718058378194640254}
   _healthBar: {fileID: 6923154442667345009}
-  _debuffReceiver: {fileID: 4008889465075601181}
 --- !u!1 &1347319086644672082
 GameObject:
   m_ObjectHideFlags: 0
@@ -1193,7 +1208,7 @@ GameObject:
   - component: {fileID: 6404006587323293817}
   - component: {fileID: 4008889465075601181}
   m_Layer: 9
-  m_Name: ViewDebaff
+  m_Name: DebuffReceiver
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1225,7 +1240,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6718058378194640254}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: abb14967d3a45d54fab239d7f742e2ce, type: 3}
+  m_Script: {fileID: 11500000, guid: 83d45f6001c64e4469bd424219fc7e6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &6862161398160446592

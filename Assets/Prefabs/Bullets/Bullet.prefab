@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7831532543991991704}
   - component: {fileID: 982811214627394062}
   - component: {fileID: 1478252681555332712}
-  - component: {fileID: 2634447828204231745}
+  - component: {fileID: 7566039029939602341}
   m_Layer: 7
   m_Name: Bullet
   m_TagString: Untagged
@@ -147,9 +147,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0d356f5413b9e44d9bbd5cfe85b9092, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _hitBulletSound: {fileID: 0}
   _bulletType: 0
---- !u!114 &2634447828204231745
+--- !u!114 &7566039029939602341
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -165,4 +164,5 @@ MonoBehaviour:
   _trajectory: {fileID: 11400000, guid: 2a0a0022c8245fc47a5e4974d22abcb6, type: 2}
   _collisionMask:
     serializedVersion: 2
-    m_Bits: 832
+    m_Bits: 1856
+  _maxDirectionalError: 0.2

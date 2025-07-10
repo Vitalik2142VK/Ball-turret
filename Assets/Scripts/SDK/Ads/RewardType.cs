@@ -1,5 +1,5 @@
 ﻿public enum RewardType
 {
-    PassingLevel,
-    AddCoin
+    AddCoin,
+    SecondChance
 }

@@ -3,11 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Bullet), typeof(Exploder), typeof(BulletPhysics))]
-[RequireComponent(typeof(Renderer))]
+[RequireComponent(typeof(Bullet), typeof(Exploder), typeof(Renderer))]
 public class ExplodingBullet : MonoBehaviour, IBullet, IInitializer
 {
     [SerializeField] private Scriptable.DamageImproverAttributes _damageImproverAttributes;
+    [SerializeField, SerializeIterface(typeof(IBulletPhysics))] private GameObject _bulletPhysicsGameObject;
     [SerializeField, SerializeIterface(typeof(IExplosionView))] private GameObject _explosionParticle;
     [SerializeField, Range(0.2f, 3f)] private float _waitTimeToPut = 0.5f;
 
@@ -28,13 +28,19 @@ public class ExplodingBullet : MonoBehaviour, IBullet, IInitializer
         if (_damageImproverAttributes == null)
             throw new NullReferenceException(nameof(_damageImproverAttributes));
 
+        if (_bulletPhysicsGameObject == null)
+            if (TryGetComponent(out IBulletPhysics _))
+                _bulletPhysicsGameObject = gameObject;
+            else
+                throw new NullReferenceException(nameof(_damageImproverAttributes));
+
         if (_explosionParticle == null)
             throw new NullReferenceException(nameof(_explosionParticle));
     }
 
     private void Awake()
     {
-        _bulletPhysics = GetComponent<IBulletPhysics>();
+        _bulletPhysics = _bulletPhysicsGameObject.GetComponent<IBulletPhysics>();
         _explosionView = _explosionParticle.GetComponent<IExplosionView>();
     }
 
@@ -99,6 +105,9 @@ public class ExplodingBullet : MonoBehaviour, IBullet, IInitializer
 
             StartCoroutine(HideBeforePut());
         }
+
+        if (gameObject.TryGetComponent(out IArmoredObject armoredObject))
+            armoredObject.IgnoreArmor(_bullet.DamageAttributes);
     }
 
     private IEnumerator HideBeforePut()

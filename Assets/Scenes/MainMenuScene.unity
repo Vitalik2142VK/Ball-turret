@@ -1950,6 +1950,53 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1025612346
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1025612348}
+  - component: {fileID: 1025612347}
+  m_Layer: 0
+  m_Name: TestLevelPlannerConfigurator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 2147483647
+  m_IsActive: 1
+--- !u!114 &1025612347
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1025612346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5472eac1d7c84bb4484f19182ff08aed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _levelActorsPlanners:
+  - {fileID: 11400000, guid: 7f065bdc00efe944b82ce0ef98c99c4c, type: 2}
+  _healthCoefficient: 0.7
+--- !u!4 &1025612348
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1025612346}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1086902031
 GameObject:
   m_ObjectHideFlags: 0
@@ -2804,7 +2851,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerConfigurator: {fileID: 708947493}
-  _levelsPlannerConfigurator: {fileID: 1628363611}
+  _levelsPlannerConfigurator: {fileID: 1025612347}
   _shopConfigurator: {fileID: 1190516169}
   _userInterfaseConfigurator: {fileID: 776018107}
 --- !u!1001 &1561498137
@@ -3310,6 +3357,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _levelActorsPlanners:
+  - {fileID: 11400000, guid: cf0d18f35a7fbac4cbf18c8f8d193d68, type: 2}
   - {fileID: 11400000, guid: da682e913638d224d912e51e7e0317a8, type: 2}
   - {fileID: 11400000, guid: f854d0b2518eb3e43a8a398a2b0889c0, type: 2}
   - {fileID: 11400000, guid: 72365fa18e305a54490c24cf3d04b5fe, type: 2}
@@ -5111,7 +5159,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9091109465146168853, guid: 02f1bc7ecacf5b14f8249756240f1519, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -15.692387
+      value: -15.692363
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5405,4 +5453,5 @@ SceneRoots:
   - {fileID: 258467218}
   - {fileID: 678814623}
   - {fileID: 1133143147}
+  - {fileID: 1025612348}
   - {fileID: 8469748396061213124}

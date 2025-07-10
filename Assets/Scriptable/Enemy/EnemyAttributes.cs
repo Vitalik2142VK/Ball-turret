@@ -12,9 +12,7 @@ namespace Scriptable
         [SerializeField] private DamageAttributes _damageAttributes;
         [SerializeField] private HealthAttributes _healthAttributes;
 
-        [Header("Debug")]
-
-        [SerializeField] private float _maxHealth;
+        private float _maxHealth;
 
         public float Damage => _damageAttributes.Damage;
         public float MaxHealth => _maxHealth;
@@ -26,11 +24,6 @@ namespace Scriptable
 
             if (_healthAttributes == null)
                 throw new NullReferenceException(nameof(_healthAttributes));
-        }
-
-        private void Awake()
-        {
-            _maxHealth = _healthAttributes.MaxHealth;
         }
 
         public void Improve(float healthCoefficient)

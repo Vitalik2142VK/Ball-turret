@@ -5,24 +5,22 @@ using UnityEngine;
 public class EnemyFactory : MonoBehaviour, IActorFactory
 {
     [SerializeField] private Enemy[] _enemyPrefabs;
+    [SerializeField] private Sound _deadSound;
 
     private Dictionary<string, Enemy> _prefabs;
-    private ISound _deadSound;
 
     private void Awake()
     {
         if (_enemyPrefabs == null)
             throw new NullReferenceException(nameof(_enemyPrefabs));
 
+        if (_deadSound == null)
+            throw new NullReferenceException(nameof(_deadSound));
+
         if (_enemyPrefabs.Length == 0)
             throw new InvalidOperationException(nameof(_enemyPrefabs));
 
         _prefabs = CreateDictionaryPrefabs();
-    }
-
-    public void Initialize(ISound deadSound)
-    {
-        _deadSound = deadSound ?? throw new ArgumentNullException(nameof(deadSound));
     }
 
     public bool IsCanCreate(string nameTypeActor)

@@ -36,10 +36,10 @@ namespace PlayLevel
         private void Awake()
         {
             Exploder exploder = GetComponent<Exploder>();
-            DamageImprover improvingDamage = new DamageImprover(_explosionDamageAttributes);
+            DamageChanger damageChanger = new DamageChanger(_explosionDamageAttributes);
             float damageCoefficient = _player.DamageCoefficient;
-            improvingDamage.Improve(damageCoefficient);
-            exploder.Initialize(improvingDamage, _bigBangSound, _explosionView);
+            damageChanger.Change(damageCoefficient);
+            exploder.Initialize(damageChanger, _bigBangSound, _explosionView);
 
             _exploder = exploder;
             _pointExplosionPosition = transform.position;

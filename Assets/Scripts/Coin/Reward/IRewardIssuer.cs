@@ -10,4 +10,6 @@
     public int GetReward();
 
     public int GetBonusReward();
+
+    public int GetMaxReward();
 }

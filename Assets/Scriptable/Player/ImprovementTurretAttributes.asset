@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93508b75f72d0a94b918401aecef8c75, type: 3}
   m_Name: ImprovementTurretAttributes
   m_EditorClassIdentifier: 
-  _maxHealthCoefficient: 3
-  _improveHealthCoefficient: 0.15
+  _maxHealthCoefficient: 4
+  _improveHealthCoefficient: 0.2
   _countLevelHealthImprovements: 20
   _maxDamageCoefficient: 5
   _improveDamageCoefficient: 0.1

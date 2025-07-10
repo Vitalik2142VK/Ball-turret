@@ -9,11 +9,11 @@ namespace PlayLevel
     {
         [SerializeField] private ZoneEnemy _zoneEnemy;
         [SerializeField] private SpawnPointsRepository _spawnPointsRepository;
-        [SerializeField] private Sound _deadSound;
 
         [Header("Factories")]
         [SerializeField] private BonusFactory _bonusFactory;
         [SerializeField] private EnemyFactory _enemyFactory;
+        [SerializeField] private BorderFactory _borderFactory;
 
         [Header("Attributes")]
         [SerializeField] private MoveAttributes _startMoveAttributes;
@@ -29,14 +29,14 @@ namespace PlayLevel
             if (_spawnPointsRepository == null)
                 throw new NullReferenceException(nameof(_spawnPointsRepository));
 
-            if (_deadSound == null)
-                throw new NullReferenceException(nameof(_deadSound));
-
             if (_bonusFactory == null)
                 throw new NullReferenceException(nameof(_bonusFactory));
 
             if (_enemyFactory == null)
                 throw new NullReferenceException(nameof(_enemyFactory));
+
+            if (_borderFactory == null)
+                throw new NullReferenceException(nameof(_borderFactory));
 
             if (_startMoveAttributes == null)
                 throw new NullReferenceException(nameof(_startMoveAttributes));
@@ -52,8 +52,7 @@ namespace PlayLevel
 
             if (levelActorsPlanner == null)
                 throw new ArgumentNullException(nameof(levelActorsPlanner));
-
-            _enemyFactory.Initialize(_deadSound);
+            
             IActorSpawner actorSpawner = CreatActorSpawner();
             IAdvancedActorsMover actorMover = new ActorsMover();
             IRemovedActorsRepository removedActorsRepository = new ActorsRemover();
@@ -71,7 +70,8 @@ namespace PlayLevel
             List<IActorFactory> factories = new List<IActorFactory>
             {
                 _enemyFactory,
-                _bonusFactory
+                _bonusFactory,
+                _borderFactory
             };
 
             IActorFactoriesRepository actorFactoriesRepository = new ActorFactoriesRepository(factories);

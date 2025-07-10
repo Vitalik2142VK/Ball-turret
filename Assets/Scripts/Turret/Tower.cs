@@ -50,9 +50,15 @@ public class Tower : MonoBehaviour, ITower
         _trajectoryRenderer.ShowTrajectory(_muzzle.Position, Direction);
     }
 
-    public void SaveDirection(Vector3 targertPosition)
+    public void AimBeforeShooting(Vector3 targertPosition)
     {
         _touchPosition = targertPosition;
+
+        LookAtTarget();
+    }
+
+    public void SaveDirection()
+    {
         _trajectoryRenderer.Disable();
         _targetPoint.SaveLastPosition();
 
@@ -61,7 +67,6 @@ public class Tower : MonoBehaviour, ITower
 
     private void LookAtTarget()
     {
-
         Vector3 direction = (_touchPosition - _muzzle.Position);
 
         if (Physics.Raycast(_muzzle.Position, direction, out RaycastHit hitInfo, MaxDistance, _layerMask))

@@ -46,15 +46,6 @@ public class AdsViewer : MonoBehaviour, IAdsViewer
         YandexGame.RewardVideoEvent -= OnConfirmReward;
     }
 
-    private void OnConfirmReward(int id)
-    {
-        if (Enum.IsDefined(typeof(RewardType), id) == false)
-            throw new ArgumentOutOfRangeException(nameof(id));
-
-        RewardType reward = (RewardType)id;
-        RewardAdViewed?.Invoke(reward);
-    }
-
     public void ShowFullScreenAd()
     {
         if (_canShowFullScreen)
@@ -65,6 +56,15 @@ public class AdsViewer : MonoBehaviour, IAdsViewer
     {
         if (CanShowRewardAd)
             StartCoroutine(WaitShowRewardAd(reward));
+    }
+
+    private void OnConfirmReward(int id)
+    {
+        if (Enum.IsDefined(typeof(RewardType), id) == false)
+            throw new ArgumentOutOfRangeException(nameof(id));
+
+        RewardType reward = (RewardType)id;
+        RewardAdViewed?.Invoke(reward);
     }
 
     private IEnumerator WaitShowFullScreen()

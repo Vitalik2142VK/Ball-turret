@@ -8,6 +8,8 @@ public class Turret : ITurret
     private IHealth _health;
     private IEndStep _endStep;
     private WinState _winState;
+    private ISound _soundDestroy;
+    private IExplosionView _viewDestroy;
 
     public Turret(IGun gun, ITower tower, IHealth health, WinState winState)
     {
@@ -42,9 +44,12 @@ public class Turret : ITurret
     public void FixTargetPostion(Vector3 targetPostion)
     {
         if (_tower.IsReadyShoot)
+        {
+            _tower.AimBeforeShooting(targetPostion);
             _gun.Shoot(_tower.Direction);
+        }
 
-        _tower.SaveDirection(targetPostion);
+        _tower.SaveDirection();
     }
 
     public void TakeDamage(IDamageAttributes damage)
@@ -57,12 +62,24 @@ public class Turret : ITurret
 
     public void Destroy()
     {
+        if (_soundDestroy != null && _viewDestroy != null)
+        {
+            _soundDestroy.Play();
+            _viewDestroy.Play();
+        }
+
         _winState.IsWin = false;
     }
 
     public void RestoreHealth()
     {
         _health.Restore();
+    }
+
+    public void SetViewDestroy(ISound soundDestroy, IExplosionView viewDestroy)
+    {
+        _soundDestroy = soundDestroy ?? throw new ArgumentNullException(nameof(soundDestroy));
+        _viewDestroy = viewDestroy ?? throw new ArgumentNullException(nameof(viewDestroy));
     }
 
     private void OnEndStep()

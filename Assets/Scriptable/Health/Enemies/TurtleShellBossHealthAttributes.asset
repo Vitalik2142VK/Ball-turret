@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e93bf218ee38ef499b3390b40314289, type: 3}
   m_Name: TurtleShellBossHealthAttributes
   m_EditorClassIdentifier: 
-  _maxHealth: 300
+  _maxHealth: 360

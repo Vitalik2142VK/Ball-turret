@@ -11,8 +11,10 @@ namespace PlayLevel
         [SerializeField] private TargetPoint _targetPoint;
         [SerializeField] private DefaultGun _gun;
         [SerializeField] private HealthBar _healthBar;
-        [SerializeField] private TrajectoryRenderer _trajectoryRenderer;
         [SerializeField] private Sound _shootSound;
+        [SerializeField] private Sound _soundDestroy;
+        [SerializeField] private ExplosionView _viewDestroy;
+        [SerializeField, SerializeIterface(typeof(ITrajectoryRenderer))] private GameObject _trajectoryRendererGameObject;
 
         [Header("Bullets")]
         [SerializeField] private BulletsCollector _bulletCollector;
@@ -23,6 +25,7 @@ namespace PlayLevel
 
         private Turret _turret;
         private WinState _winState;
+        private ITrajectoryRenderer _trajectoryRenderer;
 
         public ITurret Turret => _turret;
         public IWinState WinState => _winState;
@@ -41,11 +44,17 @@ namespace PlayLevel
             if (_healthBar == null)
                 throw new NullReferenceException(nameof(_healthBar));
 
-            if (_trajectoryRenderer == null)
-                throw new NullReferenceException(nameof(_trajectoryRenderer));
-
             if (_shootSound == null)
                 throw new NullReferenceException(nameof(_shootSound));
+
+            if (_soundDestroy == null)
+                throw new NullReferenceException(nameof(_soundDestroy));
+
+            if (_viewDestroy == null)
+                throw new NullReferenceException(nameof(_viewDestroy));
+
+            if (_trajectoryRendererGameObject == null)
+                throw new NullReferenceException(nameof(_trajectoryRendererGameObject));
 
             if (_bulletCollector == null)
                 throw new NullReferenceException(nameof(_bulletCollector));
@@ -55,6 +64,11 @@ namespace PlayLevel
 
             if (_turretHealthAttributes == null)
                 throw new NullReferenceException(nameof(_turretHealthAttributes));
+        }
+
+        private void Awake()
+        {
+            _trajectoryRenderer = _trajectoryRendererGameObject.GetComponent<ITrajectoryRenderer>();
         }
 
         private void OnDisable()
@@ -79,6 +93,7 @@ namespace PlayLevel
             _winState = new WinState();
 
             _turret = new Turret(_gun, _tower, health, _winState);
+            _turret.SetViewDestroy(_soundDestroy, _viewDestroy);
             _turret.Enable();
         }
 

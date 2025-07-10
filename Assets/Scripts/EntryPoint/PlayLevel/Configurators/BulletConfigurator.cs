@@ -42,10 +42,10 @@ namespace PlayLevel
             if (player == null)
                 throw new ArgumentNullException(nameof(player));
 
-            DamageImprover improveDamageBullet = new DamageImprover(_damageBulletAttributes);
-            improveDamageBullet.Improve(player.DamageCoefficient);
+            var damageChanger = new DamageChanger(_damageBulletAttributes);
+            damageChanger.Change(player.DamageCoefficient);
 
-            _bulletFactory.Initialize(improveDamageBullet, _hitBulletSound);
+            _bulletFactory.Initialize(damageChanger, _hitBulletSound);
             _explodingBulletPrefab.SetExplosionSound(_explosionSound);
             _explodingBulletPrefab.SetBulletRepository(_bulletsCollector);
 

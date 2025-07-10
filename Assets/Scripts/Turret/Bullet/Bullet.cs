@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(BulletPhysics))]
@@ -55,9 +54,9 @@ public class Bullet : MonoBehaviour, IBullet
         if (damageImproverAttributes == null)
             throw new ArgumentNullException(nameof(damageImproverAttributes));
 
-        IDamageImprover damageImprover = new DamageImprover(DamageAttributes);
-        damageImprover.Improve(damageImproverAttributes);
-        DamageAttributes = damageImprover;
+        var damageChanger = new DamageChanger(DamageAttributes);
+        damageChanger.Change(damageImproverAttributes);
+        DamageAttributes = damageChanger;
 
         _damage = new Damage(DamageAttributes);
     }

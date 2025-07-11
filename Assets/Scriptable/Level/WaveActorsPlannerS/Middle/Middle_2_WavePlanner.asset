@@ -10,18 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 099a4bc78e4679d46b6d4e4e77209302, type: 3}
-  m_Name: SlimeBoss_3_WavePlaner
+  m_Name: Middle_2_WavePlanner
   m_EditorClassIdentifier: 
   _lines:
   - _actors:
+    - {fileID: 6906008247346125387, guid: 9087ef59b17a0fd4e9acb107111b1bf2, type: 3}
     - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
+    - {fileID: 6906008247346125387, guid: 9087ef59b17a0fd4e9acb107111b1bf2, type: 3}
   - _actors:
     - {fileID: 0}
-    - {fileID: 6761769517459677545, guid: ea9c04051761aa743bd581cf3f3b84f2, type: 3}
+    - {fileID: 7690942557182064526, guid: 8c2be75b0d25c44408ce1522d55ba06c, type: 3}
     - {fileID: 0}
   - _actors:
-    - {fileID: 7690942557182064526, guid: 8c2be75b0d25c44408ce1522d55ba06c, type: 3}
-    - {fileID: 0}
-    - {fileID: 7690942557182064526, guid: 8c2be75b0d25c44408ce1522d55ba06c, type: 3}
+    - {fileID: 7886440262529024440, guid: 7a8c525a33d9b9b4599757383533c0bf, type: 3}
+    - {fileID: 4310026885427982331, guid: a2cc5a0f368930444be5124d8a13f7c1, type: 3}
+    - {fileID: 7886440262529024440, guid: 7a8c525a33d9b9b4599757383533c0bf, type: 3}

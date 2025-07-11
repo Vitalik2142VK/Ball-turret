@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Scriptable
 {
-    [CreateAssetMenu(menuName = "Level/Wave Actors Planner", fileName = "WaveActorsPlanner", order = 51)]
+    [CreateAssetMenu(menuName = "Level/Wave Actors Planner", fileName = "WavePlanner", order = 51)]
     public class WaveActorsPlanner : ScriptableObject, IWaveActorsPlanner
     {
         private const int CountLines = 3;

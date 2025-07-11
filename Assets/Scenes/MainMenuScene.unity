@@ -2851,7 +2851,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerConfigurator: {fileID: 708947493}
-  _levelsPlannerConfigurator: {fileID: 1025612347}
+  _levelsPlannerConfigurator: {fileID: 1628363611}
   _shopConfigurator: {fileID: 1190516169}
   _userInterfaseConfigurator: {fileID: 776018107}
 --- !u!1001 &1561498137
@@ -5159,7 +5159,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9091109465146168853, guid: 02f1bc7ecacf5b14f8249756240f1519, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -15.692363
+      value: -15.692357
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

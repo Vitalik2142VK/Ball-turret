@@ -2252,6 +2252,51 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b7846b9ede6ca940b36fb227df295df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &635636895
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 635636897}
+  - component: {fileID: 635636896}
+  m_Layer: 0
+  m_Name: GameplayMonitor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &635636896
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 635636895}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5b1242735dd43749a592100cd0c4bec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _timeCheck: 1.5
+--- !u!4 &635636897
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 635636895}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &647930416
 GameObject:
   m_ObjectHideFlags: 0
@@ -5697,7 +5742,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9091109465146168853, guid: 02f1bc7ecacf5b14f8249756240f1519, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -15.691425
+      value: -15.691632
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -7562,6 +7607,7 @@ SceneRoots:
   - {fileID: 111674737}
   - {fileID: 1814405752}
   - {fileID: 1188453856}
+  - {fileID: 635636897}
   - {fileID: 943026415}
   - {fileID: 845033717}
   - {fileID: 963194228}

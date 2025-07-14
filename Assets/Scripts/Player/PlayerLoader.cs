@@ -14,10 +14,6 @@ public class PlayerLoader : IPlayerLoader
 
     public IPlayer Load()
     {
-        //YandexGame.LoadProgress();
-
-        //UnityEngine.Debug.Log($"_savesData == null - {_savesData == null} | _savesData: PlayerName == {_savesData.PlayerName} || CountCoins == {_savesData.CountCoins}");
-
         if (_savesData.AchievedLevelIndex == 0)
             return CreateNewPlayer();
         else

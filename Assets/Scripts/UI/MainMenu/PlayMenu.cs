@@ -4,7 +4,7 @@ using UnityEngine;
 public class PlayMenu : MonoBehaviour
 {
     [SerializeField] private SelectLevelScroll _selectLevelScroll;
-    [SerializeField] private WalletView _walletView;
+    [SerializeField] private GameObject[] _interferingUI;
 
     private IMenu _previousMenu;
     private ILevelFactory _levelFactory;
@@ -15,9 +15,6 @@ public class PlayMenu : MonoBehaviour
     {
         if (_selectLevelScroll == null)
             throw new NullReferenceException(nameof(_selectLevelScroll));
-
-        if (_walletView == null)
-            throw new NullReferenceException(nameof(_walletView));
     }
 
     private void Awake()
@@ -41,7 +38,9 @@ public class PlayMenu : MonoBehaviour
     {
         gameObject.SetActive(false);
         _previousMenu.Enable();
-        _walletView.Enable();
+
+        foreach (var ui in _interferingUI)
+            ui.SetActive(true);
     }
 
     public void OnPlay()
@@ -56,7 +55,9 @@ public class PlayMenu : MonoBehaviour
     {
         _previousMenu = previousMenu ?? throw new ArgumentNullException(nameof(previousMenu));
         gameObject.SetActive(true);
-        _selectLevelScroll.SelectButton(_achievedLevelIndex); 
-        _walletView.Disable();
+        _selectLevelScroll.SelectButton(_achievedLevelIndex);
+
+        foreach (var ui in _interferingUI)
+            ui.SetActive(false);
     }
 }

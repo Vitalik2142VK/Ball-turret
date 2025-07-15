@@ -5,11 +5,13 @@ public class PlayerLoader : IPlayerLoader
 {
     private IImprovementTurretAttributes _turretImproverAttributes;
     private ISavesData _savesData;
+    private IPurchasesStorage _purchasesStorage;
 
-    public PlayerLoader(IImprovementTurretAttributes turretImproverAttributes, ISavesData savesData)
+    public PlayerLoader(IImprovementTurretAttributes turretImproverAttributes, ISavesData savesData, IPurchasesStorage purchasesStorage)
     {
         _turretImproverAttributes = turretImproverAttributes ?? throw new ArgumentNullException(nameof(turretImproverAttributes));
         _savesData = savesData ?? throw new ArgumentNullException(nameof(savesData));
+        _purchasesStorage = purchasesStorage ?? throw new ArgumentNullException(nameof(purchasesStorage));
     }
 
     public IPlayer Load()
@@ -20,11 +22,17 @@ public class PlayerLoader : IPlayerLoader
             return GetFilledPlayer();
     }
 
+    public void UpdatePurchasesStorage(IPlayer player)
+    {
+        if (player is Player savedPlayer)
+            savedPlayer.SetPurchasesStorage(_purchasesStorage);
+    }
+
     private IPlayer CreateNewPlayer()
     {
         Wallet wallet = new Wallet(_savesData.CountCoins);
         TurretImprover turretImprover = new TurretImprover(_turretImproverAttributes);
-        Player newPlayer = new Player(turretImprover, wallet);
+        Player newPlayer = new Player(wallet, turretImprover, _purchasesStorage);
 
         _savesData.SetHealthCoefficient(newPlayer.HealthCoefficient);
         _savesData.SetDamageCoefficient(newPlayer.DamageCoefficient);
@@ -43,8 +51,9 @@ public class PlayerLoader : IPlayerLoader
         TurretImprover turretImprover = new TurretImprover(_turretImproverAttributes, healthCoefficient, damageCoefficient);
 
         return new Player(
-            turretImprover,
             wallet,
+            turretImprover,
+            _purchasesStorage,
             _savesData.AchievedLevelIndex);
     }
 }

@@ -1,12 +1,14 @@
 using System;
 using UnityEngine;
+using Scriptable;
 
 namespace PlayLevel
 {
     public class EntryPoint : MonoBehaviour
     {
-        [SerializeField] private Scriptable.SelectedLevel _selectedLevel;
-        [SerializeField] private PlayLevelPlayer _player;
+        [SerializeField] private SelectedLevel _selectedLevel;
+        [SerializeField] private CachedPlayer _player;
+        [SerializeField] private PlayerController _playerController;
 
         [Header("Configurators")]
         [SerializeField] private TurretConfigurator _turretConfigurator;
@@ -24,6 +26,9 @@ namespace PlayLevel
 
             if (_player == null)
                 throw new NullReferenceException(nameof(_player));
+
+            if (_playerController == null)
+                throw new NullReferenceException(nameof(_playerController));
 
             if (_turretConfigurator == null)
                 throw new NullReferenceException(nameof(_turretConfigurator));
@@ -65,13 +70,13 @@ namespace PlayLevel
             var turret = _turretConfigurator.Turret;
             var winState = _turretConfigurator.WinState;
 
-            _player.Initialize(turret);
+            _playerController.Initialize(turret);
             _actorsConfigurator.Configure(turret, _selectedLevel.ActorsPlanner);
             _improvedHealthConfigurator.Configure(_selectedLevel.ActorsHealthCoefficient);
 
             var actorsController = _actorsConfigurator.ActorsController;
 
-            _stepSystemConfigurator.Configure(turret, winState, _player, actorsController);
+            _stepSystemConfigurator.Configure(turret, winState, _playerController, actorsController);
             _bonusPrefabConfigurator.Configure(turret);
 
             SavesData savesData = new SavesData();

@@ -2,34 +2,33 @@ using System;
 
 public class Player : IPlayer
 {
-    public Player(ITurretImprover turretImprover, IWallet wallet, int achievedLevel = 0, bool areAdsDisabled = false)
+    public Player(IWallet wallet, ITurretImprover turretImprover, IPurchasesStorage purchasesStorage, int achievedLevel = 0)
     {
         if (achievedLevel < 0)
             throw new ArgumentOutOfRangeException(nameof(achievedLevel));
 
-        TurretImprover = turretImprover ?? throw new ArgumentNullException(nameof(turretImprover));
-
         Wallet = wallet ?? throw new ArgumentNullException(nameof(wallet));
+        TurretImprover = turretImprover ?? throw new ArgumentNullException(nameof(turretImprover));
+        PurchasesStorage = purchasesStorage ?? throw new ArgumentNullException(nameof(purchasesStorage));
 
         AchievedLevelIndex = achievedLevel;
-        AreAdsDisabled = areAdsDisabled;
     }
-
-    public IWallet Wallet { get; private set; }
-    public ITurretImprover TurretImprover { get; private set; }
-    public int AchievedLevelIndex { get; private set; }
-    public bool AreAdsDisabled { get; private set; }
 
     public float HealthCoefficient => TurretImprover.HealthCoefficient;
     public float DamageCoefficient => TurretImprover.DamageCoefficient;
+
+    public IWallet Wallet { get; }
+    public ITurretImprover TurretImprover { get; }
+    public IPurchasesStorage PurchasesStorage { get; private set; }
+    public int AchievedLevelIndex { get; private set; }
 
     public void IncreaseAchievedLevel()
     {
         AchievedLevelIndex++;
     }
 
-    public void DisabledAds()
+    public void SetPurchasesStorage(IPurchasesStorage purchasesStorage)
     {
-        AreAdsDisabled = true;
+        PurchasesStorage = purchasesStorage ?? throw new ArgumentNullException(nameof(purchasesStorage));
     }
 }

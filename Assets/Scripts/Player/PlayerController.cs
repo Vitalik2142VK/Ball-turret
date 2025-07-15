@@ -2,25 +2,10 @@ using System;
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerTouchInput))]
-public class PlayLevelPlayer : MonoBehaviour, IPlayer, IDesignator
+public class PlayerController : MonoBehaviour, IPlayerController
 {
-    [SerializeField] private Scriptable.CachedPlayer _cachedUser;
-
     private PlayerTouchInput _touchInput;
     private ITurret _turret;
-
-    public IWallet Wallet => _cachedUser.Wallet;
-    public ITurretImprover TurretImprover => _cachedUser.TurretImprover;
-    public float HealthCoefficient => _cachedUser.HealthCoefficient;
-    public float DamageCoefficient => _cachedUser.DamageCoefficient;
-    public int AchievedLevelIndex => _cachedUser.AchievedLevelIndex;
-    public bool AreAdsDisabled => _cachedUser.AreAdsDisabled;
-
-    private void OnValidate()
-    {
-        if (_cachedUser == null)
-            throw new ArgumentNullException(nameof(_cachedUser));
-    }
 
     private void Awake()
     {
@@ -57,6 +42,4 @@ public class PlayLevelPlayer : MonoBehaviour, IPlayer, IDesignator
 
         _turret.FixTargetPostion(_touchInput.TouchPositionInMap);
     }
-
-    public void IncreaseAchievedLevel() => _cachedUser.IncreaseAchievedLevel();
 }

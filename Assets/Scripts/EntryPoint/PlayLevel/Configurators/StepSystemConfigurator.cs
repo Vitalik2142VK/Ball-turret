@@ -12,7 +12,7 @@ namespace PlayLevel
 
         private ITurret _turret;
         private IWinState _winStat;
-        private PlayLevelPlayer _player;
+        private PlayerController _playerController;
         private ActorsController _actorsController;
 
         private PlayerShotStep _playerShotStep;
@@ -42,9 +42,9 @@ namespace PlayLevel
                 throw new NullReferenceException(nameof(_finishWindow));
         }
 
-        public void Configure(ITurret turret, IWinState winStat, PlayLevelPlayer player, ActorsController actorsController)
+        public void Configure(ITurret turret, IWinState winStat, PlayerController playerController, ActorsController actorsController)
         {
-            _player = player != null ? player : throw new NullReferenceException(nameof(player));
+            _playerController = playerController != null ? playerController : throw new NullReferenceException(nameof(playerController));
             _turret = turret ?? throw new NullReferenceException(nameof(turret));
             _winStat = winStat ?? throw new NullReferenceException(nameof(winStat));
             _actorsController = actorsController ?? throw new NullReferenceException(nameof(actorsController));
@@ -58,7 +58,7 @@ namespace PlayLevel
 
         private void CreateSteps()
         {
-            _playerShotStep = new PlayerShotStep(_player);
+            _playerShotStep = new PlayerShotStep(_playerController);
             _bonusActivationStep = new BonusActivationStep(_bulletCollector);
             _prepareActorsStep = new PrepareActorsStep(_actorsController);
             _objectsMoveStep = new ActorsMoveStep(_actorsController);

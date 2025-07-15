@@ -40,7 +40,8 @@ public class PlayMenu : MonoBehaviour
         _previousMenu.Enable();
 
         foreach (var ui in _interferingUI)
-            ui.SetActive(true);
+            if (ui != null)
+                ui.SetActive(true);
     }
 
     public void OnPlay()
@@ -58,6 +59,7 @@ public class PlayMenu : MonoBehaviour
         _selectLevelScroll.SelectButton(_achievedLevelIndex);
 
         foreach (var ui in _interferingUI)
-            ui.SetActive(false);
+            if (ui != null)
+                ui.SetActive(true);
     }
 }

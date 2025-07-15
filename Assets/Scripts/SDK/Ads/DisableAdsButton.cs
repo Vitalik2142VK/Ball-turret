@@ -2,22 +2,17 @@ using UnityEngine;
 using UnityEngine.UI;
 using YG;
 
-[RequireComponent(typeof(Button))]
+[RequireComponent(typeof(Button), typeof(PurchaseYG))]
 public class DisableAdsButton : MonoBehaviour
 {
-    [SerializeField] private PurchaseYG _disableAdsPurchase;
-
+    private PurchaseYG _disableAdsPurchase;
     private Button _button;
-
-    private void OnValidate()
-    {
-        if (_disableAdsPurchase == null)
-            throw new System.NullReferenceException(nameof(_disableAdsPurchase));
-    }
 
     private void Awake()
     {
         _button = GetComponent<Button>();
+        _disableAdsPurchase.GetComponent<PurchaseYG>();
+        _disableAdsPurchase.data.id = PurchasesTypes.DisableAds;
     }
 
     private void OnEnable()

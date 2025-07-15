@@ -928,11 +928,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _bonusPrefab: {fileID: -8019097807514481901, guid: 0bd2245c4c8c31a408ce1e0ca9a79139, type: 3}
   _isItRandom: 1
-  _player: {fileID: 680478345}
+  _player: {fileID: 11400000, guid: 7657b4ab90a8c5d44a5b96508438ba7e, type: 2}
+  _explosionDamageAttributes: {fileID: 11400000, guid: 82eb11b125659ab469534ed04194f0de, type: 2}
   _pointExplosion: {fileID: 183565251}
   _bigBangSound: {fileID: 1295294272}
   _explosionView: {fileID: 363764719}
-  _explosionDamageAttributes: {fileID: 11400000, guid: 82eb11b125659ab469534ed04194f0de, type: 2}
 --- !u!4 &183565251
 Transform:
   m_ObjectHideFlags: 0
@@ -1694,7 +1694,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _selectedLevel: {fileID: 11400000, guid: 1b5a6e3b79e8b4c4ea592fa9d8f574aa, type: 2}
-  _player: {fileID: 680478345}
+  _player: {fileID: 11400000, guid: 7657b4ab90a8c5d44a5b96508438ba7e, type: 2}
+  _playerController: {fileID: 680478345}
   _turretConfigurator: {fileID: 1563366847}
   _stepSystemConfigurator: {fileID: 1081096997}
   _actorsConfigurator: {fileID: 1226189861}
@@ -2439,10 +2440,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 680478343}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 070200af5f0df38479fdcb02565bc1f7, type: 3}
+  m_Script: {fileID: 11500000, guid: 00aa24a89e73f724a914593d9fe20155, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cachedUser: {fileID: 11400000, guid: 7657b4ab90a8c5d44a5b96508438ba7e, type: 2}
 --- !u!114 &680478346
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5742,7 +5742,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9091109465146168853, guid: 02f1bc7ecacf5b14f8249756240f1519, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -15.691632
+      value: -15.692177
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

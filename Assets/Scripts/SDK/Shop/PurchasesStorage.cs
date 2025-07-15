@@ -3,9 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using YG;
 
+[RequireComponent(typeof(PaymentsCatalogYG))]
 public class PurchasesStorage : MonoBehaviour, IPurchasesStorage
 {
     private Dictionary<string, IPurchase> _purchases;
+    private PaymentsCatalogYG _paymentsCatalog;
+
+    private void Awake()
+    {
+        _paymentsCatalog = GetComponent<PaymentsCatalogYG>();
+    }
 
     private void OnEnable()
     {
@@ -19,11 +26,19 @@ public class PurchasesStorage : MonoBehaviour, IPurchasesStorage
 
     public void LoadPurchases()
     {
-        var purchases = YandexGame.purchases;
+        var purchases = _paymentsCatalog.purchases;
         _purchases = new Dictionary<string, IPurchase>(purchases.Length);
 
         foreach (var purchase in purchases)
-            _purchases.Add(purchase.id, new PurchasePlayer(purchase));
+        {
+            var purchaseData = purchase.data;
+            _purchases.Add(purchaseData.id, new PurchasePlayer(purchaseData));
+        }
+
+        var disableAdsId = PurchasesTypes.DisableAds;
+
+        if (_purchases[disableAdsId].IsConsumed)
+            RemoveDisableAdsButton(disableAdsId);
     }
 
     public bool IsContainsId(string id)
@@ -36,7 +51,7 @@ public class PurchasesStorage : MonoBehaviour, IPurchasesStorage
 
     public IPurchase GetPurchase(string id)
     {
-        if (_purchases.ContainsKey(id))
+        if (IsContainsId(id))
             throw new ArgumentOutOfRangeException(nameof(id));
 
         return _purchases[id];
@@ -44,13 +59,18 @@ public class PurchasesStorage : MonoBehaviour, IPurchasesStorage
 
     private void SuccessPurchased(string id)
     {
-        //// Ваш код для обработки покупки. Например:
-        //if (id == "50")
-        //    YandexGame.savesData.money += 50;
-        //else if (id == "250")
-        //    YandexGame.savesData.money += 250;
-        //else if (id == "1500")
-        //    YandexGame.savesData.money += 1500;
-        //YandexGame.SaveProgress();
+        RemoveDisableAdsButton(id);
+    }
+
+    private void RemoveDisableAdsButton(string id)
+    {
+        if (id != PurchasesTypes.DisableAds)
+            return;
+
+        for (int i = 0; i < _paymentsCatalog.purchases.Length; i++)
+        {
+            if (_paymentsCatalog.purchases[i].data.id == id)
+                Destroy(_paymentsCatalog.purchases[i].gameObject);
+        }
     }
 }

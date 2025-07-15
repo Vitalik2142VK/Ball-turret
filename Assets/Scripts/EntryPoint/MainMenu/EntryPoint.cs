@@ -51,7 +51,8 @@ namespace MainMenuSpace
             var improvementShop = _shopConfigurator.ImprovementShop;
             var coinCountRandomizer = _levelsPlannerConfigurator.CoinCountRandomizer;
 
-            _userInterfaseConfigurator.Configure(playerSaver, player, levelFactory, improvementShop, coinCountRandomizer);
+            _userInterfaseConfigurator.SetImprovementShop(improvementShop);
+            _userInterfaseConfigurator.Configure(playerSaver, player, levelFactory, coinCountRandomizer);
         }
     }
 }

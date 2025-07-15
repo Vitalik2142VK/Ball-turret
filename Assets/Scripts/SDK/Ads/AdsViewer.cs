@@ -10,6 +10,7 @@ public class AdsViewer : MonoBehaviour, IAdsViewer
     [SerializeField, Range(60f, 180f)] private float _timeWaitNextFullScreenAd = 120f;
     [SerializeField, Range(10f, 60f)] private float _timeWaitNextRewardAd = 20f;
 
+    private IPurchase _disableAdsPurchase;
     private WaitForSeconds _waitNextAdFullScreenAd;
     private WaitForSeconds _waitNextAdRewardAd;
     private bool _canShowFullScreen;
@@ -46,15 +47,28 @@ public class AdsViewer : MonoBehaviour, IAdsViewer
         YandexGame.RewardVideoEvent -= OnConfirmReward;
     }
 
+    public void Initialize(IPurchasesStorage purchasesStorage)
+    {
+        if (purchasesStorage == null)
+            throw new ArgumentNullException(nameof(purchasesStorage));
+
+        var purchaseId = PurchasesTypes.DisableAds;
+
+        if (purchasesStorage.IsContainsId(purchaseId) == false)
+            throw new ArgumentOutOfRangeException($"Purchase with id '{purchaseId}' not found.");
+
+        _disableAdsPurchase = purchasesStorage.GetPurchase(purchaseId);
+    }
+
     public void ShowFullScreenAd()
     {
-        if (_canShowFullScreen)
+        if (_canShowFullScreen && _disableAdsPurchase.IsConsumed == false)
             StartCoroutine(WaitShowFullScreen());
     }
 
     public void ShowRewardAd(RewardType reward)
     {
-        if (CanShowRewardAd)
+        if (CanShowRewardAd && _disableAdsPurchase.IsConsumed == false)
             StartCoroutine(WaitShowRewardAd(reward));
     }
 

@@ -10,6 +10,7 @@ namespace MainMenuSpace
         [SerializeField] private CachedPlayer _cachedUser;
         [SerializeField] private ImprovementTurretAttributes _improvementTurretAttributes;
         [SerializeField] private AuthPlayer _authPlayer;
+        [SerializeField] private PurchasesStorage _purchasesStorage;
 
         private IPlayerLoader _playerLoader;
         private ISavesData _savesData;
@@ -29,6 +30,9 @@ namespace MainMenuSpace
 
             if (_authPlayer == null)
                 throw new NullReferenceException(nameof(_authPlayer));
+
+            if (_purchasesStorage == null)
+                throw new NullReferenceException(nameof(_purchasesStorage));
         }
 
         private void OnEnable()
@@ -45,12 +49,17 @@ namespace MainMenuSpace
         {
             OnCreateSavesData();
 
-            _playerLoader = new PlayerLoader(_improvementTurretAttributes, _savesData);
+            _purchasesStorage.LoadPurchases();
+            _playerLoader = new PlayerLoader(_improvementTurretAttributes, _savesData, _purchasesStorage);
 
             if (_cachedUser.IsSaved == false)
             {
                 IPlayer player = _playerLoader.Load();
                 _cachedUser.SetUser(player);
+            }
+            else
+            {
+                _playerLoader.UpdatePurchasesStorage(_cachedUser);
             }
 
             PlayerSaver = new PlayerSaver(_cachedUser, _savesData);

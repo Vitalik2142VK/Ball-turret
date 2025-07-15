@@ -6,11 +6,11 @@ namespace PlayLevel
     public class BigBangBonusConfigurator : BonusConfigurator
     {
         [Header("Explosion")]
-        [SerializeField] private PlayLevelPlayer _player;
+        [SerializeField] private Scriptable.CachedPlayer _player;
+        [SerializeField] private Scriptable.DamageAttributes _explosionDamageAttributes;
         [SerializeField] private Transform _pointExplosion;
         [SerializeField] private Sound _bigBangSound;
         [SerializeField] private ExplosionView _explosionView;
-        [SerializeField] private Scriptable.DamageAttributes _explosionDamageAttributes;
 
         private IExploder _exploder;
         private Vector3 _pointExplosionPosition;

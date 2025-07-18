@@ -1,4 +1,4 @@
 ﻿public static class PurchasesTypes
 {
-    public const string DisableAds = "1";
+    public const string DisableAds = "Disable_Ads";
 }

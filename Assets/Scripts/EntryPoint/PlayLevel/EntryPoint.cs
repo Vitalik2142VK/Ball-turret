@@ -1,6 +1,7 @@
+using MainMenuSpace;
+using Scriptable;
 using System;
 using UnityEngine;
-using Scriptable;
 
 namespace PlayLevel
 {
@@ -54,16 +55,16 @@ namespace PlayLevel
 
         private void Start()
         {
-            //todo Remove try/catch in Realise
-            //try
-            //{
+            // Todo Remove ConfigureWithConsol() on realise
+#if UNITY_EDITOR
+            Configure();
+#else
+            ConfigureWithConsol();
+#endif
+        }
 
-            //}
-            //catch (SystemException ex)
-            //{
-            //    Console.GetException(ex);
-            //}
-
+        private void Configure()
+        {
             _bulletConfigurator.Configure(_player);
             _turretConfigurator.Configure(_player, _bulletConfigurator.BulletFactory);
 
@@ -84,6 +85,20 @@ namespace PlayLevel
             RewardIssuer rewardIssuer = new RewardIssuer(playerSaver, _player, _selectedLevel, winState);
             var closeSceneStep = _stepSystemConfigurator.CloseSceneStep;
             _userInterfaceConfigurator.Configure(closeSceneStep, rewardIssuer);
+        }
+
+        private void ConfigureWithConsol()
+        {
+            try
+            {
+                Console.GetLog("UNITY_WEBGL");
+
+                Configure();
+            }
+            catch (Exception ex)
+            {
+                Console.GetException(ex);
+            }
         }
     }
 }

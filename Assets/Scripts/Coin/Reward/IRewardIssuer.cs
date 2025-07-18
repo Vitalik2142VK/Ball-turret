@@ -3,9 +3,11 @@
     public bool IsRewardIssued { get; }
     public bool IsBonusRewardIssued { get; }
 
-    public void AwardReward();
+    public void PayReward();
 
-    public void AwarBonusReward();
+    public void PayBonusReward();
+
+    public void PayMaxReward();
 
     public int GetReward();
 

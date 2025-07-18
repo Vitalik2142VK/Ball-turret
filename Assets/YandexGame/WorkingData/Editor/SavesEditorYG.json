@@ -1,10 +1,10 @@
 {
-    "idSave": 12,
-    "isFirstSession": false,
+    "idSave": 7,
+    "isFirstSession": true,
     "language": "ru",
     "promptDone": false,
     "HealthCoefficient": 1.0,
     "DamageCoefficient": 1.0,
-    "CountCoins": 19987,
-    "AchievedLevelIndex": 4
+    "CountCoins": 4042,
+    "AchievedLevelIndex": 1
 }

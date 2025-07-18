@@ -60,6 +60,6 @@ public class PlayMenu : MonoBehaviour
 
         foreach (var ui in _interferingUI)
             if (ui != null)
-                ui.SetActive(true);
+                ui.SetActive(false);
     }
 }

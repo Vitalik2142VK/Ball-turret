@@ -2,7 +2,7 @@
 
 public class RewardIssuer : IRewardIssuer
 {
-    private const float AdditionalRewardFirstPass = 0.5f;
+    private const float AdditionalReward = 0.5f;
     private const int InitialRewardValue = -1;
 
     private IPlayerSaver _playerSaver;
@@ -29,22 +29,21 @@ public class RewardIssuer : IRewardIssuer
 
     private bool IsFirstPass => _level.Index == _player.AchievedLevelIndex;
 
-    public void AwardReward()
+    public void PayReward()
     {
         if (IsRewardIssued)
             throw new InvalidOperationException("Reward has already been issued");
 
-        _player.Wallet.AddCoins(_reward);
-
         if (IsFirstPass && _winState.IsWin)
             _player.IncreaseAchievedLevel();
 
+        _player.Wallet.AddCoins(_reward);
         _playerSaver.Save();
 
         IsRewardIssued = true;
     }
 
-    public void AwarBonusReward()
+    public void PayBonusReward()
     {
         if (IsBonusRewardIssued)
             throw new InvalidOperationException("Bonys reward has already been issued");
@@ -52,6 +51,21 @@ public class RewardIssuer : IRewardIssuer
         _player.Wallet.AddCoins(_bonusReward);
         _playerSaver.Save();
 
+        IsBonusRewardIssued = true;
+    }
+
+    public void PayMaxReward()
+    {
+        if (IsRewardIssued || IsBonusRewardIssued)
+            throw new InvalidOperationException("Reward has already been issued");
+
+        if (IsFirstPass && _winState.IsWin)
+            _player.IncreaseAchievedLevel();
+
+        _player.Wallet.AddCoins(_reward + _bonusReward);
+        _playerSaver.Save();
+
+        IsRewardIssued = true;
         IsBonusRewardIssued = true;
     }
 
@@ -75,15 +89,10 @@ public class RewardIssuer : IRewardIssuer
         return _bonusReward;
     }
 
-    public int GetMaxReward()
-    {
-        return GetReward() + GetBonusReward();
-    }
+    public int GetMaxReward() => GetReward() + GetBonusReward();
 
     private void CalculateRewards()
     {
-        int rewardFirstPass = 0;
-
         if (_winState.IsWin)
             _reward = _level.CountCoinsWin;
         else
@@ -91,9 +100,20 @@ public class RewardIssuer : IRewardIssuer
 
         _bonusReward = _reward;
 
-        if (IsFirstPass && _winState.IsWin)
-            rewardFirstPass = (int)(AdditionalRewardFirstPass * _reward);
+        CalculateAddReward();
+    }
 
-        _reward += rewardFirstPass;
+    private void CalculateAddReward()
+    {
+        int addedRevard = 0;
+
+        if (IsFirstPass && _winState.IsWin)
+            addedRevard = (int)(AdditionalReward * _reward);
+
+        if (_player.PurchasesStorage.TryGetPurchase(out IPurchase purchase, PurchasesTypes.DisableAds))
+            if (purchase.IsConsumed == true)
+                addedRevard = (int)(AdditionalReward * GetMaxReward());
+
+        _reward += addedRevard;
     }
 }

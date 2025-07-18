@@ -3,15 +3,13 @@ using YG.Utils.Pay;
 
 public class PurchasePlayer : IPurchase
 {
+    private Purchase _purchase;
+
     public PurchasePlayer(Purchase purchase)
     {
-        if (purchase == null) 
-            throw new ArgumentNullException(nameof(purchase));
-
-        Id = purchase.id;
-        IsConsumed = purchase.consumed;
+        _purchase = purchase ?? throw new ArgumentNullException(nameof(purchase));
     }
 
-    public string Id { get; }
-    public bool IsConsumed { get; }
+    public string Id => _purchase.id;
+    public bool IsConsumed => _purchase.consumed;
 }

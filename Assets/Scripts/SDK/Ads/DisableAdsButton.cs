@@ -11,7 +11,7 @@ public class DisableAdsButton : MonoBehaviour
     private void Awake()
     {
         _button = GetComponent<Button>();
-        _disableAdsPurchase.GetComponent<PurchaseYG>();
+        _disableAdsPurchase = GetComponent<PurchaseYG>();
         _disableAdsPurchase.data.id = PurchasesTypes.DisableAds;
     }
 

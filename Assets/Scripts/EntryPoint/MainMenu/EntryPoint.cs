@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using YG;
 
 namespace MainMenuSpace
 {
@@ -28,16 +27,16 @@ namespace MainMenuSpace
 
         private void Start()
         {
-            //todo Remove try/catch in Relise
-            //try
-            //{
+            // Todo Remove ConfigureWithConsol() on realise
+#if UNITY_EDITOR
+            Configure();
+#else
+            ConfigureWithConsol();
+#endif
+        }
 
-            //}
-            //catch (Exception ex)
-            //{
-            //    Console.GetException(ex);
-            //}
-
+        private void Configure()
+        {
             _playerConfigurator.Configure();
 
             var player = _playerConfigurator.Player;
@@ -53,6 +52,20 @@ namespace MainMenuSpace
 
             _userInterfaseConfigurator.SetImprovementShop(improvementShop);
             _userInterfaseConfigurator.Configure(playerSaver, player, levelFactory, coinCountRandomizer);
+        }
+
+        private void ConfigureWithConsol()
+        {
+            try
+            {
+                Console.GetLog("UNITY_WEBGL");
+
+                Configure();
+            }
+            catch (Exception ex)
+            {
+                Console.GetException(ex);
+            }
         }
     }
 }

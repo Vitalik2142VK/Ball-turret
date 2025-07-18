@@ -4,7 +4,7 @@ using YG;
 
 public class GameplayMonitor : MonoBehaviour
 {
-    [SerializeField, Range(0.5f, 2f)] private float _timeCheck;
+    [SerializeField, Range(0.5f, 2f)] private float _timeCheck = 1.5f;
 
     private WaitForSeconds _wait;
     private bool _isGamePlaying;
@@ -28,6 +28,8 @@ public class GameplayMonitor : MonoBehaviour
     {
         while (_isMonitoringActive == false)
         {
+            
+
             bool isGamePlaying = YandexGame.isGamePlaying;
 
             if (isGamePlaying != _isGamePlaying)
@@ -36,6 +38,10 @@ public class GameplayMonitor : MonoBehaviour
                     YandexGame.GameplayStart();
                 else
                     YandexGame.GameplayStop();
+
+                _isGamePlaying = isGamePlaying;
+
+                Console.GetLog($"Game is play == {isGamePlaying}");
             }
 
             yield return _wait;

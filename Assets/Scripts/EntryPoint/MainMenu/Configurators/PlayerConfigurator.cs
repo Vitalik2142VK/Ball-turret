@@ -67,6 +67,15 @@ namespace MainMenuSpace
             _authPlayer.Authorize();
         }
 
+        //Todo Remove on realise
+        public void OnRemoveSave()
+        {
+            if (_savesData is SavesData data == false)
+                return;
+
+            data.RemoveProgerss();
+        }
+
         private void OnCreateSavesData() => _savesData ??= new SavesData();
     }
 }

@@ -17,6 +17,8 @@ public class AdsViewer : MonoBehaviour, IAdsViewer
 
     public event Action<RewardType> RewardAdViewed;
 
+    public bool IsAdsDisable => _disableAdsPurchase.IsConsumed;
+
     public bool CanShowRewardAd { get; private set; }
 
     private void Awake()
@@ -54,7 +56,7 @@ public class AdsViewer : MonoBehaviour, IAdsViewer
 
         var purchaseId = PurchasesTypes.DisableAds;
 
-        if (purchasesStorage.IsContainsId(purchaseId) == false)
+        if (purchasesStorage.HasPurchseId(purchaseId) == false)
             throw new ArgumentOutOfRangeException($"Purchase with id '{purchaseId}' not found.");
 
         _disableAdsPurchase = purchasesStorage.GetPurchase(purchaseId);
@@ -68,7 +70,7 @@ public class AdsViewer : MonoBehaviour, IAdsViewer
 
     public void ShowRewardAd(RewardType reward)
     {
-        if (CanShowRewardAd && _disableAdsPurchase.IsConsumed == false)
+        if (CanShowRewardAd)
             StartCoroutine(WaitShowRewardAd(reward));
     }
 

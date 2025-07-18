@@ -3,9 +3,10 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+//Todo Remove on realise
 public class Console : MonoBehaviour
 {
-    private const string s_EndText = "\n...|||...\n\n";
+    private const string EndText = "\n...|||...\n\n";
 
     private static Console s_Console;
 
@@ -16,6 +17,9 @@ public class Console : MonoBehaviour
     {
         if (s_Console == null)
             CreateSingleton();
+
+        if (s_Console == null)
+            return;
 
         s_Console.Log(message);
     }
@@ -48,7 +52,7 @@ public class Console : MonoBehaviour
             throw new NullReferenceException(nameof(_textPrefab));
     }
 
-    private void Awake()
+    private void OnEnable()
     {
         if (s_Console == null)
             s_Console = this;
@@ -62,6 +66,6 @@ public class Console : MonoBehaviour
     private void Log(string message)
     {
         var text = Instantiate(_textPrefab, _content.transform);
-        text.text = $"{message}{s_EndText}";
+        text.text = $"{message}{EndText}";
     }
 }

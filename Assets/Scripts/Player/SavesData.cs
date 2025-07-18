@@ -52,4 +52,12 @@ public class SavesData : ISavesData
 
         _savesYG.AchievedLevelIndex = achievedLevelIndex;
     }
+
+    public void RemoveProgerss()
+    {
+        _savesYG = new SavesYG();
+
+        YandexGame.savesData = _savesYG;
+        YandexGame.SaveProgress();
+    }
 }

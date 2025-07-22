@@ -1,3 +1,5 @@
+using MainMenuSpace;
+using Scriptable;
 using System;
 using UnityEngine;
 
@@ -5,8 +7,9 @@ namespace PlayLevel
 {
     public class EntryPoint : MonoBehaviour
     {
-        [SerializeField] private Player _player;
-        [SerializeField] private Scriptable.SelectedLevel _selectedLevel;
+        [SerializeField] private SelectedLevel _selectedLevel;
+        [SerializeField] private CachedPlayer _player;
+        [SerializeField] private PlayerController _playerController;
 
         [Header("Configurators")]
         [SerializeField] private TurretConfigurator _turretConfigurator;
@@ -19,11 +22,14 @@ namespace PlayLevel
 
         private void OnValidate()
         {
+            if (_selectedLevel == null)
+                throw new NullReferenceException(nameof(_selectedLevel));
+
             if (_player == null)
                 throw new NullReferenceException(nameof(_player));
 
-            if (_selectedLevel == null)
-                throw new NullReferenceException(nameof(_selectedLevel));
+            if (_playerController == null)
+                throw new NullReferenceException(nameof(_playerController));
 
             if (_turretConfigurator == null)
                 throw new NullReferenceException(nameof(_turretConfigurator));
@@ -49,26 +55,50 @@ namespace PlayLevel
 
         private void Start()
         {
-            IUser user = _player.User;
+            // Todo Remove ConfigureWithConsol() on realise
+#if UNITY_EDITOR
+            Configure();
+#else
+            ConfigureWithConsol();
+#endif
+        }
 
-            _bulletConfigurator.Configure(user);
-            _turretConfigurator.Configure(user, _bulletConfigurator.BulletFactory);
+        private void Configure()
+        {
+            _bulletConfigurator.Configure(_player);
+            _turretConfigurator.Configure(_player, _bulletConfigurator.BulletFactory);
 
             var turret = _turretConfigurator.Turret;
             var winState = _turretConfigurator.WinState;
 
-            _player.Initialize(turret);
+            _playerController.Initialize(turret);
             _actorsConfigurator.Configure(turret, _selectedLevel.ActorsPlanner);
             _improvedHealthConfigurator.Configure(_selectedLevel.ActorsHealthCoefficient);
 
             var actorsController = _actorsConfigurator.ActorsController;
 
-            _stepSystemConfigurator.Configure(turret, winState, _player, actorsController);
+            _stepSystemConfigurator.Configure(turret, winState, _playerController, actorsController);
             _bonusPrefabConfigurator.Configure(turret);
 
-            RewardIssuer rewardIssuer = new RewardIssuer(user, _selectedLevel, winState);
+            SavesData savesData = new SavesData();
+            PlayerSaver playerSaver = new PlayerSaver(_player, savesData);
+            RewardIssuer rewardIssuer = new RewardIssuer(playerSaver, _player, _selectedLevel, winState);
             var closeSceneStep = _stepSystemConfigurator.CloseSceneStep;
             _userInterfaceConfigurator.Configure(closeSceneStep, rewardIssuer);
+        }
+
+        private void ConfigureWithConsol()
+        {
+            try
+            {
+                Console.GetLog("UNITY_WEBGL");
+
+                Configure();
+            }
+            catch (Exception ex)
+            {
+                Console.GetException(ex);
+            }
         }
     }
 }

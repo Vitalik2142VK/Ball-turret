@@ -2,12 +2,14 @@
 
 public class HealthImprovementTransaction : IGamePayTransaction
 {
+    private IPlayerSaver _playerSaver;
     private IWallet _wallet;
     private ITurretImprover _turretImprover;
     private IPriceEnlarger _priceEnlarger;
 
-    public HealthImprovementTransaction(IWallet wallet, ITurretImprover turretImprover, IPriceEnlarger priceEnlarger)
+    public HealthImprovementTransaction(IPlayerSaver playerSaver, IWallet wallet, ITurretImprover turretImprover, IPriceEnlarger priceEnlarger)
     {
+        _playerSaver = playerSaver ?? throw new ArgumentNullException(nameof(playerSaver));
         _wallet = wallet ?? throw new ArgumentNullException(nameof(wallet));
         _turretImprover = turretImprover ?? throw new ArgumentNullException(nameof(turretImprover));
         _priceEnlarger = priceEnlarger ?? throw new ArgumentNullException(nameof(priceEnlarger));
@@ -30,6 +32,7 @@ public class HealthImprovementTransaction : IGamePayTransaction
         {
             _turretImprover.ImproveHealth();
             _priceEnlarger.IncreaseByLevel(_turretImprover.LevelHealthImprovement);
+            _playerSaver.Save();
 
             return true;
         }

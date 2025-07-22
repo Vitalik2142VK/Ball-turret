@@ -16,6 +16,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PoisonBullet
       objectReference: {fileID: 0}
+    - target: {fileID: 2844714841655934074, guid: 163cd43076eecd94ab9d152a4ab0f8f2, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: -2012101747358868093, guid: 7e64bff2b0d24c049a5536fbe81251c7, type: 3}
     - target: {fileID: 4263260762200817227, guid: 163cd43076eecd94ab9d152a4ab0f8f2, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -59,7 +63,7 @@ PrefabInstance:
     - target: {fileID: 8234357827683552692, guid: 163cd43076eecd94ab9d152a4ab0f8f2, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 4e16a711d3412bd468bf7dccdb09c9d5, type: 2}
+      objectReference: {fileID: 2100000, guid: af79811196565464d909fd0e9ddcc0eb, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:

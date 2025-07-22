@@ -8,4 +8,6 @@ public interface IBulletPhysics
     public void Activate();
 
     public void MoveToDirection(Vector3 direction);
+
+    public void RecordPoint(float deltaTime);
 }

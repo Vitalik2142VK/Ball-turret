@@ -1,6 +1,6 @@
 ﻿public interface IGunMagazine
 {
-    public bool AreThereBullets { get; }
+    public bool HasFreeBullets { get; }
     public bool IsFull {  get; }
 
     public void AddBullet(IBullet bullet);

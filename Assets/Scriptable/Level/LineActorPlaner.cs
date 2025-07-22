@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Scriptable
 {
     [Serializable]
-    public class LineActorPlaner
+    public struct LineActorPlaner
     {
         private const int CountColumns = 3;
 

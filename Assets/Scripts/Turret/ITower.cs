@@ -7,5 +7,7 @@ public interface ITower
 
     public void TakeAim(Vector3 targertPosition);
 
+    public void AimBeforeShooting(Vector3 targertPosition);
+
     public void SaveDirection();
 }

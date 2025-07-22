@@ -10,7 +10,7 @@ public class LevelFactory : ILevelFactory
     private ICoinCountRandomizer _coinCountRandomizer;
     private float _actorsHealthCoefficientByLevel;
 
-    public LevelFactory(IEnumerable<ILevelActorsPlanner> actorsPlanners, float actorsHealthCoefficientByLevel = MinActorsHealthCoefficientByLevel)
+    public LevelFactory(IEnumerable<ILevelActorsPlanner> actorsPlanners, ICoinCountRandomizer coinCountRandomizer, float actorsHealthCoefficientByLevel = MinActorsHealthCoefficientByLevel)
     {
         if (actorsHealthCoefficientByLevel < MinActorsHealthCoefficientByLevel)
             throw new ArgumentOutOfRangeException(nameof(actorsHealthCoefficientByLevel));
@@ -23,9 +23,8 @@ public class LevelFactory : ILevelFactory
         if (_actorsPlanners.Count == 0)
             throw new ArgumentOutOfRangeException(nameof(actorsPlanners));
 
+        _coinCountRandomizer = coinCountRandomizer ?? throw new ArgumentNullException(nameof(coinCountRandomizer));
         _actorsHealthCoefficientByLevel = actorsHealthCoefficientByLevel;
-
-        _coinCountRandomizer = new CoinCountRandomizer();
     }
 
     public int LevelsCount => _actorsPlanners.Count;

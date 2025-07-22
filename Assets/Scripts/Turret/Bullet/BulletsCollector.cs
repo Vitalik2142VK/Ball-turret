@@ -9,7 +9,7 @@ public class BulletsCollector : MonoBehaviour, IBulletRepository, IBonusStorage
     private int _countActiveBullets;
     private int _currentIndexBullet;
 
-    public bool AreThereFreeBullets => _bullets.Count > _currentIndexBullet;
+    public bool HasFreeBullets => _bullets.Count > _currentIndexBullet;
     public bool AreBulletsReturned => _countActiveBullets == 0;
 
     private void Awake()
@@ -49,7 +49,7 @@ public class BulletsCollector : MonoBehaviour, IBulletRepository, IBonusStorage
 
     public IBullet Get()
     {
-        if (AreThereFreeBullets == false)
+        if (HasFreeBullets == false)
             throw new InvalidOperationException("The count of bullets is 0");
 
         IBullet bullet = _bullets[_currentIndexBullet];

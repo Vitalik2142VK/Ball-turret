@@ -6,11 +6,13 @@ namespace PlayLevel
     public class BulletConfigurator : MonoBehaviour
     {
         [SerializeField] private BulletFactory _bulletFactory;
+        [SerializeField] private Sound _hitBulletSound;
         [SerializeField] private Scriptable.DamageAttributes _damageBulletAttributes;
 
         [Header("Exploding bullet prefab")]
         [SerializeField] private BulletsCollector _bulletsCollector;
         [SerializeField] private ExplodingBullet _explodingBulletPrefab;
+        [SerializeField] private Sound _explosionSound;
 
         public IBulletFactory BulletFactory => _bulletFactory;
 
@@ -18,6 +20,9 @@ namespace PlayLevel
         {
             if (_bulletFactory == null)
                 throw new NullReferenceException(nameof(_bulletFactory));
+
+            if (_hitBulletSound == null)
+                throw new NullReferenceException(nameof(_hitBulletSound));
 
             if (_damageBulletAttributes == null)
                 throw new NullReferenceException(nameof(_damageBulletAttributes));
@@ -27,17 +32,21 @@ namespace PlayLevel
 
             if (_explodingBulletPrefab == null)
                 throw new NullReferenceException(nameof(_explodingBulletPrefab));
+
+            if (_explosionSound == null)
+                throw new NullReferenceException(nameof(_explosionSound));
         }
 
-        public void Configure(IUser user)
+        public void Configure(IPlayer player)
         {
-            if (user == null)
-                throw new ArgumentNullException(nameof(user));
+            if (player == null)
+                throw new ArgumentNullException(nameof(player));
 
-            DamageImprover improveDamageBullet = new DamageImprover(_damageBulletAttributes);
-            improveDamageBullet.Improve(user.DamageCoefficient);
+            var damageChanger = new DamageChanger(_damageBulletAttributes);
+            damageChanger.Change(player.DamageCoefficient);
 
-            _bulletFactory.Initialize(improveDamageBullet);
+            _bulletFactory.Initialize(damageChanger, _hitBulletSound);
+            _explodingBulletPrefab.SetExplosionSound(_explosionSound);
             _explodingBulletPrefab.SetBulletRepository(_bulletsCollector);
 
             if (_explodingBulletPrefab.TryGetComponent(out Bullet bullet))

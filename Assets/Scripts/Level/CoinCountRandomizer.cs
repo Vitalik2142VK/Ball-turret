@@ -10,11 +10,18 @@ public class CoinCountRandomizer : ICoinCountRandomizer
     private const int DefaultMinCoinsDefeat = 200;
 
     private Random _random;
+    private int _currenMaxLevelPlayer;
 
-    public CoinCountRandomizer()
+    public CoinCountRandomizer(int currentMaxLevelPlayer)
     {
+        if (currentMaxLevelPlayer < 0)
+            throw new ArgumentOutOfRangeException(nameof(currentMaxLevelPlayer));
+
         _random = new Random();
+        _currenMaxLevelPlayer = currentMaxLevelPlayer;
     }
+
+    public int CountCoinsForRewardAd => (int)(DefaultMinCoinsWin * CalculateCoefficient(_currenMaxLevelPlayer));
 
     public int GetCountCoinsWin(int indexLevel)
     {

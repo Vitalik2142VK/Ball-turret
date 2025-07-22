@@ -11,6 +11,7 @@ public class Bullet : MonoBehaviour, IBullet
     private IDamage _damage;
     private IBulletPhysics _bulletPhysics;
     private IBonusGatherer _gatherer;
+    private ISound _sound;
 
     public BulletType BulletType => _bulletType;
 
@@ -38,9 +39,11 @@ public class Bullet : MonoBehaviour, IBullet
         _bulletPhysics.EnteredCollision -= OnApplyDamage;
     }
 
-    public void Initialize(IDamageAttributes damageBulletAttributes)
+    public void Initialize(IDamageAttributes damageBulletAttributes, ISound sound)
     {
         DamageAttributes = damageBulletAttributes ?? throw new ArgumentNullException(nameof(damageBulletAttributes));
+
+        _sound = sound ?? throw new ArgumentNullException(nameof(sound));
 
         _damage = new Damage(DamageAttributes);
         _gatherer = new BonusGathererBullet();
@@ -51,9 +54,9 @@ public class Bullet : MonoBehaviour, IBullet
         if (damageImproverAttributes == null)
             throw new ArgumentNullException(nameof(damageImproverAttributes));
 
-        IDamageImprover damageImprover = new DamageImprover(DamageAttributes);
-        damageImprover.Improve(damageImproverAttributes);
-        DamageAttributes = damageImprover;
+        var damageChanger = new DamageChanger(DamageAttributes);
+        damageChanger.Change(damageImproverAttributes);
+        DamageAttributes = damageChanger;
 
         _damage = new Damage(DamageAttributes);
     }
@@ -75,6 +78,8 @@ public class Bullet : MonoBehaviour, IBullet
 
     private void OnApplyDamage(GameObject gameObject)
     {
+        _sound.Play();
+
         if (gameObject.TryGetComponent(out IDamagedObject damagedObject))
             _damage.Apply(damagedObject);
     }

@@ -3,20 +3,21 @@ using System;
 using UnityEngine;
 
 [RequireComponent(typeof(LineRenderer))]
-public class TrajectoryRenderer : MonoBehaviour
+public class TrajectoryRenderer : MonoBehaviour, ITrajectoryRenderer
 {
-    [SerializeField] private BulletPhysics _bulletPhysics;
+    [SerializeField, SerializeIterface(typeof(IBulletPhysics))] private GameObject _bulletImitator;
     [SerializeField] private TrajectoryBullet _trajectoryBullet;
     [SerializeField] private bool _isInstallFixUpdate = true;
     [SerializeField, Range(0.01f, 0.03f)] private float _timeStep = 0.02f;
 
+    private IBulletPhysics _bulletPhysics;
     private LineRenderer _lineRenderer;
     private Transform _bulletPhysicsTransform;
 
     private void OnValidate()
     {
-        if (_bulletPhysics == null)
-            throw new NullReferenceException(nameof(_bulletPhysics));
+        if (_bulletImitator == null)
+            throw new NullReferenceException(nameof(_bulletImitator));
 
         if (_trajectoryBullet == null)
             throw new NullReferenceException(nameof(_trajectoryBullet));
@@ -27,15 +28,28 @@ public class TrajectoryRenderer : MonoBehaviour
 
     private void Awake()
     {
-        _bulletPhysicsTransform = _bulletPhysics.transform;
-
+        _bulletPhysics = _bulletImitator.GetComponent<IBulletPhysics>();
+        _bulletPhysicsTransform = _bulletImitator.transform;
         _lineRenderer = GetComponent<LineRenderer>();
+
+        _lineRenderer.alignment = LineAlignment.TransformZ;
+        _lineRenderer.numCapVertices = 0;
+        _lineRenderer.numCornerVertices = 0;
+        _lineRenderer.widthMultiplier = 0.2f;
+
+        transform.forward = Camera.main.transform.forward;
+
+        Disable();
     }
 
     public void ShowTrajectory(Vector3 origin, Vector3 direction)
     {
+        if (direction == _trajectoryBullet.Direction)
+            return;
+
         _bulletPhysicsTransform.position = origin;
         _bulletPhysics.MoveToDirection(direction);
+        _trajectoryBullet.Direction = direction;
         _trajectoryBullet.Clear();
         _trajectoryBullet.CreateNewTrajectory(_timeStep);
 

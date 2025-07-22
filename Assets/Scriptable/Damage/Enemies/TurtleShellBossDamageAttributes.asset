@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c19ff4ecf4c6bc240a0415b67f24e2b0, type: 3}
   m_Name: TurtleShellBossDamageAttributes
   m_EditorClassIdentifier: 
-  _damage: 70
+  _damage: 400

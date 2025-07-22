@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using Scriptable;
+using UnityEngine.InputSystem.HID;
 
 [RequireComponent(typeof(Rigidbody))]
 public class BulletPhysics : MonoBehaviour, IBulletPhysics
@@ -8,6 +9,7 @@ public class BulletPhysics : MonoBehaviour, IBulletPhysics
     [SerializeField] private AdvancedBulletPhysicsAttributes _attributes;
     [SerializeField] private TrajectoryBullet _trajectory;
     [SerializeField] private LayerMask _collisionMask;
+    [SerializeField, Min(0)] private float _maxDirectionalError = 0.2f;
 
     public event Action<GameObject> EnteredCollision;
 
@@ -52,6 +54,9 @@ public class BulletPhysics : MonoBehaviour, IBulletPhysics
 
     public void MoveToDirection(Vector3 direction)
     {
+        if (Vector3.Distance(direction, _trajectory.Direction) > _maxDirectionalError)
+            _trajectory.Clear();
+
         _velocity = direction.normalized * _attributes.Speed;
         _isThereCollision = false;
         _frame = 0;
@@ -70,7 +75,6 @@ public class BulletPhysics : MonoBehaviour, IBulletPhysics
             if (LayerMaskTool.IsInLayerMask(gameObject, _attributes.LayerMaskBounce))
             {
                 point.SetCollidedGameObject(gameObject);
-
                 _trajectory.RecordCollision();
             }
 
@@ -162,16 +166,18 @@ public class BulletPhysics : MonoBehaviour, IBulletPhysics
             direction += Vector3.down;
 
         if (Physics.RaycastNonAlloc(_transform.position, direction, _hitsArray, distance, _collisionMask, QueryTriggerInteraction.Ignore) != 0)
+        {
+            _isThereCollision = true;
+
             return true;
-        else
-            return false;
+        }
+
+        return false;
     }
 
     private void HandleCollision(RaycastHit hit)
     {
         var gameObject = hit.transform.gameObject;
-
-        CheckIsGroundCollision(gameObject);
 
         if (LayerMaskTool.IsInLayerMask(gameObject, _attributes.LayerMaskBounce))
         {
@@ -180,15 +186,6 @@ public class BulletPhysics : MonoBehaviour, IBulletPhysics
 
             _velocity = bounceDirection;
         }
-    }
-
-    private void CheckIsGroundCollision(GameObject gameObject)
-    {
-        if (_isThereCollision)
-            return;
-
-        if (LayerMaskTool.IsInLayerMask(gameObject, _collisionMask))
-            _isThereCollision = true;
     }
 
     private Vector3 GetBounce(Vector3 normal, Vector3 direction)

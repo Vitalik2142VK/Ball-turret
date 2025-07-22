@@ -9,6 +9,7 @@ public class CollisionBonus : MonoBehaviour, IBonus, IActor
     [SerializeField] private Bonus _bonus;
 
     private IMover _mover;
+    private ISound _sound;
 
     public string Name => _bonus.Name;
     public IBonusCard BonusCard => _bonus.BonusCard;
@@ -28,7 +29,6 @@ public class CollisionBonus : MonoBehaviour, IBonus, IActor
     private void Awake()
     {
         _mover = GetComponent<Mover>();
-        _bonus = GetComponent<Bonus>();
 
         _image.sprite = _bonus.BonusCard.Icon;
     }
@@ -49,11 +49,17 @@ public class CollisionBonus : MonoBehaviour, IBonus, IActor
         {
             gatheringBonus.Gather(this);
 
+            _sound.Play();
+
             Destroy();
         }
     }
 
-    public void Initialize(IBonusActivator bonusActivator) => _bonus.Initialize(bonusActivator);
+    public void Initialize(IBonusActivator bonusActivator, ISound sound) {
+        _sound = sound ?? throw new ArgumentNullException(nameof(sound));
+
+        _bonus.Initialize(bonusActivator);
+    }
 
     public void SetStartPosition(Vector3 startPosition) => _mover.SetStartPosition(startPosition);
 

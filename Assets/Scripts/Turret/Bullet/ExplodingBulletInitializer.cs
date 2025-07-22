@@ -17,8 +17,8 @@ public class ExplodingBulletInitializer : MonoBehaviour, IBulletInitializer
         {
             if (bulletMono.TryGetComponent(out ExplodingBullet explodingBullet))
             {
-                var bulletRepository = _explodingBulletPrefab.BulletRepository;
-                explodingBullet.SetBulletRepository(bulletRepository);
+                explodingBullet.InitializeExploder(_explodingBulletPrefab.ExplosionSound);
+                explodingBullet.SetBulletRepository(_explodingBulletPrefab.BulletRepository);
             }
         }
         else

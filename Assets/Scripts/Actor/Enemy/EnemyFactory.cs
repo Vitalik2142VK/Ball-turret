@@ -5,6 +5,7 @@ using UnityEngine;
 public class EnemyFactory : MonoBehaviour, IActorFactory
 {
     [SerializeField] private Enemy[] _enemyPrefabs;
+    [SerializeField] private Sound _deadSound;
 
     private Dictionary<string, Enemy> _prefabs;
 
@@ -12,6 +13,9 @@ public class EnemyFactory : MonoBehaviour, IActorFactory
     {
         if (_enemyPrefabs == null)
             throw new NullReferenceException(nameof(_enemyPrefabs));
+
+        if (_deadSound == null)
+            throw new NullReferenceException(nameof(_deadSound));
 
         if (_enemyPrefabs.Length == 0)
             throw new InvalidOperationException(nameof(_enemyPrefabs));
@@ -34,7 +38,7 @@ public class EnemyFactory : MonoBehaviour, IActorFactory
 
         var prefab = _prefabs[nameTypeActor];
         var enemy = Instantiate(prefab, Vector3.zero, prefab.transform.rotation);
-        enemy.Initialize();
+        enemy.Initialize(_deadSound);
 
         return enemy;
     }

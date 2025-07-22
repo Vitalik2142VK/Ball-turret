@@ -1,0 +1,19 @@
+{
+    "stringKeys": [],
+    "stringValues": [],
+    "floatKeys": [],
+    "floatValues": [],
+    "intKeys": [],
+    "intValues": [],
+    "idSave": 7,
+    "Purchases": [
+        {
+            "Id": "disable_ads",
+            "IsPurchased": true
+        }
+    ],
+    "HealthCoefficient": 1.0,
+    "DamageCoefficient": 1.0,
+    "CountCoins": 1000,
+    "AchievedLevelIndex": 0
+}

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class FinishWindow : MonoBehaviour, IMenu
 {
-    private const RewardType PassingLevel = RewardType.AddCoin;
+    private readonly string AddCoinRewardId = RewardTypes.AddCoin;
 
     [SerializeField] private Pause _pause;
     [SerializeField] private Button _videoViewingButton;
@@ -85,7 +85,7 @@ public class FinishWindow : MonoBehaviour, IMenu
     public void OnWatchVideo()
     {
         _videoViewingButton.interactable = false;
-        _adsViewer.ShowRewardAd(PassingLevel);
+        _adsViewer.ShowRewardAd(AddCoinRewardId);
     }
 
     public void OnContinue()
@@ -98,9 +98,9 @@ public class FinishWindow : MonoBehaviour, IMenu
         _pause.Disable();
     }
 
-    private void OnAddBonusReward(RewardType reward)
+    private void OnAddBonusReward(string rewardId)
     {
-        if (reward != PassingLevel)
+        if (rewardId != AddCoinRewardId)
             return;
 
         _rewardIssuer.PayBonusReward();

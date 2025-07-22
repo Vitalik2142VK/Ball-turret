@@ -1,0 +1,3 @@
+Build path: D:/Unity/TestProgects/Cannon Turret/Cannon turret test build
+Build number: 1
+PluginYG version: 2.0041

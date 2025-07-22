@@ -110,8 +110,8 @@ public class RewardIssuer : IRewardIssuer
         if (IsFirstPass && _winState.IsWin)
             addedRevard = (int)(AdditionalReward * _reward);
 
-        if (_player.PurchasesStorage.TryGetPurchase(out IPurchase purchase, PurchasesTypes.DisableAds))
-            if (purchase.IsConsumed == true)
+        if (_player.PurchasesStorage.TryGetPurchase(out IPlayerPurchase purchase, PurchasesTypes.DisableAds))
+            if (purchase.IsPurchased)
                 addedRevard = (int)(AdditionalReward * GetMaxReward());
 
         _reward += addedRevard;

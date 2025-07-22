@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using UnityEngine;
 using YG;
 
@@ -10,9 +9,6 @@ public class LocalisatorService : MonoBehaviour, ILocalisatorService
     private const string TurkishLanguage = "tr";
 
     [SerializeField] private Scriptable.LocalizationData _date;
-    [SerializeField, Range(0.01f, 2f)] private float _timeWaitingResponse = 0.2f;
-
-    private WaitForSeconds _waiting;
 
     public Language Language { get; private set; }
 
@@ -24,33 +20,29 @@ public class LocalisatorService : MonoBehaviour, ILocalisatorService
 
     private void Awake()
     {
-        _waiting = new WaitForSeconds(_timeWaitingResponse);
-
         if (_date.IsLanguageEstablished == false)
             _date.EstablishLanguage(this);
     }
 
     private void OnEnable()
     {
-        YandexGame.GetDataEvent += OnGetLocalization;
+        YG2.onGetSDKData += OnGetLocalization;
+    }
+
+    private void Start()
+    {
+        if (YG2.isSDKEnabled)
+            OnGetLocalization();
     }
 
     private void OnDisable()
     {
-        YandexGame.GetDataEvent -= OnGetLocalization;
+        YG2.onGetSDKData -= OnGetLocalization;
     }
 
     private void OnGetLocalization()
     {
-        StartCoroutine(GetLocalization());
-    }
-
-    private IEnumerator GetLocalization()
-    {
-        while (YandexGame.SDKEnabled == false)
-            yield return _waiting;
-
-        var language = YandexGame.EnvironmentData.language;
+        var language = YG2.envir.language;
 
         switch (language)
         {

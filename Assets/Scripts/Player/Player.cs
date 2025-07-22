@@ -26,9 +26,4 @@ public class Player : IPlayer
     {
         AchievedLevelIndex++;
     }
-
-    public void SetPurchasesStorage(IPurchasesStorage purchasesStorage)
-    {
-        PurchasesStorage = purchasesStorage ?? throw new ArgumentNullException(nameof(purchasesStorage));
-    }
 }

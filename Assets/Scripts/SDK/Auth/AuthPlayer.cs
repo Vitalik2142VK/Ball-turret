@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using YG;
@@ -8,11 +7,6 @@ public class AuthPlayer : MonoBehaviour
 {
     [SerializeField] private AuthPlayerView _authPlayerView;
     [SerializeField] private Button _authButton;
-    [SerializeField, Min(20f)] private float _maxWaitTimeAuth;
-    [SerializeField, Min(1f)] private float _waitTimeAuth;
-
-    private WaitForSeconds _wait;
-    private float _currentWaitTime;
 
     private void OnValidate()
     {
@@ -23,40 +17,24 @@ public class AuthPlayer : MonoBehaviour
             throw new NullReferenceException(nameof(_authButton));
     }
 
-    private void Awake()
-    {
-        _wait = new WaitForSeconds(_waitTimeAuth);
-        _currentWaitTime = 0;
-    }
-
     private void OnEnable()
     {
         _authButton.onClick.AddListener(OnAuthorize);
+        YG2.onGetSDKData += OnFillData;
     }
 
     private void OnDisable()
     {
         _authButton.onClick.RemoveListener(OnAuthorize);
+        YG2.onGetSDKData -= OnFillData;
     }
 
     public void Authorize()
     {
-        if (YandexGame.auth)
-            FillData();
+        if (YG2.player.auth)
+            OnFillData();
         else
             ShowAuthButton();
-    }
-
-    private void FillData()
-    {
-        if (_authPlayerView.IsAuthorized)
-            return;
-
-        var namePlayer = YandexGame.playerName;
-        var urlIconPlayer = YandexGame.playerPhoto;
-
-        _authPlayerView.SetDataAuthPlayer(urlIconPlayer, namePlayer);
-        _authButton.gameObject.SetActive(false);
     }
 
     private void ShowAuthButton()
@@ -65,22 +43,22 @@ public class AuthPlayer : MonoBehaviour
         _authPlayerView.gameObject.SetActive(false);
     }
 
-    private void OnAuthorize()
+    private void OnFillData()
     {
-        YandexGame.AuthDialog();
+        if (_authPlayerView.IsAuthorized)
+            return;
 
-        StartCoroutine(WaitAuth());
+        var playerData = YG2.player;
+        var namePlayer = playerData.name;
+        var urlIconPlayer = playerData.photo;
+
+        _authPlayerView.gameObject.SetActive(true);
+        _authPlayerView.SetDataAuthPlayer(urlIconPlayer, namePlayer);
+        _authButton.gameObject.SetActive(false);
     }
 
-    private IEnumerator WaitAuth()
+    private void OnAuthorize()
     {
-        while (YandexGame.auth == false && _currentWaitTime < _maxWaitTimeAuth)
-        {
-            _currentWaitTime += _waitTimeAuth;
-
-            yield return _wait;
-        }
-
-        Authorize();
+        YG2.OpenAuthDialog();
     }
 }

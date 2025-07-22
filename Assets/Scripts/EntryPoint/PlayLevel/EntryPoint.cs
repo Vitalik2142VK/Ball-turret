@@ -80,7 +80,7 @@ namespace PlayLevel
             _stepSystemConfigurator.Configure(turret, winState, _playerController, actorsController);
             _bonusPrefabConfigurator.Configure(turret);
 
-            SavesData savesData = new SavesData();
+            SavedPlayerData savesData = new SavedPlayerData();
             PlayerSaver playerSaver = new PlayerSaver(_player, savesData);
             RewardIssuer rewardIssuer = new RewardIssuer(playerSaver, _player, _selectedLevel, winState);
             var closeSceneStep = _stepSystemConfigurator.CloseSceneStep;

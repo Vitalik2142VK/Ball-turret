@@ -18,7 +18,7 @@ public class SavedPlayerData : ISavedPlayerData
     public IReadOnlyCollection<IPlayerPurchase> OneTimePurchases => _savesYG.GetOneTimePurchases();
     public float HealthCoefficient => _savesYG.HealthCoefficient;
     public float DamageCoefficient => _savesYG.DamageCoefficient;
-    public int CountCoins => _savesYG.CountCoins;
+    public long CountCoins => _savesYG.CountCoins;
     public int AchievedLevelIndex => _savesYG.AchievedLevelIndex;
 
     public void SetHealthCoefficient(float healthCoefficient)
@@ -37,7 +37,7 @@ public class SavedPlayerData : ISavedPlayerData
         _savesYG.DamageCoefficient = damageCoefficient;
     }
 
-    public void SetCountCoins(int countCoins)
+    public void SetCountCoins(long countCoins)
     {
         if (countCoins < 0)
             throw new ArgumentOutOfRangeException(nameof(countCoins));

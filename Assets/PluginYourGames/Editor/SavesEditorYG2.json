@@ -5,11 +5,11 @@
     "floatValues": [],
     "intKeys": [],
     "intValues": [],
-    "idSave": 7,
+    "idSave": 257,
     "Purchases": [
         {
             "Id": "disable_ads",
-            "IsPurchased": true
+            "IsPurchased": false
         }
     ],
     "HealthCoefficient": 1.0,

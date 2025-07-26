@@ -4,7 +4,7 @@ public class Wallet : IWallet
 {
     private IWalletView _walletView;
 
-    public Wallet(int countCoinsPlayer)
+    public Wallet(long countCoinsPlayer)
     {
         if (countCoinsPlayer <= 0)
             throw new ArgumentOutOfRangeException(nameof(countCoinsPlayer));
@@ -12,7 +12,7 @@ public class Wallet : IWallet
         CountCoins = countCoinsPlayer;
     }
 
-    public int CountCoins { get; private set; }
+    public long CountCoins { get; private set; }
 
     public void SetView(IWalletView walletView)
     {

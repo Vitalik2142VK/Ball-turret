@@ -56,6 +56,16 @@ namespace PlayLevel
             _stepSystem.EstablishNextStep(_cyclicalStep);
         }
 
+        public void AddLearningStep(LearningStep learningStep)
+        {
+            if (learningStep == null)
+                throw new ArgumentNullException(nameof(learningStep));
+
+            AddNextStepToEndPoint(learningStep, _playerShotStep);
+            _cyclicalStep.SetLoopingStep(learningStep);
+            _stepSystem.EstablishNextStep(learningStep);
+        }
+
         private void CreateSteps()
         {
             _playerShotStep = new PlayerShotStep(_playerController);
@@ -89,7 +99,7 @@ namespace PlayLevel
             DynamicNextStep dynamicNextStep = new DynamicNextStep(_stepSystem);
             _cyclicalStep = new CyclicalStep(_actorsController, dynamicNextStep, _winStat);
             _cyclicalStep.SetStartStep(_prepareActorsStep);
-            _cyclicalStep.SetPlayerStep(_playerShotStep);
+            _cyclicalStep.SetLoopingStep(_playerShotStep);
             _cyclicalStep.SetFinishStep(_rewardStep);
 
             AddNextStepToEndPoint(_removeActorsStep, _cyclicalStep);

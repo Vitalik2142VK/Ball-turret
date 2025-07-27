@@ -7,7 +7,7 @@ public class CyclicalStep : IStep
     private IWinState _winState;
 
     private IStep _startStep;
-    private IStep _playerStep;
+    private IStep _loopingStep;
     private IStep _finishStep;
 
     public CyclicalStep(IActorsController actorController, IDynamicEndStep dynamicEndStep, IWinState winState)
@@ -22,9 +22,9 @@ public class CyclicalStep : IStep
         _startStep = startStep ?? throw new ArgumentNullException(nameof(startStep));
     }
 
-    public void SetPlayerStep(IStep playerStep)
+    public void SetLoopingStep(IStep loopingStep)
     {
-        _playerStep = playerStep ?? throw new ArgumentNullException(nameof(playerStep));
+        _loopingStep = loopingStep ?? throw new ArgumentNullException(nameof(loopingStep));
     }
 
     public void SetFinishStep(IStep finishStep)
@@ -45,7 +45,7 @@ public class CyclicalStep : IStep
         }
         else
         {
-            _dynamicEndStep.SetNextStep(_playerStep);
+            _dynamicEndStep.SetNextStep(_loopingStep);
         }
 
         _dynamicEndStep.End();

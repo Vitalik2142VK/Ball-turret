@@ -2,6 +2,8 @@ using System;
 
 public class Level : ILevel
 {
+    private ILevelActorsPlanner _actorsPlanner;
+
     public Level(ILevelActorsPlanner actorsPlanner, float actorsHealthCoefficient, int countCoinsWin, int countCoinsDefeat, int index)
     {
         if (actorsHealthCoefficient < 0f)
@@ -16,7 +18,8 @@ public class Level : ILevel
         if (index < 0)
             throw new ArgumentOutOfRangeException(nameof(index));
 
-        ActorsPlanner = actorsPlanner ?? throw new ArgumentNullException(nameof(actorsPlanner));
+        _actorsPlanner = actorsPlanner ?? throw new ArgumentNullException(nameof(actorsPlanner));
+        CurrentWaveNumber = 0;
 
         ActorsHealthCoefficient = actorsHealthCoefficient;
         CountCoinsWin = countCoinsWin;
@@ -24,9 +27,26 @@ public class Level : ILevel
         Index = index;
     }
 
-    public ILevelActorsPlanner ActorsPlanner { get; private set; }
-    public float ActorsHealthCoefficient { get; private set; }
-    public int CountCoinsWin { get; private set; }
-    public int CountCoinsDefeat { get; private set; }
-    public int Index { get; private set; }
+    public float ActorsHealthCoefficient { get; }
+    public int CountCoinsWin { get; }
+    public int CountCoinsDefeat { get; }
+    public int Index { get; }
+    public int CurrentWaveNumber { get; private set; }
+
+    public int PassedWavesNumber => CurrentWaveNumber - 1;
+    public bool AreWavesOver => _actorsPlanner.CountWaves <= CurrentWaveNumber;
+
+    public bool TryGetNextWaveActorsPlanner(out IWaveActorsPlanner waveActorsPlanner)
+    {
+        waveActorsPlanner = null;
+
+        if (AreWavesOver == false)
+        {
+            _actorsPlanner.GetWaveActorsPlanner(++CurrentWaveNumber);
+
+            return true;
+        }
+
+        return false;
+    }
 }

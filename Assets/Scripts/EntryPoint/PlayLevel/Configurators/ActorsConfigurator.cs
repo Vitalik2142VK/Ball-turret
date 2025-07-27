@@ -45,20 +45,20 @@ namespace PlayLevel
                 throw new NullReferenceException(nameof(_defaultMoveAttributes));
         }
 
-        public void Configure(IDamagedObject turret, ILevelActorsPlanner levelActorsPlanner)
+        public void Configure(IDamagedObject turret, ILevel level)
         {
             if (turret == null)
                 throw new ArgumentNullException(nameof(turret));
 
-            if (levelActorsPlanner == null)
-                throw new ArgumentNullException(nameof(levelActorsPlanner));
+            if (level == null)
+                throw new ArgumentNullException(nameof(level));
             
             IActorSpawner actorSpawner = CreatActorSpawner();
             IAdvancedActorsMover actorMover = new ActorsMover();
             IRemovedActorsRepository removedActorsRepository = new ActorsRemover();
             EnemiesAttacker enemiesAttacker = new EnemiesAttacker(turret);
             ActorsPreparator actorsPreparator = new ActorsPreparator(actorSpawner, actorMover, _startMoveAttributes, _defaultMoveAttributes);
-            actorsPreparator.SetLevelActorsPlanner(levelActorsPlanner);
+            actorsPreparator.SetLevelActorsPlanner(level);
 
             _zoneEnemy.Initialize(removedActorsRepository, enemiesAttacker);
 

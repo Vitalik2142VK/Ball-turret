@@ -1,4 +1,3 @@
-using MainMenuSpace;
 using Scriptable;
 using System;
 using UnityEngine;
@@ -72,7 +71,7 @@ namespace PlayLevel
             var winState = _turretConfigurator.WinState;
 
             _playerController.Initialize(turret);
-            _actorsConfigurator.Configure(turret, _selectedLevel.ActorsPlanner);
+            _actorsConfigurator.Configure(turret, _selectedLevel);
             _improvedHealthConfigurator.Configure(_selectedLevel.ActorsHealthCoefficient);
 
             var actorsController = _actorsConfigurator.ActorsController;
@@ -91,8 +90,6 @@ namespace PlayLevel
         {
             try
             {
-                Console.GetLog("UNITY_WEBGL");
-
                 Configure();
             }
             catch (Exception ex)

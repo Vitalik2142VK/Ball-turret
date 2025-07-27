@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 public class ActorsController : IActorsController, IActorsPreparator, IActorsMover, IActorsRemover, IEnemiesAttacker
 {

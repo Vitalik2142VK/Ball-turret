@@ -2,20 +2,26 @@
 
 public class CoinCountRandomizer : ICoinCountRandomizer
 {
+    public const int DefaultMinCoinsWin = 1000;
+    public const int DefaultMinCoinsDefeat = 200;
+
     private const float DefaultCoefficient = 1f;
     private const float CoinCoefficientByLevel = 0.4f;
     private const int DefaultMaxCoinsWin = 1100;
-    private const int DefaultMinCoinsWin = 1000;
     private const int DefaultMaxCoinsDefeat = 250;
-    private const int DefaultMinCoinsDefeat = 200;
 
     private Random _random;
     private int _currenMaxLevelPlayer;
 
     public CoinCountRandomizer(int currentMaxLevelPlayer)
     {
-        if (currentMaxLevelPlayer < 0)
+        int learningLevelIndex = ILevel.LearningLevelIndex;
+
+        if (currentMaxLevelPlayer < learningLevelIndex)
             throw new ArgumentOutOfRangeException(nameof(currentMaxLevelPlayer));
+        
+        if (learningLevelIndex == currentMaxLevelPlayer)
+            currentMaxLevelPlayer = 0;
 
         _random = new Random();
         _currenMaxLevelPlayer = currentMaxLevelPlayer;

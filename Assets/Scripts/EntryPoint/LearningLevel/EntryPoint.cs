@@ -8,8 +8,10 @@ namespace LearningLevel
     {
         [SerializeField] private Scriptable.SelectedLevel _selectedLevel;
         [SerializeField] private LearningUI _learningUI;
+        [SerializeField] private EnemyFactory _learningEnemyFactory;
 
         private StepSystemConfigurator _stepSystemConfigurator;
+        private ActorsConfigurator _actorsConfigurator;
 
         private void OnValidate()
         {
@@ -18,14 +20,21 @@ namespace LearningLevel
 
             if (_learningUI == null)
                 throw new NullReferenceException(nameof(_learningUI));
+
+            if (_learningEnemyFactory == null)
+                throw new NullReferenceException(nameof(_learningEnemyFactory));
         }
 
         private void Awake()
         {
             _stepSystemConfigurator = FindAnyObjectByType<StepSystemConfigurator>();
+            _actorsConfigurator = FindAnyObjectByType<ActorsConfigurator>();
 
             if (_stepSystemConfigurator == null)
                 throw new NullReferenceException(nameof(_stepSystemConfigurator));
+
+            if (_actorsConfigurator == null)
+                throw new NullReferenceException(nameof(_actorsConfigurator));
         }
 
         private void Start()
@@ -40,8 +49,11 @@ namespace LearningLevel
 
         private void Configure()
         {
+            _actorsConfigurator.AddActorFactory(_learningEnemyFactory);
+
             LearningStep learningStep = new LearningStep(_learningUI, _selectedLevel);
             _stepSystemConfigurator.AddLearningStep(learningStep);
+
         }
 
         private void ConfigureWithConsol()

@@ -14,6 +14,14 @@ public class ActorFactoriesRepository : IActorFactoriesRepository
         _factories = new List<IActorFactory>(factories);
     }
 
+    public void AddFactory(IActorFactory factory)
+    {
+        if (factory == null) 
+            throw new ArgumentNullException(nameof(factory));
+
+        _factories.Add(factory);
+    }
+
     public IActorFactory GetFactoryByNameTypeActor(string nameTypeActor)
     {
         if (nameTypeActor == null || nameTypeActor.Length == 0)

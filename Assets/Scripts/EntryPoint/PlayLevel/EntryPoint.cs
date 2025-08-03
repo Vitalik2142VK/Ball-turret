@@ -1,6 +1,7 @@
 using Scriptable;
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace PlayLevel
 {
@@ -84,6 +85,9 @@ namespace PlayLevel
             RewardIssuer rewardIssuer = new RewardIssuer(playerSaver, _player, _selectedLevel, winState);
             var closeSceneStep = _stepSystemConfigurator.CloseSceneStep;
             _userInterfaceConfigurator.Configure(closeSceneStep, rewardIssuer);
+
+            if (_player.AchievedLevelIndex == ILevel.LearningLevelIndex)
+                SceneManager.LoadScene((int)SceneIndex.LearningScene, LoadSceneMode.Additive);
         }
 
         private void ConfigureWithConsol()

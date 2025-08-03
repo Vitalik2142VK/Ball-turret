@@ -19,6 +19,8 @@ namespace PlayLevel
         [SerializeField] private MoveAttributes _startMoveAttributes;
         [SerializeField] private MoveAttributes _defaultMoveAttributes;
 
+        private ActorFactoriesRepository _actorFactoriesRepository;
+
         public ActorsController ActorsController { get; private set; }
 
         private void OnValidate()
@@ -65,6 +67,11 @@ namespace PlayLevel
             ActorsController = new ActorsController(actorsPreparator, removedActorsRepository, enemiesAttacker);
         }
 
+        public void AddActorFactory(IActorFactory actorFactory)
+        {
+            _actorFactoriesRepository.AddFactory(actorFactory);
+        }
+
         private IActorSpawner CreatActorSpawner()
         {
             List<IActorFactory> factories = new List<IActorFactory>
@@ -74,9 +81,9 @@ namespace PlayLevel
                 _borderFactory
             };
 
-            IActorFactoriesRepository actorFactoriesRepository = new ActorFactoriesRepository(factories);
+            _actorFactoriesRepository = new ActorFactoriesRepository(factories);
 
-            return new ActorSpawner(_spawnPointsRepository, actorFactoriesRepository);
+            return new ActorSpawner(_spawnPointsRepository, _actorFactoriesRepository);
         }
     }
 }

@@ -15,7 +15,7 @@ public class PlayerLoader : IPlayerLoader
 
     public IPlayer Load()
     {
-        if (_savedData.AchievedLevelIndex == 0)
+        if (_savedData.AchievedLevelIndex == ILevel.LearningLevelIndex)
             return CreateNewPlayer();
         else
             return GetFilledPlayer();

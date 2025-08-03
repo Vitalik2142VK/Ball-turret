@@ -45,6 +45,9 @@ public class SelectLevelScroll : MonoBehaviour
 
     public void Initialize(int countLevelPlanners, int levelIndex)
     {
+        if (levelIndex == ILevel.LearningLevelIndex)
+            return;
+
         if (countLevelPlanners <= 0)
             throw new ArgumentOutOfRangeException(nameof(countLevelPlanners));
 

@@ -1,36 +1,74 @@
-﻿using UnityEngine;
-using UnityEngine.EventSystems;
+﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
 
-public class LearningStage : MonoBehaviour, IPointerClickHandler
+public class LearningStage : MonoBehaviour
 {
+    [SerializeField] private TextInputSimulator _textInputSimulator;
+    [SerializeField] private TextLocalizer[] _localizedTexts;
     [SerializeField, Min(1)] private int _waveNumber;
 
-    private Pause _pause;
+    private Queue<TextLocalizer> _texts;
+    private TextLocalizer _currentTextLocalizer;
 
     public int WaveNumber => _waveNumber;
+    public bool IsActive => gameObject.activeSelf;
+
+    private void OnValidate()
+    {
+        if (_textInputSimulator == null)
+            throw new NullReferenceException(nameof(_textInputSimulator));
+
+        if (_localizedTexts == null || _localizedTexts.Length == 0)
+            throw new InvalidOperationException(nameof(_localizedTexts));
+
+        foreach (var localizedText in _localizedTexts)
+            if (localizedText == null)
+                throw new InvalidOperationException(nameof(_localizedTexts));
+    }
 
     private void Awake()
     {
         gameObject.SetActive(false);
-    }
 
-    public void Initialize(Pause pause)
-    {
-        if (pause == null) 
-            throw new System.ArgumentNullException(nameof(pause));
-
-        _pause = pause;
+        if (_localizedTexts.Length > 1)
+            _texts = new Queue<TextLocalizer>(_localizedTexts);
+        else
+            _currentTextLocalizer = _localizedTexts[0];
     }
 
     public void Enable()
     {
-        _pause.Enable();
         gameObject.SetActive(true);
+
+        SetNextText();
     }
 
-    public void OnPointerClick(PointerEventData _)
+    public void HandleСlick()
     {
-        _pause.Disable();
-        gameObject.SetActive(false);
+        if (_textInputSimulator.IsTextEntered == false)
+        {
+            _textInputSimulator.OutputEntireText();
+
+            return;
+        }
+
+        if (_texts == null || _texts.Count == 0)
+            gameObject.SetActive(false);
+        else
+            SetNextText();
+    }
+
+    private void SetNextText()
+    {
+        if (_texts != null)
+        {
+            if (_texts.Count == 0)
+                throw new InvalidOperationException("The number of texts is 0");
+
+            _currentTextLocalizer = _texts.Dequeue();
+        }
+
+        _textInputSimulator.SimulateInput(_currentTextLocalizer.Text);
     }
 }

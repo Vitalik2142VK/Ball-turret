@@ -5,7 +5,7 @@
     "floatValues": [],
     "intKeys": [],
     "intValues": [],
-    "idSave": 257,
+    "idSave": 8,
     "Purchases": [
         {
             "Id": "disable_ads",
@@ -15,5 +15,6 @@
     "HealthCoefficient": 1.0,
     "DamageCoefficient": 1.0,
     "CountCoins": 1000,
-    "AchievedLevelIndex": 0
+    "AchievedLevelIndex": -1,
+    "IsLearningComplete": false
 }

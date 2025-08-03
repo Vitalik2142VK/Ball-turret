@@ -63,7 +63,6 @@ namespace PlayLevel
 
             AddNextStepToEndPoint(learningStep, _playerShotStep);
             _cyclicalStep.SetLoopingStep(learningStep);
-            _stepSystem.EstablishNextStep(learningStep);
         }
 
         private void CreateSteps()

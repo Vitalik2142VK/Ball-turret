@@ -14,6 +14,7 @@ namespace Scriptable
         public float HealthCoefficient => _player.HealthCoefficient;
         public float DamageCoefficient => _player.DamageCoefficient;
         public int AchievedLevelIndex => _player.AchievedLevelIndex;
+        public bool IsLearningComplete => _player.IsLearningComplete;
         public bool IsSaved => _player != null;
 
         public void SetUser(IPlayer player)

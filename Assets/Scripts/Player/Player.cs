@@ -2,9 +2,9 @@ using System;
 
 public class Player : IPlayer
 {
-    public Player(IWallet wallet, ITurretImprover turretImprover, IPurchasesStorage purchasesStorage, int achievedLevel = 0)
+    public Player(IWallet wallet, ITurretImprover turretImprover, IPurchasesStorage purchasesStorage, int achievedLevel = ILevel.LearningLevelIndex, bool isLearningComplete = false)
     {
-        if (achievedLevel < 0)
+        if (achievedLevel < ILevel.LearningLevelIndex)
             throw new ArgumentOutOfRangeException(nameof(achievedLevel));
 
         Wallet = wallet ?? throw new ArgumentNullException(nameof(wallet));
@@ -12,6 +12,7 @@ public class Player : IPlayer
         PurchasesStorage = purchasesStorage ?? throw new ArgumentNullException(nameof(purchasesStorage));
 
         AchievedLevelIndex = achievedLevel;
+        IsLearningComplete = isLearningComplete;
     }
 
     public float HealthCoefficient => TurretImprover.HealthCoefficient;
@@ -19,6 +20,7 @@ public class Player : IPlayer
 
     public IWallet Wallet { get; }
     public ITurretImprover TurretImprover { get; }
+    public bool IsLearningComplete { get; }
     public IPurchasesStorage PurchasesStorage { get; private set; }
     public int AchievedLevelIndex { get; private set; }
 

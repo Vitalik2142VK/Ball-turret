@@ -4,8 +4,6 @@ using UnityEngine.SceneManagement;
 
 public class PlaySceneLoader : MonoBehaviour, ISceneLoader
 {
-    private string NameScene = "PlayScene";
-
     [SerializeField] private Scriptable.SelectedLevel _selectedLevel;
 
     private void OnValidate()
@@ -24,6 +22,6 @@ public class PlaySceneLoader : MonoBehaviour, ISceneLoader
 
     public void Load()
     {
-        SceneManager.LoadScene(NameScene);
+        SceneManager.LoadScene((int)SceneIndex.PlayScene);
     }
 }

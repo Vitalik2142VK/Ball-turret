@@ -6,32 +6,21 @@ namespace Scriptable
     [CreateAssetMenu(menuName = "Attributes/Enemy attributes", fileName = "EnemyAttributes", order = 51)]
     public class EnemyAttributes : ScriptableObject, IDamageAttributes, IHealthImprover
     {
+        [SerializeField, Min(0f)] private float _damage;
+        [SerializeField, Min(10f)] private float _maxHealth;
+
         private const float MinHealthCoefficient = 1f;
         private const float Abbreviation = 100f;
 
-        [SerializeField] private DamageAttributes _damageAttributes;
-        [SerializeField] private HealthAttributes _healthAttributes;
-
-        private float _maxHealth;
-
-        public float Damage => _damageAttributes.Damage;
+        public float Damage => _damage;
         public float MaxHealth => _maxHealth;
-
-        private void OnValidate()
-        {
-            if (_damageAttributes == null)
-                throw new NullReferenceException(nameof(_damageAttributes));
-
-            if (_healthAttributes == null)
-                throw new NullReferenceException(nameof(_healthAttributes));
-        }
 
         public void Improve(float healthCoefficient)
         {
             if (healthCoefficient < MinHealthCoefficient)
                 throw new ArgumentOutOfRangeException($"The coefficient cannot be less than {MinHealthCoefficient}");
 
-            _maxHealth = _healthAttributes.MaxHealth * healthCoefficient;
+            _maxHealth = _maxHealth * healthCoefficient;
             _maxHealth = Mathf.Round(_maxHealth * Abbreviation) / Abbreviation;
         }
     }

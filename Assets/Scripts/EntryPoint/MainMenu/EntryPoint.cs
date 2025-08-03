@@ -38,7 +38,6 @@ namespace MainMenuSpace
         private void Configure()
         {
             _playerConfigurator.Configure();
-
             var player = _playerConfigurator.Player;
             var playerSaver = _playerConfigurator.PlayerSaver;
             var turretImprover = _playerConfigurator.TurretImprover;
@@ -52,6 +51,11 @@ namespace MainMenuSpace
 
             _userInterfaseConfigurator.SetImprovementShop(improvementShop);
             _userInterfaseConfigurator.Configure(playerSaver, player, levelFactory, coinCountRandomizer);
+
+            if (player.AchievedLevelIndex == ILevel.LearningLevelIndex)
+            {
+                _levelsPlannerConfigurator.LoadLearningLevel();
+            }
         }
 
         private void ConfigureWithConsol()

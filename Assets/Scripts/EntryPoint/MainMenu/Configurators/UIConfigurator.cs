@@ -15,8 +15,8 @@ namespace MainMenuSpace
         [SerializeField] private AddCoinsButton _addCoinsButton;
         [SerializeField] private DisableAdsButton _disableAdsButton;
 
-        private AdsViewer _adsViewer;
         private IImprovementShop _improvementShop;
+        private AdsViewer _adsViewer;
 
         private void OnValidate()
         {

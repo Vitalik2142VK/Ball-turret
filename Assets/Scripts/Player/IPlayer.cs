@@ -6,6 +6,7 @@
     public float HealthCoefficient { get; }
     public float DamageCoefficient { get; }
     public int AchievedLevelIndex { get; }
+    public bool IsLearningComplete { get; }
 
     public void IncreaseAchievedLevel();
 }

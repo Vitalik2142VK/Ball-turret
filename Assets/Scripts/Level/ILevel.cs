@@ -1,5 +1,7 @@
 ﻿public interface ILevel
 {
+    public const int LearningLevelIndex = -1;
+
     public float ActorsHealthCoefficient { get; }
     public int CurrentWaveNumber { get; }
     public int PassedWavesNumber { get; }

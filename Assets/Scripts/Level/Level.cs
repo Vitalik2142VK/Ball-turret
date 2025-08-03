@@ -4,7 +4,7 @@ public class Level : ILevel
 {
     private ILevelActorsPlanner _actorsPlanner;
 
-    public Level(ILevelActorsPlanner actorsPlanner, float actorsHealthCoefficient, int countCoinsWin, int countCoinsDefeat, int index)
+    public Level(ILevelActorsPlanner actorsPlanner, float actorsHealthCoefficient, int countCoinsWin = CoinCountRandomizer.DefaultMinCoinsWin, int countCoinsDefeat = CoinCountRandomizer.DefaultMinCoinsDefeat, int index = ILevel.LearningLevelIndex)
     {
         if (actorsHealthCoefficient < 0f)
             throw new ArgumentOutOfRangeException("The coefficient cannot be less than 0");
@@ -15,7 +15,7 @@ public class Level : ILevel
         if (countCoinsWin < countCoinsDefeat)
             throw new ArgumentOutOfRangeException("The number of coins for a victory cannot be less than for a defeat");
 
-        if (index < 0)
+        if (index < ILevel.LearningLevelIndex)
             throw new ArgumentOutOfRangeException(nameof(index));
 
         _actorsPlanner = actorsPlanner ?? throw new ArgumentNullException(nameof(actorsPlanner));
@@ -42,7 +42,7 @@ public class Level : ILevel
 
         if (AreWavesOver == false)
         {
-            _actorsPlanner.GetWaveActorsPlanner(++CurrentWaveNumber);
+            waveActorsPlanner = _actorsPlanner.GetWaveActorsPlanner(++CurrentWaveNumber);
 
             return true;
         }

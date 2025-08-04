@@ -66,4 +66,10 @@ public class SavedPlayerData : ISavedPlayerData
 
         YG2.SaveProgress();
     }
+
+    public void RemoveAll()
+    {
+        YG2.saves = new SavesYG();
+        YG2.SaveProgress();
+    }
 }

@@ -93,10 +93,10 @@ public class RewardIssuer : IRewardIssuer
 
     private void CalculateRewards()
     {
+        _reward = _level.CountCoinsForWaves;
+
         if (_winState.IsWin)
-            _reward = _level.CountCoinsWin;
-        else
-            _reward = _level.CountCoinsDefeat;
+            _reward += _level.CountCoinsForWin;
 
         _bonusReward = _reward;
 

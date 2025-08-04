@@ -9,9 +9,8 @@ namespace Scriptable
 
         public float ActorsHealthCoefficient => _level.ActorsHealthCoefficient;
         public int CurrentWaveNumber => _level.CurrentWaveNumber;
-        public int PassedWavesNumber => _level.PassedWavesNumber;
-        public int CountCoinsWin => _level.CountCoinsWin;
-        public int CountCoinsDefeat => _level.CountCoinsDefeat;
+        public int CountCoinsForWin => _level.CountCoinsForWin;
+        public int CountCoinsForWaves => _level.CountCoinsForWaves;
         public int Index => _level.Index;
         public bool AreWavesOver => _level.AreWavesOver;
 

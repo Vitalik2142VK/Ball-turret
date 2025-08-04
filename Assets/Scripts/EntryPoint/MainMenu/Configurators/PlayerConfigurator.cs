@@ -57,7 +57,7 @@ namespace MainMenuSpace
             if (_savedData is SavedPlayerData data == false)
                 return;
 
-            data.RemoveProgerss();
+            data.RemoveAll();
         }
     }
 }

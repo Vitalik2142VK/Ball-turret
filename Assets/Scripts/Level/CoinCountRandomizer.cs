@@ -2,13 +2,10 @@
 
 public class CoinCountRandomizer : ICoinCountRandomizer
 {
-    public const int DefaultMinCoinsWin = 1000;
-    public const int DefaultMinCoinsDefeat = 200;
-
     private const float DefaultCoefficient = 1f;
     private const float CoinCoefficientByLevel = 0.4f;
-    private const int DefaultMaxCoinsWin = 1100;
-    private const int DefaultMaxCoinsDefeat = 250;
+    private const int DefaultCoinsWinOffset = 100;
+    private const int DefaultCoinsWaveOffset = 50;
 
     private Random _random;
     private int _currenMaxLevelPlayer;
@@ -27,20 +24,22 @@ public class CoinCountRandomizer : ICoinCountRandomizer
         _currenMaxLevelPlayer = currentMaxLevelPlayer;
     }
 
-    public int CountCoinsForRewardAd => (int)(DefaultMinCoinsWin * CalculateCoefficient(_currenMaxLevelPlayer));
+    public int CountCoinsForRewardAd => (int)(ICoinCountRandomizer.DefaultCoinsWin * CalculateCoefficient(_currenMaxLevelPlayer));
 
-    public int GetCountCoinsWin(int indexLevel)
+    public int GetCountCoinsForWin(int indexLevel)
     {
-        int maxCoinsWin = (int)(DefaultMaxCoinsWin * CalculateCoefficient(indexLevel));
-        int minCoinsWin = (int)(DefaultMinCoinsWin * CalculateCoefficient(indexLevel));
+        int maxCoinsWin = DefaultCoinsWinOffset + ICoinCountRandomizer.DefaultCoinsWin;
+        maxCoinsWin = (int)(maxCoinsWin * CalculateCoefficient(indexLevel));
+        int minCoinsWin = (int)(ICoinCountRandomizer.DefaultCoinsWin * CalculateCoefficient(indexLevel));
 
         return _random.Next(minCoinsWin, ++maxCoinsWin);
     }
 
-    public int GetCountCoinsDefeat(int indexLevel)
+    public int GetCountForWave(int indexLevel)
     {
-        int maxCoinsWin = (int)(DefaultMaxCoinsDefeat * CalculateCoefficient(indexLevel));
-        int minCoinsWin = (int)(DefaultMinCoinsDefeat * CalculateCoefficient(indexLevel));
+        int maxCoinsWin = DefaultCoinsWaveOffset + ICoinCountRandomizer.DefaultCoinsWave;
+        maxCoinsWin = (int)(maxCoinsWin * CalculateCoefficient(indexLevel));
+        int minCoinsWin = (int)(ICoinCountRandomizer.DefaultCoinsWave * CalculateCoefficient(indexLevel));
 
         return _random.Next(minCoinsWin, ++maxCoinsWin);
     }

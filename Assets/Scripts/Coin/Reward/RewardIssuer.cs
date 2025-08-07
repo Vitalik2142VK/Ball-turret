@@ -7,17 +7,15 @@ public class RewardIssuer : IRewardIssuer
 
     private IPlayerSaver _playerSaver;
     private IPlayer _player;
-    private ILevel _level;
-    private IWinState _winState;
+    private ISelectedLevel _level;
     private int _reward;
     private int _bonusReward;
 
-    public RewardIssuer(IPlayerSaver playerSaver, IPlayer player, ILevel level, IWinState winState)
+    public RewardIssuer(IPlayerSaver playerSaver, IPlayer player, ISelectedLevel level)
     {
         _playerSaver = playerSaver ?? throw new ArgumentNullException(nameof(playerSaver));
         _player = player ?? throw new ArgumentNullException(nameof(player));
         _level = level ?? throw new ArgumentNullException(nameof(level));
-        _winState = winState ?? throw new ArgumentNullException(nameof(winState));
         _reward = InitialRewardValue;
         _bonusReward = InitialRewardValue;
         IsRewardIssued = false;
@@ -34,7 +32,7 @@ public class RewardIssuer : IRewardIssuer
         if (IsRewardIssued)
             throw new InvalidOperationException("Reward has already been issued");
 
-        if (IsFirstPass && _winState.IsWin)
+        if (IsFirstPass && _level.IsFinished)
             _player.IncreaseAchievedLevel();
 
         _player.Wallet.AddCoins(_reward);
@@ -59,7 +57,7 @@ public class RewardIssuer : IRewardIssuer
         if (IsRewardIssued || IsBonusRewardIssued)
             throw new InvalidOperationException("Reward has already been issued");
 
-        if (IsFirstPass && _winState.IsWin)
+        if (IsFirstPass && _level.IsFinished)
             _player.IncreaseAchievedLevel();
 
         _player.Wallet.AddCoins(_reward + _bonusReward);
@@ -95,7 +93,7 @@ public class RewardIssuer : IRewardIssuer
     {
         _reward = _level.CountCoinsForWaves;
 
-        if (_winState.IsWin)
+        if (_level.IsFinished)
             _reward += _level.CountCoinsForWin;
 
         _bonusReward = _reward;
@@ -107,7 +105,7 @@ public class RewardIssuer : IRewardIssuer
     {
         int addedRevard = 0;
 
-        if (IsFirstPass && _winState.IsWin)
+        if (IsFirstPass && _level.IsFinished)
             addedRevard = (int)(AdditionalReward * _reward);
 
         if (_player.PurchasesStorage.TryGetPurchase(out IPlayerPurchase purchase, PurchasesTypes.DisableAds))

@@ -7,5 +7,5 @@
 
     public int GetCountCoinsForWin(int indexLevel);
 
-    public int GetCountForWave(int indexLevel);
+    public int GetCountCoinsForWave(int indexLevel);
 }

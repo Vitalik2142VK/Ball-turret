@@ -35,7 +35,7 @@ public class CoinCountRandomizer : ICoinCountRandomizer
         return _random.Next(minCoinsWin, ++maxCoinsWin);
     }
 
-    public int GetCountForWave(int indexLevel)
+    public int GetCountCoinsForWave(int indexLevel)
     {
         int maxCoinsWin = DefaultCoinsWaveOffset + ICoinCountRandomizer.DefaultCoinsWave;
         maxCoinsWin = (int)(maxCoinsWin * CalculateCoefficient(indexLevel));

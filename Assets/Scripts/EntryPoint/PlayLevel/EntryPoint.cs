@@ -69,7 +69,6 @@ namespace PlayLevel
             _turretConfigurator.Configure(_player, _bulletConfigurator.BulletFactory);
 
             var turret = _turretConfigurator.Turret;
-            var winState = _turretConfigurator.WinState;
 
             _playerController.Initialize(turret);
             _actorsConfigurator.Configure(turret, _selectedLevel);
@@ -77,12 +76,12 @@ namespace PlayLevel
 
             var actorsController = _actorsConfigurator.ActorsController;
 
-            _stepSystemConfigurator.Configure(turret, winState, _playerController, actorsController);
+            _stepSystemConfigurator.Configure(turret, _playerController, actorsController);
             _bonusPrefabConfigurator.Configure(turret);
 
             SavedPlayerData savesData = new SavedPlayerData();
             PlayerSaver playerSaver = new PlayerSaver(_player, savesData);
-            RewardIssuer rewardIssuer = new RewardIssuer(playerSaver, _player, _selectedLevel, winState);
+            RewardIssuer rewardIssuer = new RewardIssuer(playerSaver, _player, _selectedLevel);
             var closeSceneStep = _stepSystemConfigurator.CloseSceneStep;
             _userInterfaceConfigurator.Configure(closeSceneStep, rewardIssuer);
 

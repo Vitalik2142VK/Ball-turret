@@ -3,39 +3,32 @@ using System;
 public class Level : ILevel
 {
     private ILevelActorsPlanner _actorsPlanner;
-    private int _countCoinsWave;
+    private ICoinCountRandomizer _coinCountRandomizer;
     public int _passedWavesNumber;
 
-    public Level(ILevelActorsPlanner actorsPlanner, float actorsHealthCoefficient, int countCoinsWin = ICoinCountRandomizer.DefaultCoinsWin, int countCoinsWave = ICoinCountRandomizer.DefaultCoinsWave, int index = ILevel.LearningLevelIndex)
+    public Level(ILevelActorsPlanner actorsPlanner, ICoinCountRandomizer coinCountRandomizer, float actorsHealthCoefficient, int index = ILevel.LearningLevelIndex)
     {
         if (actorsHealthCoefficient < 0f)
             throw new ArgumentOutOfRangeException("The coefficient cannot be less than 0");
-
-        if (countCoinsWin <= 0 || countCoinsWave <= 0)
-            throw new ArgumentOutOfRangeException("The number of coins cannot be equal to or less than 0");
-
-        if (countCoinsWin < countCoinsWave)
-            throw new ArgumentOutOfRangeException("The number of coins for a victory cannot be less than for a defeat");
 
         if (index < ILevel.LearningLevelIndex)
             throw new ArgumentOutOfRangeException(nameof(index));
 
         _actorsPlanner = actorsPlanner ?? throw new ArgumentNullException(nameof(actorsPlanner));
-        _countCoinsWave = countCoinsWave;
+        _coinCountRandomizer = coinCountRandomizer ?? throw new ArgumentNullException(nameof(coinCountRandomizer));
         _passedWavesNumber = 0;
 
         CurrentWaveNumber = 0;
         ActorsHealthCoefficient = actorsHealthCoefficient;
-        CountCoinsForWin = countCoinsWin;
         Index = index;
     }
 
     public float ActorsHealthCoefficient { get; }
-    public int CountCoinsForWin { get; }
     public int Index { get; }
     public int CurrentWaveNumber { get; private set; }
 
-    public int CountCoinsForWaves => _countCoinsWave * _passedWavesNumber;
+    public int CountCoinsForWin => _coinCountRandomizer.GetCountCoinsForWave(Index);
+    public int CountCoinsForWaves => _coinCountRandomizer.GetCountCoinsForWave(Index) * _passedWavesNumber;
     public bool AreWavesOver => _actorsPlanner.CountWaves <= CurrentWaveNumber;
 
     public bool TryGetNextWaveActorsPlanner(out IWaveActorsPlanner waveActorsPlanner)

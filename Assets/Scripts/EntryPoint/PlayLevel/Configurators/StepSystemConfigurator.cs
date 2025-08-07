@@ -11,7 +11,6 @@ namespace PlayLevel
         [SerializeField] private FinishWindow _finishWindow;
 
         private ITurret _turret;
-        private IWinState _winStat;
         private PlayerController _playerController;
         private ActorsController _actorsController;
 
@@ -42,11 +41,10 @@ namespace PlayLevel
                 throw new NullReferenceException(nameof(_finishWindow));
         }
 
-        public void Configure(ITurret turret, IWinState winStat, PlayerController playerController, ActorsController actorsController)
+        public void Configure(ITurret turret, PlayerController playerController, ActorsController actorsController)
         {
             _playerController = playerController != null ? playerController : throw new NullReferenceException(nameof(playerController));
             _turret = turret ?? throw new NullReferenceException(nameof(turret));
-            _winStat = winStat ?? throw new NullReferenceException(nameof(winStat));
             _actorsController = actorsController ?? throw new NullReferenceException(nameof(actorsController));
 
             CreateSteps();
@@ -96,7 +94,7 @@ namespace PlayLevel
         private void CreateFinalSteps()
         {
             DynamicNextStep dynamicNextStep = new DynamicNextStep(_stepSystem);
-            _cyclicalStep = new CyclicalStep(_actorsController, dynamicNextStep, _winStat);
+            _cyclicalStep = new CyclicalStep(_actorsController, dynamicNextStep, _turret);
             _cyclicalStep.SetStartStep(_prepareActorsStep);
             _cyclicalStep.SetLoopingStep(_playerShotStep);
             _cyclicalStep.SetFinishStep(_rewardStep);

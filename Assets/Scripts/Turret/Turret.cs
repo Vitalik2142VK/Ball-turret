@@ -7,17 +7,19 @@ public class Turret : ITurret
     private ITower _tower;
     private IHealth _health;
     private IEndStep _endStep;
-    private WinState _winState;
     private ISound _soundDestroy;
     private IExplosionView _viewDestroy;
 
-    public Turret(IGun gun, ITower tower, IHealth health, WinState winState)
+    public Turret(IGun gun, ITower tower, IHealth health)
     {
         _gun = gun ?? throw new ArgumentNullException(nameof(gun));
         _tower = tower ?? throw new ArgumentNullException(nameof(tower));
         _health = health ?? throw new ArgumentNullException(nameof(health));
-        _winState = winState ?? throw new ArgumentNullException(nameof(winState));
+
+        IsDestroyed = false;
     }
+
+    public bool IsDestroyed { get; private set; }
 
     public bool IsReadyShoot => _gun.IsRecharged;
 
@@ -68,7 +70,7 @@ public class Turret : ITurret
             _viewDestroy.Play();
         }
 
-        _winState.IsWin = false;
+        IsDestroyed = true;
     }
 
     public void RestoreHealth()

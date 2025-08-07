@@ -40,7 +40,7 @@ namespace MainMenuSpace
         public void LoadLearningLevel()
         {
             float defaultHealthCoefficient = 1f;
-            Level learningLevel = new Level(_learningLevelActorsPlanners, defaultHealthCoefficient);
+            Level learningLevel = new Level(_learningLevelActorsPlanners, CoinCountRandomizer, defaultHealthCoefficient);
             _sceneLoader.SetSelectedLevel(learningLevel);
             _sceneLoader.Load();
         }

@@ -36,10 +36,8 @@ public class LevelFactory : ILevelFactory
 
         ILevelActorsPlanner levelActorsPlanner = _actorsPlanners[indexLevel];
         float actorsHealthCoefficient = CalculateActorsHealthCoefficient(indexLevel);
-        int countCoinsWin = _coinCountRandomizer.GetCountCoinsForWin(indexLevel);
-        int countCoinsDefeat = _coinCountRandomizer.GetCountForWave(indexLevel);
 
-        return new Level(levelActorsPlanner, actorsHealthCoefficient, countCoinsWin, countCoinsDefeat, indexLevel);
+        return new Level(levelActorsPlanner, _coinCountRandomizer, actorsHealthCoefficient, indexLevel);
     }
 
     private float CalculateActorsHealthCoefficient(int indexLevel)

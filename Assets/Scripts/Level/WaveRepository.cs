@@ -1,16 +1,26 @@
 ﻿using System;
 using UnityEngine;
 
-public class WaveRepository : MonoBehaviour, IWaveRepository
+public class WaveRepository : MonoBehaviour
 {
     public const int WaveDivider = 5;
 
     [SerializeField] private Scriptable.WaveActorsPlanner[] _waves;
-    [SerializeField, Range(0, WaveDivider - 1)] private int[] _waveNumbers;
+    [SerializeField] private WaveNumberMask _waveMask;
 
-    private Random _random;
+    private System.Random _random;
 
-    public void Initialize(Random random)
+    private void OnValidate()
+    {
+        if (_waves == null || _waves.Length == 0)
+            throw new InvalidOperationException(nameof(_waves));
+
+        foreach (var waveRepository in _waves)
+            if (waveRepository == null)
+                throw new NullReferenceException($"{_waves} has null elements");
+    }
+
+    public void Initialize(System.Random random)
     {
         _random = random ?? throw new ArgumentNullException(nameof(random));
     }
@@ -20,11 +30,9 @@ public class WaveRepository : MonoBehaviour, IWaveRepository
         if (waveNumber >= WaveDivider)
             throw new ArgumentOutOfRangeException(nameof(waveNumber));
 
-        foreach (var number in _waveNumbers)
-            if (number == waveNumber)
-                return true;
+        WaveNumberMask waveNumberMask = (WaveNumberMask)(1 << waveNumber);
 
-        return false;
+        return (_waveMask & waveNumberMask) != 0;
     }
 
     public IWaveActorsPlanner GetWaveActorsPlanner(int waveNumber)

@@ -6,6 +6,8 @@ public class BorderFactory : MonoBehaviour, IActorFactory
     [SerializeField] private Border _borderPrefab;
     [SerializeField] private Sound _destroySound;
 
+    private IActorHealthModifier _healthModifier;
+
     private void OnValidate()
     {
         if (_borderPrefab == null)
@@ -13,6 +15,11 @@ public class BorderFactory : MonoBehaviour, IActorFactory
 
         if (_destroySound == null)
             throw new NullReferenceException(nameof(_destroySound));
+    }
+
+    public void Initialize(IActorHealthModifier healthModifier)
+    {
+        _healthModifier = healthModifier ?? throw new ArgumentNullException(nameof(healthModifier));
     }
 
     public bool IsCanCreate(string nameTypeActor)
@@ -26,7 +33,7 @@ public class BorderFactory : MonoBehaviour, IActorFactory
     public IActor Create(string nameTypeActor)
     {
         var border = Instantiate(_borderPrefab, Vector3.zero, _borderPrefab.transform.rotation);
-        border.Initialize(_destroySound);
+        border.Initialize(_destroySound, _healthModifier);
 
         return border;
     }

@@ -1,8 +1,5 @@
-﻿public interface ILevel
+﻿public interface ILevel : IActorHealthModifier
 {
-    public const int LearningLevelIndex = -1;
-
-    public float ActorsHealthCoefficient { get; }
     public int CurrentWaveNumber { get; }
     public int CountCoinsForWin { get; }
     public int CountCoinsForWaves { get; }

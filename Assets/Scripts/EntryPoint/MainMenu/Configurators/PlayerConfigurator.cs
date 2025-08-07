@@ -51,7 +51,7 @@ namespace MainMenuSpace
             _purchasesHandler.LoadPurchases(_cachedUser.PurchasesStorage);
         }
 
-        //Todo Remove on realise
+        //todo Remove on realise
         public void OnRemoveSave()
         {
             if (_savedData is SavedPlayerData data == false)

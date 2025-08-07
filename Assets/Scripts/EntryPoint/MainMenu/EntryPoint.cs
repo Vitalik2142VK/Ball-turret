@@ -27,7 +27,7 @@ namespace MainMenuSpace
 
         private void Start()
         {
-            // Todo Remove ConfigureWithConsol() on realise
+            //todo Remove ConfigureWithConsol() on realise
 #if UNITY_EDITOR
             Configure();
 #else
@@ -52,10 +52,8 @@ namespace MainMenuSpace
             _userInterfaseConfigurator.SetImprovementShop(improvementShop);
             _userInterfaseConfigurator.Configure(playerSaver, player, levelFactory, coinCountRandomizer);
 
-            if (player.AchievedLevelIndex == ILevel.LearningLevelIndex)
-            {
+            if (player.AchievedLevelIndex == 0)
                 _levelsPlannerConfigurator.LoadLearningLevel();
-            }
         }
 
         private void ConfigureWithConsol()

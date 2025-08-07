@@ -5,7 +5,6 @@ namespace MainMenuSpace
 {
     public class UIConfigurator : MonoBehaviour
     {
-        [SerializeField] private PlaySceneLoader _sceneLoader;
         [SerializeField] private PlayMenu _playMenu;
         [SerializeField] private SettingMenu _settingMenu;
         [SerializeField] private AudioSetting _audioSetting;
@@ -20,9 +19,6 @@ namespace MainMenuSpace
 
         private void OnValidate()
         {
-            if (_sceneLoader == null)
-                throw new NullReferenceException(nameof(_sceneLoader));
-
             if (_playMenu == null)
                 throw new NullReferenceException(nameof(_playMenu));
 
@@ -75,7 +71,7 @@ namespace MainMenuSpace
             if (coinCountRandomizer == null)
                 throw new ArgumentNullException(nameof(coinCountRandomizer));
 
-            _playMenu.Initialize(player, levelFactory, _sceneLoader);
+            _playMenu.Initialize(player, levelFactory);
             _settingMenu.Initialize(_audioSetting);
             _adsViewer.Initialize(player.PurchasesStorage);
             _improvementChoiseMenu.Initialize(_improvementShop, _adsViewer);

@@ -25,6 +25,8 @@ public class HealthBar : MonoBehaviour, IHealthBarView
 
         _maxHealth = health;
         _slider.value = MaxSliderValue;
+
+        Debug.Log($"Name = {transform.name} | MaxHealth == {health}");
     }
 
     public void UpdateDataHealth(float currentHealth)

@@ -2,9 +2,9 @@ using System;
 
 public class Player : IPlayer
 {
-    public Player(IWallet wallet, ITurretImprover turretImprover, IPurchasesStorage purchasesStorage, int achievedLevel = ILevel.LearningLevelIndex, bool isLearningComplete = false)
+    public Player(IWallet wallet, ITurretImprover turretImprover, IPurchasesStorage purchasesStorage, int achievedLevel = 0, bool isLearningComplete = false)
     {
-        if (achievedLevel < ILevel.LearningLevelIndex)
+        if (achievedLevel < 0)
             throw new ArgumentOutOfRangeException(nameof(achievedLevel));
 
         Wallet = wallet ?? throw new ArgumentNullException(nameof(wallet));

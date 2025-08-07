@@ -1378,59 +1378,6 @@ MonoBehaviour:
   _bulletFactory: {fileID: 111674738}
   _gun: {fileID: 8735300951323397635}
   _bulletType: 0
---- !u!1 &326986768
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 326986769}
-  - component: {fileID: 326986770}
-  m_Layer: 0
-  m_Name: ImprovedHealthConfigurator
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 2147483647
-  m_IsActive: 1
---- !u!4 &326986769
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 326986768}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 429122121}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &326986770
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 326986768}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7fbfd45e64b5b904da266f347c9a5a34, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _enemyAttributes:
-  - {fileID: 11400000, guid: 403887e3ecd6513478d7711c8e8f8625, type: 2}
-  - {fileID: 11400000, guid: 2c39cb40aea8e4440b72358c7428b44a, type: 2}
-  - {fileID: 11400000, guid: 6d08e35edae5c1745b4c30c0b146b440, type: 2}
-  - {fileID: 11400000, guid: c134dbecbe0941c44b8055be7693ba74, type: 2}
-  - {fileID: 11400000, guid: 049ff893f3c04b24da5e012536db5b8e, type: 2}
-  - {fileID: 11400000, guid: 576354f5162b54346ba98543900a908a, type: 2}
-  - {fileID: 11400000, guid: 3577a342226b9344c933df6d4e9dc1b9, type: 2}
-  - {fileID: 11400000, guid: 56c9e6ac69603fd409044dc88511df0f, type: 2}
 --- !u!1001 &363764718
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1699,7 +1646,6 @@ MonoBehaviour:
   _turretConfigurator: {fileID: 1563366847}
   _stepSystemConfigurator: {fileID: 1081096997}
   _actorsConfigurator: {fileID: 1226189861}
-  _improvedHealthConfigurator: {fileID: 326986770}
   _bonusPrefabConfigurator: {fileID: 2007002175}
   _bulletConfigurator: {fileID: 1922608215}
   _userInterfaceConfigurator: {fileID: 1462726485}
@@ -1719,7 +1665,6 @@ Transform:
   - {fileID: 1563366848}
   - {fileID: 1081096998}
   - {fileID: 1226189862}
-  - {fileID: 326986769}
   - {fileID: 2007002174}
   - {fileID: 1922608214}
   - {fileID: 1462726484}
@@ -5636,7 +5581,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9091109465146168853, guid: 02f1bc7ecacf5b14f8249756240f1519, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -15.691496
+      value: -15.692085
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

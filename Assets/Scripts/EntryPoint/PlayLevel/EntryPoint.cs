@@ -15,7 +15,6 @@ namespace PlayLevel
         [SerializeField] private TurretConfigurator _turretConfigurator;
         [SerializeField] private StepSystemConfigurator _stepSystemConfigurator;
         [SerializeField] private ActorsConfigurator _actorsConfigurator;
-        [SerializeField] private ImprovedHealthConfigurator _improvedHealthConfigurator;
         [SerializeField] private BonusesPrefabConfigurator _bonusPrefabConfigurator;
         [SerializeField] private BulletConfigurator _bulletConfigurator;
         [SerializeField] private UIConfigurator _userInterfaceConfigurator;
@@ -40,9 +39,6 @@ namespace PlayLevel
             if (_actorsConfigurator == null)
                 throw new NullReferenceException(nameof(_actorsConfigurator));
 
-            if (_improvedHealthConfigurator == null)
-                throw new NullReferenceException(nameof(_improvedHealthConfigurator));
-
             if (_bonusPrefabConfigurator == null)
                 throw new NullReferenceException(nameof(_bonusPrefabConfigurator));
 
@@ -55,7 +51,7 @@ namespace PlayLevel
 
         private void Start()
         {
-            // Todo Remove ConfigureWithConsol() on realise
+            //todo Remove ConfigureWithConsol() on realise
 #if UNITY_EDITOR
             Configure();
 #else
@@ -72,7 +68,6 @@ namespace PlayLevel
 
             _playerController.Initialize(turret);
             _actorsConfigurator.Configure(turret, _selectedLevel);
-            _improvedHealthConfigurator.Configure(_selectedLevel.ActorsHealthCoefficient);
 
             var actorsController = _actorsConfigurator.ActorsController;
 
@@ -85,7 +80,7 @@ namespace PlayLevel
             var closeSceneStep = _stepSystemConfigurator.CloseSceneStep;
             _userInterfaceConfigurator.Configure(closeSceneStep, rewardIssuer);
 
-            if (_player.AchievedLevelIndex == ILevel.LearningLevelIndex)
+            if (_player.AchievedLevelIndex == 0)
                 SceneManager.LoadScene((int)SceneIndex.LearningScene, LoadSceneMode.Additive);
         }
 

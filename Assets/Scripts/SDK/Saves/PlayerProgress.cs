@@ -5,7 +5,6 @@
         public float HealthCoefficient = 1f;
         public float DamageCoefficient = 1f;
         public long CountCoins = 1000;
-        public int AchievedLevelIndex = -1;
-        public bool IsLearningComplete = false;
+        public int AchievedLevelIndex = 0;
     }
 }

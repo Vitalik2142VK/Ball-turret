@@ -20,6 +20,7 @@ namespace PlayLevel
         [SerializeField] private MoveAttributes _defaultMoveAttributes;
 
         private ActorFactoriesRepository _actorFactoriesRepository;
+        private IActorHealthModifier _healthModifier;
 
         public ActorsController ActorsController { get; private set; }
 
@@ -52,8 +53,7 @@ namespace PlayLevel
             if (turret == null)
                 throw new ArgumentNullException(nameof(turret));
 
-            if (level == null)
-                throw new ArgumentNullException(nameof(level));
+            _healthModifier = level ?? throw new ArgumentNullException(nameof(level));
             
             IActorSpawner actorSpawner = CreatActorSpawner();
             IAdvancedActorsMover actorMover = new ActorsMover();
@@ -74,6 +74,9 @@ namespace PlayLevel
 
         private IActorSpawner CreatActorSpawner()
         {
+            _enemyFactory.Initialize(_healthModifier);
+            _borderFactory.Initialize(_healthModifier);
+
             List<IActorFactory> factories = new List<IActorFactory>
             {
                 _enemyFactory,

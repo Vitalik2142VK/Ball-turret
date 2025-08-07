@@ -1,15 +1,30 @@
 ﻿using System;
 using UnityEngine;
 
-public class WaveRepositories : MonoBehaviour, IWaveRepository
+public class EndlessLevelPlanner : MonoBehaviour, ILevelActorsPlanner
 {
     [SerializeField] private WaveRepository _wavesWithBonuses;
     [SerializeField] private WaveRepository[] _waveRepositories;
     [SerializeField, Min(10)] private int _bonusWavesLimit;
 
-    private void Initialize()
+    private void OnValidate()
     {
-        Random random = new Random();
+        if (_wavesWithBonuses == null)
+            throw new NullReferenceException(nameof(_wavesWithBonuses));
+
+        if (_waveRepositories == null || _waveRepositories.Length == 0)
+            throw new InvalidOperationException(nameof(_waveRepositories));
+
+        foreach (var waveRepository in _waveRepositories)
+            if (waveRepository == null)
+                throw new NullReferenceException($"{_waveRepositories} has null elements");
+    }
+
+    public int CountWaves => int.MaxValue;
+
+    public void Initialize()
+    {
+        System.Random random = new System.Random();
 
         _wavesWithBonuses.Initialize(random);
 

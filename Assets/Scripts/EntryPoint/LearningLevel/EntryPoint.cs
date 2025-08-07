@@ -39,7 +39,7 @@ namespace LearningLevel
 
         private void Start()
         {
-            // Todo Remove ConfigureWithConsol() on realise
+            //todo Remove ConfigureWithConsol() on realise
 #if UNITY_EDITOR
             Configure();
 #else
@@ -49,6 +49,7 @@ namespace LearningLevel
 
         private void Configure()
         {
+            _learningEnemyFactory.Initialize(_selectedLevel);
             _actorsConfigurator.AddActorFactory(_learningEnemyFactory);
 
             LearningStep learningStep = new LearningStep(_learningUI, _selectedLevel);

@@ -7,6 +7,7 @@ namespace MainMenuSpace
     public class LevelPlannerConfigurator : MonoBehaviour
     {
         [SerializeField] private PlaySceneLoader _sceneLoader;
+        [SerializeField] private EndlessLevelPlanner _endlessLevelPlanner;
         [SerializeField] private LevelActorsPlanner _learningLevelActorsPlanners;
         [SerializeField] private LevelActorsPlanner[] _levelActorsPlanners;
 
@@ -21,6 +22,9 @@ namespace MainMenuSpace
             if (_sceneLoader == null)
                 throw new NullReferenceException(nameof(_sceneLoader));
 
+            if (_endlessLevelPlanner == null)
+                throw new NullReferenceException(nameof(_endlessLevelPlanner));
+
             if (_learningLevelActorsPlanners == null)
                 throw new NullReferenceException(nameof(_learningLevelActorsPlanners));
 
@@ -33,8 +37,9 @@ namespace MainMenuSpace
             if (player == null)
                 throw new ArgumentNullException(nameof(player));
 
+            _endlessLevelPlanner.Initialize();
             CoinCountRandomizer = new CoinCountRandomizer(player.AchievedLevelIndex);
-            LevelFactory = new LevelFactory(_levelActorsPlanners, CoinCountRandomizer, _healthCoefficient);
+            LevelFactory = new LevelFactory(_endlessLevelPlanner, _levelActorsPlanners, CoinCountRandomizer, _healthCoefficient);
         }
 
         public void LoadLearningLevel()

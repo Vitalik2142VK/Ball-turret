@@ -22,8 +22,11 @@ public class Wallet : IWallet
 
     public void AddCoins(int countCoins)
     {
-        if (countCoins <= 0)
+        if (countCoins < 0)
             throw new ArgumentOutOfRangeException(nameof(countCoins));
+
+        if (countCoins == 0)
+            return;
 
         CountCoins += countCoins;
 

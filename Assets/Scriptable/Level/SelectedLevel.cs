@@ -7,7 +7,7 @@ namespace Scriptable
     {
         private ILevel _level;
 
-        public float ActorsHealthCoefficient => _level.ActorsHealthCoefficient;
+        public float HealthCoefficient => _level.HealthCoefficient;
         public int CurrentWaveNumber => _level.CurrentWaveNumber;
         public int CountCoinsForWin => _level.CountCoinsForWin;
         public int CountCoinsForWaves => _level.CountCoinsForWaves;

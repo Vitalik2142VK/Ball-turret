@@ -37,8 +37,6 @@ public class EndlessLevel : ILevel
 
     public bool TryGetNextWaveActorsPlanner(out IWaveActorsPlanner waveActorsPlanner)
     {
-        UnityEngine.Debug.Log($"{CurrentWaveNumber} % {_waveNumberReward} == {CurrentWaveNumber % _waveNumberReward}");
-
         if (CurrentWaveNumber != 0 && CurrentWaveNumber % _waveNumberReward == 0)
             CountCoinsForWin += _endlesslevel.CountCoinsForWin;
 

@@ -1,25 +1,25 @@
 using System;
 using UnityEngine;
 
-[RequireComponent(typeof(PlayerTouchInput))]
+[RequireComponent(typeof(PlayerScreenPointer))]
 public class PlayerController : MonoBehaviour, IPlayerController
 {
-    private PlayerTouchInput _touchInput;
     private ITurret _turret;
+    private IPlayerScreenPointer _screenPointer;
 
     private void Awake()
     {
-        _touchInput = GetComponent<PlayerTouchInput>();
+        _screenPointer = GetComponent<PlayerScreenPointer>();
     }
 
     private void OnEnable()
     {
-        _touchInput.PressFinished += OnFinishPress;
+        _screenPointer.PressFinished += OnFinishPress;
     }
 
     private void OnDisable()
     {
-        _touchInput.PressFinished -= OnFinishPress;
+        _screenPointer.PressFinished -= OnFinishPress;
     }
 
     public void Initialize(ITurret turret)
@@ -29,10 +29,10 @@ public class PlayerController : MonoBehaviour, IPlayerController
 
     public void SelectTarget()
     {
-        _touchInput.LaunchTouchscreenToMap();
+        _screenPointer.UpdateInput();
 
-        if (_touchInput.IsPress && _turret.IsReadyShoot)
-            _turret.SetTouchPoint(_touchInput.TouchPositionInMap);
+        if (_screenPointer.IsPress && _turret.IsReadyShoot)
+            _turret.SetTouchPoint(_screenPointer.TouchPositionInMap);
     }
 
     private void OnFinishPress()
@@ -40,6 +40,6 @@ public class PlayerController : MonoBehaviour, IPlayerController
         if (_turret.IsReadyShoot == false)
             return;
 
-        _turret.FixTargetPostion(_touchInput.TouchPositionInMap);
+        _turret.FixTargetPostion(_screenPointer.TouchPositionInMap);
     }
 }

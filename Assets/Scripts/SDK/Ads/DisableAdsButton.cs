@@ -24,7 +24,7 @@ public class DisableAdsButton : MonoBehaviour
     private void OnDisable()
     {
         _button.onClick.RemoveListener(OnPayPurchase);
-        YG2.onPurchaseSuccess += OnRemove;
+        YG2.onPurchaseSuccess -= OnRemove;
     }
 
     public void Initialize(IPurchasesStorage purchasesStorage)

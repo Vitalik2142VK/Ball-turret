@@ -420,9 +420,9 @@ TextureImporter:
       name: UI_13
       rect:
         serializedVersion: 2
-        x: 51
+        x: 86
         y: 12
-        width: 459
+        width: 390
         height: 185
       alignment: 0
       pivot: {x: 0.5, y: 0.5}

@@ -11,9 +11,12 @@ public class FinishWindow : MonoBehaviour, IMenu
     [SerializeField] private Button _videoViewingButton;
     [SerializeField] private TextMeshProUGUI _wonBonusCoinsText;
     [SerializeField] private TextMeshProUGUI _wonCoinsText;
+    [SerializeField] private Image _winBord;
+    [SerializeField] private Image _defeatBord;
 
     private IRewardIssuer _rewardIssuer;
     private IAdsViewer _adsViewer;
+    private IWinStatus _winStatus;
 
     private void OnValidate()
     {
@@ -31,12 +34,20 @@ public class FinishWindow : MonoBehaviour, IMenu
 
         if (_wonCoinsText == null)
             throw new ArgumentNullException(nameof(_wonCoinsText));
+
+        if (_winBord == null)
+            throw new ArgumentNullException(nameof(_winBord));
+
+        if (_defeatBord == null)
+            throw new ArgumentNullException(nameof(_defeatBord));
     }
 
     private void Awake()
     {
         gameObject.SetActive(false);
         _videoViewingButton.interactable = false;
+        _winBord.gameObject.SetActive(false);
+        _defeatBord.gameObject.SetActive(false);
     }
 
     private void OnEnable()
@@ -51,10 +62,11 @@ public class FinishWindow : MonoBehaviour, IMenu
             _adsViewer.RewardAdViewed -= OnAddBonusReward;
     }
 
-    public void Initialize(IRewardIssuer rewardIssuer, IAdsViewer adsViewer)
+    public void Initialize(IRewardIssuer rewardIssuer, IAdsViewer adsViewer, IWinStatus winStatus)
     {
         _rewardIssuer = rewardIssuer ?? throw new ArgumentNullException(nameof(rewardIssuer));
         _adsViewer = adsViewer ?? throw new ArgumentNullException(nameof(adsViewer));
+        _winStatus = winStatus ?? throw new ArgumentNullException(nameof(winStatus));
     }
 
     public void Enable()
@@ -62,7 +74,12 @@ public class FinishWindow : MonoBehaviour, IMenu
         _pause.Enable();
         gameObject.SetActive(true);
 
-        if (_adsViewer.IsAdsDisable)
+        if (_winStatus.IsWin)
+            _winBord.gameObject.SetActive(true);
+        else
+            _defeatBord.gameObject.SetActive(true);
+
+        if (_adsViewer.IsAdsDisable || _rewardIssuer.GetReward() == 0)
         {
             _wonCoinsText.text = _rewardIssuer.GetMaxReward().ToString();
             _rewardIssuer.PayMaxReward();

@@ -27,7 +27,7 @@ namespace PlayLevel
                 throw new NullReferenceException(nameof(_audioSetting));
         }
 
-        public void Configure(IStep closeSceneStep, IRewardIssuer reward)
+        public void Configure(IStep closeSceneStep, IRewardIssuer reward, IWinStatus winStatus)
         {
             if (closeSceneStep == null)
                 throw new ArgumentNullException(nameof(closeSceneStep));
@@ -35,13 +35,16 @@ namespace PlayLevel
             if (reward == null)
                 throw new ArgumentNullException(nameof(reward));
 
+            if (winStatus == null)
+                throw new ArgumentNullException(nameof(winStatus));
+
             _adsViewer = FindAnyObjectByType<AdsViewer>();
 
             if (_adsViewer == null)
                 throw new NullReferenceException(nameof(_adsViewer));
 
             _pauseMenu.Initialize(closeSceneStep);
-            _finishWindow.Initialize(reward, _adsViewer);
+            _finishWindow.Initialize(reward, _adsViewer, winStatus);
             _settingMenu.Initialize(_audioSetting);
         }
     }

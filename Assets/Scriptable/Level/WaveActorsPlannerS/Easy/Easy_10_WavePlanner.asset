@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 099a4bc78e4679d46b6d4e4e77209302, type: 3}
-  m_Name: Easy_9_WavePlanner
+  m_Name: Easy_10_WavePlanner
   m_EditorClassIdentifier: 
   _lines:
   - _actors:
@@ -19,9 +19,9 @@ MonoBehaviour:
     - {fileID: 0}
   - _actors:
     - {fileID: 0}
-    - {fileID: 7886440262529024440, guid: 7a8c525a33d9b9b4599757383533c0bf, type: 3}
+    - {fileID: 6906008247346125387, guid: 9087ef59b17a0fd4e9acb107111b1bf2, type: 3}
     - {fileID: 0}
   - _actors:
-    - {fileID: 7886440262529024440, guid: 7a8c525a33d9b9b4599757383533c0bf, type: 3}
-    - {fileID: 445070713288626913, guid: b78477231ce054f4bb6458f22dc2ee71, type: 3}
-    - {fileID: 7886440262529024440, guid: 7a8c525a33d9b9b4599757383533c0bf, type: 3}
+    - {fileID: 6906008247346125387, guid: 9087ef59b17a0fd4e9acb107111b1bf2, type: 3}
+    - {fileID: 445070713288626913, guid: 8c1598b3237c3ea4fab422901c401331, type: 3}
+    - {fileID: 6906008247346125387, guid: 9087ef59b17a0fd4e9acb107111b1bf2, type: 3}

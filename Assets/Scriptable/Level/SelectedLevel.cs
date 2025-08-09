@@ -24,12 +24,12 @@ namespace Scriptable
 
         public bool TryGetNextWaveActorsPlanner(out IWaveActorsPlanner waveActorsPlanner)
         {
-            bool result = _level.TryGetNextWaveActorsPlanner(out waveActorsPlanner);
+            bool hasWave = _level.TryGetNextWaveActorsPlanner(out waveActorsPlanner);
 
-            if (result == false)
+            if (hasWave == false)
                 IsFinished = true;
 
-            return result;
+            return hasWave;
         }
     }
 }

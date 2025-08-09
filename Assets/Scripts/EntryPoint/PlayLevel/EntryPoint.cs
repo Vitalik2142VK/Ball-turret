@@ -77,8 +77,9 @@ namespace PlayLevel
             SavedPlayerData savesData = new SavedPlayerData();
             PlayerSaver playerSaver = new PlayerSaver(_player, savesData);
             RewardIssuer rewardIssuer = new RewardIssuer(playerSaver, _player, _selectedLevel);
+            WinStatus winStatus = new WinStatus(turret, _selectedLevel);
             var closeSceneStep = _stepSystemConfigurator.CloseSceneStep;
-            _userInterfaceConfigurator.Configure(closeSceneStep, rewardIssuer);
+            _userInterfaceConfigurator.Configure(closeSceneStep, rewardIssuer, winStatus);
 
             if (_player.AchievedLevelIndex == 0)
                 SceneManager.LoadScene((int)SceneIndex.LearningScene, LoadSceneMode.Additive);

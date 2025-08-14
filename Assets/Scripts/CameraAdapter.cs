@@ -5,6 +5,8 @@ using YG;
 [RequireComponent(typeof(Camera))]
 public class CameraAdapter : MonoBehaviour
 {
+    [SerializeField] private Setting _horisontal;
+
     [Header("Setting for Desktop")]
     [SerializeField] private Vector3 _position;
     [SerializeField] private Vector3 _rotation;
@@ -12,6 +14,7 @@ public class CameraAdapter : MonoBehaviour
 
     private Transform _transform;
     private Camera _camera;
+    private Setting _vertical;
 
     public float CameraHeight => _transform.position.y;
 
@@ -61,5 +64,13 @@ public class CameraAdapter : MonoBehaviour
         _transform.position = _position;
         _transform.rotation = Quaternion.Euler(_rotation);
         _camera.fieldOfView = _fieldOfView;
+    }
+
+    [System.Serializable]
+    private struct Setting
+    {
+        public Vector3 _position;
+        public Vector3 _rotation;
+        public float _fieldOfView;
     }
 }

@@ -3806,6 +3806,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c43ec22a5e7ad84e9e8471abae3450a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _horisontal:
+    _position: {x: 0, y: 116.3, z: -36.4}
+    _rotation: {x: 70.3, y: 0, z: 0}
+    _fieldOfView: 10
   _position: {x: 0, y: 116.3, z: -36.4}
   _rotation: {x: 70.3, y: 0, z: 0}
   _fieldOfView: 10
@@ -5935,7 +5939,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9091109465146168853, guid: 02f1bc7ecacf5b14f8249756240f1519, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -15.691717
+      value: -15.692302
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

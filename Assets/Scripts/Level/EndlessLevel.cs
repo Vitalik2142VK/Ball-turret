@@ -8,10 +8,11 @@ public class EndlessLevel : ILevel
     private const float MinHealthMultiplierPerWave = 0.1f;
 
     private ILevel _endlesslevel;
+    private ISavedLeaderBoard _savedLeaderBoard;
     private float _healthMultiplierPerWave;
     private int _waveNumberReward;
 
-    public EndlessLevel(ILevel endlesslevel, float healthMultiplierPerWave = MinHealthMultiplierPerWave, int waveNumberReward = 1)
+    public EndlessLevel(ILevel endlesslevel, ISavedLeaderBoard savedLeaderBoard, float healthMultiplierPerWave = MinHealthMultiplierPerWave, int waveNumberReward = 1)
     {
         if (healthMultiplierPerWave < MinHealthMultiplierPerWave)
             throw new ArgumentOutOfRangeException($"{nameof(healthMultiplierPerWave)} cannot be less than {MinHealthMultiplierPerWave}");
@@ -20,6 +21,7 @@ public class EndlessLevel : ILevel
             throw new ArgumentOutOfRangeException(nameof(waveNumberReward));
 
         _endlesslevel = endlesslevel ?? throw new ArgumentNullException(nameof(endlesslevel));
+        _savedLeaderBoard = savedLeaderBoard ?? throw new ArgumentNullException(nameof(savedLeaderBoard));
         _healthMultiplierPerWave = healthMultiplierPerWave;
         _waveNumberReward = waveNumberReward;
 
@@ -39,6 +41,9 @@ public class EndlessLevel : ILevel
     {
         if (CurrentWaveNumber != 0 && CurrentWaveNumber % _waveNumberReward == 0)
             CountCoinsForWin += _endlesslevel.CountCoinsForWin;
+
+        if (CurrentWaveNumber > _savedLeaderBoard.MaxAchievedWave)
+            _savedLeaderBoard.SaveNextAchievedWave();
 
         return _endlesslevel.TryGetNextWaveActorsPlanner(out waveActorsPlanner);
     }

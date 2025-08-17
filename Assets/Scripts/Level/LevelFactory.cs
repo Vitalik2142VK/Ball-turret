@@ -49,8 +49,9 @@ public class LevelFactory : ILevelFactory
     {
         ILevelActorsPlanner endlessLevelPlanner = _actorsPlanners[EndlessLevel.IndexLevel];
         Level level = new Level(endlessLevelPlanner, _coinCountRandomizer);
+        float healthMultiplierPerWave = _actorsHealthCoefficientByLevel * CoefficientHealthPerWave;
 
-        return new EndlessLevel(level, _actorsHealthCoefficientByLevel * CoefficientHealthPerWave, WaveRepository.WaveDivider);
+        return new EndlessLevel(level, healthMultiplierPerWave, WaveRepository.WaveDivider);
     }
 
     private float CalculateActorsHealthCoefficient(int indexLevel)

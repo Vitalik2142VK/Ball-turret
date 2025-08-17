@@ -1,6 +1,6 @@
 ﻿public interface ICoinCountRandomizer
 {
-    public int CountCoinsForRewardAd {  get; }
+    public int CountCoinsForRewardAd { get; }
 
     public int GetCountCoinsForWin(int indexLevel);
 

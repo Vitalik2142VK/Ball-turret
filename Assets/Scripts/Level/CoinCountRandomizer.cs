@@ -21,7 +21,7 @@ public class CoinCountRandomizer : ICoinCountRandomizer
         _currenMaxLevelPlayer = currentMaxLevelPlayer;
     }
 
-    public int CountCoinsForRewardAd => (int)(DefaultCoinsWin * CalculateCoefficient(_currenMaxLevelPlayer));
+    public int CountCoinsForRewardAd => DefaultCoinsWin * _currenMaxLevelPlayer;
 
     public int GetCountCoinsForWin(int indexLevel)
     {

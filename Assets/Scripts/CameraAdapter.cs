@@ -1,20 +1,14 @@
 using UnityEngine;
-using UnityEngine.UIElements;
-using YG;
 
 [RequireComponent(typeof(Camera))]
 public class CameraAdapter : MonoBehaviour
 {
-    [SerializeField] private Setting _horisontal;
-
-    [Header("Setting for Desktop")]
-    [SerializeField] private Vector3 _position;
-    [SerializeField] private Vector3 _rotation;
-    [SerializeField] private float _fieldOfView;
+    [SerializeField] private Setting _horisontalSetting;
 
     private Transform _transform;
     private Camera _camera;
-    private Setting _vertical;
+    private Setting _portraitSetting;
+    private bool _isPortraitOrientation;
 
     public float CameraHeight => _transform.position.y;
 
@@ -22,55 +16,51 @@ public class CameraAdapter : MonoBehaviour
     {
         _transform = transform;
         _camera = GetComponent<Camera>();
-    }
-
-    private void OnEnable()
-    {
-        YG2.onGetSDKData += OnCheckDevice;
+        _isPortraitOrientation = Screen.width < Screen.height;
+        _portraitSetting = new Setting();
+        _portraitSetting.Position = _transform.position;
+        _portraitSetting.Rotation = _transform.rotation.eulerAngles;
+        _portraitSetting.FieldOfView = _camera.fieldOfView;
     }
 
     private void Start()
     {
-        if (YG2.isSDKEnabled)
-            OnCheckDevice();
+        ChangeSettingCamera();
     }
 
     private void Update()
     {
-#if UNITY_EDITOR
-        //ChangeSettingCamera();
-#endif
-    }
-
-    private void OnDisable()
-    {
-        YG2.onGetSDKData -= OnCheckDevice;
+        ChangeSettingCamera();
     }
 
     public Ray ScreenPointToRay(Vector2 position)
     {
         return _camera.ScreenPointToRay(position);
     } 
-    private void OnCheckDevice()
-    {
-        var device = YG2.envir.device;
-
-        if (device == YG2.Device.Desktop)
-            ChangeSettingCamera();
-    }
 
     private void ChangeSettingCamera()
     {
-        _transform.position = _position;
-        _transform.rotation = Quaternion.Euler(_rotation);
-        _camera.fieldOfView = _fieldOfView;
+        if (_isPortraitOrientation == Screen.width < Screen.height)
+            return;
+
+        Setting setting;
+        _isPortraitOrientation = !_isPortraitOrientation;
+
+        if (_isPortraitOrientation)
+            setting = _portraitSetting;
+        else
+            setting = _horisontalSetting;
+
+        _transform.position = setting.Position;
+        _transform.rotation = Quaternion.Euler(setting.Rotation);
+        _camera.fieldOfView = setting.FieldOfView;
     }
 
     [System.Serializable]
     private struct Setting
     {
-        public Vector3 _position;
-        public Vector3 _rotation;
-        public float _fieldOfView;
+        public Vector3 Position;
+        public Vector3 Rotation;
+        public float FieldOfView;
     }
 }

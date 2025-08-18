@@ -5,7 +5,6 @@ public class LevelFactory : ILevelFactory
 {
     private const float DefaultCoefficient = 1f;
     private const float MinActorsHealthCoefficientByLevel = 0.3f;
-    private const float CoefficientHealthPerWave = 0.5f;
 
     private List<ILevelActorsPlanner> _actorsPlanners;
     private ICoinCountRandomizer _coinCountRandomizer;
@@ -37,7 +36,7 @@ public class LevelFactory : ILevelFactory
             throw new ArgumentOutOfRangeException($"The index cannot be less than 0, greater than or equal to 1 {LevelsCount}");
 
         if (indexLevel == EndlessLevel.IndexLevel)
-            return CreateEndlessLevel();
+            return CreateEndlessLevel(indexLevel);
 
         ILevelActorsPlanner levelActorsPlanner = _actorsPlanners[indexLevel];
         float actorsHealthCoefficient = CalculateActorsHealthCoefficient(indexLevel);
@@ -45,13 +44,15 @@ public class LevelFactory : ILevelFactory
         return new Level(levelActorsPlanner, _coinCountRandomizer, actorsHealthCoefficient, indexLevel);
     }
 
-    private EndlessLevel CreateEndlessLevel()
+    private EndlessLevel CreateEndlessLevel(int indexLevel)
     {
         ILevelActorsPlanner endlessLevelPlanner = _actorsPlanners[EndlessLevel.IndexLevel];
         Level level = new Level(endlessLevelPlanner, _coinCountRandomizer);
-        float healthMultiplierPerWave = _actorsHealthCoefficientByLevel * CoefficientHealthPerWave;
+        SavedLeaderBoard savedLeaderBoard = new SavedLeaderBoard();
+        float reducingCoefficient = 0.01f;
+        float healthMultiplierPerWave = _actorsHealthCoefficientByLevel + (float)(indexLevel * reducingCoefficient);
 
-        return new EndlessLevel(level, healthMultiplierPerWave, WaveRepository.WaveDivider);
+        return new EndlessLevel(level, savedLeaderBoard, healthMultiplierPerWave);
     }
 
     private float CalculateActorsHealthCoefficient(int indexLevel)

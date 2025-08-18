@@ -12,21 +12,17 @@ public class EndlessLevel : ILevel
     private float _healthMultiplierPerWave;
     private int _waveNumberReward;
 
-    public EndlessLevel(ILevel endlesslevel, ISavedLeaderBoard savedLeaderBoard, float healthMultiplierPerWave = MinHealthMultiplierPerWave, int waveNumberReward = 1)
+    public EndlessLevel(ILevel endlesslevel, ISavedLeaderBoard savedLeaderBoard, float healthMultiplierPerWave = MinHealthMultiplierPerWave)
     {
         if (healthMultiplierPerWave < MinHealthMultiplierPerWave)
             throw new ArgumentOutOfRangeException($"{nameof(healthMultiplierPerWave)} cannot be less than {MinHealthMultiplierPerWave}");
 
-        if (waveNumberReward <= 0)
-            throw new ArgumentOutOfRangeException(nameof(waveNumberReward));
-
         _endlesslevel = endlesslevel ?? throw new ArgumentNullException(nameof(endlesslevel));
         _savedLeaderBoard = savedLeaderBoard ?? throw new ArgumentNullException(nameof(savedLeaderBoard));
         _healthMultiplierPerWave = healthMultiplierPerWave;
-        _waveNumberReward = waveNumberReward;
+        _waveNumberReward = WaveRepository.WaveDivider;
 
         CountCoinsForWin = 0;
-        _waveNumberReward = waveNumberReward;
     }
 
     public int CountCoinsForWin { get; private set; }

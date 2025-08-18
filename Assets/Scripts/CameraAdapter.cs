@@ -5,6 +5,9 @@ public class CameraAdapter : MonoBehaviour
 {
     [SerializeField] private Setting _horisontalSetting;
 
+    [Header("Debug")]
+    [SerializeField] private bool _isDebug = false;
+
     private Transform _transform;
     private Camera _camera;
     private Setting _portraitSetting;
@@ -16,7 +19,7 @@ public class CameraAdapter : MonoBehaviour
     {
         _transform = transform;
         _camera = GetComponent<Camera>();
-        _isPortraitOrientation = Screen.width < Screen.height;
+        _isPortraitOrientation = true;
         _portraitSetting = new Setting();
         _portraitSetting.Position = _transform.position;
         _portraitSetting.Rotation = _transform.rotation.eulerAngles;
@@ -25,32 +28,41 @@ public class CameraAdapter : MonoBehaviour
 
     private void Start()
     {
-        ChangeSettingCamera();
+        CheckCameraOrientation();
     }
 
     private void Update()
     {
-        ChangeSettingCamera();
+#if UNITY_EDITOR
+        if (_isDebug == false)
+            CheckCameraOrientation();
+        else
+            ChangeSettingCamera(_horisontalSetting);
+#else
+        CheckCameraOrientation();
+#endif
     }
 
     public Ray ScreenPointToRay(Vector2 position)
     {
         return _camera.ScreenPointToRay(position);
-    } 
+    }
 
-    private void ChangeSettingCamera()
+    private void CheckCameraOrientation()
     {
         if (_isPortraitOrientation == Screen.width < Screen.height)
             return;
 
-        Setting setting;
         _isPortraitOrientation = !_isPortraitOrientation;
 
         if (_isPortraitOrientation)
-            setting = _portraitSetting;
+            ChangeSettingCamera(_portraitSetting);
         else
-            setting = _horisontalSetting;
+            ChangeSettingCamera(_horisontalSetting);
+    }
 
+    private void ChangeSettingCamera(Setting setting)
+    {
         _transform.position = setting.Position;
         _transform.rotation = Quaternion.Euler(setting.Rotation);
         _camera.fieldOfView = setting.FieldOfView;

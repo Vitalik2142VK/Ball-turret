@@ -20,5 +20,6 @@ public class SavedLeaderBoard : ISavedLeaderBoard
         _savesYG.MaxAchievedWave++;
 
         YG2.SaveProgress();
+
     }
 }

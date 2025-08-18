@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: TurtleShellAttributes
   m_EditorClassIdentifier: 
   _damage: 40
-  _maxHealth: 90
+  _maxHealth: 100

@@ -3,16 +3,19 @@ using UnityEngine;
 
 public class PlayMenu : MonoBehaviour
 {
+    [SerializeField] private PlaySceneLoader _sceneLoader;
     [SerializeField] private SelectLevelScroll _selectLevelScroll;
     [SerializeField] private GameObject[] _interferingUI;
 
     private IMenu _previousMenu;
     private ILevelFactory _levelFactory;
-    private PlaySceneLoader _sceneLoader;
     private int _achievedLevelIndex;
 
     private void OnValidate()
     {
+        if (_sceneLoader == null)
+            throw new NullReferenceException(nameof(_sceneLoader));
+
         if (_selectLevelScroll == null)
             throw new NullReferenceException(nameof(_selectLevelScroll));
     }
@@ -22,12 +25,11 @@ public class PlayMenu : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    public void Initialize(IPlayer user, ILevelFactory levelFactory, PlaySceneLoader sceneLoader)
+    public void Initialize(IPlayer user, ILevelFactory levelFactory)
     {
         if (user == null)
             throw new ArgumentNullException(nameof(user));
 
-        _sceneLoader = sceneLoader != null ? sceneLoader : throw new ArgumentNullException(nameof(sceneLoader));
         _levelFactory = levelFactory ?? throw new ArgumentNullException(nameof(levelFactory));
 
         _selectLevelScroll.Initialize(levelFactory.LevelsCount, user.AchievedLevelIndex);

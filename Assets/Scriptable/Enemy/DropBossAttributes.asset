@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2194ebbbf5d05a4bb8b086c3ba4bb41, type: 3}
   m_Name: DropBossAttributes
   m_EditorClassIdentifier: 
-  _damageAttributes: {fileID: 11400000, guid: 94223f174116ac8468b54bd15086b052, type: 2}
-  _healthAttributes: {fileID: 11400000, guid: 84553497ba6e62d4382a9646471ab90c, type: 2}
+  _damage: 200
+  _maxHealth: 260

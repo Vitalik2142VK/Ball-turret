@@ -1,8 +1,10 @@
-﻿public interface ILevel
+﻿public interface ILevel : IActorHealthModifier
 {
-    public ILevelActorsPlanner ActorsPlanner { get; }
-    public float ActorsHealthCoefficient { get; }
-    public int CountCoinsWin { get; }
-    public int CountCoinsDefeat { get; }
+    public int CurrentWaveNumber { get; }
+    public int CountCoinsForWin { get; }
+    public int CountCoinsForWaves { get; }
     public int Index {  get; }
+    public bool AreWavesOver { get; }
+
+    public bool TryGetNextWaveActorsPlanner(out IWaveActorsPlanner waveActorsPlanner);
 }

@@ -2,12 +2,12 @@
 
 public interface IAdsViewer
 {
-    public event Action<RewardType> RewardAdViewed;
+    public event Action<string> RewardAdViewed;
 
     public bool CanShowRewardAd { get; }
     public bool IsAdsDisable { get; }
 
-    public void ShowRewardAd(RewardType reward);
+    public void ShowRewardAd(string rewardId);
 
     public void ShowFullScreenAd();
 }

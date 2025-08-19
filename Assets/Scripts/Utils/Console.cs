@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-//Todo Remove on realise
+//todo Remove on realise
 public class Console : MonoBehaviour
 {
     private const string EndText = "\n...|||...\n\n";

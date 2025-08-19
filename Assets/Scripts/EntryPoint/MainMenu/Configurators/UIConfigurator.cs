@@ -5,7 +5,6 @@ namespace MainMenuSpace
 {
     public class UIConfigurator : MonoBehaviour
     {
-        [SerializeField] private PlaySceneLoader _sceneLoader;
         [SerializeField] private PlayMenu _playMenu;
         [SerializeField] private SettingMenu _settingMenu;
         [SerializeField] private AudioSetting _audioSetting;
@@ -13,15 +12,13 @@ namespace MainMenuSpace
         [SerializeField] private ImprovementChoiseButton _updateHealthButton;
         [SerializeField] private ImprovementChoiseButton _updateDamageButton;
         [SerializeField] private AddCoinsButton _addCoinsButton;
+        [SerializeField] private DisableAdsButton _disableAdsButton;
 
-        private AdsViewer _adsViewer;
         private IImprovementShop _improvementShop;
+        private AdsViewer _adsViewer;
 
         private void OnValidate()
         {
-            if (_sceneLoader == null)
-                throw new NullReferenceException(nameof(_sceneLoader));
-
             if (_playMenu == null)
                 throw new NullReferenceException(nameof(_playMenu));
 
@@ -42,6 +39,9 @@ namespace MainMenuSpace
 
             if (_audioSetting == null)
                 throw new NullReferenceException(nameof(_audioSetting));
+
+            if (_disableAdsButton == null)
+                throw new NullReferenceException(nameof(_disableAdsButton));
         }
 
         private void Awake()
@@ -71,11 +71,12 @@ namespace MainMenuSpace
             if (coinCountRandomizer == null)
                 throw new ArgumentNullException(nameof(coinCountRandomizer));
 
-            _playMenu.Initialize(player, levelFactory, _sceneLoader);
+            _playMenu.Initialize(player, levelFactory);
             _settingMenu.Initialize(_audioSetting);
             _adsViewer.Initialize(player.PurchasesStorage);
             _improvementChoiseMenu.Initialize(_improvementShop, _adsViewer);
             _addCoinsButton.Initialize(playerSaver, player.Wallet, _adsViewer, coinCountRandomizer);
+            _disableAdsButton.Initialize(player.PurchasesStorage);
 
             InitializeImprovementChoiseButtons();
         }

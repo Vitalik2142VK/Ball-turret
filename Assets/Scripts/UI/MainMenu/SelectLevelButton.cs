@@ -13,6 +13,7 @@ public class SelectLevelButton : MonoBehaviour
 
     public event Action<int> Clicked;
 
+    public string TextIndex {  get; private set; }
     public int Index { get; private set; }
     public bool IsBocked { get; private set; }
 
@@ -41,8 +42,14 @@ public class SelectLevelButton : MonoBehaviour
         if (index < 0)
             throw new ArgumentOutOfRangeException(nameof(index));
 
-        Index = index++;
-        _text.text = index.ToString();
+        Index = index;
+
+        if (index == EndlessLevel.IndexLevel)
+            TextIndex = "∞";
+        else
+            TextIndex = index.ToString();
+
+        _text.text = TextIndex;
     }
 
     public void SetBlock(bool isBlock)

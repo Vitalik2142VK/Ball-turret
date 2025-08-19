@@ -54,12 +54,18 @@ public class Enemy : MonoBehaviour, IEnemy
         IsEnable = false;
     }
 
-    public void Initialize(ISound sound)
+    public void Initialize(ISound sound, IActorHealthModifier modifier)
     {
+        if (modifier == null)
+            throw new ArgumentNullException(nameof(modifier));
+
         _sound = sound ?? throw new ArgumentNullException(nameof(sound));
+        
+        HealthImprover healthImprover = new HealthImprover(_enemyAttributes);
+        healthImprover.Improve(modifier.HealthCoefficient);
 
         _damage = new Damage(_enemyAttributes);
-        _health = new Health(_enemyAttributes, _healthBar);
+        _health = new Health(healthImprover, _healthBar);
         _health.Restore();
     }
 

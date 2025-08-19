@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2194ebbbf5d05a4bb8b086c3ba4bb41, type: 3}
   m_Name: SlimeAttributes
   m_EditorClassIdentifier: 
-  _damageAttributes: {fileID: 11400000, guid: 394bc19756be15b43a64a93b62d9898b, type: 2}
-  _healthAttributes: {fileID: 11400000, guid: 01fae53ec91b83f4ba42cf6a66f21738, type: 2}
+  _damage: 25
+  _maxHealth: 50

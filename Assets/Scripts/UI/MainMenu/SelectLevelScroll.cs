@@ -43,13 +43,13 @@ public class SelectLevelScroll : MonoBehaviour
             button.Clicked -= OnSelectButton;
     }
 
-    public void Initialize(int countLevelPlanners, int levelIndex)
+    public void Initialize(int countLevelPlanners, int achievedLevelIndex)
     {
         if (countLevelPlanners <= 0)
             throw new ArgumentOutOfRangeException(nameof(countLevelPlanners));
 
-        if (levelIndex < 0 || levelIndex > countLevelPlanners)
-            throw new ArgumentOutOfRangeException(nameof(levelIndex));
+        if (achievedLevelIndex < 0 || achievedLevelIndex > countLevelPlanners)
+            throw new ArgumentOutOfRangeException(nameof(achievedLevelIndex));
 
         _selectLevelButtons = new List<SelectLevelButton>(countLevelPlanners);
 
@@ -57,7 +57,7 @@ public class SelectLevelScroll : MonoBehaviour
         {
             var button = Instantiate(_selectLevelButtonPrefab);
             button.SetIndex(i);
-            button.SetBlock(levelIndex < i);
+            button.SetBlock(achievedLevelIndex < i);
             button.Clicked += OnSelectButton;
             button.transform.SetParent(_content.transform);
             button.transform.localScale = _selectLevelButtonPrefab.transform.localScale;
@@ -71,28 +71,25 @@ public class SelectLevelScroll : MonoBehaviour
             throw new ArgumentOutOfRangeException(nameof(levelIndex));
 
         foreach (var button in _selectLevelButtons)
-        {
             if (button.Index == levelIndex)
                 button.Press();
-        }
     }
 
     private void OnSelectButton(int buttonIndex)
     {
         foreach (var button in _selectLevelButtons)
         {
-            if (button.IsBocked == false)
-            {
-                if (button.Index != buttonIndex)
-                {
-                    button.PressOut();
-                }
-                else
-                {
-                    SelectedLevelIndex = button.Index;
+            if (button.IsBocked)
+                continue;
 
-                    _currentLevelTest.text = (buttonIndex + 1).ToString();
-                }
+            if (button.Index != buttonIndex)
+            {
+                button.PressOut();
+            }
+            else
+            {
+                SelectedLevelIndex = button.Index;
+                _currentLevelTest.text = button.TextIndex;
             }
         }
     }

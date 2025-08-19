@@ -2,15 +2,15 @@
 
 public class PlayerShotStep : IStep
 {
-    private IPlayerController _player;
+    private IPlayerController _playerController;
 
-    public PlayerShotStep(IPlayerController player)
+    public PlayerShotStep(IPlayerController playerController)
     {
-        _player = player ?? throw new ArgumentNullException(nameof(player));
+        _playerController = playerController ?? throw new ArgumentNullException(nameof(playerController));
     }
 
     public void Action()
     {
-        _player.SelectTarget();
+        _playerController.SelectTarget();
     }
 }

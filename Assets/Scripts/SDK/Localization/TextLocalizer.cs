@@ -1,22 +1,16 @@
-using TMPro;
 using UnityEngine;
 
-[RequireComponent(typeof(TextMeshProUGUI))]
-public class TextLocalisator : MonoBehaviour
+public class TextLocalizer : MonoBehaviour
 {
     [SerializeField] private Scriptable.LocalizationData _localizationData;
-    [SerializeField] private string _englishText;
-    [SerializeField] private string _russianText;
-    [SerializeField] private string _turkishText;
+    [SerializeField, TextArea] private string _englishText;
+    [SerializeField, TextArea] private string _russianText;
+    [SerializeField, TextArea] private string _turkishText;
 
-    private TextMeshProUGUI _text;
-    private Language _language;
+    public string Text => GetText();
 
     private void OnValidate()
     {
-        if (_localizationData == null)
-            throw new System.NullReferenceException(nameof(_localizationData));
-
         if (_englishText == null || _englishText.Length == 0)
             _englishText = "Text";
 
@@ -27,52 +21,21 @@ public class TextLocalisator : MonoBehaviour
             _turkishText = "Metin";
     }
 
-    private void Awake()
+    private string GetText()
     {
-        _text = GetComponent<TextMeshProUGUI>();
-        _text.text = _englishText;
-        _language = Language.EN;
-    }
-
-    private void OnEnable()
-    {
-        _localizationData.LanguageChanged += OnChangeLanguage;
-    }
-
-    private void Start()
-    {
-        OnChangeLanguage();
-    }
-
-    private void OnDisable()
-    {
-        _localizationData.LanguageChanged -= OnChangeLanguage;
-    }
-
-    private void OnChangeLanguage()
-    {
-        if (_localizationData.Language == _language)
-            return;
-        else
-            _language = _localizationData.Language;
-
-        switch (_language)
+        switch (_localizationData.Language)
         {
             case Language.EN:
-                _text.text = _englishText;
-                break;
+                return _englishText;
 
             case Language.RU:
-                _text.text = _russianText;
-                break;
+                return _russianText;
 
             case Language.TR:
-                _text.text = _turkishText;
-                break;
+                return _turkishText;
 
             default:
-                _text.text = _englishText;
-                break;
+                return _englishText;
         }
-    } 
+    }
 }

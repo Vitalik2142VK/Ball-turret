@@ -1,4 +1,4 @@
 ﻿public interface IWalletView
 {
-    public void UpdateValueCoins(int coins);
+    public void UpdateValueCoins(long coins);
 }

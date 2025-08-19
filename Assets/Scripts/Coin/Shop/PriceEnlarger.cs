@@ -2,21 +2,32 @@
 
 public class PriceEnlarger : IPriceEnlarger
 {
-    public const float MinMagnificationFactor = 1.1f;
+    private const float MinMagnificationFactor = 1.1f;
+    private const float MinLowImprovementCoefficient = 0.01f;
 
     private float _magnificationFactor;
+    private float _lowImprovementCoefficient;
     private int _initialPrice;
+    private int _maxLevelImprovement;
 
-    public PriceEnlarger(int initialPrice, float magnificationFactor = MinMagnificationFactor)
+    public PriceEnlarger(int initialPrice, int maxLevelImprovement, float magnificationFactor = MinMagnificationFactor, float lowImprovementCoefficient = MinLowImprovementCoefficient)
     {
         if (initialPrice < 0)
-            throw new ArgumentNullException(nameof(initialPrice));
+            throw new ArgumentOutOfRangeException(nameof(initialPrice));
+
+        if (maxLevelImprovement < 0)
+            throw new ArgumentOutOfRangeException(nameof(maxLevelImprovement));
 
         if (magnificationFactor < MinMagnificationFactor)
-            throw new ArgumentNullException(nameof(magnificationFactor));
+            throw new ArgumentOutOfRangeException(nameof(magnificationFactor));
+
+        if (lowImprovementCoefficient < MinLowImprovementCoefficient)
+            throw new ArgumentOutOfRangeException(nameof(lowImprovementCoefficient));
 
         _initialPrice = initialPrice;
+        _maxLevelImprovement = maxLevelImprovement;
         _magnificationFactor = magnificationFactor;
+        _lowImprovementCoefficient = lowImprovementCoefficient;
 
         Price = _initialPrice;
     }
@@ -28,8 +39,13 @@ public class PriceEnlarger : IPriceEnlarger
         if (levelImprovement < 0)
             throw new ArgumentNullException(nameof(levelImprovement));
 
-        float pow = MathTool.Pow(_magnificationFactor, levelImprovement);
+        float lowImprovementCoefficient = (float)Math.Exp(levelImprovement * _lowImprovementCoefficient);
 
-        Price = (int)Math.Round(_initialPrice * pow);
+        if (levelImprovement > _maxLevelImprovement)
+            levelImprovement = _maxLevelImprovement;
+
+        float improvementCoefficient = MathTool.Pow(_magnificationFactor, levelImprovement);
+
+        Price = (int)Math.Round(_initialPrice * improvementCoefficient * lowImprovementCoefficient);
     }
 }

@@ -19,6 +19,9 @@ namespace PlayLevel
         [SerializeField] private MoveAttributes _startMoveAttributes;
         [SerializeField] private MoveAttributes _defaultMoveAttributes;
 
+        private ActorFactoriesRepository _actorFactoriesRepository;
+        private IActorHealthModifier _healthModifier;
+
         public ActorsController ActorsController { get; private set; }
 
         private void OnValidate()
@@ -45,28 +48,35 @@ namespace PlayLevel
                 throw new NullReferenceException(nameof(_defaultMoveAttributes));
         }
 
-        public void Configure(IDamagedObject turret, ILevelActorsPlanner levelActorsPlanner)
+        public void Configure(IDamagedObject turret, ILevel level)
         {
             if (turret == null)
                 throw new ArgumentNullException(nameof(turret));
 
-            if (levelActorsPlanner == null)
-                throw new ArgumentNullException(nameof(levelActorsPlanner));
+            _healthModifier = level ?? throw new ArgumentNullException(nameof(level));
             
             IActorSpawner actorSpawner = CreatActorSpawner();
             IAdvancedActorsMover actorMover = new ActorsMover();
             IRemovedActorsRepository removedActorsRepository = new ActorsRemover();
             EnemiesAttacker enemiesAttacker = new EnemiesAttacker(turret);
             ActorsPreparator actorsPreparator = new ActorsPreparator(actorSpawner, actorMover, _startMoveAttributes, _defaultMoveAttributes);
-            actorsPreparator.SetLevelActorsPlanner(levelActorsPlanner);
+            actorsPreparator.SetLevelActorsPlanner(level);
 
             _zoneEnemy.Initialize(removedActorsRepository, enemiesAttacker);
 
             ActorsController = new ActorsController(actorsPreparator, removedActorsRepository, enemiesAttacker);
         }
 
+        public void AddActorFactory(IActorFactory actorFactory)
+        {
+            _actorFactoriesRepository.AddFactory(actorFactory);
+        }
+
         private IActorSpawner CreatActorSpawner()
         {
+            _enemyFactory.Initialize(_healthModifier);
+            _borderFactory.Initialize(_healthModifier);
+
             List<IActorFactory> factories = new List<IActorFactory>
             {
                 _enemyFactory,
@@ -74,9 +84,9 @@ namespace PlayLevel
                 _borderFactory
             };
 
-            IActorFactoriesRepository actorFactoriesRepository = new ActorFactoriesRepository(factories);
+            _actorFactoriesRepository = new ActorFactoriesRepository(factories);
 
-            return new ActorSpawner(_spawnPointsRepository, actorFactoriesRepository);
+            return new ActorSpawner(_spawnPointsRepository, _actorFactoriesRepository);
         }
     }
 }

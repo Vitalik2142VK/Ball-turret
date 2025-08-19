@@ -49,14 +49,20 @@ public class Border : MonoBehaviour, IBorder
         IsEnable = false;
     }
 
-    public void Initialize(ISound sound)
+    public void Initialize(ISound sound, IActorHealthModifier modifier)
     {
+        if (modifier == null)
+            throw new ArgumentNullException(nameof(modifier));
+
         _sound = sound ?? throw new ArgumentNullException(nameof(sound));
         _armorAttributes.CalculateArmor();
 
-        _health = new Health(_healthAttributes, _healthBar);
-        _health.Restore();
+        HealthImprover healthImprover = new HealthImprover(_healthAttributes);
+        healthImprover.Improve(modifier.HealthCoefficient);
+
+        _health = new Health(healthImprover, _healthBar);
         _armor = new Armor(_health, _armorAttributes);
+        _health.Restore();
     }
 
     public void SetStartPosition(Vector3 startPosition) => _mover.SetStartPosition(startPosition);

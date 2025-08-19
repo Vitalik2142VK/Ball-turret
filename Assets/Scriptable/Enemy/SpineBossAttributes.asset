@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2194ebbbf5d05a4bb8b086c3ba4bb41, type: 3}
   m_Name: SpineBossAttributes
   m_EditorClassIdentifier: 
-  _damageAttributes: {fileID: 11400000, guid: b8a495bdee373ef4d94282c81acb7827, type: 2}
-  _healthAttributes: {fileID: 11400000, guid: 7cc8d5807c56cbd42a24d95d183b39a8, type: 2}
+  _damage: 300
+  _maxHealth: 240

@@ -44,6 +44,11 @@ public class MainMenu : MonoBehaviour, IMenu
         _settingMenu.Open(this);
     }
 
+    public void OnOpenLeaderboard()
+    {
+        throw new NotImplementedException();
+    }
+
     public void Enable()
     {
         _gameObject.SetActive(true);

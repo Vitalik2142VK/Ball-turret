@@ -1,6 +1,6 @@
 ﻿public interface IWallet
 {
-    public int CountCoins { get; }
+    public long CountCoins { get; }
 
     public void SetView(IWalletView walletView);
 

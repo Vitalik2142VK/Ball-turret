@@ -1,8 +1,8 @@
 ﻿public interface ICoinCountRandomizer
 {
-    public int CountCoinsForRewardAd {  get; }
+    public int CountCoinsForRewardAd { get; }
 
-    public int GetCountCoinsWin(int indexLevel);
+    public int GetCountCoinsForWin(int indexLevel);
 
-    public int GetCountCoinsDefeat(int indexLevel);
+    public int GetCountCoinsForWave(int indexLevel);
 }

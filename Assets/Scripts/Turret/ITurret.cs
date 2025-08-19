@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-public interface ITurret : IDamagedObject, IEndPointStep
+public interface ITurret : IDamagedObject, IEndPointStep, ITurretState
 {
     public bool IsReadyShoot { get; }
 

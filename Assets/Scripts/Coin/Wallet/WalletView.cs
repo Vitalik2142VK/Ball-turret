@@ -12,7 +12,7 @@ public class WalletView : MonoBehaviour, IWalletView
             throw new NullReferenceException(nameof(_countCoins));
     }
 
-    public void UpdateValueCoins(int coutnCoins)
+    public void UpdateValueCoins(long coutnCoins)
     {
         if (coutnCoins < 0)
             throw new ArgumentOutOfRangeException(nameof(_countCoins));

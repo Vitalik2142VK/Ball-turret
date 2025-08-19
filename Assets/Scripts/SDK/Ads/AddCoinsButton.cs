@@ -7,7 +7,7 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Button))]
 public class AddCoinsButton : MonoBehaviour
 {
-    private const RewardType AddCoin = RewardType.AddCoin;
+    private readonly string RewardId = RewardTypes.AddCoin;
 
     [SerializeField] private TextMeshProUGUI _addCoinsText;
     [SerializeField, Min(0.02f)] private float _timeWaitUpdate = 0.5f;
@@ -76,12 +76,12 @@ public class AddCoinsButton : MonoBehaviour
     public void OnWatchVideo()
     {
         _videoViewingButton.interactable = false;
-        _adsViewer.ShowRewardAd(AddCoin);
+        _adsViewer.ShowRewardAd(RewardId);
     }
 
-    private void OnAddCoins(RewardType reward)
+    private void OnAddCoins(string rewardId)
     {
-        if (reward != AddCoin)
+        if (rewardId != RewardTypes.AddCoin)
             return;
 
         int countCoins = _coinCountRandomizer.CountCoinsForRewardAd;

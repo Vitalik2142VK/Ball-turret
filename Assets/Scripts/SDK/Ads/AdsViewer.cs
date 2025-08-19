@@ -10,14 +10,14 @@ public class AdsViewer : MonoBehaviour, IAdsViewer
     [SerializeField, Range(60f, 180f)] private float _timeWaitNextFullScreenAd = 120f;
     [SerializeField, Range(10f, 60f)] private float _timeWaitNextRewardAd = 20f;
 
-    private IPurchase _disableAdsPurchase;
+    private IPlayerPurchase _disableAdsPurchase;
     private WaitForSeconds _waitNextAdFullScreenAd;
     private WaitForSeconds _waitNextAdRewardAd;
     private bool _canShowFullScreen;
 
-    public event Action<RewardType> RewardAdViewed;
+    public event Action<string> RewardAdViewed;
 
-    public bool IsAdsDisable => _disableAdsPurchase.IsConsumed;
+    public bool IsAdsDisable => _disableAdsPurchase.IsPurchased;
 
     public bool CanShowRewardAd { get; private set; }
 
@@ -41,12 +41,12 @@ public class AdsViewer : MonoBehaviour, IAdsViewer
 
     private void OnEnable()
     {
-        YandexGame.RewardVideoEvent += OnConfirmReward;
+        YG2.onRewardAdv += OnConfirmReward;
     }
 
     private void OnDisable()
     {
-        YandexGame.RewardVideoEvent -= OnConfirmReward;
+        YG2.onRewardAdv -= OnConfirmReward;
     }
 
     public void Initialize(IPurchasesStorage purchasesStorage)
@@ -56,49 +56,48 @@ public class AdsViewer : MonoBehaviour, IAdsViewer
 
         var purchaseId = PurchasesTypes.DisableAds;
 
-        if (purchasesStorage.HasPurchseId(purchaseId) == false)
+        if (purchasesStorage.TryGetPurchase(out IPlayerPurchase purchase, purchaseId) == false)
             throw new ArgumentOutOfRangeException($"Purchase with id '{purchaseId}' not found.");
 
-        _disableAdsPurchase = purchasesStorage.GetPurchase(purchaseId);
+        _disableAdsPurchase = purchase;
     }
 
     public void ShowFullScreenAd()
     {
-        if (_canShowFullScreen && _disableAdsPurchase.IsConsumed == false)
+        if (_canShowFullScreen && _disableAdsPurchase.IsPurchased == false)
             StartCoroutine(WaitShowFullScreen());
     }
 
-    public void ShowRewardAd(RewardType reward)
+    public void ShowRewardAd(string rewardId)
     {
         if (CanShowRewardAd)
-            StartCoroutine(WaitShowRewardAd(reward));
+            StartCoroutine(WaitShowRewardAd(rewardId));
     }
 
-    private void OnConfirmReward(int id)
+    private void OnConfirmReward(string rewardId)
     {
-        if (Enum.IsDefined(typeof(RewardType), id) == false)
-            throw new ArgumentOutOfRangeException(nameof(id));
+        if (string.IsNullOrEmpty(rewardId))
+            throw new ArgumentOutOfRangeException(nameof(rewardId));
 
-        RewardType reward = (RewardType)id;
-        RewardAdViewed?.Invoke(reward);
+        RewardAdViewed?.Invoke(rewardId);
     }
 
     private IEnumerator WaitShowFullScreen()
     {
         _canShowFullScreen = false;
 
-        YandexGame.FullscreenShow();
+        YG2.InterstitialAdvShow();
 
         yield return _waitNextAdFullScreenAd;
 
         _canShowFullScreen = true;
     }
 
-    private IEnumerator WaitShowRewardAd(RewardType reward)
+    private IEnumerator WaitShowRewardAd(string rewardId)
     {
         CanShowRewardAd = false;
-        
-        YandexGame.RewVideoShow((int)reward);
+
+        YG2.RewardedAdvShow(rewardId);
 
         yield return _waitNextAdRewardAd;
 

@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 using Scriptable;
-using YG;
 
 namespace MainMenuSpace
 {
@@ -10,10 +9,10 @@ namespace MainMenuSpace
         [SerializeField] private CachedPlayer _cachedUser;
         [SerializeField] private ImprovementTurretAttributes _improvementTurretAttributes;
         [SerializeField] private AuthPlayer _authPlayer;
-        [SerializeField] private PurchasesStorage _purchasesStorage;
+        [SerializeField] private PurchasesHandler _purchasesHandler;
 
         private IPlayerLoader _playerLoader;
-        private ISavesData _savesData;
+        private ISavedPlayerData _savedData;
 
         public IPlayerSaver PlayerSaver { get; private set; }
 
@@ -31,51 +30,34 @@ namespace MainMenuSpace
             if (_authPlayer == null)
                 throw new NullReferenceException(nameof(_authPlayer));
 
-            if (_purchasesStorage == null)
-                throw new NullReferenceException(nameof(_purchasesStorage));
-        }
-
-        private void OnEnable()
-        {
-            YandexGame.GetDataEvent += OnCreateSavesData;
-        }
-
-        private void OnDisable()
-        {
-            YandexGame.GetDataEvent -= OnCreateSavesData;
+            if (_purchasesHandler == null)
+                throw new NullReferenceException(nameof(_purchasesHandler));
         }
 
         public void Configure()
         {
-            OnCreateSavesData();
-
-            _purchasesStorage.LoadPurchases();
-            _playerLoader = new PlayerLoader(_improvementTurretAttributes, _savesData, _purchasesStorage);
+            _savedData ??= new SavedPlayerData();
+            _playerLoader = new PlayerLoader(_improvementTurretAttributes, _savedData);
 
             if (_cachedUser.IsSaved == false)
             {
                 IPlayer player = _playerLoader.Load();
                 _cachedUser.SetUser(player);
             }
-            else
-            {
-                _playerLoader.UpdatePurchasesStorage(_cachedUser);
-            }
 
-            PlayerSaver = new PlayerSaver(_cachedUser, _savesData);
+            PlayerSaver = new PlayerSaver(_cachedUser, _savedData);
 
             _authPlayer.Authorize();
+            _purchasesHandler.LoadPurchases(_cachedUser.PurchasesStorage);
         }
 
-        //Todo Remove on realise
+        //todo Remove on realise
         public void OnRemoveSave()
         {
-            if (_savesData is SavesData data == false)
+            if (_savedData is SavedPlayerData data == false)
                 return;
 
-            data.RemoveProgerss();
+            data.RemoveAll();
         }
-
-        private void OnCreateSavesData() => _savesData ??= new SavesData();
     }
 }

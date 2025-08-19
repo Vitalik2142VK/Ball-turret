@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2194ebbbf5d05a4bb8b086c3ba4bb41, type: 3}
   m_Name: TurtleShellBossAttributes
   m_EditorClassIdentifier: 
-  _damageAttributes: {fileID: 11400000, guid: 0a4f965e6f6b1f543b57cdafeea5e561, type: 2}
-  _healthAttributes: {fileID: 11400000, guid: 01d3a0381e263594eaae7828a1fd1ff4, type: 2}
+  _damage: 400
+  _maxHealth: 360

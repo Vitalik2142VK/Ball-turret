@@ -2,31 +2,52 @@ using System;
 
 public class Level : ILevel
 {
-    public Level(ILevelActorsPlanner actorsPlanner, float actorsHealthCoefficient, int countCoinsWin, int countCoinsDefeat, int index)
+    private const float DefaultHealthCoefficient = 1f;
+
+    private ILevelActorsPlanner _actorsPlanner;
+    private ICoinCountRandomizer _coinCountRandomizer;
+    public int _passedWavesNumber;
+
+    public Level(ILevelActorsPlanner actorsPlanner, ICoinCountRandomizer coinCountRandomizer, float actorsHealthCoefficient = DefaultHealthCoefficient, int index = 0)
     {
         if (actorsHealthCoefficient < 0f)
             throw new ArgumentOutOfRangeException("The coefficient cannot be less than 0");
 
-        if (countCoinsWin <= 0 || countCoinsDefeat <= 0)
-            throw new ArgumentOutOfRangeException("The number of coins cannot be equal to or less than 0");
-
-        if (countCoinsWin < countCoinsDefeat)
-            throw new ArgumentOutOfRangeException("The number of coins for a victory cannot be less than for a defeat");
-
         if (index < 0)
             throw new ArgumentOutOfRangeException(nameof(index));
 
-        ActorsPlanner = actorsPlanner ?? throw new ArgumentNullException(nameof(actorsPlanner));
+        _actorsPlanner = actorsPlanner ?? throw new ArgumentNullException(nameof(actorsPlanner));
+        _coinCountRandomizer = coinCountRandomizer ?? throw new ArgumentNullException(nameof(coinCountRandomizer));
+        _passedWavesNumber = 0;
 
-        ActorsHealthCoefficient = actorsHealthCoefficient;
-        CountCoinsWin = countCoinsWin;
-        CountCoinsDefeat = countCoinsDefeat;
+        CurrentWaveNumber = 0;
+        HealthCoefficient = actorsHealthCoefficient;
         Index = index;
     }
 
-    public ILevelActorsPlanner ActorsPlanner { get; private set; }
-    public float ActorsHealthCoefficient { get; private set; }
-    public int CountCoinsWin { get; private set; }
-    public int CountCoinsDefeat { get; private set; }
-    public int Index { get; private set; }
+    public float HealthCoefficient { get; }
+    public int Index { get; }
+    public int CurrentWaveNumber { get; private set; }
+
+    public int CountCoinsForWin => _coinCountRandomizer.GetCountCoinsForWave(Index);
+    public int CountCoinsForWaves => _coinCountRandomizer.GetCountCoinsForWave(Index) * _passedWavesNumber;
+    public bool AreWavesOver => _actorsPlanner.CountWaves <= CurrentWaveNumber;
+
+    public bool TryGetNextWaveActorsPlanner(out IWaveActorsPlanner waveActorsPlanner)
+    {
+        if (AreWavesOver == false)
+        {
+            waveActorsPlanner = _actorsPlanner.GetWaveActorsPlanner(++CurrentWaveNumber);
+            _passedWavesNumber = CurrentWaveNumber - 1;
+
+            return true;
+        }
+        else
+        {
+            waveActorsPlanner = null;
+            _passedWavesNumber = _actorsPlanner.CountWaves;
+
+            return false;
+        }
+    }
 }

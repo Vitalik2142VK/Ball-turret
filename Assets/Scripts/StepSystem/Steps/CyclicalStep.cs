@@ -4,17 +4,17 @@ public class CyclicalStep : IStep
 {
     private IActorsController _actorsController;
     private IDynamicEndStep _dynamicEndStep;
-    private IWinState _winState;
+    private ITurretState _turretState;
 
     private IStep _startStep;
-    private IStep _playerStep;
+    private IStep _loopingStep;
     private IStep _finishStep;
 
-    public CyclicalStep(IActorsController actorController, IDynamicEndStep dynamicEndStep, IWinState winState)
+    public CyclicalStep(IActorsController actorController, IDynamicEndStep dynamicEndStep, ITurretState turretState)
     {
         _actorsController = actorController ?? throw new ArgumentNullException(nameof(actorController));
         _dynamicEndStep = dynamicEndStep ?? throw new ArgumentNullException(nameof(dynamicEndStep));
-        _winState = winState ?? throw new ArgumentNullException(nameof(winState));
+        _turretState = turretState ?? throw new ArgumentNullException(nameof(turretState));
     }
 
     public void SetStartStep(IStep startStep)
@@ -22,9 +22,9 @@ public class CyclicalStep : IStep
         _startStep = startStep ?? throw new ArgumentNullException(nameof(startStep));
     }
 
-    public void SetPlayerStep(IStep playerStep)
+    public void SetLoopingStep(IStep loopingStep)
     {
-        _playerStep = playerStep ?? throw new ArgumentNullException(nameof(playerStep));
+        _loopingStep = loopingStep ?? throw new ArgumentNullException(nameof(loopingStep));
     }
 
     public void SetFinishStep(IStep finishStep)
@@ -34,7 +34,7 @@ public class CyclicalStep : IStep
 
     public void Action()
     {
-        if (_actorsController.AreNoEnemies && _actorsController.AreWavesOver || _winState.IsWin == false)
+        if (_actorsController.AreNoEnemies && _actorsController.AreWavesOver || _turretState.IsDestroyed)
         {
             _dynamicEndStep.SetNextStep(_finishStep);
         }
@@ -45,7 +45,7 @@ public class CyclicalStep : IStep
         }
         else
         {
-            _dynamicEndStep.SetNextStep(_playerStep);
+            _dynamicEndStep.SetNextStep(_loopingStep);
         }
 
         _dynamicEndStep.End();

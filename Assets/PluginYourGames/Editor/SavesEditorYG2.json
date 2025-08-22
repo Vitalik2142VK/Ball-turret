@@ -5,7 +5,7 @@
     "floatValues": [],
     "intKeys": [],
     "intValues": [],
-    "idSave": 59,
+    "idSave": 21,
     "Purchases": [
         {
             "Id": "disable_ads",
@@ -13,8 +13,8 @@
         }
     ],
     "HealthCoefficient": 1.0,
-    "DamageCoefficient": 2.000000238418579,
-    "CountCoins": 19459,
-    "AchievedLevelIndex": 6,
-    "MaxAchievedWave": 23
+    "DamageCoefficient": 1.4000000953674317,
+    "CountCoins": 8693,
+    "AchievedLevelIndex": 2,
+    "MaxAchievedWave": 11
 }

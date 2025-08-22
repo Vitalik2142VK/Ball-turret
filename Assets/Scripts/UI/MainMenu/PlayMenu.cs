@@ -1,14 +1,15 @@
 ﻿using System;
 using UnityEngine;
 
+[RequireComponent(typeof(HiderUI))]
 public class PlayMenu : MonoBehaviour
 {
     [SerializeField] private PlaySceneLoader _sceneLoader;
     [SerializeField] private SelectLevelScroll _selectLevelScroll;
-    [SerializeField] private GameObject[] _interferingUI;
 
     private IMenu _previousMenu;
     private ILevelFactory _levelFactory;
+    private HiderUI _hiderUI;
     private int _achievedLevelIndex;
 
     private void OnValidate()
@@ -23,6 +24,7 @@ public class PlayMenu : MonoBehaviour
     private void Awake()
     {
         gameObject.SetActive(false);
+        _hiderUI = gameObject.GetComponent<HiderUI>();
     }
 
     public void Initialize(IPlayer user, ILevelFactory levelFactory)
@@ -40,10 +42,7 @@ public class PlayMenu : MonoBehaviour
     {
         gameObject.SetActive(false);
         _previousMenu.Enable();
-
-        foreach (var ui in _interferingUI)
-            if (ui != null)
-                ui.SetActive(true);
+        _hiderUI.Enable();
     }
 
     public void OnPlay()
@@ -59,9 +58,6 @@ public class PlayMenu : MonoBehaviour
         _previousMenu = previousMenu ?? throw new ArgumentNullException(nameof(previousMenu));
         gameObject.SetActive(true);
         _selectLevelScroll.SelectButton(_achievedLevelIndex);
-
-        foreach (var ui in _interferingUI)
-            if (ui != null)
-                ui.SetActive(false);
+        _hiderUI.Disable();
     }
 }

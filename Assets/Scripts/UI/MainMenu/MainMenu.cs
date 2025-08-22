@@ -6,6 +6,7 @@ public class MainMenu : MonoBehaviour, IMenu
     [SerializeField] private PlayMenu _playMenu;
     [SerializeField] private ImprovementMenu _improvementMenu;
     [SerializeField] private SettingMenu _settingMenu;
+    [SerializeField] private LeaderboardWindow _leaderboardWindow;
 
     private GameObject _gameObject;
 
@@ -19,6 +20,9 @@ public class MainMenu : MonoBehaviour, IMenu
 
         if (_settingMenu == null)
             throw new NullReferenceException(nameof(_settingMenu));
+
+        if (_leaderboardWindow == null)
+            throw new NullReferenceException(nameof(_leaderboardWindow));
     }
 
     private void Awake()
@@ -46,7 +50,8 @@ public class MainMenu : MonoBehaviour, IMenu
 
     public void OnOpenLeaderboard()
     {
-        throw new NotImplementedException();
+        _gameObject.SetActive(false);
+        _leaderboardWindow.Open(this);
     }
 
     public void Enable()

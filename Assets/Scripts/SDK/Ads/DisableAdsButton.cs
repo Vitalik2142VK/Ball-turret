@@ -1,14 +1,28 @@
 using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using YG;
+using YG.Utils.Pay;
 
 [RequireComponent(typeof(Button))]
 public class DisableAdsButton : MonoBehaviour
 {
     private const string DisableAdsPurchseId = PurchasesTypes.DisableAds;
 
+    [SerializeField] private ImageLoadYG _currencyImage;
+    [SerializeField] private TextMeshProUGUI _currencyPrice;
+
     private Button _button;
+
+    private void OnValidate()
+    {
+        if (_currencyImage == null)
+            throw new NullReferenceException(nameof(_currencyImage));
+
+        if (_currencyPrice == null)
+            throw new NullReferenceException(nameof(_currencyPrice));
+    }
 
     private void Awake()
     {
@@ -36,7 +50,20 @@ public class DisableAdsButton : MonoBehaviour
             throw new ArgumentOutOfRangeException($"Purchase with id '{DisableAdsPurchseId}' not found.");
 
         if (playerPurchase.IsPurchased)
-            gameObject.SetActive(false);
+            Enable(playerPurchase);
+    }
+
+    private void Enable(IPlayerPurchase playerPurchase)
+    {
+        Purchase purchase = YG2.PurchaseByID(playerPurchase.Id);
+
+        if (purchase == null)
+            throw new NullReferenceException(nameof(purchase));
+
+        _currencyPrice.text = purchase.priceValue;
+        _currencyImage.Load(purchase.currencyImageURL);
+
+        gameObject.SetActive(false);
     }
 
     private void OnPayPurchase()

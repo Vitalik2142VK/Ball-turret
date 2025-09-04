@@ -34,10 +34,10 @@ public class CameraAdapter : MonoBehaviour
     private void Update()
     {
 #if UNITY_EDITOR
-        if (_isDebug == false)
-            CheckCameraOrientation();
-        else
+        if (_isDebug)
             ChangeSettingCamera(_horisontalSetting);
+        else
+            CheckCameraOrientation();
 #else
         CheckCameraOrientation();
 #endif

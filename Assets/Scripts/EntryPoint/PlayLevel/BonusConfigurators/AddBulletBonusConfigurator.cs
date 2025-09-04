@@ -7,7 +7,7 @@ namespace PlayLevel
     {
         [Header("Add bullet")]
         [SerializeField] private BulletFactory _bulletFactory;
-        [SerializeField] private DefaultGun _gun;
+        [SerializeField] private Gun _gun;
         [SerializeField] private BulletType _bulletType;
 
         private void OnValidate()

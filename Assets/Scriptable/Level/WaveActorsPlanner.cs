@@ -34,7 +34,7 @@ namespace Scriptable
             {
                 if (_lines[i].IsEmpty() == false)
                 {
-                    List<IActorPlanner> actorPlanners = _lines[i].GetActorPlanners(i);
+                    var actorPlanners = _lines[i].GetActorPlanners(i);
                     planners.AddRange(actorPlanners);
                 }
             }

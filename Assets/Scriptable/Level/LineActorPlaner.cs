@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Scriptable
 {
     [Serializable]
-    public struct LineActorPlaner
+    public struct LineActorPlaner : ILineActorPlaner
     {
         private const int CountColumns = 3;
 
@@ -26,7 +26,7 @@ namespace Scriptable
             return true;
         }
 
-        public List<IActorPlanner> GetActorPlanners(int lineNumber)
+        public IEnumerable<IActorPlanner> GetActorPlanners(int lineNumber)
         {
             if (IsEmpty())
                 throw new NullReferenceException();

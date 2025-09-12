@@ -1,20 +1,23 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class BorderFactory : MonoBehaviour, IActorFactory
 {
-    [SerializeField] private Border _borderPrefab;
-    [SerializeField] private Sound _destroySound;
+    [SerializeField] private BorderCreator[] _borderCreators;
 
     private IActorHealthModifier _healthModifier;
+    private Dictionary<string, BorderCreator> _creators;
 
     private void OnValidate()
     {
-        if (_borderPrefab == null)
-            throw new ArgumentNullException(nameof(_borderPrefab));
+        if (_borderCreators == null || _borderCreators.Length == 0)
+            throw new InvalidOperationException(nameof(_borderCreators));
+    }
 
-        if (_destroySound == null)
-            throw new NullReferenceException(nameof(_destroySound));
+    private void Awake()
+    {
+        _creators = new Dictionary<string, BorderCreator>();
     }
 
     public void Initialize(IActorHealthModifier healthModifier)
@@ -27,14 +30,22 @@ public class BorderFactory : MonoBehaviour, IActorFactory
         if (nameTypeActor == null || nameTypeActor.Length == 0)
             throw new ArgumentOutOfRangeException(nameof(nameTypeActor));
 
-        return _borderPrefab.Name == nameTypeActor;
+        return _creators.ContainsKey(nameTypeActor);
     }
 
     public IActor Create(string nameTypeActor)
     {
-        var border = Instantiate(_borderPrefab, Vector3.zero, _borderPrefab.transform.rotation);
-        border.Initialize(_destroySound, _healthModifier);
+        return _creators[nameTypeActor].Create(_healthModifier);
+    }
 
-        return border;
+    private Dictionary<string, BorderCreator> CreateDictionaryCreator()
+    {
+        int lenght = _borderCreators.Length;
+        Dictionary<string, BorderCreator> creators = new Dictionary<string, BorderCreator>(lenght);
+
+        foreach (var creator in _borderCreators)
+            creators.Add(creator.Name, creator);
+
+        return creators;
     }
 }

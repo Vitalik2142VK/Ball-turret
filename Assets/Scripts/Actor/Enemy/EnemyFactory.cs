@@ -10,17 +10,17 @@ public class EnemyFactory : MonoBehaviour, IActorFactory
     private Dictionary<string, Enemy> _prefabs;
     private IActorHealthModifier _healthModifier;
 
-    private void Awake()
+    private void OnValidate()
     {
-        if (_enemyPrefabs == null)
-            throw new NullReferenceException(nameof(_enemyPrefabs));
+        if (_enemyPrefabs == null || _enemyPrefabs.Length == 0)
+            throw new InvalidOperationException(nameof(_enemyPrefabs));
 
         if (_deadSound == null)
             throw new NullReferenceException(nameof(_deadSound));
+    }
 
-        if (_enemyPrefabs.Length == 0)
-            throw new InvalidOperationException(nameof(_enemyPrefabs));
-
+    private void Awake()
+    {
         _prefabs = CreateDictionaryPrefabs();
     }
 

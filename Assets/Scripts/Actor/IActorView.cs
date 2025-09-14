@@ -1,4 +1,4 @@
-﻿public interface IActorView : IMovableObject, IDestroyedObject
+﻿public interface IActorView : IDamagedObject, IDestroyedObject
 {
     public string Name { get; }
 }

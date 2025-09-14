@@ -4,35 +4,41 @@ using UnityEngine;
 public class Border : IBorder
 {
     private IBorderView _view;
+    private IMovableObject _mover;
     private IArmor _armor;
     private IHealth _health;
 
-    public Border(IBorderView view, IArmor armor, IHealth health)
+    public Border(IBorderView view, IMovableObject mover, IArmor armor, IHealth health)
     {
         _view = view ?? throw new ArgumentNullException(nameof(view));
+        _mover = mover ?? throw new ArgumentNullException(nameof(mover));
         _armor = armor ?? throw new ArgumentNullException(nameof(armor));
         _health = health ?? throw new ArgumentNullException(nameof(health));
     }
 
-    public IMover Mover => _view.Mover;
-
     public bool IsEnable { get; private set; }
 
-    /private void OnEnable()
+    public bool IsFinished => _mover.IsFinished;
+
+    public void Enable()
     {
         IsEnable = true;
 
         _health.Restore();
     }
 
-    /private void OnDisable()
+    public void Disable()
     {
         IsEnable = false;
     }
 
-    public void SetStartPosition(Vector3 startPosition) => _view.SetStartPosition(startPosition);
+    public void SetStartPosition(Vector3 startPosition) => _mover.SetStartPosition(startPosition);
+
+    public void SetPoint(Vector3 distance, float speed) => _mover.SetPoint(distance, speed);
 
     public void Destroy() => _view.Destroy();
+
+    public void Move() => _mover.Move();
 
     public void TakeDamage(IDamageAttributes damage)
     {
@@ -41,8 +47,7 @@ public class Border : IBorder
 
         _armor.ReduceDamage(damage);
 
-        if (_health.IsAlive == false)
-            Destroy();
+        CheckAlive();
     }
 
     public void IgnoreArmor(IDamageAttributes damage)
@@ -52,7 +57,14 @@ public class Border : IBorder
 
         _health.TakeDamage(damage);
 
+        CheckAlive();
+    }
+
+    private void CheckAlive()
+    {
         if (_health.IsAlive == false)
             Destroy();
+        else
+            _view.PlayDamage();
     }
 }

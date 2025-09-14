@@ -7,7 +7,6 @@ public class BorderCreator : MonoBehaviour
     [SerializeField] private BorderView _borderPrefab;
     [SerializeField] private ArmorAttributes _armorAttributes;
     [SerializeField] private HealthAttributes _healthAttributes;
-    [SerializeField] private HealthBar _healthBar;
     [SerializeField] private Sound _destroySound;
 
     public string Name => _borderPrefab.Name;
@@ -23,9 +22,6 @@ public class BorderCreator : MonoBehaviour
         if (_healthAttributes == null)
             throw new ArgumentNullException(nameof(_healthAttributes));
 
-        if (_healthBar == null)
-            throw new NullReferenceException(nameof(_healthBar));
-
         if (_destroySound == null)
             throw new NullReferenceException(nameof(_destroySound));
     }
@@ -40,14 +36,15 @@ public class BorderCreator : MonoBehaviour
         HealthImprover healthImprover = new HealthImprover(_healthAttributes);
         healthImprover.Improve(healthModifier.HealthCoefficient);
 
-        Health health = new Health(healthImprover, _healthBar);
+        HealthBar healthBar = _borderPrefab.HealthBar;
+        Health health = new Health(healthImprover, healthBar);
         Armor armor = new Armor(health, _armorAttributes);
         health.Restore();
 
         BorderView view = Instantiate(_borderPrefab, Vector3.zero, _borderPrefab.transform.rotation);
-        Border model = new Border(view, armor, health);
-        BorderPresenter presenter = new BorderPresenter(model);
-        view.Initialize(presenter, _destroySound);
+        Mover mover = new Mover(view.transform);
+        Border model = new Border(view, mover, armor, health);
+        view.Initialize(model, _destroySound);
 
         return model;
     }

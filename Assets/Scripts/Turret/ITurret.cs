@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 public interface ITurret : IDamagedObject, IEndPointStep, ITurretState
 {
@@ -8,6 +7,4 @@ public interface ITurret : IDamagedObject, IEndPointStep, ITurretState
     public void SetTouchPoint(Vector3 touchPoint);
 
     public void FixTargetPostion(Vector3 targetPostion);
-
-    public void RestoreHealth();
 }

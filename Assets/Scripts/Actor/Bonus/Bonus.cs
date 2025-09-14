@@ -1,24 +1,19 @@
 ﻿using System;
-using UnityEngine;
 
-public class Bonus : MonoBehaviour, IBonus
+public class Bonus : IBonus
 {
-    [SerializeField] private Scriptable.BonusCard _bonusCard;
-
     private IBonusActivator _activator;
 
-    public string Name => BonusCard.Name;
-    public IBonusCard BonusCard => _bonusCard;
-
-    private void OnValidate()
+    public Bonus(IBonusCard bonusCard)
     {
-        if (_bonusCard == null)
-            throw new NullReferenceException(nameof(_bonusCard));
+        BonusCard = bonusCard ?? throw new ArgumentNullException(nameof(bonusCard));
     }
+
+    public IBonusCard BonusCard { get; }
 
     public void Initialize(IBonusActivator bonusActivator)
     {
-        _activator = bonusActivator ?? throw new ArgumentNullException(nameof(bonusActivator));
+        _activator ??= bonusActivator ?? throw new ArgumentNullException(nameof(bonusActivator));
     }
 
     public void Activate()

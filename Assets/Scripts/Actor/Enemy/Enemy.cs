@@ -1,72 +1,37 @@
 ﻿using System;
 using UnityEngine;
 
-[RequireComponent(typeof(CapsuleCollider), typeof(Rigidbody), typeof(Mover))]
-public class Enemy : MonoBehaviour, IEnemy
+public class Enemy : IEnemy
 {
-    [SerializeField] private Scriptable.EnemyAttributes _enemyAttributes;
-    [SerializeField, SerializeIterface(typeof(IDebuffReceiver))] private GameObject _debuffReceiverGameObject;
-    [SerializeField] private HealthBar _healthBar;
-
+    private IEnemyView _view;
     private IDebuffReceiver _debuffReceiver;
-    private IMover _mover;
+    private IMovableObject _mover;
     private IDamage _damage;
     private IHealth _health;
-    private ISound _sound;
 
-    public IMover Mover => _mover;
-    public string Name => name;
+    public Enemy(IEnemyView enemyView, IDebuffReceiver debuffReceiver, IMovableObject mover, IDamage damage, IHealth health)
+    {
+        _view = enemyView ?? throw new ArgumentNullException(nameof(enemyView));
+        _debuffReceiver = debuffReceiver ?? throw new ArgumentNullException(nameof(debuffReceiver));
+        _mover = mover ?? throw new ArgumentNullException(nameof(mover));
+        _damage = damage ?? throw new ArgumentNullException(nameof(damage));
+        _health = health ?? throw new ArgumentNullException(nameof(health));
+    }
+
+    public bool IsFinished => _mover.IsFinished;
 
     public bool IsEnable { get; private set; }
 
-    private void OnValidate()
-    {
-        if (_enemyAttributes == null)
-            throw new NullReferenceException(nameof(_enemyAttributes));
-
-        if (_healthBar == null)
-            throw new NullReferenceException(nameof(_healthBar));
-
-        if (_debuffReceiverGameObject == null)
-            throw new NullReferenceException(nameof(_debuffReceiverGameObject));
-    }
-
-    private void Awake()
-    {
-        _debuffReceiver = _debuffReceiverGameObject.GetComponent<IDebuffReceiver>();
-
-        Rigidbody rigidbody = GetComponent<Rigidbody>();
-        rigidbody.isKinematic = true;
-        rigidbody.useGravity = false;
-
-        _mover = GetComponent<Mover>();
-    }
-
-    private void OnEnable()
+    public void Enable()
     {
         IsEnable = true;
 
         _health?.Restore();
     }
 
-    private void OnDisable()
+    public void Disable()
     {
         IsEnable = false;
-    }
-
-    public void Initialize(ISound sound, IActorHealthModifier modifier)
-    {
-        if (modifier == null)
-            throw new ArgumentNullException(nameof(modifier));
-
-        _sound = sound ?? throw new ArgumentNullException(nameof(sound));
-        
-        HealthImprover healthImprover = new HealthImprover(_enemyAttributes);
-        healthImprover.Improve(modifier.HealthCoefficient);
-
-        _damage = new Damage(_enemyAttributes);
-        _health = new Health(healthImprover, _healthBar);
-        _health.Restore();
     }
 
     public void AddDebuff(IDebuff debaff) => _debuffReceiver.AddDebuff(debaff);
@@ -74,6 +39,10 @@ public class Enemy : MonoBehaviour, IEnemy
     public void ApplyDamage(IDamagedObject damagedObject) => _damage.Apply(damagedObject);
 
     public void SetStartPosition(Vector3 startPosition) => _mover.SetStartPosition(startPosition);
+
+    public void SetPoint(Vector3 distance, float speed) => _mover.SetPoint(distance, speed);
+
+    public void Move() => _mover.Move();
 
     public void ActivateDebuffs()
     {
@@ -91,8 +60,7 @@ public class Enemy : MonoBehaviour, IEnemy
 
     public void Destroy()
     {
-        _sound.Play();
         _debuffReceiver.Clean();
-        Destroy(gameObject);
+        _view.Destroy();
     }
 }

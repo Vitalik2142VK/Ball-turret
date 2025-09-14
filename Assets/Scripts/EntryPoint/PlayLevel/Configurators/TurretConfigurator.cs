@@ -22,6 +22,9 @@ namespace PlayLevel
         [SerializeField] private GunAttributes _gunAttributes;
         [SerializeField] private HealthAttributes _turretHealthAttributes;
 
+        [Header("Other")]
+        [SerializeField] private FullHealthTurretBonusConfigurator _fullHealthTurretBonus;
+
         private Turret _turret;
         private ITrajectoryRenderer _trajectoryRenderer;
 
@@ -55,6 +58,9 @@ namespace PlayLevel
 
             if (_turretHealthAttributes == null)
                 throw new NullReferenceException(nameof(_turretHealthAttributes));
+
+            if (_fullHealthTurretBonus == null)
+                throw new NullReferenceException(nameof(_fullHealthTurretBonus));
         }
 
         private void Awake()
@@ -84,6 +90,8 @@ namespace PlayLevel
 
             _turret = new Turret(_turretView, _gun, _tower, health);
             _turret.Enable();
+
+            _fullHealthTurretBonus.SetHealthTurret(health);
         }
 
         private IGunMagazine CreateGunMagazine(IBulletFactory bulletFactory)

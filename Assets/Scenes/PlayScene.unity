@@ -3186,6 +3186,54 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eaf57778f25b5414c8d5889a1188baac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &658940949
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 658940950}
+  - component: {fileID: 658940951}
+  m_Layer: 0
+  m_Name: BorderCreator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 2147483647
+  m_IsActive: 1
+--- !u!4 &658940950
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 658940949}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2142882836}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &658940951
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 658940949}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fded897e2cda7ce44bdb09fc5074114b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _borderPrefab: {fileID: 7744648003808230743, guid: 9d03265b6cfbebf439e00cc09c7b5e17, type: 3}
+  _armorAttributes: {fileID: 11400000, guid: d086418a51a59d047acd8441638ac12f, type: 2}
+  _healthAttributes: {fileID: 11400000, guid: 578b5f8652166da45a8d10b0872b459d, type: 2}
+  _destroySound: {fileID: 107513769}
 --- !u!1 &667002144
 GameObject:
   m_ObjectHideFlags: 0
@@ -8157,7 +8205,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9091109465146168853, guid: 02f1bc7ecacf5b14f8249756240f1519, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -5.8192835
+      value: -5.81966
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -10047,7 +10095,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 658940950}
   m_Father: {fileID: 240104066}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2142882837
@@ -10062,8 +10111,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0322d85661e2a904a9998bd71d9aedec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _borderPrefab: {fileID: -8290625880874636182, guid: 9d03265b6cfbebf439e00cc09c7b5e17, type: 3}
-  _destroySound: {fileID: 107513769}
+  _borderCreators:
+  - {fileID: 658940951}
 --- !u!224 &875551596652681086 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5643478559891333280, guid: 71b15a8c733a6ac44bb729f277fa06b2, type: 3}

@@ -17,7 +17,6 @@ namespace PlayLevel
         public override void Configure()
         {
             ChoiceBonusActivator activator = new ChoiceBonusActivator(_bonusChoiceMenu);
-
             BonusPrefab.Initialize(activator);
         }
     }

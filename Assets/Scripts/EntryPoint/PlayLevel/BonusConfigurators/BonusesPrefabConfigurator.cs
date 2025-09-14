@@ -12,8 +12,6 @@ namespace PlayLevel
         [SerializeField] private BonusChoiceMenu _bonusChoiceMenu;
         [SerializeField] private Sound _takenBonusSound;
 
-        private ITurret _turret;
-
         private void OnValidate()
         {
             if (_bonusConfigurators == null)
@@ -32,25 +30,13 @@ namespace PlayLevel
                 throw new NullReferenceException(nameof(_takenBonusSound));
         }
 
-        public void Configure(ITurret turret)
+        public void Configure()
         {
-            _turret = turret ?? throw new ArgumentNullException(nameof(turret));
-
             foreach (var bonusConfigurator in _bonusConfigurators)
-            {
-                ConfigureAdditionally(bonusConfigurator);
-
                 bonusConfigurator.Configure();
-            }
 
             InitializeBonusFactory();
             InitializeChoiceBonusMenu();
-        }
-
-        private void ConfigureAdditionally(BonusConfigurator configurator)
-        {
-            if (configurator is FullHealthTurretBonusConfigurator fullHealthTurretBonusConfigurator)
-                fullHealthTurretBonusConfigurator.SetHealthTurret(_turret);
         }
 
         private void InitializeBonusFactory()
@@ -59,10 +45,8 @@ namespace PlayLevel
             List<CollisionBonus> collisionBonuses = new List<CollisionBonus>();
 
             foreach (var bonusPrefab in bonusPrefabs)
-            {
                 if (bonusPrefab.TryGetComponent(out CollisionBonus collisionBonus))
                     collisionBonuses.Add(collisionBonus);
-            }
 
             _bonusFactory.Initialize(collisionBonuses, _takenBonusSound);
         }

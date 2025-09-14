@@ -6,14 +6,15 @@ using UnityEngine.UI;
 public class CollisionBonus : MonoBehaviour, IBonus, IActor
 {
     [SerializeField] private Image _image;
-    [SerializeField] private Bonus _bonus;
+    
+    private Bonus _bonus;
 
-    private IMover _mover;
+    private IMovableObject _mover;
     private ISound _sound;
 
     public string Name => _bonus.Name;
     public IBonusCard BonusCard => _bonus.BonusCard;
-    public IMover Mover => _mover;
+    public IMovableObject Mover => _mover;
 
     public bool IsEnable { get; private set; }
 

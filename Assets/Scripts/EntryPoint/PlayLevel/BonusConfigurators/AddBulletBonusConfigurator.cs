@@ -22,7 +22,6 @@ namespace PlayLevel
         public override void Configure()
         {
             AddBulletBonusActivator addBulletBonusActivator = new AddBulletBonusActivator(_bulletFactory, _gun, _bulletType);
-
             BonusPrefab.Initialize(addBulletBonusActivator);
         }
     }

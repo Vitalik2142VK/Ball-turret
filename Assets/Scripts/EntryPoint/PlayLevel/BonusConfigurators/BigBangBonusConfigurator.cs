@@ -48,7 +48,6 @@ namespace PlayLevel
         public override void Configure()
         {
             BigBangBonusActivator activator = new BigBangBonusActivator(_exploder, _pointExplosionPosition);
-
             BonusPrefab.Initialize(activator);
         }
     }

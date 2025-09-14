@@ -2,20 +2,20 @@
 
 public class FullHealthTurretBonusActivator : IBonusActivator
 {
-    private ITurret _turret;
+    private IHealth _turretHealth;
 
-    public FullHealthTurretBonusActivator(ITurret turret)
+    public FullHealthTurretBonusActivator(IHealth turretHealth)
     {
-        _turret = turret ?? throw new ArgumentNullException(nameof(turret));
+        _turretHealth = turretHealth ?? throw new ArgumentNullException(nameof(turretHealth));
     }
 
     public void Activate()
     {
-        _turret.RestoreHealth();
+        _turretHealth.Restore();
     }
 
     public IBonusActivator Clone()
     {
-        return new FullHealthTurretBonusActivator(_turret);
+        return new FullHealthTurretBonusActivator(_turretHealth);
     }
 }

@@ -17,7 +17,7 @@ public class BorderFactory : MonoBehaviour, IActorFactory
 
     private void Awake()
     {
-        _creators = new Dictionary<string, BorderCreator>();
+        _creators = CreateDictionaryCreator();
     }
 
     public void Initialize(IActorHealthModifier healthModifier)

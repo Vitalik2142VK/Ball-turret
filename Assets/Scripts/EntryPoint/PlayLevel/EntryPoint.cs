@@ -72,7 +72,7 @@ namespace PlayLevel
             var actorsController = _actorsConfigurator.ActorsController;
 
             _stepSystemConfigurator.Configure(turret, _playerController, actorsController);
-            _bonusPrefabConfigurator.Configure(turret);
+            _bonusPrefabConfigurator.Configure();
 
             SavedPlayerData savesData = new SavedPlayerData();
             PlayerSaver playerSaver = new PlayerSaver(_player, savesData);

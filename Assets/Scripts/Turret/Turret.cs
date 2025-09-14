@@ -71,8 +71,6 @@ public class Turret : ITurret
         IsDestroyed = true;
     }
 
-    public void RestoreHealth() => _health.Restore();
-
     private void OnShoot() => _view.Shoot();
 
     private void OnEndStep() => _endStep.End();

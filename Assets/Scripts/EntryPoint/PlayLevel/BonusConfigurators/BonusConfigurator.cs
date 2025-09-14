@@ -1,21 +1,18 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace PlayLevel
 {
+    [RequireComponent(typeof(BonusCreator))]
     public abstract class BonusConfigurator : MonoBehaviour
     {
-        [Header("Bonus prefab")]
-        [SerializeField] private Bonus _bonusPrefab;
-        [SerializeField] private bool _isItRandom;
+        public IBonus BonusPrefab { get; private set; }
+        public BonusCreator Creator { get; private set; }
 
-        public Bonus BonusPrefab => _bonusPrefab;
-        public bool IsItRandom => _isItRandom;
 
-        private void OnValidate()
+        private void Awake()
         {
-            if (_bonusPrefab == null)
-                throw new NullReferenceException(nameof(_bonusPrefab));
+            Creator = GetComponent<BonusCreator>();
+            BonusPrefab = Creator.Create();
         }
 
         public abstract void Configure();

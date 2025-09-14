@@ -1,34 +1,23 @@
 ﻿using System;
 using UnityEngine;
 
-[RequireComponent(typeof(Enemy))]
-public class ArmoredEnemy : MonoBehaviour, IEnemy, IArmoredObject
+public class ArmoredEnemy : IEnemy, IArmoredObject
 {
-    [SerializeField] private Scriptable.ArmorAttributes _armorAttributes;
-    [SerializeField] private Enemy _enemy;
-
+    private IEnemy _enemy;
     private IArmor _armor;
 
-    private void OnValidate()
+    public ArmoredEnemy(IEnemy enemy, IArmor armor)
     {
-        if (_armorAttributes == null)
-            throw new ArgumentNullException(nameof(_armorAttributes));
-
-        if (TryGetComponent(out Enemy enemy))
-            _enemy = enemy;
-        else
-            throw new NullReferenceException(nameof(_enemy));
+        _enemy = enemy ?? throw new ArgumentNullException(nameof(enemy));
+        _armor = armor ?? throw new ArgumentNullException(nameof(armor));
     }
 
-    public IMover Mover => _enemy.Mover;
-    public string Name => _enemy.Name;
     public bool IsEnable => _enemy.IsEnable;
+    public bool IsFinished => _enemy.IsFinished;
 
-    private void Awake()
-    {
-        _armorAttributes.CalculateArmor();
-        _armor = new Armor(_enemy, _armorAttributes);
-    }
+    public void Enable() => _enemy.Enable();
+
+    public void Disable() => _enemy.Disable();
 
     public void ActivateDebuffs() => _enemy.ActivateDebuffs();
 
@@ -36,9 +25,13 @@ public class ArmoredEnemy : MonoBehaviour, IEnemy, IArmoredObject
 
     public void ApplyDamage(IDamagedObject damagedObject) => _enemy.ApplyDamage(damagedObject);
 
-    public void Destroy() => _enemy.Destroy();
-
     public void SetStartPosition(Vector3 startPosition) => _enemy.SetStartPosition(startPosition);
+
+    public void SetPoint(Vector3 distance, float speed) => _enemy.SetPoint(distance, speed);
+
+    public void Move() => _enemy.Move();
+
+    public void Destroy() => _enemy.Destroy();
 
     public void TakeDamage(IDamageAttributes damage)
     {

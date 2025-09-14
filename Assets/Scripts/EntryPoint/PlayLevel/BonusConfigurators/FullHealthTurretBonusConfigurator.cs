@@ -4,16 +4,16 @@ namespace PlayLevel
 {
     public class FullHealthTurretBonusConfigurator : BonusConfigurator
     {
-        private ITurret _turret;
+        private IHealth _turretHealth;
 
-        public void SetHealthTurret(ITurret turret)
+        public void SetHealthTurret(IHealth turretHealth)
         {
-            _turret = turret ?? throw new ArgumentNullException(nameof(turret));
+            _turretHealth = turretHealth ?? throw new ArgumentNullException(nameof(turretHealth));
         }
 
         public override void Configure()
         {
-            FullHealthTurretBonusActivator activator = new FullHealthTurretBonusActivator(_turret);
+            FullHealthTurretBonusActivator activator = new FullHealthTurretBonusActivator(_turretHealth);
             BonusPrefab.Initialize(activator);
         }
     }

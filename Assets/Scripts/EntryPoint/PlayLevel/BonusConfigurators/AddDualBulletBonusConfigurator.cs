@@ -10,7 +10,6 @@ namespace PlayLevel
         [Header("Add bullet")]
         [SerializeField] private BulletFactory _bulletFactory;
         [SerializeField] private Gun _gun;
-        [SerializeField] private BulletType _bulletType;
 
         private void OnValidate()
         {
@@ -23,9 +22,8 @@ namespace PlayLevel
 
         public override void Configure()
         {
-            AddBulletBonusActivator addBulletBonusActivator = new AddBulletBonusActivator(_bulletFactory, _gun, _bulletType);
+            AddBulletBonusActivator addBulletBonusActivator = new AddBulletBonusActivator(_bulletFactory, _gun, BulletType.Default);
             MultipleBonusActivator multipleBonusActivator = new MultipleBonusActivator(addBulletBonusActivator, CountActivations);
-
             BonusPrefab.Initialize(multipleBonusActivator);
         }
     }

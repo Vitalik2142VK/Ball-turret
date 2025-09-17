@@ -38,7 +38,7 @@ public class EnemyCreator : MonoBehaviour, IEnemyCreator
 
         _createdEnemyView = Instantiate(_enemyPrefab, Vector3.zero, _enemyPrefab.transform.rotation);
         IDebuffReceiver debuffReceiver = _createdEnemyView.DebuffReceiver;
-        Mover mover = new Mover(_enemyPrefab.transform);
+        Mover mover = new Mover(_createdEnemyView.transform);
         Enemy model = new Enemy(_createdEnemyView, debuffReceiver, mover, damage, health);
         _createdEnemyView.Initialize(model);
 

@@ -1,4 +1,4 @@
-﻿public interface IActorView : IDamagedObject, IDestroyedObject
+﻿public interface IActorView : IDestroyedObject
 {
     public string Name { get; }
 }

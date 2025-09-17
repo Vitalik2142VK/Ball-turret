@@ -39,6 +39,9 @@ public class EnemyFactory : MonoBehaviour, IActorFactory
 
     public IActor Create(string nameTypeActor)
     {
+        if (IsCanCreate(nameTypeActor) == false)
+            throw new ArgumentOutOfRangeException(nameof(nameTypeActor));
+
         return _creators[nameTypeActor].Create(_healthModifier);
     }
 

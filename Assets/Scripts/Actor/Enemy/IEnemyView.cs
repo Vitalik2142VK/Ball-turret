@@ -1,4 +1,4 @@
-﻿public interface IEnemyView : IActorView
+﻿public interface IEnemyView : IActorView, IDamagedObject
 {
     public void PlayDamage();
 

@@ -1,4 +1,4 @@
-﻿public interface IBorderView : IActorView, IArmoredObject 
+﻿public interface IBorderView : IActorView, IDamagedObject, IArmoredObject 
 {
     public void PlayDamage();
 }

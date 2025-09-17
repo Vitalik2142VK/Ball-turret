@@ -2,16 +2,22 @@
 
 namespace PlayLevel
 {
-    [RequireComponent(typeof(BonusCreator))]
-    public abstract class BonusConfigurator : MonoBehaviour
+    public abstract class BonusConfigurator: MonoBehaviour
     {
-        public IBonus BonusPrefab { get; private set; }
-        public BonusCreator Creator { get; private set; }
+        [SerializeField, SerializeIterface(typeof(IBonusCreator))] private GameObject _bonusCreator;
 
+        public IBonus BonusPrefab { get; private set; }
+        public IBonusCreator Creator { get; private set; }
+
+        private void OnValidate()
+        {
+            if (_bonusCreator == null)
+                throw new System.NullReferenceException(nameof(_bonusCreator));
+        }
 
         private void Awake()
         {
-            Creator = GetComponent<BonusCreator>();
+            Creator = _bonusCreator.GetComponent<BonusCreator>();
             BonusPrefab = Creator.Create();
         }
 

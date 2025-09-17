@@ -36,9 +36,9 @@ public class Border : IBorder
 
     public void SetPoint(Vector3 distance, float speed) => _mover.SetPoint(distance, speed);
 
-    public void Destroy() => _view.Destroy();
-
     public void Move() => _mover.Move();
+
+    public void Destroy() => _view.Destroy();
 
     public void TakeDamage(IDamageAttributes damage)
     {

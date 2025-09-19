@@ -6,12 +6,13 @@ public class EnemyView : MonoBehaviour, IEnemyView
 {
     [SerializeField, SerializeIterface(typeof(IDebuffReceiver))] private GameObject _debuffReceiverGameObject;
 
-    [field: SerializeField] public HealthBar HealthBar { get; }
+    [field: SerializeField] public HealthBar HealthBar { get; private set; }
 
     private IEnemy _model;
     private ISound _destroySound;
 
     public string Name => name;
+    public IActor Actor => _model;
 
     public IDebuffReceiver DebuffReceiver { get; private set; }
 
@@ -35,7 +36,7 @@ public class EnemyView : MonoBehaviour, IEnemyView
 
     private void OnEnable()
     {
-        _model.Enable();
+        _model?.Enable();
     }
 
     private void OnDisable()
@@ -43,9 +44,11 @@ public class EnemyView : MonoBehaviour, IEnemyView
         _model.Disable();
     }
 
-    public void Initialize(IEnemy model)
+    public void Initialize(IEnemy model, ISound destroySound)
     {
         _model = model ?? throw new ArgumentNullException(nameof(model));
+        _destroySound = destroySound ?? throw new ArgumentNullException(nameof(destroySound)); ;
+        _model.Enable();
     }
 
     public void TakeDamage(IDamageAttributes damage) => _model.TakeDamage(damage);

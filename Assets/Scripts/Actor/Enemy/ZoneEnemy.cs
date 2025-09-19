@@ -31,8 +31,10 @@ public class ZoneEnemy : MonoBehaviour
 
     private void CheckExitActor(Collider other)
     {
-        if (other.gameObject.TryGetComponent(out IActor actor) == false)
+        if (other.gameObject.TryGetComponent(out IActorView actorView) == false)
             return;
+
+        var actor = actorView.Actor;
 
         if (actor is IEnemy enemy)
             _attackingEnemies.Add(enemy);

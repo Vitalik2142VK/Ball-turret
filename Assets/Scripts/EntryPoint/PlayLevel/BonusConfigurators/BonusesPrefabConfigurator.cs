@@ -15,6 +15,10 @@ namespace PlayLevel
             if (_bonusConfigurators == null || _bonusConfigurators.Length == 0)
                 throw new InvalidOperationException(nameof(_bonusConfigurators));
 
+            foreach (var bonusConfigurator in _bonusConfigurators)
+                if (bonusConfigurator == null)
+                    throw new NullReferenceException($"{_bonusConfigurators} contains null objects");
+
             if (_bonusFactory == null)
                 throw new NullReferenceException(nameof(_bonusFactory));
         }

@@ -1,17 +1,25 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class BonusCreator : MonoBehaviour, IBonusCreator
 {
     [SerializeField] private Scriptable.BonusCard _bonusCard;
 
+    private IBonusActivator _bonusActivator;
+
     private void OnValidate()
     {
         if (_bonusCard == null)
-            throw new System.NullReferenceException(nameof(_bonusCard));
+            throw new NullReferenceException(nameof(_bonusCard));
+    }
+
+    public void Initialize(IBonusActivator bonusActivator)
+    {
+        _bonusActivator = bonusActivator ?? throw new ArgumentNullException(nameof(bonusActivator));
     }
 
     public IBonus Create()
     {
-        return new Bonus(_bonusCard);
+        return new Bonus(_bonusCard, _bonusActivator);
     }
 }

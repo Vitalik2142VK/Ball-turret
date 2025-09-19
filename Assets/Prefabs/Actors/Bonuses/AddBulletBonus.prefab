@@ -87,9 +87,7 @@ GameObject:
   - component: {fileID: 5590610411673595023}
   - component: {fileID: 1867432336074093307}
   - component: {fileID: 2275135608088284261}
-  - component: {fileID: 4302467720087310448}
-  - component: {fileID: 5217973507592596023}
-  - component: {fileID: 8411047152606389449}
+  - component: {fileID: 9045518304961067726}
   m_Layer: 0
   m_Name: AddBulletBonus
   m_TagString: Untagged
@@ -106,7 +104,7 @@ Transform:
   m_GameObject: {fileID: 6972228633587166588}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.33, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -186,7 +184,7 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &4302467720087310448
+--- !u!114 &9045518304961067726
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -195,36 +193,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 6972228633587166588}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a3ccb44b215d8f4b945acbc3a6427b5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &5217973507592596023
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6972228633587166588}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7f11afdece69b244b4f28b044e94a92, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _bonusCard: {fileID: 11400000, guid: 13b56bc23a715d44abb1fcf494883637, type: 2}
---- !u!114 &8411047152606389449
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6972228633587166588}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d6b73769fbbeb9b4d9833fb9915b3b7e, type: 3}
+  m_Script: {fileID: 11500000, guid: 1e60a61ffc6eafc4589593b7ed31b388, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _image: {fileID: 1485301596262495129}
-  _takenBonusSound: {fileID: 0}
 --- !u!1 &7302352192841199138
 GameObject:
   m_ObjectHideFlags: 0

@@ -33,15 +33,15 @@ public class BorderCreator : MonoBehaviour
 
         _armorAttributes.CalculateArmor();
 
+        BorderView view = Instantiate(_borderPrefab, Vector3.zero, _borderPrefab.transform.rotation);
         HealthImprover healthImprover = new HealthImprover(_healthAttributes);
         healthImprover.Improve(healthModifier.HealthCoefficient);
 
-        HealthBar healthBar = _borderPrefab.HealthBar;
+        HealthBar healthBar = view.HealthBar;
         Health health = new Health(healthImprover, healthBar);
         Armor armor = new Armor(health, _armorAttributes);
         health.Restore();
 
-        BorderView view = Instantiate(_borderPrefab, Vector3.zero, _borderPrefab.transform.rotation);
         Mover mover = new Mover(view.transform);
         Border model = new Border(view, mover, armor, health);
         view.Initialize(model, _destroySound);

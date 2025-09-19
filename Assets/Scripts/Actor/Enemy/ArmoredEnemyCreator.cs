@@ -19,7 +19,7 @@ public class ArmoredEnemyCreator : MonoBehaviour, IEnemyCreator
             throw new ArgumentNullException(nameof(_armorAttributes));
     }
 
-    public string Name => throw new NotImplementedException();
+    public string Name => _enemyCreator.Name;
 
     private void Awake()
     {

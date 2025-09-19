@@ -1075,8 +1075,7 @@ GameObject:
   - component: {fileID: 7973691923763865335}
   - component: {fileID: 6242250894666528102}
   - component: {fileID: 2464207999303226390}
-  - component: {fileID: 2901919693588977240}
-  - component: {fileID: 4766163456513359886}
+  - component: {fileID: 3775860796279193896}
   m_Layer: 9
   m_Name: Slime
   m_TagString: Untagged
@@ -1175,7 +1174,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &2901919693588977240
+--- !u!114 &3775860796279193896
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1184,24 +1183,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 7690942557182064526}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a3ccb44b215d8f4b945acbc3a6427b5, type: 3}
+  m_Script: {fileID: 11500000, guid: 54ff623a3c2aae1439f9c930edc9b70c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &4766163456513359886
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7690942557182064526}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b11c6b197c3e0743b3b7ecf6f6740a7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _enemyAttributes: {fileID: 11400000, guid: 403887e3ecd6513478d7711c8e8f8625, type: 2}
   _debuffReceiverGameObject: {fileID: 861386320661132044}
-  _healthBar: {fileID: 5858925435622462030}
+  <HealthBar>k__BackingField: {fileID: 5858925435622462030}
 --- !u!1001 &7284512010677431830
 PrefabInstance:
   m_ObjectHideFlags: 0

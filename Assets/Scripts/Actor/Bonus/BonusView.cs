@@ -11,6 +11,7 @@ public class BonusView : MonoBehaviour, IBonusView
     private ISound _takedSound;
 
     public string Name => name;
+    public IActor Actor => _model;
 
     private void OnValidate()
     {
@@ -20,7 +21,18 @@ public class BonusView : MonoBehaviour, IBonusView
 
     private void Awake()
     {
-        _image.sprite = _model.BonusCard.Icon;
+        Collider collider = GetComponent<Collider>();
+        collider.isTrigger = true;
+    }
+
+    private void OnEnable()
+    {
+        _model?.Enable();
+    }
+
+    private void OnDisable()
+    {
+        _model.Disable();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -33,6 +45,8 @@ public class BonusView : MonoBehaviour, IBonusView
     {
         _model = model ?? throw new ArgumentNullException(nameof(model));
         _takedSound = takedSound ?? throw new ArgumentNullException(nameof(takedSound));
+        _model.Enable();
+        _image.sprite = _model.BonusCard.Icon;
     }
 
     public void PlayTaking()

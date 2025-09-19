@@ -64,7 +64,7 @@ public class Border : IBorder
     {
         if (_health.IsAlive == false)
             Destroy();
-        else
-            _view.PlayDamage();
+        //else
+        //    _view.PlayDamage();
     }
 }

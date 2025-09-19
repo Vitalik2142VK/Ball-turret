@@ -63,7 +63,12 @@ public class PoisonBullet : MonoBehaviour, IBullet, IInitializer
 
     private void OnApplyDebaff(GameObject gameObject)
     {
-        if (gameObject.TryGetComponent(out IEnemy enemy))
-            _bulletDebaff.ApplyDebuff(enemy);
+        if (gameObject.TryGetComponent(out IActorView actorView))
+        {
+            var actor = actorView.Actor;
+
+            if (actor is IDebuffable debuffable)
+                _bulletDebaff.ApplyDebuff(debuffable);
+        }
     }
 }

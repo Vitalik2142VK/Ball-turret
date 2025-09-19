@@ -49,7 +49,6 @@ GameObject:
   - component: {fileID: 4324766914244846930}
   - component: {fileID: 7665648333651778537}
   - component: {fileID: 5256669468765415979}
-  - component: {fileID: 2210725686895686704}
   - component: {fileID: 7744648003808230743}
   m_Layer: 8
   m_Name: StoneFence_45
@@ -174,18 +173,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &2210725686895686704
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2811465424896689287}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a3ccb44b215d8f4b945acbc3a6427b5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &7744648003808230743
 MonoBehaviour:
   m_ObjectHideFlags: 0

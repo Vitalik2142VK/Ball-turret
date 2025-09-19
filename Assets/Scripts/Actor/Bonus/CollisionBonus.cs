@@ -20,8 +20,6 @@ public class CollisionBonus : IViewableBonus
 
     public bool IsEnable { get; private set; }
 
-    public void Initialize(IBonusActivator bonusActivator) => _bonus.Initialize(bonusActivator);
-
     public void Activate() => _bonus.Activate();
 
     public void SetStartPosition(Vector3 startPosition) => _mover.SetStartPosition(startPosition);

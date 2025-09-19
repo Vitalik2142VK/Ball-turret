@@ -28,19 +28,19 @@ public class EnemyCreator : MonoBehaviour, IEnemyCreator
         if (healthModifier == null)
             throw new ArgumentNullException(nameof(healthModifier));
 
+        _createdEnemyView = Instantiate(_enemyPrefab, Vector3.zero, _enemyPrefab.transform.rotation);
         HealthImprover healthImprover = new HealthImprover(_enemyAttributes);
         healthImprover.Improve(healthModifier.HealthCoefficient);
 
         Damage damage = new Damage(_enemyAttributes);
-        HealthBar healthBar = _enemyPrefab.HealthBar;
+        HealthBar healthBar = _createdEnemyView.HealthBar;
         Health health = new Health(healthImprover, healthBar);
         health.Restore();
 
-        _createdEnemyView = Instantiate(_enemyPrefab, Vector3.zero, _enemyPrefab.transform.rotation);
         IDebuffReceiver debuffReceiver = _createdEnemyView.DebuffReceiver;
         Mover mover = new Mover(_createdEnemyView.transform);
         Enemy model = new Enemy(_createdEnemyView, debuffReceiver, mover, damage, health);
-        _createdEnemyView.Initialize(model);
+        _createdEnemyView.Initialize(model, _destroySound);
 
         return model;
     }

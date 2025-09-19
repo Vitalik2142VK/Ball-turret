@@ -8,6 +8,7 @@ public class ArmoredEnemyView : MonoBehaviour, IEnemyView, IArmoredObject
     private EnemyView _enemyView;
 
     public string Name => _enemyView.Name;
+    public IActor Actor => _enemyView.Actor;
 
     private void OnValidate()
     {

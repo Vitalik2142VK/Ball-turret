@@ -23,7 +23,7 @@ namespace PlayLevel
         [SerializeField] private HealthAttributes _turretHealthAttributes;
 
         [Header("Other")]
-        [SerializeField] private FullHealthTurretBonusConfigurator _fullHealthTurretBonus;
+        [SerializeField] private FullHealthTurretActivatorCreator _fullHealthTurretBonus;
 
         private Turret _turret;
         private ITrajectoryRenderer _trajectoryRenderer;

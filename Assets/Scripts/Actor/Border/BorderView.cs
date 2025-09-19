@@ -10,6 +10,7 @@ public class BorderView : MonoBehaviour, IBorderView
     private ISound _destroySound;
 
     public string Name => name;
+    public IActor Actor => _model;
 
     private void OnValidate()
     {
@@ -26,7 +27,7 @@ public class BorderView : MonoBehaviour, IBorderView
 
     private void OnEnable()
     {
-        _model.Enable();
+        _model?.Enable();
     }
 
     private void OnDisable()
@@ -38,6 +39,7 @@ public class BorderView : MonoBehaviour, IBorderView
     {
         _model = model ?? throw new ArgumentNullException(nameof(model));
         _destroySound = destroySound ?? throw new ArgumentNullException(nameof(destroySound));
+        _model.Enable();
     }
 
     public void TakeDamage(IDamageAttributes damage) => _model.TakeDamage(damage);

@@ -25,15 +25,21 @@ public class CollisionBonusCreator : MonoBehaviour, IViewableBonusCreator
 
     private void Awake()
     {
-        _creator = _bonusCreator.GetComponent<IBonusCreator>();
+        _creator ??= _bonusCreator.GetComponent<IBonusCreator>();
     }
 
-    public IBonus Create() => _creator.Create();
+    public void Initialize(IBonusActivator bonusActivator) => _creator.Initialize(bonusActivator);
+
+    public IBonus Create() 
+    {
+        _creator ??= _bonusCreator.GetComponent<IBonusCreator>();
+
+        return _creator.Create();
+    }
 
     public IViewableBonus Create(IBonus bonus)
     {
-        if (bonus == null)
-            bonus = Create();
+        bonus ??= Create();
 
         BonusView view = Instantiate(_bonusPrefab, Vector3.zero, _bonusPrefab.transform.rotation);
         Mover mover = new Mover(view.transform);

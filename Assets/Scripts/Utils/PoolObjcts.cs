@@ -24,7 +24,7 @@ public class PoolObjcts<T> where T : MonoBehaviour
 
         if (_pool.Count == 0)
         {
-            obj = UnityEngine.Object.Instantiate(_prefab);
+            obj = Object.Instantiate(_prefab);
             obj.transform.parent = _conteiner;
         }
         else
@@ -50,12 +50,8 @@ public class PoolObjcts<T> where T : MonoBehaviour
     public void RemoveAll()
     {
         for (int i = 0; i < _conteiner.childCount; i++)
-        {
             if (_conteiner.GetChild(i).gameObject.TryGetComponent(out T obj)) 
-            {
                 Object.Destroy(obj.gameObject);
-            }
-        }
 
         _pool.Clear();
     }

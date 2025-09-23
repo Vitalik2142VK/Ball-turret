@@ -2,5 +2,7 @@
 {
     public void PlayDamage();
 
-    public void PlayMovement();
+    public void PlayMovement(bool isMovinng);
+
+    public void PlayDead();
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-[RequireComponent(typeof(CapsuleCollider), typeof(Rigidbody))]
+[RequireComponent(typeof(CapsuleCollider), typeof(Rigidbody), typeof(EnemyAnimator))]
 public class EnemyView : MonoBehaviour, IEnemyView
 {
     [SerializeField, SerializeIterface(typeof(IDebuffReceiver))] private GameObject _debuffReceiverGameObject;
@@ -10,6 +10,7 @@ public class EnemyView : MonoBehaviour, IEnemyView
 
     private IEnemy _model;
     private ISound _destroySound;
+    private EnemyAnimator _enemyAnimator;
 
     public string Name => name;
     public IActor Actor => _model;
@@ -28,6 +29,7 @@ public class EnemyView : MonoBehaviour, IEnemyView
     private void Awake()
     {
         DebuffReceiver = _debuffReceiverGameObject.GetComponent<IDebuffReceiver>();
+        _enemyAnimator = GetComponent<EnemyAnimator>();
 
         Rigidbody rigidbody = GetComponent<Rigidbody>();
         rigidbody.isKinematic = true;
@@ -55,12 +57,17 @@ public class EnemyView : MonoBehaviour, IEnemyView
 
     public void PlayDamage()
     {
-        throw new NotImplementedException();
+        _enemyAnimator.PlayHit();
     }
 
-    public void PlayMovement()
+    public void PlayMovement(bool isMovinng)
     {
-        throw new NotImplementedException();
+        _enemyAnimator.PlayMovement(isMovinng);
+    }
+
+    public void PlayDead()
+    {
+        _enemyAnimator.PlayDead();
     }
 
     public void Destroy()
@@ -68,4 +75,18 @@ public class EnemyView : MonoBehaviour, IEnemyView
         _destroySound.Play();
         Destroy(gameObject);
     }
+}
+
+public interface IEnemyParticleController
+{
+    public void PlayHit();
+
+    public void PlayDead();
+}
+
+public interface IEnemyAudioController
+{
+    public void PlayHit();
+
+    public void PlayDead();
 }

@@ -42,7 +42,11 @@ public class Enemy : IEnemy
 
     public void SetPoint(Vector3 distance, float speed) => _mover.SetPoint(distance, speed);
 
-    public void Move() => _mover.Move();
+    public void Move() 
+    {
+        _mover.Move();
+        _view.PlayMovement(IsFinished == false);
+    }
 
     public void ActivateDebuffs()
     {
@@ -55,7 +59,9 @@ public class Enemy : IEnemy
         _health.TakeDamage(damage);
 
         if (_health.IsAlive == false)
-            Destroy();
+            _view.PlayDamage();
+        else
+            _view.PlayDead();
     }
 
     public void Destroy()

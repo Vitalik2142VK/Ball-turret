@@ -34,7 +34,9 @@ public class ArmoredEnemyView : MonoBehaviour, IEnemyView, IArmoredObject
 
     public void PlayDamage() => _enemyView.PlayDamage();
 
-    public void PlayMovement() => _enemyView.PlayMovement();
+    public void PlayMovement(bool isMovinng) => _enemyView.PlayMovement(isMovinng);
+
+    public void PlayDead() => _enemyView.PlayDead();
 
     public void Destroy() => _enemyView.Destroy();
 }

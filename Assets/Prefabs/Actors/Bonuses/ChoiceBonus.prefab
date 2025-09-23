@@ -12,9 +12,7 @@ GameObject:
   - component: {fileID: 7702361462763150561}
   - component: {fileID: 8758832765210308646}
   - component: {fileID: 2991198543013432895}
-  - component: {fileID: 8000848033753713355}
-  - component: {fileID: 2007495409129061376}
-  - component: {fileID: 4915785744133278681}
+  - component: {fileID: 464697870270963743}
   m_Layer: 0
   m_Name: ChoiceBonus
   m_TagString: Untagged
@@ -109,7 +107,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &8000848033753713355
+--- !u!114 &464697870270963743
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -118,32 +116,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4310026885427982331}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a3ccb44b215d8f4b945acbc3a6427b5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &2007495409129061376
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4310026885427982331}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7f11afdece69b244b4f28b044e94a92, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _bonusCard: {fileID: 11400000, guid: 8527e6d3da09570478ae697979f2ea99, type: 2}
---- !u!114 &4915785744133278681
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4310026885427982331}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d6b73769fbbeb9b4d9833fb9915b3b7e, type: 3}
+  m_Script: {fileID: 11500000, guid: 1e60a61ffc6eafc4589593b7ed31b388, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _image: {fileID: 5699394047523853495}

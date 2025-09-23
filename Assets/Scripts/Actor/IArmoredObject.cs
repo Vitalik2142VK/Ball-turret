@@ -1,4 +1,4 @@
 ﻿public interface IArmoredObject
 {
-    public void IgnoreArmor(IDamageAttributes attributes);
+    public void IgnoreArmor(IDamageAttributes damage);
 }

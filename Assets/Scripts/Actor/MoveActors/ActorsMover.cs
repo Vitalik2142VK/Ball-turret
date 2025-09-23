@@ -46,10 +46,9 @@ public class ActorsMover : IAdvancedActorsMover
 
         foreach (var movableObject in _movableObjects)
         {
-            IMover mover = movableObject.Mover ?? throw new NullReferenceException(nameof(movableObject.Mover));
-            mover.Move();
+            movableObject.Move();
 
-            if (AreMovesFinished && mover.IsFinished == false)
+            if (AreMovesFinished && movableObject.IsFinished == false)
                 AreMovesFinished = false;
         }
     }
@@ -57,9 +56,6 @@ public class ActorsMover : IAdvancedActorsMover
     private void SpecifyNewPosition()
     {
         foreach (var movableObject in _movableObjects)
-        {
-            IMover mover = movableObject.Mover ?? throw new NullReferenceException(nameof(movableObject.Mover));
-            mover.SetParameters(_moveAttributes.Distance, _moveAttributes.Speed);
-        }
+            movableObject.SetPoint(_moveAttributes.Distance, _moveAttributes.Speed);
     }
 }

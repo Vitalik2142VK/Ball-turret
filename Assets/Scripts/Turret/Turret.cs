@@ -62,18 +62,18 @@ public class Turret : ITurret
 
         if (_health.IsAlive == false)
             Destroy();
+        else
+            _view.PlayTakeDamage();
     }
 
     public void Destroy()
     {
-        _view.Destroy();
+        _view.PlayDestroy();
 
         IsDestroyed = true;
     }
 
-    public void RestoreHealth() => _health.Restore();
-
-    private void OnShoot() => _view.Shoot();
+    private void OnShoot() => _view.PlayShoot();
 
     private void OnEndStep() => _endStep.End();
 }

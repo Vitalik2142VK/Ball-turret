@@ -4,9 +4,11 @@ using UnityEngine;
 public class TurretView : MonoBehaviour, ITurretView
 {
     private const string Shot = nameof(Shot);
+    private const string GetHit = nameof(GetHit);
 
     [Header("Sound")]
     [SerializeField] private Sound _shotSound;
+    [SerializeField] private Sound _takeDamageSound;
     [SerializeField] private Sound _destroySound;
 
     [Header("Particles")]
@@ -17,11 +19,15 @@ public class TurretView : MonoBehaviour, ITurretView
     [SerializeField] private Animator _animator;
 
     private int _hashShot;
+    private int _hashGetHit;
 
     private void OnValidate()
     {
         if (_shotSound == null)
             throw new NullReferenceException(nameof(_shotSound));
+
+        if (_takeDamageSound == null)
+            throw new NullReferenceException(nameof(_takeDamageSound));
 
         if (_destroySound == null)
             throw new NullReferenceException(nameof(_destroySound));
@@ -39,15 +45,22 @@ public class TurretView : MonoBehaviour, ITurretView
     private void Awake()
     {
         _hashShot = Animator.StringToHash(Shot);
+        _hashGetHit = Animator.StringToHash(GetHit);
     }
 
-    public void Destroy()
+    public void PlayDestroy()
     {
         _destroySound.Play();
         _explosionDestroyParticles.Play();
     }
 
-    public void Shoot()
+    public void PlayTakeDamage()
+    {
+        _animator.SetTrigger(_hashGetHit);
+        _takeDamageSound.Play();
+    }
+
+    public void PlayShoot()
     {
         _animator.SetTrigger(_hashShot);
         _shotParticles.Play();

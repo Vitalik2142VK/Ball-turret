@@ -9,69 +9,38 @@ namespace PlayLevel
     {
         [SerializeField] private BonusConfigurator[] _bonusConfigurators;
         [SerializeField] private BonusFactory _bonusFactory;
-        [SerializeField] private BonusChoiceMenu _bonusChoiceMenu;
-        [SerializeField] private Sound _takenBonusSound;
-
-        private ITurret _turret;
 
         private void OnValidate()
         {
-            if (_bonusConfigurators == null)
-                throw new NullReferenceException(nameof(_bonusConfigurators));
-
-            if (_bonusConfigurators.Length == 0)
+            if (_bonusConfigurators == null || _bonusConfigurators.Length == 0)
                 throw new InvalidOperationException(nameof(_bonusConfigurators));
+
+            foreach (var bonusConfigurator in _bonusConfigurators)
+                if (bonusConfigurator == null)
+                    throw new NullReferenceException($"{_bonusConfigurators} contains null objects");
 
             if (_bonusFactory == null)
                 throw new NullReferenceException(nameof(_bonusFactory));
-
-            if (_bonusChoiceMenu == null)
-                throw new NullReferenceException(nameof(_bonusChoiceMenu));
-
-            if (_takenBonusSound == null)
-                throw new NullReferenceException(nameof(_takenBonusSound));
         }
 
-        public void Configure(ITurret turret)
+        public void Configure()
         {
-            _turret = turret ?? throw new ArgumentNullException(nameof(turret));
-
             foreach (var bonusConfigurator in _bonusConfigurators)
-            {
-                ConfigureAdditionally(bonusConfigurator);
-
                 bonusConfigurator.Configure();
-            }
 
             InitializeBonusFactory();
-            InitializeChoiceBonusMenu();
-        }
-
-        private void ConfigureAdditionally(BonusConfigurator configurator)
-        {
-            if (configurator is FullHealthTurretBonusConfigurator fullHealthTurretBonusConfigurator)
-                fullHealthTurretBonusConfigurator.SetHealthTurret(_turret);
         }
 
         private void InitializeBonusFactory()
         {
-            var bonusPrefabs = _bonusConfigurators.Select(bc => bc.BonusPrefab).ToArray();
-            List<CollisionBonus> collisionBonuses = new List<CollisionBonus>();
+            var bonusCreators = _bonusConfigurators.Select(bc => bc.Creator).ToArray();
+            List<IViewableBonusCreator> collisionBonuses = new List<IViewableBonusCreator>();
 
-            foreach (var bonusPrefab in bonusPrefabs)
-            {
-                if (bonusPrefab.TryGetComponent(out CollisionBonus collisionBonus))
-                    collisionBonuses.Add(collisionBonus);
-            }
+            foreach (var creator in bonusCreators)
+                if (creator is IViewableBonusCreator viewableBonusCreator)
+                    collisionBonuses.Add(viewableBonusCreator);
 
-            _bonusFactory.Initialize(collisionBonuses, _takenBonusSound);
-        }
-
-        private void InitializeChoiceBonusMenu()
-        {
-            var bonusPrefabs = _bonusConfigurators.Where(bc => bc.IsItRandom).Select(bc => bc.BonusPrefab).ToArray();
-            BonusRandomizer bonusRandomizer = new BonusRandomizer(bonusPrefabs);
-            _bonusChoiceMenu.Initialize(bonusRandomizer);
+            _bonusFactory.Initialize(collisionBonuses);
         }
     }
 }

@@ -1,6 +1,8 @@
 public interface ITurretView
 {
-    public void Shoot();
+    public void PlayShoot();
 
-    public void Destroy();
+    public void PlayTakeDamage();
+
+    public void PlayDestroy();
 }

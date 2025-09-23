@@ -1,74 +1,52 @@
 ﻿using System;
 using UnityEngine;
-using UnityEngine.UI;
 
-[RequireComponent(typeof(Bonus), typeof(Mover))]
-public class CollisionBonus : MonoBehaviour, IBonus, IActor
+public class CollisionBonus : IViewableBonus
 {
-    [SerializeField] private Image _image;
-    [SerializeField] private Bonus _bonus;
+    private IBonus _bonus;
+    private IBonusView _view;
+    private IMovableObject _mover;
 
-    private IMover _mover;
-    private ISound _sound;
-
-    public string Name => _bonus.Name;
     public IBonusCard BonusCard => _bonus.BonusCard;
-    public IMover Mover => _mover;
+
+    public CollisionBonus(IBonus bonus, IBonusView view, IMovableObject mover)
+    {
+        _bonus = bonus ?? throw new ArgumentNullException(nameof(bonus));
+        _view = view ?? throw new ArgumentNullException(nameof(view));
+        _mover = mover ?? throw new ArgumentNullException(nameof(mover));
+    }
+
+    public bool IsFinished => _mover.IsFinished;
 
     public bool IsEnable { get; private set; }
 
-    private void OnValidate()
-    {
-        if (_image == null)
-            throw new NullReferenceException(nameof(_image));
+    public void Activate() => _bonus.Activate();
 
-        if (_bonus == null)
-            _bonus = GetComponent<Bonus>();
-    }
+    public void SetStartPosition(Vector3 startPosition) => _mover.SetStartPosition(startPosition);
 
-    private void Awake()
-    {
-        _mover = GetComponent<Mover>();
+    public void SetPoint(Vector3 distance, float speed) => _mover.SetPoint(distance, speed);
 
-        _image.sprite = _bonus.BonusCard.Icon;
-    }
+    public void Move() => _mover.Move();
 
-    private void OnEnable()
+    public void Destroy() => _view.Destroy();
+
+    public IBonusActivator GetCloneBonusActivator() => _bonus.GetCloneBonusActivator();
+
+    public void Enable()
     {
         IsEnable = true;
     }
 
-    private void OnDisable()
+    public void Disable()
     {
         IsEnable = false;
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void HandleBonusGatherer(IBonusGatherer bonusGatherer)
     {
-        if (other.TryGetComponent(out IBonusGatherer gatheringBonus))
-        {
-            gatheringBonus.Gather(this);
+        bonusGatherer.Gather(this);
 
-            _sound.Play();
-
-            Destroy();
-        }
-    }
-
-    public void Initialize(IBonusActivator bonusActivator, ISound sound) {
-        _sound = sound ?? throw new ArgumentNullException(nameof(sound));
-
-        _bonus.Initialize(bonusActivator);
-    }
-
-    public void SetStartPosition(Vector3 startPosition) => _mover.SetStartPosition(startPosition);
-
-    public void Activate() => _bonus.Activate();
-
-    public IBonusActivator GetCloneBonusActivator() => _bonus.GetCloneBonusActivator();
-
-    public void Destroy()
-    {
-        Destroy(gameObject);
+        _view.PlayTaking();
+        _view.Destroy();
     }
 }

@@ -1,1 +1,1 @@
-public interface IBorder : IActor, IActorModel, IDamagedObject, IArmoredObject { }
+public interface IBorder : IActor, IDamagedObject, IArmoredObject { }

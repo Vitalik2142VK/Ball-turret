@@ -1,15 +1,22 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(CapsuleCollider), typeof(Rigidbody), typeof(EnemyAnimator))]
 public class EnemyView : MonoBehaviour, IEnemyView
 {
     [SerializeField, SerializeIterface(typeof(IDebuffReceiver))] private GameObject _debuffReceiverGameObject;
+    [SerializeField] private SkinnedMeshRenderer _meshRenderer;
+    [SerializeField] private EnemyParticleController _particleController;
+    [SerializeField] private Image _shadow;
 
     [field: SerializeField] public HealthBar HealthBar { get; private set; }
 
     private IEnemy _model;
+    private IEnemyAudioController _audioController;
     private ISound _destroySound;
+    private Collider _collider;
     private EnemyAnimator _enemyAnimator;
 
     public string Name => name;
@@ -22,6 +29,12 @@ public class EnemyView : MonoBehaviour, IEnemyView
         if (_debuffReceiverGameObject == null)
             throw new NullReferenceException(nameof(_debuffReceiverGameObject));
 
+        if (_meshRenderer == null)
+            throw new NullReferenceException(nameof(_meshRenderer));
+
+        if (_particleController == null)
+            throw new NullReferenceException(nameof(_particleController));
+
         if (HealthBar == null)
             throw new NullReferenceException(nameof(HealthBar));
     }
@@ -29,6 +42,7 @@ public class EnemyView : MonoBehaviour, IEnemyView
     private void Awake()
     {
         DebuffReceiver = _debuffReceiverGameObject.GetComponent<IDebuffReceiver>();
+        _collider = _meshRenderer.GetComponent<CapsuleCollider>();
         _enemyAnimator = GetComponent<EnemyAnimator>();
 
         Rigidbody rigidbody = GetComponent<Rigidbody>();
@@ -38,19 +52,13 @@ public class EnemyView : MonoBehaviour, IEnemyView
 
     private void OnEnable()
     {
-        _model?.Enable();
-    }
-
-    private void OnDisable()
-    {
-        _model.Disable();
+        SetEnable(true);
     }
 
     public void Initialize(IEnemy model, ISound destroySound)
     {
         _model = model ?? throw new ArgumentNullException(nameof(model));
         _destroySound = destroySound ?? throw new ArgumentNullException(nameof(destroySound)); ;
-        _model.Enable();
     }
 
     public void TakeDamage(IDamageAttributes damage) => _model.TakeDamage(damage);
@@ -67,26 +75,35 @@ public class EnemyView : MonoBehaviour, IEnemyView
 
     public void PlayDead()
     {
-        _enemyAnimator.PlayDead();
+        StartCoroutine(StartDeadProcess());
     }
 
     public void Destroy()
     {
-        _destroySound.Play();
         Destroy(gameObject);
     }
-}
 
-public interface IEnemyParticleController
-{
-    public void PlayHit();
+    private void SetEnable(bool isEnable)
+    {
+        _collider.enabled = isEnable;
+        _meshRenderer.enabled = isEnable;
+        _shadow.enabled = isEnable;
+    }
 
-    public void PlayDead();
-}
+    private IEnumerator StartDeadProcess()
+    {
+        _collider.enabled = false;
+        _enemyAnimator.PlayDead();
 
-public interface IEnemyAudioController
-{
-    public void PlayHit();
+        yield return new WaitForSeconds(_enemyAnimator.TimeCompletionDeath);
 
-    public void PlayDead();
+        SetEnable(false);
+
+        _audioController.PlayDead();
+        _particleController.PlayDead();
+
+        yield return new WaitForSeconds(_particleController.TimeLiveDeadParticles);
+
+        _model.Destroy();
+    }
 }

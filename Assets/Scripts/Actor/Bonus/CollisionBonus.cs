@@ -14,6 +14,8 @@ public class CollisionBonus : IViewableBonus
         _bonus = bonus ?? throw new ArgumentNullException(nameof(bonus));
         _view = view ?? throw new ArgumentNullException(nameof(view));
         _mover = mover ?? throw new ArgumentNullException(nameof(mover));
+
+        IsEnable = true;
     }
 
     public bool IsFinished => _mover.IsFinished;
@@ -32,20 +34,11 @@ public class CollisionBonus : IViewableBonus
 
     public IBonusActivator GetCloneBonusActivator() => _bonus.GetCloneBonusActivator();
 
-    public void Enable()
-    {
-        IsEnable = true;
-    }
-
-    public void Disable()
-    {
-        IsEnable = false;
-    }
-
     public void HandleBonusGatherer(IBonusGatherer bonusGatherer)
     {
-        bonusGatherer.Gather(this);
+        bonusGatherer.Gather(_bonus);
 
+        IsEnable = false;
         _view.PlayTaking();
         _view.Destroy();
     }

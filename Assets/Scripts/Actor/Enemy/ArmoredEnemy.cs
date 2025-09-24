@@ -15,10 +15,6 @@ public class ArmoredEnemy : IEnemy, IArmoredObject
     public bool IsEnable => _enemy.IsEnable;
     public bool IsFinished => _enemy.IsFinished;
 
-    public void Enable() => _enemy.Enable();
-
-    public void Disable() => _enemy.Disable();
-
     public void ActivateDebuffs() => _enemy.ActivateDebuffs();
 
     public void AddDebuff(IDebuff debaff) => _enemy.AddDebuff(debaff);

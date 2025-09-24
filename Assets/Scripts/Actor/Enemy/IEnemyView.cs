@@ -1,4 +1,6 @@
-﻿public interface IEnemyView : IActorView, IDamagedObject
+﻿using System;
+
+public interface IEnemyView : IActorView, IDamagedObject
 {
     public void PlayDamage();
 

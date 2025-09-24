@@ -1,4 +1,4 @@
-﻿public interface IViewableBonus : IBonus, IActor, IActorModel 
+﻿public interface IViewableBonus : IBonus, IActor 
 {
     public void HandleBonusGatherer(IBonusGatherer bonusGatherer);
 }

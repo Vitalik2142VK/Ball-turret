@@ -4926,7 +4926,6 @@ GameObject:
   - component: {fileID: 1093488620624526172}
   - component: {fileID: 3025644374823664593}
   - component: {fileID: 3102995025199945965}
-  - component: {fileID: 3072244214766286147}
   m_Layer: 0
   m_Name: ExplosionSlime
   m_TagString: Untagged
@@ -9748,18 +9747,6 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &3072244214766286147
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2066445070647073451}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 667b71f61eba8cf45ada3e0778d60f2c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &9113128024959214901
 GameObject:
   m_ObjectHideFlags: 0

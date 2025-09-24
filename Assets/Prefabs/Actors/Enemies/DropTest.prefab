@@ -56,7 +56,7 @@ Transform:
   m_GameObject: {fileID: 405185811282156067}
   serializedVersion: 2
   m_LocalRotation: {x: -0.39340413, y: 0.5875655, z: -0.39340413, w: 0.5875655}
-  m_LocalPosition: {x: 1.503766e-32, y: 0.0631712, z: -0.008183928}
+  m_LocalPosition: {x: 6.5135046e-15, y: 0.06317131, z: -0.008183819}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -165,7 +165,7 @@ Transform:
   m_GameObject: {fileID: 2067869095539682525}
   serializedVersion: 2
   m_LocalRotation: {x: 0.12996013, y: -0.69506145, z: 0.12996013, w: 0.69506145}
-  m_LocalPosition: {x: -0.29759654, y: 1.7763567e-16, z: 1.7914223e-16}
+  m_LocalPosition: {x: -0.159, y: 0.051, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -369,7 +369,7 @@ Transform:
   m_GameObject: {fileID: 4041943535698168408}
   serializedVersion: 2
   m_LocalRotation: {x: -5.551115e-17, y: -4.3368087e-19, z: -0.2246773, w: 0.97443324}
-  m_LocalPosition: {x: -0.22764134, y: -5.7731595e-17, z: 7.533981e-17}
+  m_LocalPosition: {x: -0.22764136, y: -0.00000011175871, z: -0.00000000995052}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -681,7 +681,7 @@ SkinnedMeshRenderer:
   m_Quality: 0
   m_UpdateWhenOffscreen: 0
   m_SkinnedMotionVectors: 1
-  m_Mesh: {fileID: 4300000, guid: 6520c6d7889f4c72b416f07f34edd515, type: 3}
+  m_Mesh: {fileID: -8477827206758257198, guid: d0cb9f49a393c7f478b02ffc56a39fcf, type: 3}
   m_Bones:
   - {fileID: 4014417224422068500}
   - {fileID: 58940449743940793}
@@ -926,7 +926,7 @@ Transform:
   m_GameObject: {fileID: 6882441105860820250}
   serializedVersion: 2
   m_LocalRotation: {x: -5.3776428e-17, y: 1.6653345e-16, z: -0.15302908, w: 0.9882217}
-  m_LocalPosition: {x: -0.2780328, y: -1.7763568e-17, z: 1.2912811e-16}
+  m_LocalPosition: {x: -0.27803096, y: 0, z: -0.000000001364135}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1126,7 +1126,7 @@ GameObject:
   - component: {fileID: 3775860796279193896}
   - component: {fileID: 1289624641548975531}
   m_Layer: 9
-  m_Name: Slime
+  m_Name: DropTest
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1163,7 +1163,7 @@ Animator:
   m_GameObject: {fileID: 7690942557182064526}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 6715ed296c2d7f9458064b54eed66e3f, type: 2}
+  m_Controller: {fileID: 9100000, guid: 5ec45c1d445abd34ba5737c095d67305, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

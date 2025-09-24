@@ -25,16 +25,6 @@ public class BonusView : MonoBehaviour, IBonusView
         collider.isTrigger = true;
     }
 
-    private void OnEnable()
-    {
-        _model?.Enable();
-    }
-
-    private void OnDisable()
-    {
-        _model.Disable();
-    }
-
     private void OnTriggerEnter(Collider other)
     {
         if (other.TryGetComponent(out IBonusGatherer gatheringBonus))
@@ -45,7 +35,6 @@ public class BonusView : MonoBehaviour, IBonusView
     {
         _model = model ?? throw new ArgumentNullException(nameof(model));
         _takedSound = takedSound ?? throw new ArgumentNullException(nameof(takedSound));
-        _model.Enable();
         _image.sprite = _model.BonusCard.Icon;
     }
 

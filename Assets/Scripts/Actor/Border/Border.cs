@@ -14,31 +14,19 @@ public class Border : IBorder
         _mover = mover ?? throw new ArgumentNullException(nameof(mover));
         _armor = armor ?? throw new ArgumentNullException(nameof(armor));
         _health = health ?? throw new ArgumentNullException(nameof(health));
+
+        Enable();
     }
 
     public bool IsEnable { get; private set; }
 
     public bool IsFinished => _mover.IsFinished;
 
-    public void Enable()
-    {
-        IsEnable = true;
-
-        _health.Restore();
-    }
-
-    public void Disable()
-    {
-        IsEnable = false;
-    }
-
     public void SetStartPosition(Vector3 startPosition) => _mover.SetStartPosition(startPosition);
 
     public void SetPoint(Vector3 distance, float speed) => _mover.SetPoint(distance, speed);
 
     public void Move() => _mover.Move();
-
-    public void Destroy() => _view.Destroy();
 
     public void TakeDamage(IDamageAttributes damage)
     {
@@ -60,11 +48,31 @@ public class Border : IBorder
         CheckAlive();
     }
 
+    public void Destroy()
+    {
+        IsEnable = false;
+
+        _view.Destroy();
+    }
+
+    private void Enable()
+    {
+        IsEnable = true;
+
+        _health.Restore();
+    }
+
     private void CheckAlive()
     {
-        if (_health.IsAlive == false)
+        if (_health.IsAlive)
+        {
+            _view.PlayDamage();
+        }
+        else
+        {
+            IsEnable = false;
+
             Destroy();
-        //else
-        //    _view.PlayDamage();
+        }
     }
 }

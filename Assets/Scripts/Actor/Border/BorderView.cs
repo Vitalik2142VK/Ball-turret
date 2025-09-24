@@ -8,6 +8,7 @@ public class BorderView : MonoBehaviour, IBorderView
 
     private IBorder _model;
     private ISound _destroySound;
+    private Collider _collider;
 
     public string Name => name;
     public IActor Actor => _model;
@@ -20,6 +21,8 @@ public class BorderView : MonoBehaviour, IBorderView
 
     private void Awake()
     {
+        _collider = GetComponent<Collider>();
+
         Rigidbody rigidbody = GetComponent<Rigidbody>();
         rigidbody.isKinematic = true;
         rigidbody.useGravity = false;
@@ -27,34 +30,32 @@ public class BorderView : MonoBehaviour, IBorderView
 
     private void OnEnable()
     {
-        _model?.Enable();
-    }
-
-    private void OnDisable()
-    {
-        _model.Disable();
+        _collider.enabled = true;
     }
 
     public void Initialize(IBorder model, ISound destroySound)
     {
         _model = model ?? throw new ArgumentNullException(nameof(model));
         _destroySound = destroySound ?? throw new ArgumentNullException(nameof(destroySound));
-        _model.Enable();
     }
 
     public void TakeDamage(IDamageAttributes damage) => _model.TakeDamage(damage);
 
     public void IgnoreArmor(IDamageAttributes damage) => _model.IgnoreArmor(damage);
 
+    public void PlayDamage()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void PlayDead()
+    {
+        throw new NotImplementedException();
+    }
 
     public void Destroy()
     {
         _destroySound.Play();
         Destroy(gameObject);
-    }
-
-    public void PlayDamage()
-    {
-        throw new NotImplementedException();
     }
 }

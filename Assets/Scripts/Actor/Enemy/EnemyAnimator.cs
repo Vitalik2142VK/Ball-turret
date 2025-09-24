@@ -12,6 +12,8 @@ public class EnemyAnimator : MonoBehaviour
     private int _hashRun;
     private int _hashDie;
 
+    public float TimeCompletionDeath { get; private set; }
+
     private void Awake()
     {
         _animator = GetComponent<Animator>();
@@ -24,5 +26,10 @@ public class EnemyAnimator : MonoBehaviour
 
     public void PlayMovement(bool isRunning) => _animator.SetBool(_hashRun, isRunning);
 
-    public void PlayDead() => _animator.SetTrigger(_hashDie);
+    public void PlayDead()
+    {
+        _animator.SetTrigger(_hashDie);
+        AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
+        TimeCompletionDeath = stateInfo.length / _animator.speed;
+    }
 }

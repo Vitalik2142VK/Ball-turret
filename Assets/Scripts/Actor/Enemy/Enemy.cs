@@ -16,23 +16,13 @@ public class Enemy : IEnemy
         _mover = mover ?? throw new ArgumentNullException(nameof(mover));
         _damage = damage ?? throw new ArgumentNullException(nameof(damage));
         _health = health ?? throw new ArgumentNullException(nameof(health));
+
+        Enable();
     }
 
     public bool IsFinished => _mover.IsFinished;
 
     public bool IsEnable { get; private set; }
-
-    public void Enable()
-    {
-        IsEnable = true;
-
-        _health?.Restore();
-    }
-
-    public void Disable()
-    {
-        IsEnable = false;
-    }
 
     public void AddDebuff(IDebuff debaff) => _debuffReceiver.AddDebuff(debaff);
 
@@ -58,15 +48,32 @@ public class Enemy : IEnemy
     {
         _health.TakeDamage(damage);
 
-        if (_health.IsAlive == false)
+        if (_health.IsAlive)
+        {
             _view.PlayDamage();
+        }
         else
+        {
+            Disable();
+
             _view.PlayDead();
+        }
     }
 
     public void Destroy()
     {
         _debuffReceiver.Clean();
         _view.Destroy();
+    }
+
+    private void Enable()
+    {
+        IsEnable = true;
+        _health.Restore();
+    }
+
+    private void Disable()
+    {
+        IsEnable = false;
     }
 }

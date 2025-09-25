@@ -1,26 +1,38 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
-[RequireComponent(typeof(Collider), typeof(Rigidbody))]
+[RequireComponent(typeof(Collider), typeof(Rigidbody), typeof(DamagedObjectAnimator))]
 public class BorderView : MonoBehaviour, IBorderView
 {
+    [SerializeField] private ActorParticleController _particleController;
+    [SerializeField] private Image _shadow;
+
     [field: SerializeField] public HealthBar HealthBar { get; private set; }
 
     private IBorder _model;
-    private ISound _destroySound;
+    private IDamagedObjectAnimator _borderAnimator;
+    private IActorAudioController _audioController;
     private Collider _collider;
 
     public string Name => name;
-    public IActor Actor => _model;
 
     private void OnValidate()
     {
+        if (_particleController == null)
+            throw new NullReferenceException(nameof(_particleController));
+
+        if (_shadow == null)
+            throw new NullReferenceException(nameof(_shadow));
+
         if (HealthBar == null)
             throw new NullReferenceException(nameof(HealthBar));
     }
 
     private void Awake()
     {
+        _borderAnimator = GetComponent<IDamagedObjectAnimator>();
         _collider = GetComponent<Collider>();
 
         Rigidbody rigidbody = GetComponent<Rigidbody>();
@@ -33,10 +45,10 @@ public class BorderView : MonoBehaviour, IBorderView
         _collider.enabled = true;
     }
 
-    public void Initialize(IBorder model, ISound destroySound)
+    public void Initialize(IBorder model, IActorAudioController audioController)
     {
         _model = model ?? throw new ArgumentNullException(nameof(model));
-        _destroySound = destroySound ?? throw new ArgumentNullException(nameof(destroySound));
+        _audioController = audioController ?? throw new ArgumentNullException(nameof(audioController));
     }
 
     public void TakeDamage(IDamageAttributes damage) => _model.TakeDamage(damage);
@@ -45,17 +57,37 @@ public class BorderView : MonoBehaviour, IBorderView
 
     public void PlayDamage()
     {
-        throw new NotImplementedException();
+        _borderAnimator.PlayHit();
+        _particleController.PlayHit();
+        _audioController.PlayHit();
     }
 
     public void PlayDead()
     {
-        throw new NotImplementedException();
+        StartCoroutine(StartDeadProcess());
     }
 
     public void Destroy()
     {
-        _destroySound.Play();
         Destroy(gameObject);
+    }
+
+    private IEnumerator StartDeadProcess()
+    {
+        _collider.enabled = false;
+        _borderAnimator.PlayHit();
+        _particleController.PlayDead();
+        _audioController.PlayDead();
+
+        float timeWait;
+
+        if (_borderAnimator.TimeCompletionDeath >= _particleController.TimeLiveDeadParticles)
+            timeWait = _borderAnimator.TimeCompletionDeath;
+        else 
+            timeWait = _particleController.TimeLiveDeadParticles;
+
+        yield return new WaitForSeconds(timeWait);
+
+        _model.Destroy();
     }
 }

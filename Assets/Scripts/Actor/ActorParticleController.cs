@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-public class EnemyParticleController : MonoBehaviour
+public class ActorParticleController : MonoBehaviour
 {
     [SerializeField] private ParticleSystem _hit;
     [SerializeField] private ParticleSystem _dead;

@@ -50,9 +50,8 @@ public class Border : IBorder
 
     public void Destroy()
     {
-        IsEnable = false;
-
         _view.Destroy();
+        IsEnable = false;
     }
 
     private void Enable()
@@ -72,7 +71,7 @@ public class Border : IBorder
         {
             IsEnable = false;
 
-            Destroy();
+            _view.PlayDead();
         }
     }
 }

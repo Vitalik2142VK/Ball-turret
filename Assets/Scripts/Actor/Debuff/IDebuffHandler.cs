@@ -1,4 +1,4 @@
-﻿public interface IDebuffReceiver : IDebuffable
+﻿public interface IDebuffHandler : IDebuffable
 {
     public void RemoveCompletedDebuffs();
 

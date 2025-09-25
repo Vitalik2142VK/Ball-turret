@@ -1,6 +1,6 @@
 ﻿using System;
 
-public interface IEnemyView : IActorView, IDamagedObject
+public interface IEnemyView : IActorView, IDamagedObject, IDebuffReceiver
 {
     public void PlayDamage();
 

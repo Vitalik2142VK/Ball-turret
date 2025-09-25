@@ -1,4 +1,4 @@
-﻿public interface IEnemyAudioController
+﻿public interface IActorAudioController
 {
     public void PlayHit();
 

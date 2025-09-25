@@ -11,7 +11,6 @@ public class BonusView : MonoBehaviour, IBonusView
     private ISound _takedSound;
 
     public string Name => name;
-    public IActor Actor => _model;
 
     private void OnValidate()
     {

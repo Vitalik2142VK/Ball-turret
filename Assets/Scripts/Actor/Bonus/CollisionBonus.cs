@@ -30,16 +30,20 @@ public class CollisionBonus : IViewableBonus
 
     public void Move() => _mover.Move();
 
-    public void Destroy() => _view.Destroy();
-
     public IBonusActivator GetCloneBonusActivator() => _bonus.GetCloneBonusActivator();
 
     public void HandleBonusGatherer(IBonusGatherer bonusGatherer)
     {
         bonusGatherer.Gather(_bonus);
 
-        IsEnable = false;
         _view.PlayTaking();
+
+        Destroy();
+    }
+
+    public void Destroy() 
+    { 
         _view.Destroy();
+        IsEnable = false;
     }
 }

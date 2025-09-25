@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DebuffReceiver : MonoBehaviour, IDebuffReceiver
+public class DebuffHandler : MonoBehaviour, IDebuffHandler
 {
     private List<IDebuff> _debuffs;
     private Dictionary<DebuffType, IViewDebuff> _viewDebuffs;

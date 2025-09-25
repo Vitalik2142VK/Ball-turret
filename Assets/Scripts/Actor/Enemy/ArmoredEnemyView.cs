@@ -8,7 +8,6 @@ public class ArmoredEnemyView : MonoBehaviour, IEnemyView, IArmoredObject
     private EnemyView _enemyView;
 
     public string Name => _enemyView.Name;
-    public IActor Actor => _enemyView.Actor;
 
     private void OnValidate()
     {
@@ -27,6 +26,8 @@ public class ArmoredEnemyView : MonoBehaviour, IEnemyView, IArmoredObject
     {
         _armoredEnemy = armoredEnemy ?? throw new ArgumentNullException(nameof(armoredEnemy));
     }
+
+    public void AddDebuff(IDebuff debaff) => _enemyView.AddDebuff(debaff);
 
     public void TakeDamage(IDamageAttributes damage) => _enemyView.TakeDamage(damage);
 

@@ -4,12 +4,12 @@ using UnityEngine;
 public class Enemy : IEnemy
 {
     private IEnemyView _view;
-    private IDebuffReceiver _debuffReceiver;
+    private IDebuffHandler _debuffReceiver;
     private IMovableObject _mover;
     private IDamage _damage;
     private IHealth _health;
 
-    public Enemy(IEnemyView enemyView, IDebuffReceiver debuffReceiver, IMovableObject mover, IDamage damage, IHealth health)
+    public Enemy(IEnemyView enemyView, IDebuffHandler debuffReceiver, IMovableObject mover, IDamage damage, IHealth health)
     {
         _view = enemyView ?? throw new ArgumentNullException(nameof(enemyView));
         _debuffReceiver = debuffReceiver ?? throw new ArgumentNullException(nameof(debuffReceiver));
@@ -54,7 +54,7 @@ public class Enemy : IEnemy
         }
         else
         {
-            Disable();
+            IsEnable = false;
 
             _view.PlayDead();
         }
@@ -64,16 +64,12 @@ public class Enemy : IEnemy
     {
         _debuffReceiver.Clean();
         _view.Destroy();
+        IsEnable = false;
     }
 
     private void Enable()
     {
         IsEnable = true;
         _health.Restore();
-    }
-
-    private void Disable()
-    {
-        IsEnable = false;
     }
 }

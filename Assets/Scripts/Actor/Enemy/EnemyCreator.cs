@@ -5,7 +5,7 @@ public class EnemyCreator : MonoBehaviour, IEnemyCreator
 {
     [SerializeField] private EnemyView _enemyPrefab;
     [SerializeField] private Scriptable.EnemyAttributes _enemyAttributes;
-    [SerializeField] private Sound _destroySound;
+    [SerializeField] private ActorAudioController _audioController;
 
     private EnemyView _createdEnemyView;
 
@@ -19,8 +19,8 @@ public class EnemyCreator : MonoBehaviour, IEnemyCreator
         if (_enemyAttributes == null)
             throw new ArgumentNullException(nameof(_enemyAttributes));
 
-        if (_destroySound == null)
-            throw new NullReferenceException(nameof(_destroySound));
+        if (_audioController == null)
+            throw new NullReferenceException(nameof(_audioController));
     }
 
     public IEnemy Create(IActorHealthModifier healthModifier)
@@ -37,10 +37,10 @@ public class EnemyCreator : MonoBehaviour, IEnemyCreator
         Health health = new Health(healthImprover, healthBar);
         health.Restore();
 
-        IDebuffReceiver debuffReceiver = _createdEnemyView.DebuffReceiver;
+        IDebuffHandler debuffReceiver = _createdEnemyView.DebuffReceiver;
         Mover mover = new Mover(_createdEnemyView.transform);
         Enemy model = new Enemy(_createdEnemyView, debuffReceiver, mover, damage, health);
-        _createdEnemyView.Initialize(model, _destroySound);
+        _createdEnemyView.Initialize(model, _audioController);
 
         return model;
     }

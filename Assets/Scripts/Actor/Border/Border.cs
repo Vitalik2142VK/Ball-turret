@@ -3,14 +3,14 @@ using UnityEngine;
 
 public class Border : IBorder
 {
-    private IBorderView _view;
+    private IBorderPresenter _presenter;
     private IMovableObject _mover;
     private IArmor _armor;
     private IHealth _health;
 
-    public Border(IBorderView view, IMovableObject mover, IArmor armor, IHealth health)
+    public Border(IBorderPresenter presenter, IMovableObject mover, IArmor armor, IHealth health)
     {
-        _view = view ?? throw new ArgumentNullException(nameof(view));
+        _presenter = presenter ?? throw new ArgumentNullException(nameof(presenter));
         _mover = mover ?? throw new ArgumentNullException(nameof(mover));
         _armor = armor ?? throw new ArgumentNullException(nameof(armor));
         _health = health ?? throw new ArgumentNullException(nameof(health));
@@ -50,7 +50,7 @@ public class Border : IBorder
 
     public void Destroy()
     {
-        _view.Destroy();
+        _presenter.Destroy();
         IsEnable = false;
     }
 
@@ -63,15 +63,7 @@ public class Border : IBorder
 
     private void CheckAlive()
     {
-        if (_health.IsAlive)
-        {
-            _view.PlayDamage();
-        }
-        else
-        {
+        if (_health.IsAlive == false)
             IsEnable = false;
-
-            _view.PlayDead();
-        }
     }
 }

@@ -13,7 +13,7 @@ public class EnemyView : MonoBehaviour, IEnemyView
 
     [field: SerializeField] public HealthBar HealthBar { get; private set; }
 
-    private IEnemy _model;
+    private IEnemyPresenter _presenter;
     private IEnemyAnimator _enemyAnimator;
     private IActorAudioController _audioController;
     private Collider _collider;
@@ -40,7 +40,7 @@ public class EnemyView : MonoBehaviour, IEnemyView
     private void Awake()
     {
         DebuffReceiver = _debuffReceiverGameObject.GetComponent<IDebuffHandler>();
-        _collider = _meshRenderer.GetComponent<CapsuleCollider>();
+        _collider = GetComponent<CapsuleCollider>();
         _enemyAnimator = GetComponent<EnemyAnimator>();
 
         Rigidbody rigidbody = GetComponent<Rigidbody>();
@@ -53,15 +53,15 @@ public class EnemyView : MonoBehaviour, IEnemyView
         SetEnable(true);
     }
 
-    public void Initialize(IEnemy model, IActorAudioController audioController)
+    public void Initialize(IEnemyPresenter presenter, IActorAudioController audioController)
     {
-        _model = model ?? throw new ArgumentNullException(nameof(model));
+        _presenter = presenter ?? throw new ArgumentNullException(nameof(presenter));
         _audioController = audioController ?? throw new ArgumentNullException(nameof(audioController)); ;
     }
 
-    public void AddDebuff(IDebuff debaff) => _model.AddDebuff(debaff);
+    public void AddDebuff(IDebuff debaff) => _presenter.AddDebuff(debaff);
 
-    public void TakeDamage(IDamageAttributes damage) => _model.TakeDamage(damage);
+    public void TakeDamage(IDamageAttributes damage) => _presenter.TakeDamage(damage);
 
     public void PlayDamage()
     {
@@ -106,6 +106,6 @@ public class EnemyView : MonoBehaviour, IEnemyView
 
         yield return new WaitForSeconds(_particleController.TimeLiveDeadParticles);
 
-        _model.Destroy();
+        _presenter.Destroy();
     }
 }

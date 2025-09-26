@@ -11,7 +11,7 @@ public class BorderView : MonoBehaviour, IBorderView
 
     [field: SerializeField] public HealthBar HealthBar { get; private set; }
 
-    private IBorder _model;
+    private IBorderPresenter _presenter;
     private IDamagedObjectAnimator _borderAnimator;
     private IActorAudioController _audioController;
     private Collider _collider;
@@ -45,15 +45,15 @@ public class BorderView : MonoBehaviour, IBorderView
         _collider.enabled = true;
     }
 
-    public void Initialize(IBorder model, IActorAudioController audioController)
+    public void Initialize(IBorderPresenter presenter, IActorAudioController audioController)
     {
-        _model = model ?? throw new ArgumentNullException(nameof(model));
+        _presenter = presenter ?? throw new ArgumentNullException(nameof(presenter));
         _audioController = audioController ?? throw new ArgumentNullException(nameof(audioController));
     }
 
-    public void TakeDamage(IDamageAttributes damage) => _model.TakeDamage(damage);
+    public void TakeDamage(IDamageAttributes damage) => _presenter.TakeDamage(damage);
 
-    public void IgnoreArmor(IDamageAttributes damage) => _model.IgnoreArmor(damage);
+    public void IgnoreArmor(IDamageAttributes damage) => _presenter.IgnoreArmor(damage);
 
     public void PlayDamage()
     {
@@ -88,6 +88,6 @@ public class BorderView : MonoBehaviour, IBorderView
 
         yield return new WaitForSeconds(timeWait);
 
-        _model.Destroy();
+        _presenter.FinishDeath();
     }
 }

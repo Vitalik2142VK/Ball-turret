@@ -34,13 +34,14 @@ public class ArmoredEnemyCreator : MonoBehaviour, IEnemyCreator
         IEnemy enemy = _enemyCreator.Create(healthModifier);
         Armor armor = new Armor(enemy, _armorAttributes);
         EnemyView createdEnemyView = _enemyCreator.ConsumeCreatedEnemyView();
-        ArmoredEnemy armoredEnemy = new ArmoredEnemy(enemy, armor);
+        ArmoredEnemy model = new ArmoredEnemy(enemy, armor);
 
-        if (createdEnemyView.TryGetComponent(out ArmoredEnemyView armoredEnemyView) == false)
+        if (createdEnemyView.TryGetComponent(out ArmoredEnemyView view) == false)
             throw new InvalidOperationException($"Object {nameof(createdEnemyView)} do not have a component <{nameof(ArmoredEnemyView)}>");
 
-        armoredEnemyView.Initialize(armoredEnemy);
+        ArmoredEnemyPresenter presenter = new ArmoredEnemyPresenter(model, view);
+        view.Initialize(presenter);
 
-        return armoredEnemy;
+        return model;
     }
 }

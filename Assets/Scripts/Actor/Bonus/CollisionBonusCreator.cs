@@ -43,8 +43,10 @@ public class CollisionBonusCreator : MonoBehaviour, IViewableBonusCreator
 
         BonusView view = Instantiate(_bonusPrefab, Vector3.zero, _bonusPrefab.transform.rotation);
         Mover mover = new Mover(view.transform);
-        CollisionBonus model = new CollisionBonus(bonus, view, mover);
-        view.Initialize(model, _takedSound);
+        BonusPresenter presenter = new BonusPresenter();
+        CollisionBonus model = new CollisionBonus(bonus, presenter, mover);
+        view.Initialize(presenter, bonus.BonusCard, _takedSound);
+        presenter.Initialize(model, view);
 
         return model;
     }

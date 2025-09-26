@@ -43,8 +43,10 @@ public class BorderCreator : MonoBehaviour
         health.Restore();
 
         Mover mover = new Mover(view.transform);
-        Border model = new Border(view, mover, armor, health);
-        view.Initialize(model, _actorAudioController);
+        BorderPresenter presenter = new BorderPresenter();
+        Border model = new Border(presenter, mover, armor, health);
+        view.Initialize(presenter, _actorAudioController);
+        presenter.Initialize(model, view);
 
         return model;
     }

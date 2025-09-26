@@ -3,15 +3,15 @@ using UnityEngine;
 
 public class Enemy : IEnemy
 {
-    private IEnemyView _view;
+    private IEnemyPresenter _presenter;
     private IDebuffHandler _debuffReceiver;
     private IMovableObject _mover;
     private IDamage _damage;
     private IHealth _health;
 
-    public Enemy(IEnemyView enemyView, IDebuffHandler debuffReceiver, IMovableObject mover, IDamage damage, IHealth health)
+    public Enemy(IEnemyPresenter presenter, IDebuffHandler debuffReceiver, IMovableObject mover, IDamage damage, IHealth health)
     {
-        _view = enemyView ?? throw new ArgumentNullException(nameof(enemyView));
+        _presenter = presenter ?? throw new ArgumentNullException(nameof(presenter));
         _debuffReceiver = debuffReceiver ?? throw new ArgumentNullException(nameof(debuffReceiver));
         _mover = mover ?? throw new ArgumentNullException(nameof(mover));
         _damage = damage ?? throw new ArgumentNullException(nameof(damage));
@@ -35,7 +35,7 @@ public class Enemy : IEnemy
     public void Move() 
     {
         _mover.Move();
-        _view.PlayMovement(IsFinished == false);
+        _presenter.Move();
     }
 
     public void ActivateDebuffs()
@@ -48,22 +48,14 @@ public class Enemy : IEnemy
     {
         _health.TakeDamage(damage);
 
-        if (_health.IsAlive)
-        {
-            _view.PlayDamage();
-        }
-        else
-        {
+        if (_health.IsAlive == false)
             IsEnable = false;
-
-            _view.PlayDead();
-        }
     }
 
     public void Destroy()
     {
         _debuffReceiver.Clean();
-        _view.Destroy();
+        _presenter.Destroy();
         IsEnable = false;
     }
 

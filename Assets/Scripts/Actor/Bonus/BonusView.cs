@@ -7,7 +7,7 @@ public class BonusView : MonoBehaviour, IBonusView
 {
     [SerializeField] private Image _image;
 
-    private IViewableBonus _model;
+    private IBonusPresenter _presenter;
     private ISound _takedSound;
 
     public string Name => name;
@@ -26,15 +26,19 @@ public class BonusView : MonoBehaviour, IBonusView
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent(out IBonusGatherer gatheringBonus))
-            _model.HandleBonusGatherer(gatheringBonus);
+        if (other.TryGetComponent(out IBonusGatherer bonusGathering))
+            _presenter.HandleBonusGatherer(bonusGathering);
     }
 
-    public void Initialize(IViewableBonus model, ISound takedSound)
+    public void Initialize(IBonusPresenter presenter, IBonusCard bonusCard, ISound takedSound)
     {
-        _model = model ?? throw new ArgumentNullException(nameof(model));
+        _presenter = presenter ?? throw new ArgumentNullException(nameof(presenter));
         _takedSound = takedSound ?? throw new ArgumentNullException(nameof(takedSound));
-        _image.sprite = _model.BonusCard.Icon;
+
+        if (bonusCard == null)
+            throw new ArgumentNullException(nameof(bonusCard));
+
+        _image.sprite = bonusCard.Icon;
     }
 
     public void PlayTaking()

@@ -4,34 +4,26 @@ using UnityEngine;
 [RequireComponent(typeof(EnemyView))]
 public class ArmoredEnemyView : MonoBehaviour, IEnemyView, IArmoredObject
 {
-    private IArmoredObject _armoredEnemy;
+    private IArmoredEnemyPresenter _presenter;
     private EnemyView _enemyView;
 
     public string Name => _enemyView.Name;
-
-    private void OnValidate()
-    {
-        if (TryGetComponent(out EnemyView enemyView))
-            _enemyView = enemyView;
-        else
-            throw new NullReferenceException(nameof(_enemyView));
-    }
 
     private void Awake()
     {
         _enemyView = GetComponent<EnemyView>();
     }
 
-    public void Initialize(IArmoredObject armoredEnemy)
+    public void Initialize(IArmoredEnemyPresenter presenter)
     {
-        _armoredEnemy = armoredEnemy ?? throw new ArgumentNullException(nameof(armoredEnemy));
+        _presenter = presenter ?? throw new ArgumentNullException(nameof(presenter));
     }
 
     public void AddDebuff(IDebuff debaff) => _enemyView.AddDebuff(debaff);
 
     public void TakeDamage(IDamageAttributes damage) => _enemyView.TakeDamage(damage);
 
-    public void IgnoreArmor(IDamageAttributes damage) => _armoredEnemy.IgnoreArmor(damage);
+    public void IgnoreArmor(IDamageAttributes damage) => _presenter.IgnoreArmor(damage);
 
     public void PlayDamage() => _enemyView.PlayDamage();
 

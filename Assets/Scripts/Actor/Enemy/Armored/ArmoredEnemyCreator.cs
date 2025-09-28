@@ -10,9 +10,14 @@ public class ArmoredEnemyCreator : MonoBehaviour, IEnemyCreator
     {
         if (_enemyCreator == null)
         {
-            GameObject gameObject = new GameObject();
-            _enemyCreator = gameObject.AddComponent<EnemyCreator>();
-            gameObject.transform.parent = transform;
+            _enemyCreator = GetComponentInChildren<EnemyCreator>();
+
+            if (_enemyCreator == null)
+            {
+                GameObject gameObject = new GameObject();
+                _enemyCreator = gameObject.AddComponent<EnemyCreator>();
+                gameObject.transform.parent = transform;
+            }
         }
 
         if (_armorAttributes == null)

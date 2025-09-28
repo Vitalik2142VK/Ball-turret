@@ -20,5 +20,10 @@ public class BonusPresenter : IBonusPresenter
             Destroy();
     }
 
+    public void PrepareDeleted(IRemovedActorsCollector removedCollector)
+    {
+        removedCollector.Add(_model);
+    }
+
     public void Destroy() => _view.Destroy();
 }

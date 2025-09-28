@@ -5,7 +5,7 @@ using UnityEngine;
 public class ArmoredEnemyView : MonoBehaviour, IEnemyView, IArmoredObject
 {
     private IArmoredEnemyPresenter _presenter;
-    private EnemyView _enemyView;
+    private IEnemyView _enemyView;
 
     public string Name => _enemyView.Name;
 
@@ -18,6 +18,10 @@ public class ArmoredEnemyView : MonoBehaviour, IEnemyView, IArmoredObject
     {
         _presenter = presenter ?? throw new ArgumentNullException(nameof(presenter));
     }
+
+    public void PrepareAttacked(IAttackingEnemiesCollector attackingCollector) => _enemyView.PrepareAttacked(attackingCollector);
+
+    public void PrepareDeleted(IRemovedActorsCollector removedCollector) => _enemyView.PrepareDeleted(removedCollector);
 
     public void AddDebuff(IDebuff debaff) => _enemyView.AddDebuff(debaff);
 

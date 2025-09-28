@@ -17,6 +17,16 @@ public class EnemyPresenter : IEnemyPresenter
 
     public void FinishDeath() => _model.Destroy();
 
+    public void PrepareDeleted(IRemovedActorsCollector removedCollector)
+    {
+        removedCollector.Add(_model);
+    }
+
+    public void PrepareAttacked(IAttackingEnemiesCollector attackingCollector)
+    {
+        attackingCollector.Add(_model);
+    }
+
     public void TakeDamage(IDamageAttributes damage)
     {
         _model.TakeDamage(damage);

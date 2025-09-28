@@ -34,11 +34,9 @@ public class ZoneEnemy : MonoBehaviour
         if (other.gameObject.TryGetComponent(out IActorView actorView) == false)
             return;
 
-        var actor = actorView.Actor;
+        if (actorView is IEnemyView enemyView)
+            enemyView.PrepareAttacked(_attackingEnemies);
 
-        if (actor is IEnemy enemy)
-            _attackingEnemies.Add(enemy);
-
-        _removedActors.Add(actor);
+        actorView.PrepareDeleted(_removedActors);
     }
 }

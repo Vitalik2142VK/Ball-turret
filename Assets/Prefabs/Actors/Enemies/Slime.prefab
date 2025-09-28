@@ -1123,8 +1123,9 @@ GameObject:
   - component: {fileID: 7973691923763865335}
   - component: {fileID: 6242250894666528102}
   - component: {fileID: 2464207999303226390}
-  - component: {fileID: 3775860796279193896}
   - component: {fileID: 1289624641548975531}
+  - component: {fileID: 2940073467529895562}
+  - component: {fileID: 3775860796279193896}
   m_Layer: 9
   m_Name: Slime
   m_TagString: Untagged
@@ -1224,6 +1225,31 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &1289624641548975531
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7690942557182064526}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45f7a323dcc42fd439ec2e7986c55f9b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _damagedObjectAnimator: {fileID: 2940073467529895562}
+--- !u!114 &2940073467529895562
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7690942557182064526}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 006574c7f16af1e488d6410b45b5c9c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &3775860796279193896
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1241,18 +1267,6 @@ MonoBehaviour:
   _particleController: {fileID: 333772974569288074}
   _shadow: {fileID: 2199926433157464723}
   <HealthBar>k__BackingField: {fileID: 5858925435622462030}
---- !u!114 &1289624641548975531
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7690942557182064526}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 45f7a323dcc42fd439ec2e7986c55f9b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &4329984650171752179
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1334,12 +1348,32 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3448816047974414396, guid: d3d119157b188eb42a2126101985a46c, type: 3}
+      propertyPath: InitialModule.startRotation.scalar
+      value: -3.1415925
+      objectReference: {fileID: 0}
+    - target: {fileID: 3448816047974414396, guid: d3d119157b188eb42a2126101985a46c, type: 3}
       propertyPath: InitialModule.startColor.maxColor.b
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3448816047974414396, guid: d3d119157b188eb42a2126101985a46c, type: 3}
       propertyPath: InitialModule.startColor.maxColor.g
       value: 0.050980393
+      objectReference: {fileID: 0}
+    - target: {fileID: 3448816047974414396, guid: d3d119157b188eb42a2126101985a46c, type: 3}
+      propertyPath: InitialModule.startRotation.minScalar
+      value: 3.1415925
+      objectReference: {fileID: 0}
+    - target: {fileID: 3448816047974414396, guid: d3d119157b188eb42a2126101985a46c, type: 3}
+      propertyPath: InitialModule.startRotation.minMaxState
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3448816047974414396, guid: d3d119157b188eb42a2126101985a46c, type: 3}
+      propertyPath: InitialModule.startRotationX.minMaxState
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3448816047974414396, guid: d3d119157b188eb42a2126101985a46c, type: 3}
+      propertyPath: InitialModule.startRotationY.minMaxState
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3072244214766286147, guid: d3d119157b188eb42a2126101985a46c, type: 3}

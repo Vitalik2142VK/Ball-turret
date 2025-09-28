@@ -59,6 +59,10 @@ public class EnemyView : MonoBehaviour, IEnemyView
         _audioController = audioController ?? throw new ArgumentNullException(nameof(audioController)); ;
     }
 
+    public void PrepareDeleted(IRemovedActorsCollector removedCollector) => _presenter.PrepareDeleted(removedCollector);
+
+    public void PrepareAttacked(IAttackingEnemiesCollector attackingCollector) => _presenter.PrepareAttacked(attackingCollector);
+
     public void AddDebuff(IDebuff debaff) => _presenter.AddDebuff(debaff);
 
     public void TakeDamage(IDamageAttributes damage) => _presenter.TakeDamage(damage);

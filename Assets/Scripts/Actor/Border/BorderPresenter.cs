@@ -15,6 +15,11 @@ public class BorderPresenter : IBorderPresenter
 
     public void FinishDeath() => _model.Destroy();
 
+    public void PrepareDeleted(IRemovedActorsCollector removedCollector)
+    {
+        removedCollector.Add(_model);
+    }
+
     public void TakeDamage(IDamageAttributes damage)
     {
         _model.TakeDamage(damage);
@@ -36,5 +41,4 @@ public class BorderPresenter : IBorderPresenter
         else
             _view.PlayDead();
     }
-
 }

@@ -41,6 +41,8 @@ public class BonusView : MonoBehaviour, IBonusView
         _image.sprite = bonusCard.Icon;
     }
 
+    public void PrepareDeleted(IRemovedActorsCollector removedCollector) => _presenter.PrepareDeleted(removedCollector);
+
     public void PlayTaking()
     {
         _takedSound.Play();

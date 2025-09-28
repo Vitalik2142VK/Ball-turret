@@ -1,5 +1,7 @@
 ﻿public interface IBorderPresenter
 {
+    public void PrepareDeleted(IRemovedActorsCollector removedCollector);
+
     public void TakeDamage(IDamageAttributes damage);
 
     public void IgnoreArmor(IDamageAttributes damage);

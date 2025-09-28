@@ -158,9 +158,10 @@ GameObject:
   - component: {fileID: 3627229243760570737}
   - component: {fileID: -7213859401256764012}
   - component: {fileID: 5685462170645546219}
+  - component: {fileID: 3290130473087676171}
+  - component: {fileID: 6620213564414791025}
   - component: {fileID: 307578178117993793}
   - component: {fileID: 7456724799293068540}
-  - component: {fileID: 3290130473087676171}
   m_Layer: 9
   m_Name: TurtleShell
   m_TagString: Untagged
@@ -260,6 +261,31 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &3290130473087676171
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 823343203851408336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45f7a323dcc42fd439ec2e7986c55f9b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _damagedObjectAnimator: {fileID: 6620213564414791025}
+--- !u!114 &6620213564414791025
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 823343203851408336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 006574c7f16af1e488d6410b45b5c9c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &307578178117993793
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -286,19 +312,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 823343203851408336}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 699b04eece8574049b23a1f04cab2243, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &3290130473087676171
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 823343203851408336}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 45f7a323dcc42fd439ec2e7986c55f9b, type: 3}
+  m_Script: {fileID: 11500000, guid: 70c09abdc29b6694f96c7c4fd4389155, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1347319086644672082

@@ -1,6 +1,10 @@
 ﻿public interface IHealthBarView
 {
-    void SetMaxHealth(float health);
+    public bool IsActive { get; }
 
-    void UpdateDataHealth(float health);
+    public void SetActive(bool isActive);
+
+    public void SetMaxHealth(float health);
+
+    public void UpdateDataHealth(float health);
 }

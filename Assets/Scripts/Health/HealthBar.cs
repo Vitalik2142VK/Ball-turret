@@ -11,12 +11,16 @@ public class HealthBar : MonoBehaviour, IHealthBarView
     private Slider _slider;
     private float _maxHealth;
 
+    public bool IsActive => gameObject.activeSelf;
+
     private void Awake()
     {
         _slider = GetComponent<Slider>();
         _slider.maxValue = MaxSliderValue;
         _slider.minValue = MinSliderValue;
     }
+
+    public void SetActive(bool isActive) => gameObject.SetActive(isActive);
 
     public void SetMaxHealth(float health)
     {

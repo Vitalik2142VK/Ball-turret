@@ -9,6 +9,7 @@ public class BulletFactory : MonoBehaviour, IBulletFactory
 
     private Dictionary<BulletType, Bullet> _bullets;
     private IDamageAttributes _damageBulletAttributes;
+    private IComboCounter _comboCounter;
     private ISound _hitBulletSound;
 
     private void OnValidate()
@@ -28,9 +29,10 @@ public class BulletFactory : MonoBehaviour, IBulletFactory
         _bullets = CreateDictionaryPrefabs();
     }
 
-    public void Initialize(IDamageAttributes damageBulletAttributes, ISound hitBulletSound)
+    public void Initialize(IDamageAttributes damageBulletAttributes, IComboCounter comboCounter, ISound hitBulletSound)
     {
         _damageBulletAttributes = damageBulletAttributes ?? throw new ArgumentNullException(nameof(damageBulletAttributes));
+        _comboCounter = comboCounter ?? throw new ArgumentNullException(nameof(comboCounter));
         _hitBulletSound = hitBulletSound ?? throw new ArgumentNullException(nameof(hitBulletSound));
     }
 

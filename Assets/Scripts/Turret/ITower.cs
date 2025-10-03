@@ -10,4 +10,6 @@ public interface ITower
     public void AimBeforeShooting(Vector3 targertPosition);
 
     public void SaveDirection();
+
+    public void ClearDirection();
 }

@@ -6,6 +6,7 @@ namespace PlayLevel
     public class StepSystemConfigurator : MonoBehaviour
     {
         [SerializeField] private StepSystem _stepSystem;
+        [SerializeField] private ComboCounter _comboCounter;
         [SerializeField] private BulletsCollector _bulletCollector;
         [SerializeField] private MainMenuLoader _mainMenuLoader;
         [SerializeField] private FinishWindow _finishWindow;
@@ -15,6 +16,7 @@ namespace PlayLevel
         private ActorsController _actorsController;
 
         private PlayerShotStep _playerShotStep;
+        private ResetComboStep _resetComboStep;
         private BonusActivationStep _bonusActivationStep;
         private PrepareActorsStep _prepareActorsStep;
         private ActorsMoveStep _objectsMoveStep;
@@ -30,6 +32,9 @@ namespace PlayLevel
         {
             if (_stepSystem == null)
                 throw new NullReferenceException(nameof(_stepSystem));
+
+            if (_comboCounter == null)
+                throw new NullReferenceException(nameof(_comboCounter));
 
             if (_bulletCollector == null)
                 throw new NullReferenceException(nameof(_bulletCollector));
@@ -66,6 +71,7 @@ namespace PlayLevel
         private void CreateSteps()
         {
             _playerShotStep = new PlayerShotStep(_playerController);
+            _resetComboStep = new ResetComboStep(_comboCounter);
             _bonusActivationStep = new BonusActivationStep(_bulletCollector);
             _prepareActorsStep = new PrepareActorsStep(_actorsController);
             _objectsMoveStep = new ActorsMoveStep(_actorsController);
@@ -77,7 +83,8 @@ namespace PlayLevel
 
         private void ConnectSteps()
         {
-            AddNextStepToEndPoint(_turret, _bonusActivationStep);
+            AddNextStepToEndPoint(_turret, _resetComboStep);
+            AddNextStepToEndPoint(_resetComboStep, _bonusActivationStep);
             AddNextStepToEndPoint(_bonusActivationStep, _prepareActorsStep);
             AddNextStepToEndPoint(_prepareActorsStep, _objectsMoveStep);
             AddNextStepToEndPoint(_objectsMoveStep, _enemyAttackStep);

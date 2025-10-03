@@ -3,9 +3,11 @@
 public class RotorToCamera : MonoBehaviour
 {
     private ICameraAdapter _cameraAdapter;
+    private Transform _transform;
 
     private void Awake()
     {
+        _transform = transform;
         Camera camera = Camera.main;
 
         if (camera.TryGetComponent(out ICameraAdapter cameraAdapter) == false)
@@ -19,6 +21,12 @@ public class RotorToCamera : MonoBehaviour
         _cameraAdapter.OrientationChanged += OnRotate;
     }
 
+
+    private void Start()
+    {
+        OnRotate();
+    }
+
     private void OnDisable()
     {
         _cameraAdapter.OrientationChanged -= OnRotate;
@@ -26,10 +34,10 @@ public class RotorToCamera : MonoBehaviour
 
     private void OnRotate()
     {
-        Vector3 oldRotation = transform.rotation.eulerAngles;
+        Vector3 oldRotation = _transform.rotation.eulerAngles;
         Vector3 rotationCamera = _cameraAdapter.Rotation;
         Vector3 newRotation = new Vector3(oldRotation.x, rotationCamera.y, oldRotation.z);
 
-        transform.rotation = Quaternion.Euler(newRotation);
+        _transform.rotation = Quaternion.Euler(newRotation);
     }
 }

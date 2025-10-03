@@ -416,6 +416,27 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: Particle_4
+      rect:
+        serializedVersion: 2
+        x: 1024
+        y: 512
+        width: 512
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4bd11770fc802bf42b93e7da886e3829
+      internalID: 96872753
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -432,6 +453,7 @@ TextureImporter:
       Particle_1: 853859432
       Particle_2: 1981882166
       Particle_3: -2090397520
+      Particle_4: 96872753
       Particles_0: 1141978723
       Particles_1: 654246524
       Particles_2: -1348143095

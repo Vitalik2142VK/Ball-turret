@@ -77,7 +77,7 @@ public class BorderView : MonoBehaviour, IBorderView
     private IEnumerator StartDeadProcess()
     {
         _collider.enabled = false;
-        _borderAnimator.PlayHit();
+        _borderAnimator.PlayDead();
         _particleController.PlayDead();
         _audioController.PlayDead();
 

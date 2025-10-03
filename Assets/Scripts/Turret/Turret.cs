@@ -73,7 +73,11 @@ public class Turret : ITurret
         IsDestroyed = true;
     }
 
-    private void OnShoot() => _view.PlayShoot();
+    private void OnEndStep() 
+    { 
+        _tower.ClearDirection();
+        _endStep.End(); 
+    }
 
-    private void OnEndStep() => _endStep.End();
+    private void OnShoot() => _view.PlayShoot();
 }

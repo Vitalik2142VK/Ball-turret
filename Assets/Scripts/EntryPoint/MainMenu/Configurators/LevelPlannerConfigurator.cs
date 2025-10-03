@@ -38,8 +38,10 @@ namespace MainMenuSpace
                 throw new ArgumentNullException(nameof(player));
 
             _endlessLevelPlanner.Initialize();
-            CoinCountRandomizer = new CoinCountRandomizer(player.AchievedLevelIndex);
-            LevelFactory = new LevelFactory(_endlessLevelPlanner, _levelActorsPlanners, CoinCountRandomizer, _healthCoefficient);
+
+            int achievedLevelIndex = player.AchievedLevelIndex;
+            CoinCountRandomizer = new CoinCountRandomizer(achievedLevelIndex);
+            LevelFactory = new LevelFactory(_endlessLevelPlanner, _levelActorsPlanners, CoinCountRandomizer, _healthCoefficient, achievedLevelIndex);
         }
 
         public void LoadLearningLevel()

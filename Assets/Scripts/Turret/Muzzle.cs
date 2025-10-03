@@ -25,6 +25,6 @@ public class Muzzle : MonoBehaviour
     {
         localTargetPosition = new Vector3(localTargetPosition.x, _transform.position.y, localTargetPosition.z);
         float angleRotaion = Mathf.Atan2(localTargetPosition.y, localTargetPosition.z) * Mathf.Rad2Deg;
-        _transform.localRotation = Quaternion.Euler(angleRotaion, 0, 0);
+        _transform.localRotation = Quaternion.Euler(angleRotaion, 0f, 0f);
     }
 }

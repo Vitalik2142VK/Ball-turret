@@ -42,7 +42,7 @@ public class Health : IHealth
         else
         {
             _currentHealth = 0;
-            _healthBar.SetActive(true);
+            _healthBar.SetActive(false);
         }
     }
 }

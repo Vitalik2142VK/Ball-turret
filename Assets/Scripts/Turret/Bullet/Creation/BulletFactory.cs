@@ -51,7 +51,7 @@ public class BulletFactory : MonoBehaviour, IBulletFactory
 
         Bullet prefab = _bullets[type];
         Bullet bullet = Instantiate(prefab);
-        bullet.Initialize(_damageBulletAttributes, _hitBulletSound);
+        bullet.Initialize(_damageBulletAttributes, _comboCounter, _hitBulletSound);
         bullet.gameObject.SetActive(false);
         bullet.transform.SetParent(_containerBullets);
 

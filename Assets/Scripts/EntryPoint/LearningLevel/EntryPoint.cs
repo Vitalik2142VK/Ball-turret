@@ -54,7 +54,6 @@ namespace LearningLevel
 
             LearningStep learningStep = new LearningStep(_learningUI, _selectedLevel);
             _stepSystemConfigurator.AddLearningStep(learningStep);
-
         }
 
         private void ConfigureWithConsol()

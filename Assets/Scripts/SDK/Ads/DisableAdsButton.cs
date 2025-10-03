@@ -61,7 +61,13 @@ public class DisableAdsButton : MonoBehaviour
             throw new NullReferenceException(nameof(purchase));
 
         _currencyPrice.text = purchase.priceValue;
-        _currencyImage.Load(purchase.currencyImageURL);
+
+#if !UNITY_EDITOR
+        var currencyImageURL = purchase.currencyImageURL;
+
+        if (string.IsNullOrEmpty(currencyImageURL))
+            _currencyImage.Load(currencyImageURL);
+#endif
 
         gameObject.SetActive(false);
     }

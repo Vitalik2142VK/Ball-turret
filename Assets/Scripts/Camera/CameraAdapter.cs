@@ -15,7 +15,7 @@ public class CameraAdapter : MonoBehaviour, ICameraAdapter
     public event System.Action OrientationChanged;
 
     public float CameraHeight => _transform.position.y;
-    public Vector3 Rotation => _portraitSetting.Rotation;
+    public Vector3 Rotation => _transform.rotation.eulerAngles;
 
     public bool IsPortraitOrientation { get; private set; }
 

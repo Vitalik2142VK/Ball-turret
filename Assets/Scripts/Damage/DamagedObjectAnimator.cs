@@ -17,14 +17,13 @@ public class DamagedObjectAnimator : MonoBehaviour, IDamagedObjectAnimator
         _animator = GetComponent<Animator>();
         _hashGetHit = Animator.StringToHash(GetHit);
         _hashDie = Animator.StringToHash(Die);
+
+        AnimationClip[] clips = _animator.runtimeAnimatorController.animationClips;
+        AnimationClip dieClip = System.Array.Find(clips, c => c.name == Die);
+        TimeCompletionDeath = dieClip.length / _animator.speed;
     }
 
     public void PlayHit() => _animator.SetTrigger(_hashGetHit);
 
-    public void PlayDead()
-    {
-        _animator.SetTrigger(_hashDie);
-        AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
-        TimeCompletionDeath = stateInfo.length / _animator.speed;
-    }
+    public void PlayDead() => _animator.SetTrigger(_hashDie);
 }

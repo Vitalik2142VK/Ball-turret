@@ -42,6 +42,17 @@ public class TrajectoryRenderer : MonoBehaviour, ITrajectoryRenderer
         Disable();
     }
 
+    public void Enable()
+    {
+        if (_lineRenderer.enabled == false)
+            _lineRenderer.enabled = true;
+    }
+
+    public void Disable()
+    {
+        _lineRenderer.enabled = false;
+    }
+
     public void ShowTrajectory(Vector3 origin, Vector3 direction)
     {
         if (direction == _trajectoryBullet.Direction)
@@ -69,14 +80,10 @@ public class TrajectoryRenderer : MonoBehaviour, ITrajectoryRenderer
         _lineRenderer.SetPositions(points);
     }
 
-    public void Enable()
+    public void Clear()
     {
-        if (_lineRenderer.enabled == false)
-            _lineRenderer.enabled = true;
-    }
-
-    public void Disable()
-    {
-        _lineRenderer.enabled = false;
+        _lineRenderer.positionCount = 0;
+        _trajectoryBullet.Direction = Vector3.zero;
+        _trajectoryBullet.Clear();
     }
 }

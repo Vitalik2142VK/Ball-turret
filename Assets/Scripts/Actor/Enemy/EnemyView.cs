@@ -17,6 +17,7 @@ public class EnemyView : MonoBehaviour, IEnemyView
     private IEnemyAnimator _enemyAnimator;
     private IActorAudioController _audioController;
     private Collider _collider;
+    private bool _isAlive;
 
     public string Name => name;
 
@@ -81,7 +82,8 @@ public class EnemyView : MonoBehaviour, IEnemyView
 
     public void PlayDead()
     {
-        StartCoroutine(StartDeadProcess());
+        if (_isAlive)
+            StartCoroutine(StartDeadProcess());
     }
 
     public void Destroy()
@@ -91,6 +93,7 @@ public class EnemyView : MonoBehaviour, IEnemyView
 
     private void SetEnable(bool isEnable)
     {
+        _isAlive = isEnable;
         _collider.enabled = isEnable;
         _meshRenderer.enabled = isEnable;
         _shadow.gameObject.SetActive(isEnable);
@@ -98,6 +101,7 @@ public class EnemyView : MonoBehaviour, IEnemyView
 
     private IEnumerator StartDeadProcess()
     {
+        _isAlive = false;
         _collider.enabled = false;
         _enemyAnimator.PlayDead();
 

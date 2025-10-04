@@ -131,7 +131,9 @@ GameObject:
   m_Component:
   - component: {fileID: 8974080827137815790}
   - component: {fileID: 8501974118405103006}
+  - component: {fileID: 6656316453494122658}
   - component: {fileID: 9190163093562886591}
+  - component: {fileID: 678119864348810850}
   - component: {fileID: 5078821119894575258}
   m_Layer: 5
   m_Name: SettingMenu
@@ -171,6 +173,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 669483361478797132}
   m_CullTransparentMesh: 1
+--- !u!225 &6656316453494122658
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 669483361478797132}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!114 &9190163093562886591
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -201,6 +215,19 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &678119864348810850
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 669483361478797132}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50d8cab2d30049844b5f762dbfbcfacd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _timeWork: 0.3
 --- !u!114 &5078821119894575258
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1456,7 +1483,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3514103277606644295, guid: 92bec8f101935ad47aab3a3cf65126b5, type: 3}
       propertyPath: m_fontSize
-      value: 65
+      value: 63.75
       objectReference: {fileID: 0}
     - target: {fileID: 3514103277606644295, guid: 92bec8f101935ad47aab3a3cf65126b5, type: 3}
       propertyPath: m_fontSizeMax
@@ -1708,7 +1735,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3514103277606644295, guid: 92bec8f101935ad47aab3a3cf65126b5, type: 3}
       propertyPath: m_fontSize
-      value: 65
+      value: 63.75
       objectReference: {fileID: 0}
     - target: {fileID: 3514103277606644295, guid: 92bec8f101935ad47aab3a3cf65126b5, type: 3}
       propertyPath: m_fontSizeMax

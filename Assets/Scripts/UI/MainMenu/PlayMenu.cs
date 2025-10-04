@@ -1,7 +1,8 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(HiderUI))]
+[RequireComponent(typeof(HiderUI), typeof(MenuAnimator))]
 public class PlayMenu : MonoBehaviour
 {
     [SerializeField] private PlaySceneLoader _sceneLoader;
@@ -9,6 +10,7 @@ public class PlayMenu : MonoBehaviour
 
     private IMenu _previousMenu;
     private ILevelFactory _levelFactory;
+    private IUIAnimator _animator;
     private HiderUI _hiderUI;
     private int _achievedLevelIndex;
 
@@ -23,8 +25,10 @@ public class PlayMenu : MonoBehaviour
 
     private void Awake()
     {
+        _hiderUI = GetComponent<HiderUI>();
+        _animator = GetComponent<MenuAnimator>();
+
         gameObject.SetActive(false);
-        _hiderUI = gameObject.GetComponent<HiderUI>();
     }
 
     public void Initialize(IPlayer user, ILevelFactory levelFactory)
@@ -38,11 +42,21 @@ public class PlayMenu : MonoBehaviour
         _achievedLevelIndex = user.AchievedLevelIndex;
     }
 
+    public void Open(IMenu previousMenu)
+    {
+        _previousMenu = previousMenu ?? throw new ArgumentNullException(nameof(previousMenu));
+
+        _hiderUI.Disable();
+        gameObject.SetActive(true);
+
+        StartCoroutine(WaitOpening());
+    }
+
     public void OnClose()
     {
-        gameObject.SetActive(false);
-        _previousMenu.Enable();
         _hiderUI.Enable();
+
+        StartCoroutine(WaitClosure());
     }
 
     public void OnPlay()
@@ -53,11 +67,18 @@ public class PlayMenu : MonoBehaviour
         _sceneLoader.Load();
     }
 
-    public void Open(IMenu previousMenu)
+    private IEnumerator WaitOpening()
     {
-        _previousMenu = previousMenu ?? throw new ArgumentNullException(nameof(previousMenu));
-        gameObject.SetActive(true);
+        yield return _animator.PlayOpen();
+
         _selectLevelScroll.SelectButton(_achievedLevelIndex);
-        _hiderUI.Disable();
+    }
+
+    private IEnumerator WaitClosure()
+    {
+        yield return _animator.PlayClose();
+
+        gameObject.SetActive(false);
+        _previousMenu.Enable();
     }
 }

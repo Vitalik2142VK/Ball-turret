@@ -82,6 +82,6 @@ public class DisableAdsButton : MonoBehaviour
         if (purchseId != DisableAdsPurchseId)
             return;
 
-        gameObject.SetActive(false);
+        Destroy(gameObject);
     }
 }

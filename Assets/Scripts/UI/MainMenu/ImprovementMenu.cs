@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(MenuAnimator))]
 public class ImprovementMenu : MonoBehaviour
 {
     private const int MaxCountImprovementButtons = 2;
@@ -14,6 +16,7 @@ public class ImprovementMenu : MonoBehaviour
     private IGamePayTransaction _selectTransaction;
     private IImprovementShop _improvementShop;
     private IAdsViewer _adsViewer;
+    private IUIAnimator _animator;
 
     private void OnValidate()
     {
@@ -33,6 +36,8 @@ public class ImprovementMenu : MonoBehaviour
 
     private void Awake()
     {
+        _animator = GetComponent<MenuAnimator>();
+
         gameObject.SetActive(false);
         _updateButton.interactable = false;
     }
@@ -62,17 +67,23 @@ public class ImprovementMenu : MonoBehaviour
             _improvementChoiseButtons[i].SetIndex(i);
     }
 
+    public void Open(IMenu previousMenu)
+    {
+        _previousMenu = previousMenu ?? throw new ArgumentNullException(nameof(previousMenu));
+
+        _adsViewer.ShowFullScreenAd();
+        gameObject.SetActive(true);
+
+        StartCoroutine(WaitOpening());
+    }
+
     public void OnImprove()
     {
         if (_improvementShop.TryMakeTransaction(_selectTransaction))
-        {
             foreach (var button in _improvementChoiseButtons)
                 button.Enable();
-        }
         else
-        {
-            Debug.Log("Transaction failed");
-        }
+            throw new InvalidOperationException("The transaction failed");
 
         _selectTransaction = null;
         _updateButton.interactable = false;
@@ -81,19 +92,8 @@ public class ImprovementMenu : MonoBehaviour
     public void OnClose()
     {
         _updateButton.interactable = false;
-        gameObject.SetActive(false);
-        _previousMenu.Enable();
-    }
 
-    public void Open(IMenu previousMenu)
-    {
-        _previousMenu = previousMenu ?? throw new ArgumentNullException(nameof(previousMenu));
-        _adsViewer.ShowFullScreenAd();
-        gameObject.SetActive(true);
-        _updateButton.interactable = false;
-
-        foreach (var button in _improvementChoiseButtons)
-            button.Enable();
+        StartCoroutine(WaitClosure());
     }
 
     private void OnSelectButton(IGamePayTransaction gamePayTransaction, int index)
@@ -119,5 +119,23 @@ public class ImprovementMenu : MonoBehaviour
     {
         foreach (var button in _improvementChoiseButtons)
             button.Enable();
+    }
+
+    private IEnumerator WaitOpening()
+    {
+        yield return _animator.PlayOpen();
+
+        _updateButton.interactable = false;
+
+        foreach (var button in _improvementChoiseButtons)
+            button.Enable();
+    }
+
+    private IEnumerator WaitClosure()
+    {
+        yield return _animator.PlayClose();
+
+        gameObject.SetActive(false);
+        _previousMenu.Enable();
     }
 }

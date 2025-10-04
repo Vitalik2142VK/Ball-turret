@@ -1365,7 +1365,9 @@ GameObject:
   m_Component:
   - component: {fileID: 443582260}
   - component: {fileID: 443582261}
+  - component: {fileID: 443582265}
   - component: {fileID: 443582263}
+  - component: {fileID: 443582264}
   - component: {fileID: 443582262}
   m_Layer: 5
   m_Name: PlayMenu
@@ -1434,6 +1436,31 @@ MonoBehaviour:
   _interferingUI:
   - {fileID: 215964564}
   - {fileID: 1049462847}
+--- !u!114 &443582264
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 443582259}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50d8cab2d30049844b5f762dbfbcfacd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _timeWork: 0.3
+--- !u!225 &443582265
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 443582259}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &450332475
 GameObject:
   m_ObjectHideFlags: 0
@@ -4257,7 +4284,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1440065648}
   - component: {fileID: 1440065650}
+  - component: {fileID: 1440065654}
   - component: {fileID: 1440065652}
+  - component: {fileID: 1440065653}
   - component: {fileID: 1440065651}
   m_Layer: 5
   m_Name: LeaderboardWindow
@@ -4322,6 +4351,31 @@ MonoBehaviour:
   _interferingUI:
   - {fileID: 215964564}
   - {fileID: 1049462847}
+--- !u!114 &1440065653
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1440065647}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50d8cab2d30049844b5f762dbfbcfacd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _timeWork: 0.3
+--- !u!225 &1440065654
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1440065647}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1445583289
 GameObject:
   m_ObjectHideFlags: 0
@@ -6292,7 +6346,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1826276887}
   - component: {fileID: 1826276889}
+  - component: {fileID: 1826276892}
   - component: {fileID: 1826276888}
+  - component: {fileID: 1826276891}
   - component: {fileID: 1826276890}
   m_Layer: 5
   m_Name: MainMenu
@@ -6378,6 +6434,31 @@ MonoBehaviour:
   _improvementMenu: {fileID: 2133599196}
   _settingMenu: {fileID: 1701917211}
   _leaderboardWindow: {fileID: 1440065651}
+--- !u!114 &1826276891
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1826276886}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50d8cab2d30049844b5f762dbfbcfacd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _timeWork: 0.3
+--- !u!225 &1826276892
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1826276886}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1917626376
 GameObject:
   m_ObjectHideFlags: 0
@@ -6925,7 +7006,9 @@ GameObject:
   m_Component:
   - component: {fileID: 2133599193}
   - component: {fileID: 2133599195}
+  - component: {fileID: 2133599198}
   - component: {fileID: 2133599194}
+  - component: {fileID: 2133599197}
   - component: {fileID: 2133599196}
   m_Layer: 5
   m_Name: ImprovemenMenu
@@ -7013,6 +7096,31 @@ MonoBehaviour:
   - {fileID: 8812971462250229678}
   _updateButton: {fileID: 1613310606}
   _addCoinsButton: {fileID: 1459132282}
+--- !u!114 &2133599197
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2133599192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50d8cab2d30049844b5f762dbfbcfacd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _timeWork: 0.3
+--- !u!225 &2133599198
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2133599192}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1001 &3565276653449360070
 PrefabInstance:
   m_ObjectHideFlags: 0

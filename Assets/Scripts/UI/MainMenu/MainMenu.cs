@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 
+[RequireComponent(typeof(MenuAnimator))]
 public class MainMenu : MonoBehaviour, IMenu
 {
     [SerializeField] private PlayMenu _playMenu;
@@ -8,7 +10,7 @@ public class MainMenu : MonoBehaviour, IMenu
     [SerializeField] private SettingMenu _settingMenu;
     [SerializeField] private LeaderboardWindow _leaderboardWindow;
 
-    private GameObject _gameObject;
+    private IUIAnimator _animator;
 
     private void OnValidate()
     {
@@ -27,35 +29,41 @@ public class MainMenu : MonoBehaviour, IMenu
 
     private void Awake()
     {
-        _gameObject = gameObject;
+        _animator = GetComponent<MenuAnimator>();
     }
 
     public void OnOpenPlayMenu()
     {
-        _gameObject.SetActive(false);
-        _playMenu.Open(this);
+        StartCoroutine(Close(_playMenu.Open));
     }
 
     public void OnOpenShopMenu()
     {
-        _gameObject.SetActive(false);
-        _improvementMenu.Open(this);
+        StartCoroutine(Close(_improvementMenu.Open));
     }
 
     public void OnOpenSettingMenu()
     {
-        _gameObject.SetActive(false);
-        _settingMenu.Open(this);
+        StartCoroutine(Close(_settingMenu.Open));
     }
 
     public void OnOpenLeaderboard()
     {
-        _gameObject.SetActive(false);
-        _leaderboardWindow.Open(this);
+        StartCoroutine(Close(_leaderboardWindow.Open));
     }
 
     public void Enable()
     {
-        _gameObject.SetActive(true);
+        gameObject.SetActive(true);
+        _animator.PlayOpen();
+    }
+
+    private IEnumerator Close(Action<IMenu> openOtherMenu)
+    {
+        yield return _animator.PlayClose();
+
+        gameObject.SetActive(false);
+
+        openOtherMenu?.Invoke(this);
     }
 }

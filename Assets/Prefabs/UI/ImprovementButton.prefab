@@ -395,6 +395,7 @@ GameObject:
   - component: {fileID: 3225721640274832021}
   - component: {fileID: 1561515187055296729}
   - component: {fileID: 3492736456389592420}
+  - component: {fileID: 4543071507695882760}
   - component: {fileID: 3743994631498407795}
   m_Layer: 5
   m_Name: ImprovementButton
@@ -498,9 +499,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 7060592120354025882}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 72809dc384252c94e9b3043d0884dc49, type: 3}
+  m_Script: {fileID: 11500000, guid: 49802d7a1568e0544876b4f2d59faf16, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4543071507695882760
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7060592120354025882}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d1941fe76420254e8d59b6efd035d58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _clickSizeValue: 0.1
+  _duration: 0.1
 --- !u!114 &3743994631498407795
 MonoBehaviour:
   m_ObjectHideFlags: 0

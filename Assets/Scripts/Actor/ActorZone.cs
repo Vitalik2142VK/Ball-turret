@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 
 [RequireComponent(typeof(BoxCollider))]
-public class ZoneEnemy : MonoBehaviour
+public class ActorZone : MonoBehaviour
 {
     private IAttackingEnemiesCollector _attackingEnemies;
     private IRemovedActorsCollector _removedActors;

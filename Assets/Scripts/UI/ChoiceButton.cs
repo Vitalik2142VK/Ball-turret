@@ -8,7 +8,7 @@ public class ChoiceButton : MonoBehaviour, IChoiceButton
 
     private CanvasGroup _canvasGroup;
 
-    public void Awake()
+    private void Awake()
     {
         _canvasGroup = GetComponent<CanvasGroup>();
     }

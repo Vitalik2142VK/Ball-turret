@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(ScaleAnimatorUI))]
 public class BonusChoiceMenu : MonoBehaviour, IMenu
 {
     private const int MaxCountBonusButtons = 3;
@@ -12,6 +14,7 @@ public class BonusChoiceMenu : MonoBehaviour, IMenu
 
     private IBonusRandomizer _randomizer;
     private IBonus _selectedBonus;
+    private IAnimatorUI _animator;
 
     private void OnValidate()
     {
@@ -31,6 +34,8 @@ public class BonusChoiceMenu : MonoBehaviour, IMenu
 
     private void Awake()
     {
+        _animator = GetComponent<IAnimatorUI>();
+
         gameObject.SetActive(false);
     }
 
@@ -58,6 +63,7 @@ public class BonusChoiceMenu : MonoBehaviour, IMenu
     {
         _pause.Enable();
         gameObject.SetActive(true);
+        _animator.Show();
         _confirmationButton.interactable = false;
 
         FillButtons();
@@ -66,10 +72,7 @@ public class BonusChoiceMenu : MonoBehaviour, IMenu
     public void OnChoiceBonus()
     {
         DisableAllButton();
-
-        _selectedBonus.Activate();
-        gameObject.SetActive(false);
-        _pause.Disable();
+        StartCoroutine(Close());
     }
 
     private void FillButtons()
@@ -107,5 +110,16 @@ public class BonusChoiceMenu : MonoBehaviour, IMenu
     {
         foreach (var button in _bonusChoiceButtons)
             button.Disable();
+    }
+
+    private IEnumerator Close()
+    {
+        _animator.Hide();
+
+        yield return _animator.GetYieldAnimation();
+
+        _selectedBonus.Activate();
+        gameObject.SetActive(false);
+        _pause.Disable();
     }
 }

@@ -2,17 +2,17 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(HiderUI), typeof(MenuAnimator))]
+[RequireComponent(typeof(HiderUI), typeof(ShiftAnimatorUI))]
 public class LeaderboardWindow : MonoBehaviour
 {
     private IMenu _previousMenu;
-    private IUIAnimator _animator;
+    private IAnimatorUI _animator;
     private HiderUI _hiderUI;
 
     private void Awake()
     {
         _hiderUI = GetComponent<HiderUI>();
-        _animator = GetComponent<MenuAnimator>();
+        _animator = GetComponent<ShiftAnimatorUI>();
 
         gameObject.SetActive(false);
     }
@@ -30,12 +30,12 @@ public class LeaderboardWindow : MonoBehaviour
 
         gameObject.SetActive(true);
         _hiderUI.Disable();
-        _animator.PlayOpen();
+        _animator.Show();
     }
 
     private IEnumerator WaitClosure()
     {
-        yield return _animator.PlayClose();
+        yield return _animator.GetYieldAnimation();
 
         gameObject.SetActive(false);
         _previousMenu.Enable();

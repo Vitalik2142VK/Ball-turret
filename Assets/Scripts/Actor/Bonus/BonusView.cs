@@ -2,9 +2,10 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(Collider))]
+[RequireComponent(typeof(Collider), typeof(Rigidbody))]
 public class BonusView : MonoBehaviour, IBonusView
 {
+    [SerializeField] private BonusTrigger _trigger;
     [SerializeField] private Image _image;
 
     private IBonusPresenter _presenter;
@@ -14,6 +15,9 @@ public class BonusView : MonoBehaviour, IBonusView
 
     private void OnValidate()
     {
+        if (_trigger == null)
+            throw new NullReferenceException(nameof(_trigger));
+
         if (_image == null)
             throw new NullReferenceException(nameof(_image));
     }
@@ -21,13 +25,20 @@ public class BonusView : MonoBehaviour, IBonusView
     private void Awake()
     {
         Collider collider = GetComponent<Collider>();
-        collider.isTrigger = true;
+        collider.isTrigger = false;
+        Rigidbody rigidbody = GetComponent<Rigidbody>();
+        rigidbody.isKinematic = true;
+        rigidbody.useGravity = false;
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnEnable()
     {
-        if (other.TryGetComponent(out IBonusGatherer bonusGathering))
-            _presenter.HandleBonusGatherer(bonusGathering);
+        _trigger.Activated += OnHandleTrigger;
+    }
+
+    private void OnDisable()
+    {
+        _trigger.Activated -= OnHandleTrigger;
     }
 
     public void Initialize(IBonusPresenter presenter, IBonusCard bonusCard, ISound takedSound)
@@ -51,5 +62,11 @@ public class BonusView : MonoBehaviour, IBonusView
     public void Destroy()
     {
         Destroy(gameObject);
+    }
+
+    private void OnHandleTrigger(Collider collider)
+    {
+        if (collider.TryGetComponent(out IBonusGatherer bonusGathering))
+            _presenter.HandleBonusGatherer(bonusGathering);
     }
 }

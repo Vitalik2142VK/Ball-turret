@@ -7,7 +7,7 @@ namespace PlayLevel
 {
     public class ActorsConfigurator : MonoBehaviour
     {
-        [SerializeField] private ZoneEnemy _zoneEnemy;
+        [SerializeField] private ActorZone _zoneEnemy;
         [SerializeField] private SpawnPointsRepository _spawnPointsRepository;
 
         [Header("Factories")]

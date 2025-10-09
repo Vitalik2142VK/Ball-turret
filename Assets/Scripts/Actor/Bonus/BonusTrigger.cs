@@ -1,0 +1,20 @@
+﻿using System;
+using UnityEngine;
+
+[RequireComponent(typeof(Collider))]
+public class BonusTrigger : MonoBehaviour
+{
+    public event Action<Collider> Activated;
+
+    private void Awake()
+    {
+        Collider collider = GetComponent<Collider>();
+        collider.isTrigger = false;
+        gameObject.SetActive(false);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Activated?.Invoke(other);
+    }
+}

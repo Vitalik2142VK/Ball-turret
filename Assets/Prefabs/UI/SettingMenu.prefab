@@ -224,10 +224,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 669483361478797132}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 50d8cab2d30049844b5f762dbfbcfacd, type: 3}
+  m_Script: {fileID: 11500000, guid: 9884b194289b939419be2841cb7d740e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _timeWork: 0.3
+  _duration: 0.3
 --- !u!114 &5078821119894575258
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1483,7 +1483,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3514103277606644295, guid: 92bec8f101935ad47aab3a3cf65126b5, type: 3}
       propertyPath: m_fontSize
-      value: 63.75
+      value: 63.7
       objectReference: {fileID: 0}
     - target: {fileID: 3514103277606644295, guid: 92bec8f101935ad47aab3a3cf65126b5, type: 3}
       propertyPath: m_fontSizeMax
@@ -1735,7 +1735,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3514103277606644295, guid: 92bec8f101935ad47aab3a3cf65126b5, type: 3}
       propertyPath: m_fontSize
-      value: 63.75
+      value: 63.7
       objectReference: {fileID: 0}
     - target: {fileID: 3514103277606644295, guid: 92bec8f101935ad47aab3a3cf65126b5, type: 3}
       propertyPath: m_fontSizeMax

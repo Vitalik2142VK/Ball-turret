@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(MenuAnimator))]
+[RequireComponent(typeof(ShiftAnimatorUI))]
 public class MainMenu : MonoBehaviour, IMenu
 {
     [SerializeField] private PlayMenu _playMenu;
@@ -10,7 +10,7 @@ public class MainMenu : MonoBehaviour, IMenu
     [SerializeField] private SettingMenu _settingMenu;
     [SerializeField] private LeaderboardWindow _leaderboardWindow;
 
-    private IUIAnimator _animator;
+    private IAnimatorUI _animator;
 
     private void OnValidate()
     {
@@ -29,7 +29,7 @@ public class MainMenu : MonoBehaviour, IMenu
 
     private void Awake()
     {
-        _animator = GetComponent<MenuAnimator>();
+        _animator = GetComponent<IAnimatorUI>();
     }
 
     public void OnOpenPlayMenu()
@@ -55,12 +55,14 @@ public class MainMenu : MonoBehaviour, IMenu
     public void Enable()
     {
         gameObject.SetActive(true);
-        _animator.PlayOpen();
+        _animator.Show();
     }
 
     private IEnumerator Close(Action<IMenu> openOtherMenu)
     {
-        yield return _animator.PlayClose();
+        _animator.Hide();
+
+        yield return _animator.GetYieldAnimation();
 
         gameObject.SetActive(false);
 

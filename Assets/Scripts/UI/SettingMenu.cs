@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(MenuAnimator))]
+[RequireComponent(typeof(IAnimatorUI))]
 public class SettingMenu : MonoBehaviour
 {
     [SerializeField] private Slider _volumeSound;
@@ -12,7 +12,7 @@ public class SettingMenu : MonoBehaviour
 
     private IMenu _previousMenu;
     private IAudioSetting _audioSetting;
-    private IUIAnimator _animator;
+    private IAnimatorUI _animator;
 
     private void OnValidate()
     {
@@ -28,7 +28,7 @@ public class SettingMenu : MonoBehaviour
 
     private void Awake()
     {
-        _animator = GetComponent<MenuAnimator>();
+        _animator = GetComponent<IAnimatorUI>();
 
         gameObject.SetActive(false);
     }
@@ -64,12 +64,13 @@ public class SettingMenu : MonoBehaviour
         _previousMenu = previousMenu ?? throw new ArgumentNullException(nameof(previousMenu));
 
         gameObject.SetActive(true);
-        _animator.PlayOpen();
+        _animator.Show();
     }
 
     public void OnClose()
     {
         _audioSetting.AcceptChanges();
+        _animator.Hide();
 
         StartCoroutine(WaitClosure());
     }
@@ -82,7 +83,7 @@ public class SettingMenu : MonoBehaviour
 
     private IEnumerator WaitClosure()
     {
-        yield return _animator.PlayClose();
+        yield return _animator.GetYieldAnimation();
 
         gameObject.SetActive(false);
         _previousMenu.Enable();

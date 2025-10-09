@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(ChoiceButton))]
+[RequireComponent(typeof(ChoiceButton), typeof(ScaleButtonAnimator))]
 public class BonusChoiceButton : MonoBehaviour, IChoiceButton
 {
     [SerializeField] private Scriptable.LocalizationData _localizationData;
@@ -12,6 +12,7 @@ public class BonusChoiceButton : MonoBehaviour, IChoiceButton
 
     private IChoiceButton _choiceButton;
     private IBonus _bonus;
+    private IButtonAnimator _animator;
     private int _index;
 
     public event Action<int> Clicked;
@@ -33,6 +34,7 @@ public class BonusChoiceButton : MonoBehaviour, IChoiceButton
     private void Awake()
     {
         _choiceButton = GetComponent<ChoiceButton>();
+        _animator = GetComponent<IButtonAnimator>();
     }
 
     public void Initialize(int index)
@@ -42,6 +44,8 @@ public class BonusChoiceButton : MonoBehaviour, IChoiceButton
 
         _index = index;
     }
+
+    public void Disable() => _choiceButton.Disable();
 
     public void SetBonus(IBonus bonus)
     {
@@ -54,16 +58,14 @@ public class BonusChoiceButton : MonoBehaviour, IChoiceButton
 
     public void OnClick()
     {
+        _animator.Press();
+
         Clicked?.Invoke(_index);
     }
 
     public void Enable()
     {
+        _animator.PressOut();
         _choiceButton.Enable();
-    }
-
-    public void Disable()
-    {
-        _choiceButton.Disable();
     }
 }

@@ -22,7 +22,7 @@ public class EndlessLevel : ILevel
         _endlesslevel = endlesslevel ?? throw new ArgumentNullException(nameof(endlesslevel));
         _savedLeaderBoard = savedLeaderBoard ?? throw new ArgumentNullException(nameof(savedLeaderBoard));
         _healthMultiplierPerWave = healthMultiplierPerWave;
-        _countCoinsMultiplier = healthMultiplierPerWave * ReducingCoefficientCoins;
+        _countCoinsMultiplier = DefaultCoefficient + healthMultiplierPerWave * ReducingCoefficientCoins;
         _waveNumberReward = WaveRepository.WaveDivider;
 
         CountCoinsForWin = 0;

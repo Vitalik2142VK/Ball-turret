@@ -3,12 +3,13 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(Button))]
+[RequireComponent(typeof(Button), typeof(ScaleButtonAnimator))]
 public class SelectLevelButton : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _text;
     [SerializeField] private Image _blockImage;
 
+    private IButtonAnimator _animator;
     private Button _button;
 
     public event Action<int> Clicked;
@@ -33,8 +34,19 @@ public class SelectLevelButton : MonoBehaviour
 
     private void Awake()
     {
+        _animator = GetComponent<IButtonAnimator>();
         _button = GetComponent<Button>();
         Index = -1;
+    }
+
+    private void OnEnable()
+    {
+        _button.onClick.AddListener(OnPress);
+    }
+
+    private void OnDisable()
+    {
+        _button.onClick.RemoveListener(OnPress);   
     }
 
     public void SetIndex(int index)
@@ -58,11 +70,18 @@ public class SelectLevelButton : MonoBehaviour
 
         _blockImage.gameObject.SetActive(isBlock);
         _button.interactable = !isBlock;
+
+        if (isBlock)
+        {
+            var colorsButton = _button.colors;
+            colorsButton.normalColor = colorsButton.disabledColor;
+        }
     }
 
     public void Press()
     {
         _button.interactable = false;
+        _animator.Press();
 
         Clicked?.Invoke(Index);
     }
@@ -70,5 +89,8 @@ public class SelectLevelButton : MonoBehaviour
     public void PressOut()
     {
         _button.interactable = true;
+        _animator.PressOut();
     }
+
+    private void OnPress() => Press();
 }

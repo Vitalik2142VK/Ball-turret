@@ -2,28 +2,31 @@
 using UnityEngine;
 
 [RequireComponent(typeof(RectTransform), typeof(CanvasGroup))]
-public class MenuAnimator : MonoBehaviour, IUIAnimator
+public class ScaleAnimatorUI : MonoBehaviour, IAnimatorUI
 {
     private const float EnableValue = 1f;
-    private const float OffsetShift = 0.5f;
 
-    [SerializeField, Range(0.1f, 2f)] private float _duration = 0.5f;
+    [SerializeField, Range(0.1f, 2f)] private float _duration = 0.3f;
+    [SerializeField, Range(0.1f, 1.5f)] private float _startSizeValue = 0.5f;
 
     private CanvasGroup _canvasGroup;
     private RectTransform _rectTransform;
     private Sequence _animation;
-    private Vector2 _mainPosition;
+    private Vector2 _defaultSize;
+    private Vector2 _startSize;
 
     private void Awake()
     {
         _canvasGroup = GetComponent<CanvasGroup>();
         _rectTransform = GetComponent<RectTransform>();
-        _mainPosition = _rectTransform.anchoredPosition;
+
+        _defaultSize = _rectTransform.localScale;
+        _startSize = new Vector2(_defaultSize.x * _startSizeValue, _defaultSize.y * _startSizeValue);
     }
 
     private void Start()
     {
-        _canvasGroup.alpha = 1;
+        _canvasGroup.alpha = EnableValue;
         _canvasGroup.blocksRaycasts = true;
     }
 
@@ -32,36 +35,38 @@ public class MenuAnimator : MonoBehaviour, IUIAnimator
         KillCurrentAnimation();
     }
 
-    public YieldInstruction PlayOpen()
+    public void Show()
     {
         KillCurrentAnimation();
 
-        float shift = -Screen.height * OffsetShift;
-        Vector2 startShift = new Vector2(_mainPosition.x, shift);
         _animation = DOTween.Sequence();
         _animation
             .Append(_canvasGroup.DOFade(EnableValue, _duration).From(0))
-            .Join(_rectTransform.DOAnchorPos(_mainPosition, _duration).From(startShift))
+            .Join(_rectTransform.DOScale(_defaultSize, _duration).From(_startSize))
+            .SetUpdate(true)
             .Play();
 
         _canvasGroup.blocksRaycasts = true;
-
-        return _animation.WaitForCompletion();
     }
 
-    public YieldInstruction PlayClose()
+    public void Hide()
     {
         KillCurrentAnimation();
 
-        float shift = -Screen.height * OffsetShift;
-        Vector2 startShift = new Vector2(_mainPosition.x, shift);
         _animation = DOTween.Sequence();
         _animation
             .Append(_canvasGroup.DOFade(0, _duration).From(EnableValue))
-            .Join(_rectTransform.DOAnchorPos(startShift, _duration).From(_mainPosition))
+            .Join(_rectTransform.DOScale(_startSize, _duration).From(_defaultSize))
+            .SetUpdate(true)
             .Play();
 
         _canvasGroup.blocksRaycasts = false;
+    }
+
+    public YieldInstruction GetYieldAnimation()
+    {
+        if (_animation == null || _animation.active == false)
+            throw new System.InvalidOperationException("Animation was not launched");
 
         return _animation.WaitForCompletion();
     }

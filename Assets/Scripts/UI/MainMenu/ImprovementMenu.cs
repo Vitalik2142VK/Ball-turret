@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(MenuAnimator))]
+[RequireComponent(typeof(ShiftAnimatorUI))]
 public class ImprovementMenu : MonoBehaviour
 {
     private const int MaxCountImprovementButtons = 2;
@@ -16,7 +16,7 @@ public class ImprovementMenu : MonoBehaviour
     private IGamePayTransaction _selectTransaction;
     private IImprovementShop _improvementShop;
     private IAdsViewer _adsViewer;
-    private IUIAnimator _animator;
+    private IAnimatorUI _animator;
 
     private void OnValidate()
     {
@@ -36,7 +36,7 @@ public class ImprovementMenu : MonoBehaviour
 
     private void Awake()
     {
-        _animator = GetComponent<MenuAnimator>();
+        _animator = GetComponent<IAnimatorUI>();
 
         gameObject.SetActive(false);
         _updateButton.interactable = false;
@@ -71,8 +71,9 @@ public class ImprovementMenu : MonoBehaviour
     {
         _previousMenu = previousMenu ?? throw new ArgumentNullException(nameof(previousMenu));
 
-        _adsViewer.ShowFullScreenAd();
         gameObject.SetActive(true);
+        _adsViewer.ShowFullScreenAd();
+        _animator.Show();
 
         StartCoroutine(WaitOpening());
     }
@@ -92,12 +93,16 @@ public class ImprovementMenu : MonoBehaviour
     public void OnClose()
     {
         _updateButton.interactable = false;
+        _animator.Hide();
 
         StartCoroutine(WaitClosure());
     }
 
     private void OnSelectButton(IGamePayTransaction gamePayTransaction, int index)
     {
+        if (gamePayTransaction == null)
+            throw new ArgumentNullException(nameof(gamePayTransaction));
+
         _selectTransaction = gamePayTransaction;
 
         ImprovementChoiseButton button;
@@ -123,7 +128,7 @@ public class ImprovementMenu : MonoBehaviour
 
     private IEnumerator WaitOpening()
     {
-        yield return _animator.PlayOpen();
+        yield return _animator.GetYieldAnimation();
 
         _updateButton.interactable = false;
 
@@ -133,7 +138,7 @@ public class ImprovementMenu : MonoBehaviour
 
     private IEnumerator WaitClosure()
     {
-        yield return _animator.PlayClose();
+        yield return _animator.GetYieldAnimation();
 
         gameObject.SetActive(false);
         _previousMenu.Enable();

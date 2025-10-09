@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(HiderUI), typeof(MenuAnimator))]
+[RequireComponent(typeof(HiderUI), typeof(ShiftAnimatorUI))]
 public class PlayMenu : MonoBehaviour
 {
     [SerializeField] private PlaySceneLoader _sceneLoader;
@@ -10,7 +10,7 @@ public class PlayMenu : MonoBehaviour
 
     private IMenu _previousMenu;
     private ILevelFactory _levelFactory;
-    private IUIAnimator _animator;
+    private IAnimatorUI _animator;
     private HiderUI _hiderUI;
     private int _achievedLevelIndex;
 
@@ -26,7 +26,7 @@ public class PlayMenu : MonoBehaviour
     private void Awake()
     {
         _hiderUI = GetComponent<HiderUI>();
-        _animator = GetComponent<MenuAnimator>();
+        _animator = GetComponent<IAnimatorUI>();
 
         gameObject.SetActive(false);
     }
@@ -46,8 +46,9 @@ public class PlayMenu : MonoBehaviour
     {
         _previousMenu = previousMenu ?? throw new ArgumentNullException(nameof(previousMenu));
 
-        _hiderUI.Disable();
         gameObject.SetActive(true);
+        _hiderUI.Disable();
+        _animator.Show();
 
         StartCoroutine(WaitOpening());
     }
@@ -55,6 +56,7 @@ public class PlayMenu : MonoBehaviour
     public void OnClose()
     {
         _hiderUI.Enable();
+        _animator.Hide();
 
         StartCoroutine(WaitClosure());
     }
@@ -69,14 +71,14 @@ public class PlayMenu : MonoBehaviour
 
     private IEnumerator WaitOpening()
     {
-        yield return _animator.PlayOpen();
+        yield return _animator.GetYieldAnimation();
 
         _selectLevelScroll.SelectButton(_achievedLevelIndex);
     }
 
     private IEnumerator WaitClosure()
     {
-        yield return _animator.PlayClose();
+        yield return _animator.GetYieldAnimation();
 
         gameObject.SetActive(false);
         _previousMenu.Enable();

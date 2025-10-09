@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class TargetPoint : MonoBehaviour, ITargetPoint
 {
-    [SerializeField] private ZoneEnemy _zoneEnemy;
+    [SerializeField] private ActorZone _zoneEnemy;
 
     [Header("Debug")]
     [SerializeField] private bool _isDebugOn = false;

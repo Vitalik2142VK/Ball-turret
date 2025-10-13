@@ -9,8 +9,7 @@ public class BonusTrigger : MonoBehaviour
     private void Awake()
     {
         Collider collider = GetComponent<Collider>();
-        collider.isTrigger = false;
-        gameObject.SetActive(false);
+        collider.isTrigger = true;
     }
 
     private void OnTriggerEnter(Collider other)

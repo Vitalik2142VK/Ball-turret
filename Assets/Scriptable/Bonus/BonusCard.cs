@@ -22,9 +22,6 @@ namespace Scriptable
             if (_icon == null)
                 throw new NullReferenceException(nameof(_icon));
 
-            if (_name.Length == 0)
-                throw new IndexOutOfRangeException(nameof(_name));
-
             if (_enDescription.Length == 0)
                 throw new IndexOutOfRangeException(nameof(_enDescription));
 
@@ -36,7 +33,7 @@ namespace Scriptable
         }
 
         public Sprite Icon => _icon;
-        public string Name => _name;
+        public string Name => throw new NotImplementedException();
 
         public string GetDescription(Language language)
         {

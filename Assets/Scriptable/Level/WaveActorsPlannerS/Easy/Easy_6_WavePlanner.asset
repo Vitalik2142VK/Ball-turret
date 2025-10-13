@@ -23,5 +23,5 @@ MonoBehaviour:
     - {fileID: 0}
   - _actors:
     - {fileID: 7690942557182064526, guid: d685e3a53e220ac4d8c6f852b47fb287, type: 3}
-    - {fileID: 445070713288626913, guid: 55eef1681c3cbb54c954185a4dd3689b, type: 3}
+    - {fileID: 8711603895194612266, guid: 988e0673a235aa541b0f7677b59439d5, type: 3}
     - {fileID: 7690942557182064526, guid: d685e3a53e220ac4d8c6f852b47fb287, type: 3}

@@ -22,6 +22,4 @@ public class MultipleBonusActivator : IBonusActivator
             _activator.Activate();
         
     }
-
-    public IBonusActivator Clone() => _activator.Clone();
 }

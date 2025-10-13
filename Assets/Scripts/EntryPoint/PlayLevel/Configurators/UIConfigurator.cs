@@ -5,7 +5,9 @@ namespace PlayLevel
 {
     public class UIConfigurator : MonoBehaviour
     {
+        [SerializeField] private Pause _pause;
         [SerializeField] private PauseMenu _pauseMenu;
+        [SerializeField] private PauseButton _pauseButton;
         [SerializeField] private FinishWindow _finishWindow;
         [SerializeField] private SettingMenu _settingMenu;
         [SerializeField] private AudioSetting _audioSetting;
@@ -14,8 +16,14 @@ namespace PlayLevel
 
         private void OnValidate()
         {
+            if (_pause == null)
+                throw new NullReferenceException(nameof(_pause));
+
             if (_pauseMenu == null)
                 throw new NullReferenceException(nameof(_pauseMenu));
+
+            if (_pauseButton == null)
+                throw new NullReferenceException(nameof(_pauseButton));
 
             if (_finishWindow == null)
                 throw new NullReferenceException(nameof(_finishWindow));
@@ -46,6 +54,7 @@ namespace PlayLevel
             _pauseMenu.Initialize(closeSceneStep);
             _finishWindow.Initialize(reward, _adsViewer, winStatus);
             _settingMenu.Initialize(_audioSetting);
+            _pause.Initialize(_pauseButton);
         }
     }
 }

@@ -34,13 +34,13 @@ namespace PlayLevel
         private void InitializeBonusFactory()
         {
             var bonusCreators = _bonusConfigurators.Select(bc => bc.Creator).ToArray();
-            List<IViewableBonusCreator> collisionBonuses = new List<IViewableBonusCreator>();
+            List<IViewableBonusCreator> collisionBonusCreators = new List<IViewableBonusCreator>();
 
             foreach (var creator in bonusCreators)
                 if (creator is IViewableBonusCreator viewableBonusCreator)
-                    collisionBonuses.Add(viewableBonusCreator);
+                    collisionBonusCreators.Add(viewableBonusCreator);
 
-            _bonusFactory.Initialize(collisionBonuses);
+            _bonusFactory.Initialize(collisionBonusCreators);
         }
     }
 }

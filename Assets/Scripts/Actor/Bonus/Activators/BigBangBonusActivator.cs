@@ -16,9 +16,4 @@ public class BigBangBonusActivator : IBonusActivator
     {
         _exploder.Explode(_pointExplosionPosition);
     }
-
-    public IBonusActivator Clone()
-    {
-        return new BigBangBonusActivator(_exploder, _pointExplosionPosition);
-    }
 }

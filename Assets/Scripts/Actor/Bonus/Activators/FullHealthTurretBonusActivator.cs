@@ -13,9 +13,4 @@ public class FullHealthTurretBonusActivator : IBonusActivator
     {
         _turretHealth.Restore();
     }
-
-    public IBonusActivator Clone()
-    {
-        return new FullHealthTurretBonusActivator(_turretHealth);
-    }
 }

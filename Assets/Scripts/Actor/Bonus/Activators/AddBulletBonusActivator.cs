@@ -18,9 +18,4 @@ public class AddBulletBonusActivator : IBonusActivator
         IBullet bullet = _bulletFactory.Create(_bulletType);
         _gunLoader.AddBullet(bullet);
     }
-
-    public IBonusActivator Clone()
-    {
-        return new AddBulletBonusActivator(_bulletFactory, _gunLoader, _bulletType);
-    }
 }

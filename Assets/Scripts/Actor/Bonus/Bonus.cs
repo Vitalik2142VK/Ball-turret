@@ -17,9 +17,4 @@ public class Bonus : IBonus
     {
         _activator.Activate();
     }
-
-    public IBonusActivator GetCloneBonusActivator()
-    {
-        return _activator.Clone();
-    }
 }

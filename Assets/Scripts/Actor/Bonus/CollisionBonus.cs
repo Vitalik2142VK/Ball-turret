@@ -7,8 +7,6 @@ public class CollisionBonus : IViewableBonus
     private IBonusPresenter _presenter;
     private IMovableObject _mover;
 
-    public IBonusCard BonusCard => _bonus.BonusCard;
-
     public CollisionBonus(IBonus bonus, IBonusPresenter presenter, IMovableObject mover)
     {
         _bonus = bonus ?? throw new ArgumentNullException(nameof(bonus));
@@ -17,7 +15,7 @@ public class CollisionBonus : IViewableBonus
 
         IsEnable = true;
     }
-
+    public IBonusCard BonusCard => _bonus.BonusCard;
     public bool IsFinished => _mover.IsFinished;
 
     public bool IsEnable { get; private set; }
@@ -29,8 +27,6 @@ public class CollisionBonus : IViewableBonus
     public void SetPoint(Vector3 distance, float speed) => _mover.SetPoint(distance, speed);
 
     public void Move() => _mover.Move();
-
-    public IBonusActivator GetCloneBonusActivator() => _bonus.GetCloneBonusActivator();
 
     public void HandleBonusGatherer(IBonusGatherer bonusGatherer)
     {

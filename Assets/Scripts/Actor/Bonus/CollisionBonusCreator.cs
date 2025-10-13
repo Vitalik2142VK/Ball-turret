@@ -9,7 +9,7 @@ public class CollisionBonusCreator : MonoBehaviour, IViewableBonusCreator
 
     private IBonusCreator _creator;
 
-    public string Name => _bonusPrefab.name;
+    public string Name => _creator.Name;
 
     private void OnValidate()
     {
@@ -25,7 +25,7 @@ public class CollisionBonusCreator : MonoBehaviour, IViewableBonusCreator
 
     private void Awake()
     {
-        _creator ??= _bonusCreator.GetComponent<IBonusCreator>();
+        _creator = _bonusCreator.GetComponent<IBonusCreator>();
     }
 
     public void Initialize(IBonusActivator bonusActivator) => _creator.Initialize(bonusActivator);

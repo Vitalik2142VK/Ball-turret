@@ -34,10 +34,10 @@ Transform:
   m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 7455812962385511537}
   - {fileID: 8045609859930732865}
   - {fileID: 4282048628630363031}
   - {fileID: 5360457902502012881}
-  - {fileID: 7455812962385511537}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!64 &7665648333651778537
@@ -196,7 +196,6 @@ GameObject:
   - component: {fileID: 4282048628630363031}
   - component: {fileID: 5422272169200432986}
   - component: {fileID: 7257916324997712338}
-  - component: {fileID: 4416877560735568169}
   - component: {fileID: 5121062024155880605}
   m_Layer: 9
   m_Name: Canvas
@@ -271,23 +270,6 @@ MonoBehaviour:
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
   m_PresetInfoIsWorld: 1
---- !u!114 &4416877560735568169
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3806792239575910506}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!114 &5121062024155880605
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -386,7 +368,6 @@ GameObject:
   - component: {fileID: 5360457902502012881}
   - component: {fileID: 1105771146961403666}
   - component: {fileID: 787553213995885082}
-  - component: {fileID: 8467346052759705042}
   m_Layer: 9
   m_Name: Shadow
   m_TagString: Untagged
@@ -460,23 +441,6 @@ MonoBehaviour:
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
   m_PresetInfoIsWorld: 1
---- !u!114 &8467346052759705042
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8640159041735325424}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!1001 &188769004243145409
 PrefabInstance:
   m_ObjectHideFlags: 0

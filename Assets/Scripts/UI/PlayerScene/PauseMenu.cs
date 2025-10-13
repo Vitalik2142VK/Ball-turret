@@ -19,7 +19,7 @@ public class PauseMenu : MonoBehaviour, IMenu
         if (_settingMenu == null)
             throw new NullReferenceException(nameof(_settingMenu));
     }
-
+    
     private void Awake()
     {
         _animator = GetComponent<IAnimatorUI>();
@@ -29,20 +29,14 @@ public class PauseMenu : MonoBehaviour, IMenu
 
     public void Initialize(IStep closeSceneStep)
     {
-        _closeSceneStep = closeSceneStep ?? throw new System.ArgumentNullException(nameof(closeSceneStep)); 
+        _closeSceneStep = closeSceneStep ?? throw new ArgumentNullException(nameof(closeSceneStep)); 
     }
-
+        
     public void Enable()
     {
         gameObject.SetActive(true);
-        _animator.Show();
-    }
-
-    public void OnOpen()
-    {
         _pause.Enable();
-        
-        Enable();
+        _animator.Show();
     }
 
     public void OnPlay()

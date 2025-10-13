@@ -23,6 +23,9 @@ public class ActorsMover : IAdvancedActorsMover
         if (movableObjects == null)
             throw new ArgumentNullException(nameof(movableObjects));
 
+        if (_movableObjects.Count != 0)
+            _movableObjects.Clear();
+
         _movableObjects.AddRange(movableObjects);
 
         SpecifyNewPosition();

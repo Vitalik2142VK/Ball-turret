@@ -7,6 +7,8 @@ public class BonusCreator : MonoBehaviour, IBonusCreator
 
     private IBonusActivator _bonusActivator;
 
+    public string Name => _bonusCard.Name;
+
     private void OnValidate()
     {
         if (_bonusCard == null)

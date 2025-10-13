@@ -37,7 +37,6 @@ public class BonusFactory : MonoBehaviour, IActorFactory
     {
         Dictionary<string, IViewableBonusCreator> prefabs = new Dictionary<string, IViewableBonusCreator>();
 
-
         foreach (var creator in bonusPrefabs)
             prefabs.Add(creator.Name, creator);
 

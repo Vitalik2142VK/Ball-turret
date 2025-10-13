@@ -54,9 +54,9 @@ public class Enemy : IEnemy
 
     public void Destroy()
     {
+        IsEnable = false;
         _debuffReceiver.Clean();
         _presenter.Destroy();
-        IsEnable = false;
     }
 
     private void Enable()

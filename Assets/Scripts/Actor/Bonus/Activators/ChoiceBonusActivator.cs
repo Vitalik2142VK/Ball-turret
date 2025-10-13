@@ -11,9 +11,4 @@
     {
         _choiceBonusMenu.Enable();
     }
-
-    public IBonusActivator Clone()
-    {
-        return new ChoiceBonusActivator(_choiceBonusMenu);
-    }
 }

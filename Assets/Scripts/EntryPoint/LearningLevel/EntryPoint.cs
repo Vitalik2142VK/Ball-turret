@@ -6,6 +6,8 @@ namespace LearningLevel
 {
     public class EntryPoint : MonoBehaviour
     {
+        private const string TagPauseButton = "PauseButton";
+
         [SerializeField] private Scriptable.SelectedLevel _selectedLevel;
         [SerializeField] private LearningUI _learningUI;
         [SerializeField] private EnemyFactory _learningEnemyFactory;
@@ -15,8 +17,9 @@ namespace LearningLevel
 
         private StepSystemConfigurator _stepSystemConfigurator;
         private ActorsConfigurator _actorsConfigurator;
-        private PauseButton _pauseButton;
+        private UIConfigurator _configuratorUI;
         private AudioSetting _audioSetting;
+        private OpenWindowButton _pauseButton;
 
         private void OnValidate()
         {
@@ -43,8 +46,9 @@ namespace LearningLevel
         {
             _stepSystemConfigurator = FindAnyObjectByType<StepSystemConfigurator>();
             _actorsConfigurator = FindAnyObjectByType<ActorsConfigurator>();
-            _pauseButton = FindAnyObjectByType<PauseButton>();
             _audioSetting = FindAnyObjectByType<AudioSetting>();
+            _configuratorUI = FindAnyObjectByType<UIConfigurator>();
+            _pauseButton = _configuratorUI.PauseButton;
 
             if (_stepSystemConfigurator == null)
                 throw new NullReferenceException(nameof(_stepSystemConfigurator));
@@ -52,11 +56,11 @@ namespace LearningLevel
             if (_actorsConfigurator == null)
                 throw new NullReferenceException(nameof(_actorsConfigurator));
 
-            if (_pauseButton == null)
-                throw new NullReferenceException(nameof(_pauseButton));
-
             if (_audioSetting == null)
                 throw new NullReferenceException(nameof(_audioSetting));
+
+            if (_configuratorUI == null)
+                throw new NullReferenceException(nameof(_configuratorUI));
         }
 
         private void Start()

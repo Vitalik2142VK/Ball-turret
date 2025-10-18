@@ -2,7 +2,12 @@
 
 public interface IBonusReservator
 {
-    public IEnumerable<IBonusCard> GetBonusCards();
+    public bool IsBonusActivated { get; }
+    public IEnumerable<IReservatedBonus> Bonuses { get; } 
 
     public void ActivateBonus(string nameBonus);
+
+    public bool TryAddBonusByName(string nameBonus);
+
+    public void Update();
 }

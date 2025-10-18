@@ -10,6 +10,8 @@ public class BigBangBonusActivatorCreator : MonoBehaviour, IBonusActivatorCreato
     [SerializeField] private Sound _bigBangSound;
     [SerializeField] private ExplosionView _explosionView;
 
+    private IEnemyCounter _enemyCounter;
+
     private void OnValidate()
     {
         if (_player == null)
@@ -28,6 +30,11 @@ public class BigBangBonusActivatorCreator : MonoBehaviour, IBonusActivatorCreato
             throw new NullReferenceException(nameof(_explosionDamageAttributes));
     }
 
+    public void Initialize(IEnemyCounter enemyCounter)
+    {
+        _enemyCounter = enemyCounter ?? throw new ArgumentNullException(nameof(enemyCounter));
+    }
+
     public IBonusActivator Create()
     {
         Exploder exploder = GetComponent<Exploder>();
@@ -36,6 +43,6 @@ public class BigBangBonusActivatorCreator : MonoBehaviour, IBonusActivatorCreato
         damageChanger.Change(damageCoefficient);
         exploder.Initialize(damageChanger, _bigBangSound, _explosionView);
 
-        return new BigBangBonusActivator(exploder, _pointExplosion.position);
+        return new BigBangBonusActivator(exploder, _enemyCounter, _pointExplosion.position);
     }
 }

@@ -12,7 +12,7 @@ public class ImprovementMenu : MonoBehaviour
     [SerializeField] private Button _updateButton;
     [SerializeField] private AddCoinsButton _addCoinsButton;
 
-    private IMenu _previousMenu;
+    private IWindow _previousWindow;
     private IGamePayTransaction _selectTransaction;
     private IImprovementShop _improvementShop;
     private IAdsViewer _adsViewer;
@@ -67,9 +67,9 @@ public class ImprovementMenu : MonoBehaviour
             _improvementChoiseButtons[i].SetIndex(i);
     }
 
-    public void Open(IMenu previousMenu)
+    public void Open(IWindow previousWindow)
     {
-        _previousMenu = previousMenu ?? throw new ArgumentNullException(nameof(previousMenu));
+        _previousWindow = previousWindow ?? throw new ArgumentNullException(nameof(previousWindow));
 
         gameObject.SetActive(true);
         _adsViewer.ShowFullScreenAd();
@@ -141,6 +141,6 @@ public class ImprovementMenu : MonoBehaviour
         yield return _animator.GetYieldAnimation();
 
         gameObject.SetActive(false);
-        _previousMenu.Enable();
+        _previousWindow.Enable();
     }
 }

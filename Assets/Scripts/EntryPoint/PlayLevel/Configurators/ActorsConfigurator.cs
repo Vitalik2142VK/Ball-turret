@@ -11,7 +11,7 @@ namespace PlayLevel
         [SerializeField] private SpawnPointsRepository _spawnPointsRepository;
 
         [Header("Factories")]
-        [SerializeField] private BonusFactory _bonusFactory;
+        [SerializeField] private ViewableBonusFactory _bonusFactory;
         [SerializeField] private EnemyFactory _enemyFactory;
         [SerializeField] private BorderFactory _borderFactory;
 

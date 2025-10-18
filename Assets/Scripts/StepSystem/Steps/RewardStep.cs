@@ -3,9 +3,9 @@
 public class RewardStep : IStep, IEndPointStep
 {
     private IEndStep _endStep;
-    private IMenu _finishWindow;
+    private IWindow _finishWindow;
 
-    public RewardStep(IMenu finishWindow)
+    public RewardStep(IWindow finishWindow)
     {
         _finishWindow = finishWindow ?? throw new ArgumentNullException(nameof(finishWindow));
     }

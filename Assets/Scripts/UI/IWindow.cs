@@ -1,4 +1,4 @@
-﻿public interface IMenu
+﻿public interface IWindow
 {
     public void Enable();
 }

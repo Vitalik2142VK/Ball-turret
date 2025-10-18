@@ -15,7 +15,7 @@ namespace PlayLevel
         [SerializeField] private TurretConfigurator _turretConfigurator;
         [SerializeField] private StepSystemConfigurator _stepSystemConfigurator;
         [SerializeField] private ActorsConfigurator _actorsConfigurator;
-        [SerializeField] private BonusesPrefabConfigurator _bonusPrefabConfigurator;
+        [SerializeField] private BonusesConfigurator _bonusPrefabConfigurator;
         [SerializeField] private BulletConfigurator _bulletConfigurator;
         [SerializeField] private UIConfigurator _userInterfaceConfigurator;
 
@@ -72,7 +72,11 @@ namespace PlayLevel
             var actorsController = _actorsConfigurator.ActorsController;
 
             _stepSystemConfigurator.Configure(turret, _playerController, actorsController);
-            _bonusPrefabConfigurator.Configure();
+            _bonusPrefabConfigurator.Configure(actorsController);
+
+            var bonusReservator = _bonusPrefabConfigurator.BonusReservator;
+
+            _stepSystemConfigurator.ConfigureBonusActivationStep(bonusReservator);
 
             SavedPlayerData savesData = new SavedPlayerData();
             PlayerSaver playerSaver = new PlayerSaver(_player, savesData);
@@ -96,5 +100,10 @@ namespace PlayLevel
                 Console.GetException(ex);
             }
         }
+    }
+
+    public class TestLevelLoader : MonoBehaviour
+    {
+
     }
 }

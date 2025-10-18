@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(ShiftAnimatorUI))]
-public class MainMenu : MonoBehaviour, IMenu
+public class MainMenu : MonoBehaviour, IWindow
 {
     [SerializeField] private PlayMenu _playMenu;
     [SerializeField] private ImprovementMenu _improvementMenu;
@@ -58,7 +58,7 @@ public class MainMenu : MonoBehaviour, IMenu
         _animator.Show();
     }
 
-    private IEnumerator Close(Action<IMenu> openOtherMenu)
+    private IEnumerator Close(Action<IWindow> openOtherWindow)
     {
         _animator.Hide();
 
@@ -66,6 +66,6 @@ public class MainMenu : MonoBehaviour, IMenu
 
         gameObject.SetActive(false);
 
-        openOtherMenu?.Invoke(this);
+        openOtherWindow?.Invoke(this);
     }
 }

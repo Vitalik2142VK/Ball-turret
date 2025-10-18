@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(ScaleAnimatorUI))]
-public class PauseMenu : MonoBehaviour, IMenu
+public class PauseMenu : MonoBehaviour, IWindow
 {
     [SerializeField] private Pause _pause;
     [SerializeField] private SettingMenu _settingMenu;

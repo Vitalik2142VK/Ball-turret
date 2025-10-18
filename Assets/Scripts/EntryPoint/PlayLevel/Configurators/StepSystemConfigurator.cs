@@ -11,13 +11,14 @@ namespace PlayLevel
         [SerializeField] private MainMenuLoader _mainMenuLoader;
         [SerializeField] private FinishWindow _finishWindow;
         [SerializeField] private FreezingBonusActivatorCreator _freezerCreator;
+        [SerializeField] private OpenWindowButton _openReservedBonusesButton;
 
         private ITurret _turret;
         private PlayerController _playerController;
         private ActorsController _actorsController;
 
         private IDynamicEndStep _nextStepPrepareActors;
-        private PlayerShotStep _playerShotStep;
+        private PlayerStep _playerStep;
         private ResetComboStep _resetComboStep;
         private BonusActivationStep _bonusActivationStep;
         private PrepareActorsStep _prepareActorsStep;
@@ -50,12 +51,15 @@ namespace PlayLevel
 
             if (_freezerCreator == null)
                 throw new NullReferenceException(nameof(_freezerCreator));
+
+            if (_openReservedBonusesButton == null)
+                throw new NullReferenceException(nameof(_openReservedBonusesButton));
         }
 
         public void Configure(ITurret turret, PlayerController playerController, ActorsController actorsController)
         {
-            _playerController = playerController != null ? playerController : throw new NullReferenceException(nameof(playerController));
             _turret = turret ?? throw new NullReferenceException(nameof(turret));
+            _playerController = playerController != null ? playerController : throw new NullReferenceException(nameof(playerController));
             _actorsController = actorsController ?? throw new NullReferenceException(nameof(actorsController));
 
             CreateSteps();
@@ -70,20 +74,28 @@ namespace PlayLevel
             _freezerCreator.Initialize(_nextStepPrepareActors, _actorsFreezeStep);
         }
 
+        public void ConfigureBonusActivationStep(IBonusReservator bonusReservator)
+        {
+            if (bonusReservator == null)
+                throw new NullReferenceException(nameof(bonusReservator));
+
+            _bonusActivationStep.Initialize(bonusReservator);
+        }
+
         public void AddLearningStep(LearningStep learningStep)
         {
             if (learningStep == null)
                 throw new ArgumentNullException(nameof(learningStep));
 
-            AddNextStepToEndPoint(learningStep, _playerShotStep);
+            AddNextStepToEndPoint(learningStep, _playerStep);
             _cyclicalStep.SetLoopingStep(learningStep);
         }
 
         private void CreateSteps()
         {
-            _playerShotStep = new PlayerShotStep(_playerController);
+            _playerStep = new PlayerStep(_playerController, _actorsController);
             _resetComboStep = new ResetComboStep(_comboCounter);
-            _bonusActivationStep = new BonusActivationStep(_bulletCollector);
+            _bonusActivationStep = new BonusActivationStep(_bulletCollector, _openReservedBonusesButton);
             _prepareActorsStep = new PrepareActorsStep(_actorsController);
             _objectsMoveStep = new ActorsMoveStep(_actorsController);
             _enemyAttackStep = new EnemyAttackStep(_actorsController);
@@ -94,6 +106,7 @@ namespace PlayLevel
 
         private void ConnectSteps()
         {
+            AddNextStepToEndPoint(_playerStep, _resetComboStep);
             AddNextStepToEndPoint(_turret, _resetComboStep);
             AddNextStepToEndPoint(_resetComboStep, _bonusActivationStep);
             AddNextStepToEndPoint(_bonusActivationStep, _prepareActorsStep);
@@ -113,7 +126,7 @@ namespace PlayLevel
             DynamicNextStep dynamicNextStep = new DynamicNextStep(_stepSystem);
             _cyclicalStep = new CyclicalStep(_actorsController, dynamicNextStep, _turret);
             _cyclicalStep.SetStartStep(_prepareActorsStep);
-            _cyclicalStep.SetLoopingStep(_playerShotStep);
+            _cyclicalStep.SetLoopingStep(_playerStep);
             _cyclicalStep.SetFinishStep(_rewardStep);
 
             AddNextStepToEndPoint(_removeActorsStep, _cyclicalStep);

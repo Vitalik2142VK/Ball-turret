@@ -7,6 +7,8 @@ public class ChoiceBonusActivatorCreator : MonoBehaviour, IBonusActivatorCreator
     [SerializeField] private BonusChoiceMenu _bonusChoiceMenu;
     [SerializeField, SerializeIterface(typeof(IBonusCreator))] private GameObject[] _randomBonusCreators;
 
+    private ChoiceBonusActivator _bonusActivators;
+
     private void OnValidate()
     {
         if (_bonusChoiceMenu == null)
@@ -22,10 +24,15 @@ public class ChoiceBonusActivatorCreator : MonoBehaviour, IBonusActivatorCreator
 
     public IBonusActivator Create()
     {
-        var bonusPrefabs = _randomBonusCreators.Select(bc => bc.GetComponent<IBonusCreator>().Create()).ToArray();
-        BonusRandomizer bonusRandomizer = new BonusRandomizer(bonusPrefabs);
-        _bonusChoiceMenu.Initialize(bonusRandomizer);
+        if (_bonusActivators == null)
+        {
+            var bonusPrefabs = _randomBonusCreators.Select(bc => bc.GetComponent<IBonusCreator>().Create()).ToArray();
+            BonusRandomizer bonusRandomizer = new BonusRandomizer(bonusPrefabs);
+            _bonusActivators = new ChoiceBonusActivator(_bonusChoiceMenu, bonusRandomizer);
+        }
 
-        return new ChoiceBonusActivator(_bonusChoiceMenu);
+        return _bonusActivators;
     }
+
+    public void SetBonusReservator(IBonusReservator bonusReservator) => _bonusActivators.SetBonusReservator(bonusReservator);
 }

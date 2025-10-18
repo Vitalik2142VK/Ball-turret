@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,6 +12,7 @@ public class ScrollAdapter : MonoBehaviour
     private ICameraAdapter _cameraAdapter;
     private ScrollRect _scrollRect;
     private RectTransform _contentRectTransform;
+    private Vector2 _defaultCellSize;
 
     private void OnValidate()
     {
@@ -38,6 +40,8 @@ public class ScrollAdapter : MonoBehaviour
             throw new InvalidOperationException($"The main camera does not contain the component: <{nameof(ICameraAdapter)}>");
 
         _cameraAdapter = cameraAdapter;
+        _defaultCellSize = _gridLayoutGroup.cellSize;
+
     }
 
     private void OnEnable()
@@ -60,6 +64,7 @@ public class ScrollAdapter : MonoBehaviour
     {
         if (_cameraAdapter.IsPortraitOrientation)
             EstablishVerticalSettings();
+
         else
             EstablishHorisontalSettings();
     }
@@ -71,8 +76,10 @@ public class ScrollAdapter : MonoBehaviour
         _contentSizeFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
         _contentSizeFitter.horizontalFit = ContentSizeFitter.FitMode.Unconstrained;
         _gridLayoutGroup.startAxis = GridLayoutGroup.Axis.Horizontal;
-        var rect = _contentRectTransform.rect;
-        rect.height = 0f;
+        _gridLayoutGroup.constraint = GridLayoutGroup.Constraint.Flexible;
+
+        UpdateCellSize();
+        StartCoroutine(UpdateSize());
     }
 
     private void EstablishHorisontalSettings()
@@ -82,6 +89,31 @@ public class ScrollAdapter : MonoBehaviour
         _contentSizeFitter.verticalFit = ContentSizeFitter.FitMode.Unconstrained;
         _contentSizeFitter.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
         _gridLayoutGroup.startAxis = GridLayoutGroup.Axis.Vertical;
-        var rect = _contentRectTransform.rect;
+        _gridLayoutGroup.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
+        _gridLayoutGroup.constraintCount = _contentRectTransform.childCount;
+
+        UpdateCellSize();
+        StartCoroutine(UpdateSize());
+    }
+
+    private IEnumerator UpdateSize()
+    {
+        yield return null;
+
+        _contentRectTransform.offsetMin = Vector2.zero;
+        _contentRectTransform.offsetMax = Vector2.zero;
+
+        UpdateCellSize();
+    }
+
+    private void UpdateCellSize()
+    {
+        float heightRect = _contentRectTransform.rect.size.y;
+        float heightByAnchors = (_contentRectTransform.anchorMax.y - _contentRectTransform.anchorMin.y) * heightRect - _gridLayoutGroup.padding.bottom;
+
+        if (_defaultCellSize.y < heightByAnchors)
+            _gridLayoutGroup.cellSize = _defaultCellSize;
+        else
+            _gridLayoutGroup.cellSize = new Vector2(heightByAnchors, heightByAnchors);
     }
 }

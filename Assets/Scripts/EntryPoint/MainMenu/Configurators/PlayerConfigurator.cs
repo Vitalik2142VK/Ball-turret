@@ -42,7 +42,7 @@ namespace MainMenuSpace
             if (_cachedUser.IsSaved == false)
             {
                 IPlayer player = _playerLoader.Load();
-                _cachedUser.SetUser(player);
+                _cachedUser.SetPlayer(player);
             }
 
             PlayerSaver = new PlayerSaver(_cachedUser, _savedData);

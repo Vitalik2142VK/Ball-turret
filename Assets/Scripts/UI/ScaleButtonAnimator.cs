@@ -12,12 +12,16 @@ public class ScaleButtonAnimator : MonoBehaviour, IButtonAnimator
     private Vector2 _defaultSize;
     private Vector2 _clickSize;
 
+    public bool IsPressed { get; private set; }
+
     private void Awake()
     {
         _rectTransform = GetComponent<RectTransform>();
 
         _defaultSize = _rectTransform.localScale;
         _clickSize = new Vector2(_defaultSize.x - _clickSizeValue, _defaultSize.y - _clickSizeValue);
+
+        IsPressed = true;
     }
 
     private void OnDestroy()
@@ -32,6 +36,8 @@ public class ScaleButtonAnimator : MonoBehaviour, IButtonAnimator
         _animation = _rectTransform.DOScale(_clickSize, _duration).From(_defaultSize)
             .SetUpdate(true)
             .Play();
+
+        IsPressed = true;
     }
 
     public void PressOut()
@@ -46,6 +52,8 @@ public class ScaleButtonAnimator : MonoBehaviour, IButtonAnimator
         _animation = _rectTransform.DOScale(_defaultSize, _duration).From(_clickSize)
             .SetUpdate(true)
             .Play();
+
+        IsPressed = false;
     }
 
     private void KillCurrentAnimation()

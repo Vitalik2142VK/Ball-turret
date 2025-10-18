@@ -7,12 +7,15 @@ namespace PlayLevel
     {
         [SerializeField] private Pause _pause;
         [SerializeField] private PauseMenu _pauseMenu;
-        [SerializeField] private PauseButton _pauseButton;
+        [SerializeField] private OpenWindowButton _pauseButton;
         [SerializeField] private FinishWindow _finishWindow;
         [SerializeField] private SettingMenu _settingMenu;
         [SerializeField] private AudioSetting _audioSetting;
+        [SerializeField] private BonusChoiceMenu _bonusChoiceMenu;
 
         private AdsViewer _adsViewer;
+
+        public OpenWindowButton PauseButton => _pauseButton;
 
         private void OnValidate()
         {
@@ -33,6 +36,9 @@ namespace PlayLevel
 
             if (_audioSetting == null)
                 throw new NullReferenceException(nameof(_audioSetting));
+
+            if (_bonusChoiceMenu == null)
+                throw new NullReferenceException(nameof(_bonusChoiceMenu));
         }
 
         public void Configure(IStep closeSceneStep, IRewardIssuer reward, IWinStatus winStatus)
@@ -55,6 +61,7 @@ namespace PlayLevel
             _finishWindow.Initialize(reward, _adsViewer, winStatus);
             _settingMenu.Initialize(_audioSetting);
             _pause.Initialize(_pauseButton);
+            _bonusChoiceMenu.Initialize();
         }
     }
 }

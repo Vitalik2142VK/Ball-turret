@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
 
-public class BonusFactory : MonoBehaviour, IActorFactory
+public class BonusFactory
 {
-    private Dictionary<string, IViewableBonusCreator> _creators;
+    private Dictionary<string, IBonusCreator> _creators;
 
-    public void Initialize(IEnumerable<IViewableBonusCreator> bonusCreators)
+    public BonusFactory(IEnumerable<IBonusCreator> bonusCreators)
     {
         if (bonusCreators == null)
             throw new ArgumentNullException(nameof(bonusCreators));
@@ -14,7 +13,15 @@ public class BonusFactory : MonoBehaviour, IActorFactory
         _creators = CreateDictionaryPrefabs(bonusCreators);
     }
 
-    public bool IsCanCreate(string nameTypeActor)
+    public IBonus Create(string nameTypeActor)
+    {
+        if (IsCanCreate(nameTypeActor) == false)
+            throw new ArgumentOutOfRangeException(nameof(nameTypeActor));
+
+        return _creators[nameTypeActor].Create();
+    }
+
+    private bool IsCanCreate(string nameTypeActor)
     {
         if (nameTypeActor == null || nameTypeActor.Length == 0)
             throw new ArgumentOutOfRangeException(nameof(nameTypeActor));
@@ -22,27 +29,16 @@ public class BonusFactory : MonoBehaviour, IActorFactory
         return _creators.ContainsKey(nameTypeActor);
     }
 
-    public IActor Create(string nameTypeActor)
+    private Dictionary<string, IBonusCreator> CreateDictionaryPrefabs(IEnumerable<IBonusCreator> bonusPrefabs)
     {
-        if (IsCanCreate(nameTypeActor) == false)
-            throw new ArgumentOutOfRangeException(nameof(nameTypeActor));
-
-        var creator = _creators[nameTypeActor];
-        IBonus bonus = creator.Create();
-
-        return creator.Create(bonus);
-    }
-
-    private Dictionary<string, IViewableBonusCreator> CreateDictionaryPrefabs(IEnumerable<IViewableBonusCreator> bonusPrefabs)
-    {
-        Dictionary<string, IViewableBonusCreator> prefabs = new Dictionary<string, IViewableBonusCreator>();
+        Dictionary<string, IBonusCreator> creators = new Dictionary<string, IBonusCreator>();
 
         foreach (var creator in bonusPrefabs)
-            prefabs.Add(creator.Name, creator);
+            creators.Add(creator.Name, creator);
 
-        if (prefabs.Count == 0)
+        if (creators.Count == 0)
             throw new InvalidOperationException($"{nameof(bonusPrefabs)} should not be empty");
 
-        return prefabs;
+        return creators;
     }
 }

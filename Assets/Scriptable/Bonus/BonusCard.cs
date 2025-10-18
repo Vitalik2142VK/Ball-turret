@@ -15,10 +15,16 @@ namespace Scriptable
         [SerializeField] private string _ruDescription;
         [SerializeField] private string _trDescription;
 
+        [Header("Optional")]
+        [SerializeField] private BonusView _view;
+
         private Dictionary<Language, string> _descriptions;
 
         private void OnValidate()
         {
+            if (_view != null)
+                _name = _view.name;
+
             if (_icon == null)
                 throw new NullReferenceException(nameof(_icon));
 
@@ -33,7 +39,7 @@ namespace Scriptable
         }
 
         public Sprite Icon => _icon;
-        public string Name => throw new NotImplementedException();
+        public string Name => _name;
 
         public string GetDescription(Language language)
         {

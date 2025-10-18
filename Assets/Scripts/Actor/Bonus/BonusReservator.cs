@@ -4,29 +4,29 @@ using System.Linq;
 
 public class BonusReservator : IBonusReservator
 {
-    private Dictionary<string, IBonus> _reservedBonuses;
+    private const int MaxCountBonuses = 3;
+
+    private Dictionary<string, IReservatedBonus> _reservedBonuses;
 
     public BonusReservator(IEnumerable<IBonus> reservedBonuses)
     {
         if (reservedBonuses == null)
             throw new ArgumentNullException(nameof(reservedBonuses));
 
-        _reservedBonuses = new Dictionary<string, IBonus>();
+        _reservedBonuses = CreateDictionaryPrefabs(reservedBonuses);
 
-        foreach (var bonus in reservedBonuses)
-            _reservedBonuses.Add(bonus.BonusCard.Name, bonus);
-
-        if (_reservedBonuses.Count == 0)
-            throw new ArgumentException($"IEnumerable '{nameof(reservedBonuses)}' is empty");
+        IsBonusActivated = false;
     }
 
-    public IEnumerable<IBonusCard> GetBonusCards()
-    {
-        return _reservedBonuses.Values.Select(b => b.BonusCard).ToArray();
-    }
+    public bool IsBonusActivated { get; private set; }
+
+    public IEnumerable<IReservatedBonus> Bonuses => _reservedBonuses.Values.ToArray();
 
     public void ActivateBonus(string nameBonus)
     {
+        if (IsBonusActivated)
+            return;
+
         if (string.IsNullOrEmpty(nameBonus))
             throw new ArgumentException(nameof(nameBonus));
 
@@ -34,6 +34,48 @@ public class BonusReservator : IBonusReservator
             throw new InvalidOperationException($"'{_reservedBonuses}' does not contain key '{nameof(nameBonus)}'");
 
         var bonus = _reservedBonuses[nameBonus];
-        bonus.Activate();
+
+        if (bonus.IsCanActivate)
+        {
+            bonus.Activate();
+
+            IsBonusActivated = true;
+        }
+    }
+
+    public bool TryAddBonusByName(string nameBonus)
+    {
+        if (string.IsNullOrEmpty(nameBonus))
+            throw new ArgumentException(nameof(nameBonus));
+
+        if (_reservedBonuses.ContainsKey(nameBonus) == false)
+            return false;
+
+        var bonus = _reservedBonuses[nameBonus];
+
+        return bonus.TryAddBonus(nameBonus);
+    }
+
+    public void Update()
+    {
+        IsBonusActivated = false;
+    }
+
+    private Dictionary<string, IReservatedBonus> CreateDictionaryPrefabs(IEnumerable<IBonus> reservedBonuses)
+    {
+        Dictionary<string, IReservatedBonus> result = new Dictionary<string, IReservatedBonus>();
+
+        ReservatedBonus reservatedBonus;
+
+        foreach (var bonus in reservedBonuses)
+        {
+            reservatedBonus = new ReservatedBonus(bonus, MaxCountBonuses);
+            result.Add(bonus.BonusCard.Name, reservatedBonus);
+        }
+
+        if (result.Count == 0)
+            throw new ArgumentException($"IEnumerable '{nameof(reservedBonuses)}' is empty");
+
+        return result;
     }
 }

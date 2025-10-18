@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(HiderUI), typeof(ShiftAnimatorUI))]
 public class LeaderboardWindow : MonoBehaviour
 {
-    private IMenu _previousMenu;
+    private IWindow _previousWindow;
     private IAnimatorUI _animator;
     private HiderUI _hiderUI;
 
@@ -24,9 +24,9 @@ public class LeaderboardWindow : MonoBehaviour
         StartCoroutine(WaitClosure());
     }
 
-    public void Open(IMenu previousMenu)
+    public void Open(IWindow previousWindow)
     {
-        _previousMenu = previousMenu ?? throw new ArgumentNullException(nameof(previousMenu));
+        _previousWindow = previousWindow ?? throw new ArgumentNullException(nameof(previousWindow));
 
         gameObject.SetActive(true);
         _hiderUI.Disable();
@@ -38,6 +38,6 @@ public class LeaderboardWindow : MonoBehaviour
         yield return _animator.GetYieldAnimation();
 
         gameObject.SetActive(false);
-        _previousMenu.Enable();
+        _previousWindow.Enable();
     }
 }

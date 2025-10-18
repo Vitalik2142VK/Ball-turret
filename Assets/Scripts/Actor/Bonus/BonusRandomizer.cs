@@ -21,7 +21,7 @@ public class BonusRandomizer : IBonusRandomizer
 
     public IEnumerable<IBonus> GetBonuses(int countBonuses)
     {
-        if (countBonuses < _prefabs.Count)
+        if (countBonuses > _prefabs.Count)
             throw new ArgumentOutOfRangeException(nameof(countBonuses));
 
         if (countBonuses == _prefabs.Count)

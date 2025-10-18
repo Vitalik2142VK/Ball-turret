@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class FinishWindow : MonoBehaviour, IMenu
+public class FinishWindow : MonoBehaviour, IWindow
 {
     private readonly string AddCoinRewardId = RewardTypes.AddCoin;
 

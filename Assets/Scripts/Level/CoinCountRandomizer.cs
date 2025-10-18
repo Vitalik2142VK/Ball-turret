@@ -2,26 +2,32 @@
 
 public class CoinCountRandomizer : ICoinCountRandomizer
 {
-    private const int DefaultCoinsWin = 1000;
-    private const int DefaultCoinsWave = 100;
+    private const float DefaultCoinsRewardCoefficient = 3f;
     private const float DefaultCoefficient = 1f;
     private const float CoinCoefficientByLevel = 0.3f;
-    private const int DefaultCoinsWinOffset = 100;
+    private const int DefaultCoinsWin = 1000;
+    private const int DefaultCoinsWave = 100;
+    private const int DefaultCoinsWinOffset = 200;
     private const int DefaultCoinsWaveOffset = 50;
 
     private Random _random;
+    private float _coinsForRewardAdCoefficient;
     private int _currenMaxLevelPlayer;
 
-    public CoinCountRandomizer(int currentMaxLevelPlayer = 0)
+    public CoinCountRandomizer(int currentMaxLevelPlayer = 0, float coinsForRewardAdCoefficient = DefaultCoinsRewardCoefficient)
     {
         if (currentMaxLevelPlayer < 0)
             throw new ArgumentOutOfRangeException(nameof(currentMaxLevelPlayer));
 
+        if (DefaultCoefficient < 0)
+            throw new ArgumentOutOfRangeException(nameof(coinsForRewardAdCoefficient));
+
         _random = new Random();
         _currenMaxLevelPlayer = currentMaxLevelPlayer;
+        _coinsForRewardAdCoefficient = coinsForRewardAdCoefficient;
     }
 
-    public int CountCoinsForRewardAd => DefaultCoinsWin * _currenMaxLevelPlayer;
+    public int CountCoinsForRewardAd => (int)(GetCountCoinsForWin(_currenMaxLevelPlayer) * _coinsForRewardAdCoefficient);
 
     public int GetCountCoinsForWin(int indexLevel)
     {

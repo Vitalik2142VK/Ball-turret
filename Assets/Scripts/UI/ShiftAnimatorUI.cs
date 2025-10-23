@@ -13,6 +13,7 @@ public class ShiftAnimatorUI : MonoBehaviour, IAnimatorUI
     private CanvasGroup _canvasGroup;
     private RectTransform _rectTransform;
     private Sequence _animation;
+    private TweenController _controller;
     private Vector2 _defaultPosition;
     private ShiftUI _shift;
 
@@ -22,6 +23,7 @@ public class ShiftAnimatorUI : MonoBehaviour, IAnimatorUI
         _rectTransform = GetComponent<RectTransform>();
 
         _defaultPosition = _rectTransform.anchoredPosition;
+        _controller = new TweenController();
         _shift = new ShiftUI();
     }
 
@@ -33,50 +35,38 @@ public class ShiftAnimatorUI : MonoBehaviour, IAnimatorUI
 
     private void OnDestroy()
     {
-        KillCurrentAnimation();
+        _controller.KillCurrentAnimation();
     }
+
+    public YieldInstruction GetYieldAnimation() => _controller.GetYieldAnimation();
 
     public void Show()
     {
-        KillCurrentAnimation();
+        _controller.KillCurrentAnimation();
 
         Vector2 startShift = _shift.GetStartPosition(_direction, _defaultPosition, _offsetShift);
         _animation = DOTween.Sequence();
         _animation
             .Append(_canvasGroup.DOFade(EnableValue, _duration).From(0))
             .Join(_rectTransform.DOAnchorPos(_defaultPosition, _duration).From(startShift))
-            .SetUpdate(true)
-            .Play();
+            .SetUpdate(true);
 
+        _controller.PlayAnimation(_animation);
         _canvasGroup.blocksRaycasts = true;
     }
 
     public void Hide()
     {
-        KillCurrentAnimation();
+        _controller.KillCurrentAnimation();
 
         Vector2 startShift = _shift.GetStartPosition(_direction, _defaultPosition, _offsetShift);
         _animation = DOTween.Sequence();
         _animation
             .Append(_canvasGroup.DOFade(0, _duration).From(EnableValue))
             .Join(_rectTransform.DOAnchorPos(startShift, _duration).From(_defaultPosition))
-            .SetUpdate(true)
-            .Play();
+            .SetUpdate(true);
 
+        _controller.PlayAnimation(_animation);
         _canvasGroup.blocksRaycasts = false;
-    }
-
-    public YieldInstruction GetYieldAnimation()
-    {
-        if (_animation == null || _animation.active == false)
-            throw new System.InvalidOperationException("Animation was not launched");
-
-        return _animation.WaitForCompletion();
-    }
-
-    private void KillCurrentAnimation()
-    {
-        if (_animation != null && _animation.active)
-            _animation.Kill();
     }
 }

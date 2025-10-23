@@ -61,7 +61,7 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
-  m_Mesh: {fileID: 1379806433689925699, guid: 29b3a46e84c617041ad06aa80f202aa6, type: 3}
+  m_Mesh: {fileID: 1949739908053751428, guid: d8d8b840bf4d30a4f875e2bc42fb0b29, type: 3}
 --- !u!54 &5256669468765415979
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -197,7 +197,7 @@ GameObject:
   - component: {fileID: 5422272169200432986}
   - component: {fileID: 7257916324997712338}
   - component: {fileID: 5121062024155880605}
-  m_Layer: 9
+  m_Layer: 8
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -293,7 +293,7 @@ GameObject:
   - component: {fileID: 3592495823127739078}
   - component: {fileID: 5682481307662714098}
   - component: {fileID: 280848334584336610}
-  m_Layer: 9
+  m_Layer: 8
   m_Name: Shadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -368,7 +368,7 @@ GameObject:
   - component: {fileID: 5360457902502012881}
   - component: {fileID: 1105771146961403666}
   - component: {fileID: 787553213995885082}
-  m_Layer: 9
+  m_Layer: 8
   m_Name: Shadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -453,6 +453,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: DestroyBorder
       objectReference: {fileID: 0}
+    - target: {fileID: 6293394892414493971, guid: 109c57f935577134d81af5639a965444, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 6447228562714763177, guid: 109c57f935577134d81af5639a965444, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -516,9 +520,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4282048628630363031}
     m_Modifications:
+    - target: {fileID: 46199696344132830, guid: 3721e2744746e7442b6184a7ea733550, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 405520729275437379, guid: 3721e2744746e7442b6184a7ea733550, type: 3}
       propertyPath: m_Name
       value: HealthBar
+      objectReference: {fileID: 0}
+    - target: {fileID: 405520729275437379, guid: 3721e2744746e7442b6184a7ea733550, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 1345415277295747122, guid: 3721e2744746e7442b6184a7ea733550, type: 3}
       propertyPath: m_AnchorMax.x
@@ -527,6 +539,10 @@ PrefabInstance:
     - target: {fileID: 1345415277295747122, guid: 3721e2744746e7442b6184a7ea733550, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1542025232658802183, guid: 3721e2744746e7442b6184a7ea733550, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 1978433817992008288, guid: 3721e2744746e7442b6184a7ea733550, type: 3}
       propertyPath: m_Pivot.x
@@ -620,6 +636,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2697939334518627205, guid: 3721e2744746e7442b6184a7ea733550, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6657418671532006008, guid: 3721e2744746e7442b6184a7ea733550, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -652,6 +676,10 @@ PrefabInstance:
     - target: {fileID: 6038113389048379930, guid: 5f8e4f57b102bce4ba87f121801f79b9, type: 3}
       propertyPath: m_Name
       value: HitBorder
+      objectReference: {fileID: 0}
+    - target: {fileID: 6038113389048379930, guid: 5f8e4f57b102bce4ba87f121801f79b9, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 7857145616568998677, guid: 5f8e4f57b102bce4ba87f121801f79b9, type: 3}
       propertyPath: m_LocalPosition.x
@@ -763,6 +791,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 29b3a46e84c617041ad06aa80f202aa6, type: 3}
       propertyPath: m_Name
       value: StoneFence_45
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 29b3a46e84c617041ad06aa80f202aa6, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

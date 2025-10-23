@@ -1,5 +1,6 @@
 ﻿using DG.Tweening;
 using UnityEngine;
+using UnityEngine.InputSystem.XR;
 
 [RequireComponent(typeof(RectTransform), typeof(CanvasGroup))]
 public class ScaleAnimatorUI : MonoBehaviour, IAnimatorUI
@@ -12,6 +13,7 @@ public class ScaleAnimatorUI : MonoBehaviour, IAnimatorUI
     private CanvasGroup _canvasGroup;
     private RectTransform _rectTransform;
     private Sequence _animation;
+    private TweenController _controller;
     private Vector2 _defaultSize;
     private Vector2 _startSize;
 
@@ -21,6 +23,7 @@ public class ScaleAnimatorUI : MonoBehaviour, IAnimatorUI
         _rectTransform = GetComponent<RectTransform>();
 
         _defaultSize = _rectTransform.localScale;
+        _controller = new TweenController();
         _startSize = new Vector2(_defaultSize.x * _startSizeValue, _defaultSize.y * _startSizeValue);
     }
 
@@ -32,48 +35,36 @@ public class ScaleAnimatorUI : MonoBehaviour, IAnimatorUI
 
     private void OnDestroy()
     {
-        KillCurrentAnimation();
+        _controller.KillCurrentAnimation();
     }
+
+    public YieldInstruction GetYieldAnimation() => _controller.GetYieldAnimation();
 
     public void Show()
     {
-        KillCurrentAnimation();
+        _controller.KillCurrentAnimation();
 
         _animation = DOTween.Sequence();
         _animation
             .Append(_canvasGroup.DOFade(EnableValue, _duration).From(0))
             .Join(_rectTransform.DOScale(_defaultSize, _duration).From(_startSize))
-            .SetUpdate(true)
-            .Play();
+            .SetUpdate(true);
 
+        _controller.PlayAnimation(_animation);
         _canvasGroup.blocksRaycasts = true;
     }
 
     public void Hide()
     {
-        KillCurrentAnimation();
+        _controller.KillCurrentAnimation();
 
         _animation = DOTween.Sequence();
         _animation
             .Append(_canvasGroup.DOFade(0, _duration).From(EnableValue))
             .Join(_rectTransform.DOScale(_startSize, _duration).From(_defaultSize))
-            .SetUpdate(true)
-            .Play();
+            .SetUpdate(true);
 
+        _controller.PlayAnimation(_animation);
         _canvasGroup.blocksRaycasts = false;
-    }
-
-    public YieldInstruction GetYieldAnimation()
-    {
-        if (_animation == null || _animation.active == false)
-            throw new System.InvalidOperationException("Animation was not launched");
-
-        return _animation.WaitForCompletion();
-    }
-
-    private void KillCurrentAnimation()
-    {
-        if (_animation != null && _animation.active)
-            _animation.Kill();
     }
 }

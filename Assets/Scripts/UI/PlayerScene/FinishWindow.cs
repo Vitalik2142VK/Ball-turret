@@ -8,6 +8,7 @@ public class FinishWindow : MonoBehaviour, IWindow
     private readonly string AddCoinRewardId = RewardTypes.AddCoin;
 
     [SerializeField] private Pause _pause;
+    [SerializeField] private Button _finishButton;
     [SerializeField] private Button _videoViewingButton;
     [SerializeField] private TextMeshProUGUI _wonBonusCoinsText;
     [SerializeField] private TextMeshProUGUI _wonCoinsText;
@@ -22,6 +23,9 @@ public class FinishWindow : MonoBehaviour, IWindow
     {
         if (_pause == null)
             throw new ArgumentNullException(nameof(_pause));
+
+        if (_finishButton == null)
+            throw new ArgumentNullException(nameof(_finishButton));
 
         if (_videoViewingButton == null)
             throw new ArgumentNullException(nameof(_videoViewingButton));
@@ -54,12 +58,18 @@ public class FinishWindow : MonoBehaviour, IWindow
     {
         if (_adsViewer != null)
             _adsViewer.RewardAdViewed += OnAddBonusReward;
+
+        _finishButton.onClick.AddListener(OnContinue);
+        _videoViewingButton.onClick.AddListener(OnWatchVideo);
     }
 
     private void OnDisable()
     {
         if (_adsViewer != null)
             _adsViewer.RewardAdViewed -= OnAddBonusReward;
+
+        _finishButton.onClick.RemoveListener(OnContinue);
+        _videoViewingButton.onClick.RemoveListener(OnWatchVideo);
     }
 
     public void Initialize(IRewardIssuer rewardIssuer, IAdsViewer adsViewer, IWinStatus winStatus)
@@ -99,13 +109,13 @@ public class FinishWindow : MonoBehaviour, IWindow
         }       
     }
 
-    public void OnWatchVideo()
+    private void OnWatchVideo()
     {
         _videoViewingButton.interactable = false;
         _adsViewer.ShowRewardAd(AddCoinRewardId);
     }
 
-    public void OnContinue()
+    private void OnContinue()
     {
         if (_rewardIssuer.IsRewardIssued == false)
             _rewardIssuer.PayReward();

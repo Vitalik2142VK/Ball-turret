@@ -39,10 +39,6 @@ public class ChoiceBonusActivator : IBonusActivator
         var bonus = _choiceBonusMenu.SelectedBonus;
 
         if (_bonusReservator == null || _bonusReservator.TryAddBonusByName(bonus.BonusCard.Name) == false)
-        {
             bonus.Activate();
-
-            UnityEngine.Debug.Log($"Bonus.Activate");
-        }
     }
 }

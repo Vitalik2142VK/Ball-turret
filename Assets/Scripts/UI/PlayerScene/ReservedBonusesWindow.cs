@@ -11,6 +11,7 @@ public class ReservedBonusesWindow : MonoBehaviour, IWindow
     [SerializeField] private ContentSizeFitter _content;
     [SerializeField] private Button _closeButton;
     [SerializeField] private OpenWindowButton _openButton;
+    [SerializeField] private GameObject _raycastBlock;
 
     private IAnimatorUI _animator;
     private IBonusReservator _bonusReservator;
@@ -29,12 +30,17 @@ public class ReservedBonusesWindow : MonoBehaviour, IWindow
 
         if (_openButton == null)
             throw new NullReferenceException(nameof(_openButton));
+
+        if (_raycastBlock == null)
+            throw new NullReferenceException(nameof(_raycastBlock));
     }
 
     private void Awake()
     {
         _animator = GetComponent<IAnimatorUI>();
         gameObject.SetActive(false);
+        _raycastBlock.SetActive(false);
+        _openButton.gameObject.SetActive(false);
     }
 
     private void OnEnable()
@@ -89,6 +95,7 @@ public class ReservedBonusesWindow : MonoBehaviour, IWindow
     public void Enable()
     {
         gameObject.SetActive(true);
+        _raycastBlock.SetActive(true);
         _animator.Show();
     }
 
@@ -111,6 +118,7 @@ public class ReservedBonusesWindow : MonoBehaviour, IWindow
         yield return _animator.GetYieldAnimation();
 
         gameObject.SetActive(false);
+        _raycastBlock.SetActive(false);
 
         if (_bonusReservator.IsBonusActivated == false)
             _openButton.Show();

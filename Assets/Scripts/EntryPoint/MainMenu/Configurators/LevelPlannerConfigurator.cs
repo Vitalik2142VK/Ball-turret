@@ -39,8 +39,9 @@ namespace MainMenuSpace
 
             _endlessLevelPlanner.Initialize();
 
+            float coinsForRewardAdCoefficient = 3.5f;
             int achievedLevelIndex = player.AchievedLevelIndex;
-            CoinCountRandomizer = new CoinCountRandomizer(achievedLevelIndex);
+            CoinCountRandomizer = new CoinCountRandomizer(achievedLevelIndex, coinsForRewardAdCoefficient);
             LevelFactory = new LevelFactory(_endlessLevelPlanner, _levelActorsPlanners, CoinCountRandomizer, _healthCoefficient, achievedLevelIndex);
         }
 

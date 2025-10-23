@@ -21,6 +21,7 @@ public class BonusReservator : IBonusReservator
     public bool IsBonusActivated { get; private set; }
 
     public IEnumerable<IReservatedBonus> Bonuses => _reservedBonuses.Values.ToArray();
+    public bool HasBonuses => IsCanActivateBonuses();
 
     public void ActivateBonus(string nameBonus)
     {
@@ -77,5 +78,14 @@ public class BonusReservator : IBonusReservator
             throw new ArgumentException($"IEnumerable '{nameof(reservedBonuses)}' is empty");
 
         return result;
+    }
+
+    private bool IsCanActivateBonuses() 
+    {
+        foreach(var bonus in _reservedBonuses.Values)
+            if (bonus.IsCanActivate)
+                return true;
+
+        return false;
     }
 }

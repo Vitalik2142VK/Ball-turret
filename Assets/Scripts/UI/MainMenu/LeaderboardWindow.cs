@@ -20,6 +20,7 @@ public class LeaderboardWindow : MonoBehaviour
     public void OnClose()
     {
         _hiderUI.Enable();
+        _animator.Hide();
 
         StartCoroutine(WaitClosure());
     }

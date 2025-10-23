@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,15 +9,12 @@ public class AddCoinsButton : MonoBehaviour
     private readonly string RewardId = RewardTypes.AddCoin;
 
     [SerializeField] private TextMeshProUGUI _addCoinsText;
-    [SerializeField, Min(0.02f)] private float _timeWaitUpdate = 0.5f;
 
     private IPlayerSaver _playerSaver;
     private IWallet _wallet;
     private IAdsViewer _adsViewer;
     private ICoinCountRandomizer _coinCountRandomizer;
-    private WaitForSeconds _waitUpdateEnable;
-    private Button _videoViewingButton;
-    private Coroutine _videoViewingCoroutine;
+    private Button _button;
 
     public event Action VideoViewed;
 
@@ -30,16 +26,19 @@ public class AddCoinsButton : MonoBehaviour
 
     private void Awake()
     {
-        _videoViewingButton = GetComponent<Button>();
-        _videoViewingButton.interactable = false;
-
-        _waitUpdateEnable = new WaitForSeconds(_timeWaitUpdate);
+        _button = GetComponent<Button>();
+        _button.interactable = false;
     }
 
     private void OnEnable()
     {
         if (_adsViewer != null)
+        {
             _adsViewer.RewardAdViewed += OnAddCoins;
+            _adsViewer.TimerRewardAdReseted += OnUpdateInteractable;
+        }
+
+        _button.onClick.AddListener(OnWatchVideo);
 
         if (_coinCountRandomizer != null)
             _addCoinsText.text = _coinCountRandomizer.CountCoinsForRewardAd.ToString();
@@ -50,19 +49,18 @@ public class AddCoinsButton : MonoBehaviour
         if (_adsViewer == null)
             return;
 
-        _videoViewingButton.interactable = _adsViewer.CanShowRewardAd;
-
-        if (_adsViewer.CanShowRewardAd == false)
-            _videoViewingCoroutine = StartCoroutine(UpdateInteractable());
+        _button.interactable = _adsViewer.CanShowRewardAd;
     }
 
     private void OnDisable()
     {
         if (_adsViewer != null)
+        {
             _adsViewer.RewardAdViewed -= OnAddCoins;
+            _adsViewer.TimerRewardAdReseted -= OnUpdateInteractable;
+        }
 
-        if (_videoViewingCoroutine != null)
-            StopCoroutine(_videoViewingCoroutine);
+        _button.onClick.RemoveListener(OnWatchVideo);
     }
 
     public void Initialize(IPlayerSaver playerSaver, IWallet wallet, IAdsViewer adsViewer, ICoinCountRandomizer coinCountRandomizer)
@@ -73,9 +71,9 @@ public class AddCoinsButton : MonoBehaviour
         _coinCountRandomizer = coinCountRandomizer ?? throw new ArgumentNullException(nameof(coinCountRandomizer));
     }
 
-    public void OnWatchVideo()
+    private void OnWatchVideo()
     {
-        _videoViewingButton.interactable = false;
+        _button.interactable = false;
         _adsViewer.ShowRewardAd(RewardId);
     }
 
@@ -87,16 +85,12 @@ public class AddCoinsButton : MonoBehaviour
         int countCoins = _coinCountRandomizer.CountCoinsForRewardAd;
         _wallet.AddCoins(countCoins);
         _playerSaver.Save();
-        _videoViewingCoroutine = StartCoroutine(UpdateInteractable());
 
         VideoViewed?.Invoke();
     }
 
-    private IEnumerator UpdateInteractable()
+    private void OnUpdateInteractable()
     {
-        while (_adsViewer.CanShowRewardAd == false)
-            yield return _waitUpdateEnable;
-
-        _videoViewingButton.interactable = _adsViewer.CanShowRewardAd;
+        _button.interactable = _adsViewer.CanShowRewardAd;
     }
 }

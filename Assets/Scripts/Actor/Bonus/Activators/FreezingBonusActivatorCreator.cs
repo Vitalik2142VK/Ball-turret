@@ -3,8 +3,16 @@ using UnityEngine;
 
 public class FreezingBonusActivatorCreator : MonoBehaviour, IBonusActivatorCreator
 {
+    [SerializeField] private FreezingView _freezingView;
+
     private IDynamicEndStep _nextStepPrepareActors;
     private ActorsFreezeStep _freezeStep;
+
+    private void OnValidate()
+    {
+        if (_freezingView == null)
+            throw new NullReferenceException(nameof(_freezingView));
+    }
 
     public void Initialize(IDynamicEndStep nextStepPrepareActors, ActorsFreezeStep freezeStep)
     {
@@ -14,6 +22,6 @@ public class FreezingBonusActivatorCreator : MonoBehaviour, IBonusActivatorCreat
 
     public IBonusActivator Create()
     {
-        return new FreezingBonusActivator(_nextStepPrepareActors, _freezeStep);
+        return new FreezingBonusActivator(_nextStepPrepareActors, _freezingView, _freezeStep);
     }
 }

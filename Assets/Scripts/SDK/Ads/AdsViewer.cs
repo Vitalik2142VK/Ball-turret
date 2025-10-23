@@ -16,6 +16,7 @@ public class AdsViewer : MonoBehaviour, IAdsViewer
     private bool _canShowFullScreen;
 
     public event Action<string> RewardAdViewed;
+    public event Action TimerRewardAdReseted;
 
     public bool IsAdsDisable => _disableAdsPurchase.IsPurchased;
 
@@ -102,5 +103,6 @@ public class AdsViewer : MonoBehaviour, IAdsViewer
         yield return _waitNextAdRewardAd;
 
         CanShowRewardAd = true;
+        TimerRewardAdReseted?.Invoke();
     }
 }

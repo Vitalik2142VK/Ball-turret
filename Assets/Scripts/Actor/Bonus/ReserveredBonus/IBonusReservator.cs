@@ -2,8 +2,9 @@
 
 public interface IBonusReservator
 {
-    public bool IsBonusActivated { get; }
     public IEnumerable<IReservatedBonus> Bonuses { get; } 
+    public bool IsBonusActivated { get; }
+    public bool HasBonuses { get; }
 
     public void ActivateBonus(string nameBonus);
 

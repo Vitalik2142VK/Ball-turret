@@ -32,12 +32,14 @@ public class DisableAdsButton : MonoBehaviour
     private void OnEnable()
     {
         _button.onClick.AddListener(OnPayPurchase);
+
         YG2.onPurchaseSuccess += OnRemove;
     }
 
     private void OnDisable()
     {
         _button.onClick.RemoveListener(OnPayPurchase);
+
         YG2.onPurchaseSuccess -= OnRemove;
     }
 
@@ -49,8 +51,10 @@ public class DisableAdsButton : MonoBehaviour
         if (purchasesStorage.TryGetPurchase(out IPlayerPurchase playerPurchase, DisableAdsPurchseId) == false)
             throw new ArgumentOutOfRangeException($"Purchase with id '{DisableAdsPurchseId}' not found.");
 
-        if (playerPurchase.IsPurchased)
+        if (playerPurchase.IsPurchased == false)
             Enable(playerPurchase);
+        else
+            Destroy(gameObject);
     }
 
     private void Enable(IPlayerPurchase playerPurchase)
@@ -68,8 +72,6 @@ public class DisableAdsButton : MonoBehaviour
         if (string.IsNullOrEmpty(currencyImageURL))
             _currencyImage.Load(currencyImageURL);
 #endif
-
-        gameObject.SetActive(false);
     }
 
     private void OnPayPurchase()

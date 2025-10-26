@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LearningStage : MonoBehaviour
+public class LearningStage : MonoBehaviour, ILearningStage
 {
     [SerializeField] private TextInputSimulator _textInputSimulator;
     [SerializeField] private TextLocalizer[] _localizedTexts;
@@ -11,8 +11,12 @@ public class LearningStage : MonoBehaviour
     private Queue<TextLocalizer> _texts;
     private TextLocalizer _currentTextLocalizer;
 
+
+    public int NumberStages => _localizedTexts.Length;
     public int WaveNumber => _waveNumber;
     public bool IsActive => gameObject.activeSelf;
+
+    public int CurrentStage { get; private set; }
 
     private void OnValidate()
     {
@@ -35,6 +39,8 @@ public class LearningStage : MonoBehaviour
             _texts = new Queue<TextLocalizer>(_localizedTexts);
         else
             _currentTextLocalizer = _localizedTexts[0];
+
+        CurrentStage = 0;
     }
 
     public void Enable()
@@ -70,5 +76,7 @@ public class LearningStage : MonoBehaviour
         }
 
         _textInputSimulator.SimulateInput(_currentTextLocalizer.Text);
+
+        CurrentStage++;
     }
 }

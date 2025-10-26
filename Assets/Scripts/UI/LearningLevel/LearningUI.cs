@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class LearningUI : MonoBehaviour, ILearningUI, IPointerClickHandler
 {
-    [SerializeField] private LearningStage[] _learningStages;
+    [SerializeField, SerializeIterface(typeof(ILearningStage))] private GameObject[] _learningStages;
 
-    private Queue<LearningStage> _stages;
-    private LearningStage _currentStage;
+    private Queue<ILearningStage> _stages;
+    private ILearningStage _currentStage;
 
     public int WaveNumberStage => _currentStage.WaveNumber;
     public bool IsProcess => gameObject.activeSelf;
@@ -22,7 +23,8 @@ public class LearningUI : MonoBehaviour, ILearningUI, IPointerClickHandler
 
     private void Awake()
     {
-        _stages = new Queue<LearningStage>(_learningStages);
+        var stages = _learningStages.Select(go => go.GetComponent<ILearningStage>()).ToArray();
+        _stages = new Queue<ILearningStage>(stages);
         _currentStage = _stages.Dequeue();
         gameObject.SetActive(false);
     }

@@ -78,9 +78,9 @@ public class Bullet : MonoBehaviour, IBullet
         return _gatherer.TryGetBonuses(out bonuses);
     }
 
-    private void OnApplyDamage(GameObject gameObject)
+    private void OnApplyDamage(Collider collider)
     {
-        if (gameObject.TryGetComponent(out IDamagedObject damagedObject))
+        if (collider.TryGetComponent(out IDamagedObject damagedObject))
         {
             _damage.Apply(damagedObject);
             _comboCounter.Count();

@@ -21,13 +21,13 @@ public class BulletTrajectoryPoint : IBulletTrajectoryPoint
 
     public Vector3 Velocity { get; set; }
     public Vector3 Position { get; set; }
-    public GameObject CollidedGameObject { get; private set; }
+    public Collider CollidedObject { get; private set; }
     public int Frame { get; private set; }
     public bool IsThereCollision { get; private set; }
 
-    public void SetCollidedGameObject(GameObject collidedGameObject)
+    public void SetCollidedObject(Collider collidedObject)
     {
-        CollidedGameObject = collidedGameObject != null ? collidedGameObject : throw new ArgumentNullException(nameof(collidedGameObject));
+        CollidedObject = collidedObject != null ? collidedObject : throw new ArgumentNullException(nameof(collidedObject));
         IsThereCollision = true;
     }
 }

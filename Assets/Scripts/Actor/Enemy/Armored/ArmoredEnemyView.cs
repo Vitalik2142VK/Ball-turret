@@ -8,6 +8,7 @@ public class ArmoredEnemyView : MonoBehaviour, IEnemyView, IArmoredObject
     private IEnemyView _enemyView;
 
     public string Name => _enemyView.Name;
+    public bool IsActive => _enemyView.IsActive;
 
     private void Awake()
     {

@@ -5,5 +5,7 @@
     public int WaveNumber { get; }
     public bool IsActive { get; }
 
+    public void Initialize();
+
     public void HandleСlick();
 }

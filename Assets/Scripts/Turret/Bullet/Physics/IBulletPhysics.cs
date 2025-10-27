@@ -3,7 +3,7 @@ using UnityEngine;
 
 public interface IBulletPhysics
 {
-    public event Action<GameObject> EnteredCollision;
+    public event Action<Collider> EnteredCollision;
 
     public void Activate();
 

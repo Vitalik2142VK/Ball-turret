@@ -16,4 +16,6 @@ public class BonusTrigger : MonoBehaviour
     {
         Activated?.Invoke(other);
     }
+
+    public void SetAvtive(bool isActive) => gameObject.SetActive(isActive);
 }

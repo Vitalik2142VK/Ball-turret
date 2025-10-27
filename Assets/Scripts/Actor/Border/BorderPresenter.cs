@@ -11,8 +11,6 @@ public class BorderPresenter : IBorderPresenter
         _view = view ?? throw new ArgumentNullException(nameof(view));
     }
 
-    public void Destroy() => _view.Destroy();
-
     public void FinishDeath() => _model.Destroy();
 
     public void PrepareDeleted(IRemovedActorsCollector removedCollector)
@@ -32,6 +30,14 @@ public class BorderPresenter : IBorderPresenter
         _model.IgnoreArmor(damage);
 
         ChoosePlayView();
+    }
+
+    public void Destroy()
+    {
+        if (_view.IsActive)
+            _view.PlayDead();
+        else
+            _view.Destroy();
     }
 
     private void ChoosePlayView()

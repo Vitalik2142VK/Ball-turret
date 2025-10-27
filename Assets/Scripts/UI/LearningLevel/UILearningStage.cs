@@ -4,7 +4,7 @@ using UnityEngine;
 public class UILearningStage : MonoBehaviour, ILearningStage
 {
     [SerializeField, SerializeIterface(typeof(ILearningStage))] private GameObject _learningStageGameObject;
-    [SerializeField] private StageElements[] _stageElements;
+    [SerializeField] private StageElements[] _stages;
 
     private ILearningStage _learningStage;
 
@@ -14,12 +14,9 @@ public class UILearningStage : MonoBehaviour, ILearningStage
             throw new NullReferenceException(nameof(_learningStageGameObject));
 
         ILearningStage learningStage = _learningStageGameObject.GetComponent<ILearningStage>();
-        _stageElements = new StageElements[learningStage.NumberStages];
-    }
 
-    private void Awake()
-    {
-        _learningStage = _learningStageGameObject.GetComponent<ILearningStage>();
+        if (_stages == null || _stages.Length != learningStage.NumberStages)
+            _stages = new StageElements[learningStage.NumberStages];
     }
 
     public int NumberStages => _learningStage.NumberStages;
@@ -27,33 +24,61 @@ public class UILearningStage : MonoBehaviour, ILearningStage
     public int WaveNumber => _learningStage.WaveNumber;
     public bool IsActive => _learningStage.IsActive;
 
+    public void Initialize()
+    {
+        _learningStage = _learningStageGameObject.GetComponent<ILearningStage>();
+        _learningStage.Initialize();
+
+        foreach (var stage in _stages)
+            stage.SetActiveElements(false);
+
+        gameObject.SetActive(false);
+    }
+
     public void Enable()
     {
         gameObject.SetActive(true);
 
         _learningStage.Enable();
-        ShowStageUI();
+        SetActiveStage(true);
     }
 
     public void HandleСlick()
     {
+        SetActiveStage(false);
+
         _learningStage.HandleСlick();
+
+        if (IsActive)
+            SetActiveStage(true);
+        else
+            gameObject.SetActive(false);
     }
 
-    private void ShowStageUI()
+    private void SetActiveStage(bool isAvtive)
     {
+        if (CurrentStage > NumberStages)
+            throw new InvalidOperationException($"{nameof(CurrentStage)} cannot be greater than {nameof(NumberStages)}");
+
         int index = CurrentStage - 1;
 
-        StageElements stage = _stageElements[index];
+        StageElements stage = _stages[index];
 
-        if (stage.UIs.Length > 0)
-            foreach (var ui in stage.UIs)
-                ui.gameObject.SetActive(true);
+        if (stage.IsEmpty == false)
+            stage.SetActiveElements(isAvtive);
     }
 
     [Serializable]
-    private struct StageElements
+    private class StageElements
     {
-        public RectTransform[] UIs;
+        [SerializeField] private RectTransform[] _elements;
+
+        public bool IsEmpty => _elements.Length == 0;
+
+        public void SetActiveElements(bool isActive)
+        {
+            foreach (var element in _elements)
+                element.gameObject.SetActive(isActive);
+        }
     }
 }

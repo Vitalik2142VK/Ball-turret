@@ -1,5 +1,7 @@
 ﻿public interface IEnemyView : IActorView, IDamagedObject, IDebuffReceiver
 {
+    public bool IsActive { get; }
+
     public void PrepareAttacked(IAttackingEnemiesCollector attackingCollector);
 
     public void PlayDamage();

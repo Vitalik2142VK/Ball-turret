@@ -11,6 +11,8 @@ public class BonusPresenter : IBonusPresenter
         _view = view ?? throw new ArgumentNullException(nameof(view));
     }
 
+    public void Destroy() => _view.Destroy();
+
     public void HandleBonusGatherer(IBonusGatherer bonusGathering)
     {
         _model.HandleBonusGatherer(bonusGathering);
@@ -24,6 +26,4 @@ public class BonusPresenter : IBonusPresenter
     {
         removedCollector.Add(_model);
     }
-
-    public void Destroy() => _view.Destroy();
 }

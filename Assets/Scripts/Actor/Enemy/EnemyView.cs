@@ -17,11 +17,11 @@ public class EnemyView : MonoBehaviour, IEnemyView
     private IEnemyAnimator _enemyAnimator;
     private IActorAudioController _audioController;
     private Collider _collider;
-    private bool _isAlive;
 
     public string Name => name;
 
     public IDebuffHandler DebuffReceiver { get; private set; }
+    public bool IsActive { get; private set; }
 
     private void OnValidate()
     {
@@ -82,7 +82,7 @@ public class EnemyView : MonoBehaviour, IEnemyView
 
     public void PlayDead()
     {
-        if (_isAlive)
+        if (IsActive)
             StartCoroutine(StartDeadProcess());
     }
 
@@ -93,7 +93,7 @@ public class EnemyView : MonoBehaviour, IEnemyView
 
     private void SetEnable(bool isEnable)
     {
-        _isAlive = isEnable;
+        IsActive = isEnable;
         _collider.enabled = isEnable;
         _meshRenderer.enabled = isEnable;
         _shadow.gameObject.SetActive(isEnable);
@@ -101,7 +101,7 @@ public class EnemyView : MonoBehaviour, IEnemyView
 
     private IEnumerator StartDeadProcess()
     {
-        _isAlive = false;
+        IsActive = false;
         _collider.enabled = false;
         _enemyAnimator.PlayDead();
 
@@ -112,7 +112,7 @@ public class EnemyView : MonoBehaviour, IEnemyView
         _audioController.PlayDead();
         _particleController.PlayDead();
 
-        yield return new WaitForSeconds(_particleController.TimeLiveDeadParticles);
+        yield return new WaitForSeconds(_particleController.TimeLiveDeadParticle);
 
         _presenter.Destroy();
     }

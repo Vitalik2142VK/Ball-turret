@@ -13,9 +13,6 @@ public class EnemyPresenter : IEnemyPresenter
 
     public void AddDebuff(IDebuff debaff) => _model.AddDebuff(debaff);
 
-    public void Destroy() => _view.Destroy();
-
-    public void FinishDeath() => _model.Destroy();
 
     public void PrepareDeleted(IRemovedActorsCollector removedCollector)
     {
@@ -41,5 +38,13 @@ public class EnemyPresenter : IEnemyPresenter
     {
         var isMovement = _model.IsFinished == false;
         _view.PlayMovement(isMovement);
+    }
+
+    public void Destroy()
+    {
+        if (_view.IsActive)
+            _view.PlayDead();
+        else
+            _view.Destroy();
     }
 }

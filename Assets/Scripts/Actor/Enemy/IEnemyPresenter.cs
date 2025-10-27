@@ -10,7 +10,5 @@
 
     public void Move();
 
-    public void FinishDeath();
-
     public void Destroy();
 }

@@ -11,7 +11,6 @@ public class LearningStage : MonoBehaviour, ILearningStage
     private Queue<TextLocalizer> _texts;
     private TextLocalizer _currentTextLocalizer;
 
-
     public int NumberStages => _localizedTexts.Length;
     public int WaveNumber => _waveNumber;
     public bool IsActive => gameObject.activeSelf;
@@ -31,16 +30,16 @@ public class LearningStage : MonoBehaviour, ILearningStage
                 throw new InvalidOperationException(nameof(_localizedTexts));
     }
 
-    private void Awake()
+    public void Initialize()
     {
-        gameObject.SetActive(false);
-
         if (_localizedTexts.Length > 1)
             _texts = new Queue<TextLocalizer>(_localizedTexts);
         else
             _currentTextLocalizer = _localizedTexts[0];
 
         CurrentStage = 0;
+
+        gameObject.SetActive(false);
     }
 
     public void Enable()

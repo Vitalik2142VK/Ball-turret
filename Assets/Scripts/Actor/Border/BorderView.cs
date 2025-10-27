@@ -18,6 +18,8 @@ public class BorderView : MonoBehaviour, IBorderView
 
     public string Name => name;
 
+    public bool IsActive { get; private set; }
+
     private void OnValidate()
     {
         if (_particleController == null)
@@ -42,6 +44,7 @@ public class BorderView : MonoBehaviour, IBorderView
 
     private void OnEnable()
     {
+        IsActive = true;
         _collider.enabled = true;
     }
 
@@ -66,7 +69,8 @@ public class BorderView : MonoBehaviour, IBorderView
 
     public void PlayDead()
     {
-        StartCoroutine(StartDeadProcess());
+        if (IsActive)
+            StartCoroutine(StartDeadProcess());
     }
 
     public void Destroy()
@@ -76,6 +80,7 @@ public class BorderView : MonoBehaviour, IBorderView
 
     private IEnumerator StartDeadProcess()
     {
+        IsActive = false;
         _collider.enabled = false;
         _borderAnimator.PlayDead();
         _particleController.PlayDead();
@@ -83,10 +88,10 @@ public class BorderView : MonoBehaviour, IBorderView
 
         float timeWait;
 
-        if (_borderAnimator.TimeCompletionDeath >= _particleController.TimeLiveDeadParticles)
+        if (_borderAnimator.TimeCompletionDeath >= _particleController.TimeLiveDeadParticle)
             timeWait = _borderAnimator.TimeCompletionDeath;
-        else 
-            timeWait = _particleController.TimeLiveDeadParticles;
+        else
+            timeWait = _particleController.TimeLiveDeadParticle;
 
         yield return new WaitForSeconds(timeWait);
 

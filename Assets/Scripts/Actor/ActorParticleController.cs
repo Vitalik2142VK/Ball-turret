@@ -6,7 +6,7 @@ public class ActorParticleController : MonoBehaviour
     [SerializeField] private ParticleSystem _hit;
     [SerializeField] private ParticleSystem _dead;
 
-    public float TimeLiveDeadParticles { get; private set; }
+    public float TimeLiveDeadParticle { get; private set; }
 
     private void OnValidate()
     {
@@ -23,6 +23,6 @@ public class ActorParticleController : MonoBehaviour
     {
         _dead.Play();
         var main = _dead.main;
-        TimeLiveDeadParticles = main.duration + main.startLifetime.constantMax;
+        TimeLiveDeadParticle = main.duration + main.startLifetime.constantMax;
     }
 }

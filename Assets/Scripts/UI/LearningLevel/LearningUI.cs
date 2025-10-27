@@ -24,6 +24,10 @@ public class LearningUI : MonoBehaviour, ILearningUI, IPointerClickHandler
     private void Awake()
     {
         var stages = _learningStages.Select(go => go.GetComponent<ILearningStage>()).ToArray();
+
+        foreach (var stage in stages)
+            stage.Initialize();
+
         _stages = new Queue<ILearningStage>(stages);
         _currentStage = _stages.Dequeue();
         gameObject.SetActive(false);

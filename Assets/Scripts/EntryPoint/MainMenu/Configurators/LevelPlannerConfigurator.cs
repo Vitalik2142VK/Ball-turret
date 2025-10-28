@@ -32,10 +32,13 @@ namespace MainMenuSpace
                 throw new InvalidOperationException(nameof(_levelActorsPlanners));
         }
 
-        public void Configure(IPlayer player)
+        public void Configure(IPlayer player, ICoinAdder coinAdder)
         {
             if (player == null)
                 throw new ArgumentNullException(nameof(player));
+
+            if (coinAdder == null)
+                throw new ArgumentNullException(nameof(coinAdder));
 
             _endlessLevelPlanner.Initialize();
 
@@ -43,6 +46,8 @@ namespace MainMenuSpace
             int achievedLevelIndex = player.AchievedLevelIndex;
             CoinCountRandomizer = new CoinCountRandomizer(achievedLevelIndex, coinsForRewardAdCoefficient);
             LevelFactory = new LevelFactory(_endlessLevelPlanner, _levelActorsPlanners, CoinCountRandomizer, _healthCoefficient, achievedLevelIndex);
+
+            coinAdder.SetCoinsAdsView(CoinCountRandomizer.CountCoinsForRewardAd);
         }
 
         public void LoadLearningLevel()

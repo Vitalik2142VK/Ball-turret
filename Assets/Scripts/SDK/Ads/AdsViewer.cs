@@ -15,7 +15,8 @@ public class AdsViewer : MonoBehaviour, IAdsViewer
     private WaitForSeconds _waitNextAdRewardAd;
     private bool _canShowFullScreen;
 
-    public event Action<string> RewardAdViewed;
+    public event Action<string> RewardAdShowed;
+    public event Action ShowCompleted;
     public event Action TimerRewardAdReseted;
 
     public bool IsAdsDisable => _disableAdsPurchase.IsPurchased;
@@ -71,8 +72,14 @@ public class AdsViewer : MonoBehaviour, IAdsViewer
 
     public void ShowRewardAd(string rewardId)
     {
+        if (rewardId == null)
+            throw new ArgumentNullException(nameof(rewardId));
+
         if (CanShowRewardAd)
+        {
+            YG2.RewardedAdvShow(rewardId);
             StartCoroutine(WaitShowRewardAd(rewardId));
+        }
     }
 
     private void OnConfirmReward(string rewardId)
@@ -80,7 +87,8 @@ public class AdsViewer : MonoBehaviour, IAdsViewer
         if (string.IsNullOrEmpty(rewardId))
             throw new ArgumentOutOfRangeException(nameof(rewardId));
 
-        RewardAdViewed?.Invoke(rewardId);
+        RewardAdShowed?.Invoke(rewardId);
+        ShowCompleted?.Invoke();
     }
 
     private IEnumerator WaitShowFullScreen()
@@ -97,8 +105,6 @@ public class AdsViewer : MonoBehaviour, IAdsViewer
     private IEnumerator WaitShowRewardAd(string rewardId)
     {
         CanShowRewardAd = false;
-
-        YG2.RewardedAdvShow(rewardId);
 
         yield return _waitNextAdRewardAd;
 

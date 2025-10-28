@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 099a4bc78e4679d46b6d4e4e77209302, type: 3}
-  m_Name: Easy_13_WavePlanner
+  m_Name: b_Easy_9_WavePlanner
   m_EditorClassIdentifier: 
   _lines:
   - _actors:

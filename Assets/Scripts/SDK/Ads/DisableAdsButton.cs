@@ -71,6 +71,8 @@ public class DisableAdsButton : MonoBehaviour
 
         if (string.IsNullOrEmpty(currencyImageURL))
             _currencyImage.Load(currencyImageURL);
+
+        Console.GetLog($"CurrencyImageURL == '{currencyImageURL}'")
 #endif
     }
 

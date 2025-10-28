@@ -10,18 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 099a4bc78e4679d46b6d4e4e77209302, type: 3}
-  m_Name: Easy_5_WavePlanner
+  m_Name: b_Easy_3_WavePlanner
   m_EditorClassIdentifier: 
   _lines:
   - _actors:
     - {fileID: 0}
-    - {fileID: 6972228633587166588, guid: bc277cfd70e12ec42aff8149012548b8, type: 3}
+    - {fileID: 4310026885427982331, guid: a2cc5a0f368930444be5124d8a13f7c1, type: 3}
     - {fileID: 0}
   - _actors:
-    - {fileID: 4310026885427982331, guid: a2cc5a0f368930444be5124d8a13f7c1, type: 3}
-    - {fileID: 7690942557182064526, guid: 8c2be75b0d25c44408ce1522d55ba06c, type: 3}
-    - {fileID: 4310026885427982331, guid: a2cc5a0f368930444be5124d8a13f7c1, type: 3}
-  - _actors:
-    - {fileID: 7690942557182064526, guid: 8c2be75b0d25c44408ce1522d55ba06c, type: 3}
     - {fileID: 0}
     - {fileID: 7690942557182064526, guid: 8c2be75b0d25c44408ce1522d55ba06c, type: 3}
+    - {fileID: 0}
+  - _actors:
+    - {fileID: 7690942557182064526, guid: d685e3a53e220ac4d8c6f852b47fb287, type: 3}
+    - {fileID: 0}
+    - {fileID: 7690942557182064526, guid: dd8f0079402d59f4eaebdd4f84bf131b, type: 3}

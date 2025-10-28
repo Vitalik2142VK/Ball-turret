@@ -8,11 +8,13 @@ public class GroupSizeAdapter : MonoBehaviour
     private ICameraAdapter _cameraAdapter;
     private RectTransform _rectTransform;
     private GridLayoutGroup _gridLayoutGroup;
+    private int _countElementsGroup;
 
     private void Awake()
     {
         _rectTransform = GetComponent<RectTransform>();
         _gridLayoutGroup = GetComponent<GridLayoutGroup>();
+        _countElementsGroup = transform.childCount;
 
         Camera camera = Camera.main;
 
@@ -26,7 +28,6 @@ public class GroupSizeAdapter : MonoBehaviour
     {
         _cameraAdapter.OrientationChanged += OnUpdateCellSize;
     }
-
 
     private void Start()
     {
@@ -47,13 +48,14 @@ public class GroupSizeAdapter : MonoBehaviour
     {
         yield return null;
 
-        _rectTransform.offsetMin = Vector2.zero;
-        _rectTransform.offsetMax = Vector2.zero;
+        float widthRect = (_rectTransform.rect.size.x - _gridLayoutGroup.padding.right - _gridLayoutGroup.padding.left);
+        float heightRect = (_rectTransform.rect.size.y - _gridLayoutGroup.padding.bottom - _gridLayoutGroup.padding.top);
+        var startAxis = _gridLayoutGroup.startAxis;
 
-        float widthRect = _rectTransform.rect.size.x;
-        float heightRect = _rectTransform.rect.size.y;
-        float widthByAnchors = (_rectTransform.anchorMax.x - _rectTransform.anchorMin.x) * widthRect - _gridLayoutGroup.padding.right - _gridLayoutGroup.padding.left;
-        float heightByAnchors = (_rectTransform.anchorMax.y - _rectTransform.anchorMin.y) * heightRect - _gridLayoutGroup.padding.bottom - _gridLayoutGroup.padding.top;
+        if (startAxis == GridLayoutGroup.Axis.Vertical)
+            heightRect /= _countElementsGroup;
+        else
+            widthRect /= _countElementsGroup;
 
         _gridLayoutGroup.cellSize = new Vector2(widthRect, heightRect);
     }

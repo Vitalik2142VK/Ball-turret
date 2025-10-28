@@ -12,8 +12,7 @@ namespace PlayLevel
         [SerializeField] private SettingMenu _settingMenu;
         [SerializeField] private AudioSetting _audioSetting;
         [SerializeField] private BonusChoiceMenu _bonusChoiceMenu;
-
-        private AdsViewer _adsViewer;
+        [SerializeField] private AddCoinsButton _addCoinsButton;
 
         public OpenWindowButton PauseButton => _pauseButton;
 
@@ -39,9 +38,12 @@ namespace PlayLevel
 
             if (_bonusChoiceMenu == null)
                 throw new NullReferenceException(nameof(_bonusChoiceMenu));
+
+            if (_addCoinsButton == null)
+                throw new NullReferenceException(nameof(_addCoinsButton));
         }
 
-        public void Configure(IStep closeSceneStep, IRewardIssuer reward, IWinStatus winStatus)
+        public void Configure(IStep closeSceneStep, IRewardIssuer reward, IWinStatus winStatus, ICoinAdder coinAdder, IAdsViewer adsViewer)
         {
             if (closeSceneStep == null)
                 throw new ArgumentNullException(nameof(closeSceneStep));
@@ -52,16 +54,21 @@ namespace PlayLevel
             if (winStatus == null)
                 throw new ArgumentNullException(nameof(winStatus));
 
-            _adsViewer = FindAnyObjectByType<AdsViewer>();
+            if (coinAdder == null)
+                throw new ArgumentNullException(nameof(coinAdder));
 
-            if (_adsViewer == null)
-                throw new NullReferenceException(nameof(_adsViewer));
+            if (adsViewer == null)
+                throw new ArgumentNullException(nameof(adsViewer));
 
             _pauseMenu.Initialize(closeSceneStep);
-            _finishWindow.Initialize(reward, _adsViewer, winStatus);
+            _finishWindow.Initialize(reward, adsViewer, winStatus);
             _settingMenu.Initialize(_audioSetting);
             _pause.Initialize(_pauseButton);
             _bonusChoiceMenu.Initialize();
+            _addCoinsButton.Initialize(coinAdder, adsViewer);
+
+            var adsViewButton = _addCoinsButton.GetComponent<AdsViewButton>();
+            adsViewButton.Initialize(adsViewer, RewardTypes.AddCoin);
         }
     }
 }

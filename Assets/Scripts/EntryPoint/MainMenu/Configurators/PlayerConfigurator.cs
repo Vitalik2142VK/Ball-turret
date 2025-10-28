@@ -15,6 +15,7 @@ namespace MainMenuSpace
         private ISavedPlayerData _savedData;
 
         public IPlayerSaver PlayerSaver { get; private set; }
+        public ICoinAdder CoinAdder { get; private set; }
 
         public ITurretImprover TurretImprover => _cachedUser.TurretImprover;
         public IPlayer Player => _cachedUser;
@@ -34,8 +35,11 @@ namespace MainMenuSpace
                 throw new NullReferenceException(nameof(_purchasesHandler));
         }
 
-        public void Configure()
+        public void Configure(AdsViewer adsViewer)
         {
+            if (adsViewer == null)
+                throw new ArgumentNullException(nameof(adsViewer));
+
             _savedData ??= new SavedPlayerData();
             _playerLoader = new PlayerLoader(_improvementTurretAttributes, _savedData);
 
@@ -49,6 +53,10 @@ namespace MainMenuSpace
 
             _authPlayer.Authorize();
             _purchasesHandler.LoadPurchases(_cachedUser.PurchasesStorage);
+
+            adsViewer.Initialize(_cachedUser.PurchasesStorage);
+
+            CoinAdder = new CoinAdder(PlayerSaver, _cachedUser.Wallet, adsViewer);
         }
 
         //todo Remove on realise

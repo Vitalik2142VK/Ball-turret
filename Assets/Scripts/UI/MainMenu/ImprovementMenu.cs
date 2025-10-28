@@ -10,7 +10,6 @@ public class ImprovementMenu : MonoBehaviour
 
     [SerializeField] private ImprovementChoiseButton[] _improvementChoiseButtons;
     [SerializeField] private Button _updateButton;
-    [SerializeField] private AddCoinsButton _addCoinsButton;
 
     private IWindow _previousWindow;
     private IGamePayTransaction _selectTransaction;
@@ -29,9 +28,6 @@ public class ImprovementMenu : MonoBehaviour
 
         if (_updateButton == null)
             throw new NullReferenceException(nameof(_updateButton));
-
-        if (_addCoinsButton == null)
-            throw new NullReferenceException(nameof(_addCoinsButton));
     }
 
     private void Awake()
@@ -47,7 +43,10 @@ public class ImprovementMenu : MonoBehaviour
         foreach (var button in _improvementChoiseButtons)
             button.Clicked += OnSelectButton;
 
-        _addCoinsButton.VideoViewed += OnUpdateMenu;
+        if (_adsViewer != null)
+            _adsViewer.ShowCompleted += OnUpdateMenu;
+
+        _updateButton.onClick.AddListener(OnImprove);
     }
 
     private void OnDisable()
@@ -55,7 +54,10 @@ public class ImprovementMenu : MonoBehaviour
         foreach (var button in _improvementChoiseButtons)
             button.Clicked -= OnSelectButton;
 
-        _addCoinsButton.VideoViewed -= OnUpdateMenu;
+        if (_adsViewer != null)
+            _adsViewer.ShowCompleted -= OnUpdateMenu;
+
+        _updateButton.onClick.RemoveListener(OnImprove);
     }
 
     public void Initialize(IImprovementShop improvementShop, IAdsViewer adsViewer)
@@ -78,7 +80,15 @@ public class ImprovementMenu : MonoBehaviour
         StartCoroutine(WaitOpening());
     }
 
-    public void OnImprove()
+    public void OnClose()
+    {
+        _updateButton.interactable = false;
+        _animator.Hide();
+
+        StartCoroutine(WaitClosure());
+    }
+
+    private void OnImprove()
     {
         if (_improvementShop.TryMakeTransaction(_selectTransaction))
             foreach (var button in _improvementChoiseButtons)
@@ -90,20 +100,9 @@ public class ImprovementMenu : MonoBehaviour
         _updateButton.interactable = false;
     }
 
-    public void OnClose()
-    {
-        _updateButton.interactable = false;
-        _animator.Hide();
-
-        StartCoroutine(WaitClosure());
-    }
-
     private void OnSelectButton(IGamePayTransaction gamePayTransaction, int index)
     {
-        if (gamePayTransaction == null)
-            throw new ArgumentNullException(nameof(gamePayTransaction));
-
-        _selectTransaction = gamePayTransaction;
+        _selectTransaction = gamePayTransaction ?? throw new ArgumentNullException(nameof(gamePayTransaction));
 
         ImprovementChoiseButton button;
 

@@ -1366,6 +1366,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e233a4baccc21da4b818f2fdf069aad0, type: 2}
   - {fileID: 11400000, guid: 73f0fedebe0da7745a97425f0345db8d, type: 2}
   - {fileID: 11400000, guid: 6a1611870f902bf408c158bea97018ac, type: 2}
+  - {fileID: 11400000, guid: 24a2a5b8f181faa46951e8db60dc7a85, type: 2}
+  - {fileID: 11400000, guid: ae1ca72afbf2ccd46928d7ce2b326132, type: 2}
+  - {fileID: 11400000, guid: 6a8331c9f2bf17041931298c8d99ab87, type: 2}
+  - {fileID: 11400000, guid: bcaf8c81e4dd984418148cdd2fdb8643, type: 2}
+  - {fileID: 11400000, guid: 8fcd13d9999c869498a16d7c44f4dc9b, type: 2}
   _waveMask: 30
 --- !u!4 &396053446
 Transform:
@@ -3624,6 +3629,7 @@ MonoBehaviour:
   _waves:
   - {fileID: 11400000, guid: 057d7df3eb8961d45b5e2b7cf3cd4431, type: 2}
   - {fileID: 11400000, guid: cfee56c314af45c44a7c0aa5df3d2a04, type: 2}
+  - {fileID: 11400000, guid: 72bfaa3e73199ca4ebfd55fc2d39de9e, type: 2}
   - {fileID: 11400000, guid: 288c973fceaa9a6458d8847b92038746, type: 2}
   _waveMask: 1
 --- !u!4 &1126281947
@@ -4845,12 +4851,18 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 19b30388c69fff2488ffcb1aad681043, type: 2}
   - {fileID: 11400000, guid: 44c06deb10c6d23468413db23555f14e, type: 2}
   - {fileID: 11400000, guid: c7f63f3a767aa7341853db6e48cc410a, type: 2}
+  - {fileID: 11400000, guid: 95211401a5d7b774181f77a4bdb1a90a, type: 2}
+  - {fileID: 11400000, guid: bb593669d7e95e547bb709d2caa46d1b, type: 2}
+  - {fileID: 11400000, guid: fe10f473e8b14d14f87e24b2d2d9ed92, type: 2}
   - {fileID: 11400000, guid: d050427592727524c929bfe64de404d1, type: 2}
   - {fileID: 11400000, guid: 5ebab2c76471d194c84d3f0fe4e2e051, type: 2}
   - {fileID: 11400000, guid: 982778ee3d8c0a1429a4dc8fbc40290e, type: 2}
   - {fileID: 11400000, guid: 2d6222efba3cf97469cb2ec6feaa4c52, type: 2}
+  - {fileID: 11400000, guid: 745a87612b82a92408555ef3043a7eaa, type: 2}
+  - {fileID: 11400000, guid: 7b4e02e18d941b74ca147f85a04dc7b1, type: 2}
   - {fileID: 11400000, guid: a44769f84c8430247a474eb313adf421, type: 2}
   - {fileID: 11400000, guid: ecc6c729eb0082646a96481510d56da1, type: 2}
+  - {fileID: 11400000, guid: f9125a4770f3a3b4f867791fce2d1a6e, type: 2}
   _waveMask: 14
 --- !u!4 &1449222413
 Transform:
@@ -5792,7 +5804,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 293fbb0d0c01f9844a74a1c53ea93715, type: 2}
   - {fileID: 11400000, guid: 1b82e4f48eb81324ab142d14d0e1a27e, type: 2}
   - {fileID: 11400000, guid: cb451f26589dd0f49993f6ea01e44681, type: 2}
-  _healthCoefficient: 0.7
+  - {fileID: 11400000, guid: 39a2fd1c700cb544fb357ea48accaaf4, type: 2}
+  - {fileID: 11400000, guid: ec1bbc9fd06175748af4b5625188f56e, type: 2}
+  - {fileID: 11400000, guid: 8aff131fc4d70664dbdede9d888973c9, type: 2}
+  - {fileID: 11400000, guid: c124a674c33c685478209ebc86c62610, type: 2}
+  _healthCoefficient: 0.8
 --- !u!1001 &1701917209
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8675,7 +8691,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9091109465146168853, guid: 02f1bc7ecacf5b14f8249756240f1519, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -5.8196836
+      value: -5.819699
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

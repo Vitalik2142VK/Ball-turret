@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddffec690b9a64d4e80a879858b6c730, type: 3}
   m_Name: AddExplosionBulletBonus
   m_EditorClassIdentifier: 
-  _icon: {fileID: 605069473, guid: b645c37e18763b54b9f01059629437e7, type: 3}
-  _name: AddExplosionBulletBonus
+  _icon: {fileID: 1833942508, guid: 8a9fb79b64c0db040aa62dae0c1fcfd0, type: 3}
+  _name: AddExplosionBullet
   _enDescription: Bomb. When it collides with an enemy, it explodes, causing damage
     to the area.
   _ruDescription: "\u0411\u043E\u043C\u0431\u0430. \u041F\u0440\u0438 \u0441\u0442\u043E\u043B\u043A\u043D\u043E\u0432\u0435\u043D\u0438\u0438
@@ -22,3 +22,4 @@ MonoBehaviour:
     \u043F\u043B\u043E\u0449\u0430\u0434\u0438"
   _trDescription: "Bomba. D\xFC\u015Fmanla kar\u015F\u0131la\u015F\u0131ld\u0131\u011F\u0131nda
     patlar, alana hasar verir"
+  _view: {fileID: 648708287052319167, guid: 7089169fe0bd6ea4c97aab445b5eb71a, type: 3}

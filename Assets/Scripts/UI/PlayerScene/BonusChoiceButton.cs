@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(ChoiceButton))]
+[RequireComponent(typeof(ChoiceButton), typeof(ScaleButtonAnimator), typeof(Button))]
 public class BonusChoiceButton : MonoBehaviour, IChoiceButton
 {
     [SerializeField] private Scriptable.LocalizationData _localizationData;
@@ -12,6 +12,8 @@ public class BonusChoiceButton : MonoBehaviour, IChoiceButton
 
     private IChoiceButton _choiceButton;
     private IBonus _bonus;
+    private IButtonAnimator _animator;
+    private Button _button;
     private int _index;
 
     public event Action<int> Clicked;
@@ -32,7 +34,19 @@ public class BonusChoiceButton : MonoBehaviour, IChoiceButton
 
     private void Awake()
     {
+        _animator = GetComponent<IButtonAnimator>();
         _choiceButton = GetComponent<ChoiceButton>();
+        _button = GetComponent<Button>();
+    }
+
+    private void OnEnable()
+    {
+        _button.onClick.AddListener(OnClick);
+    }
+
+    private void OnDisable()
+    {
+        _button.onClick.AddListener(OnClick);
     }
 
     public void Initialize(int index)
@@ -43,6 +57,8 @@ public class BonusChoiceButton : MonoBehaviour, IChoiceButton
         _index = index;
     }
 
+    public void Disable() => _choiceButton.Disable();
+
     public void SetBonus(IBonus bonus)
     {
         _bonus = bonus ?? throw new ArgumentNullException(nameof(_bonus));
@@ -52,18 +68,16 @@ public class BonusChoiceButton : MonoBehaviour, IChoiceButton
         _description.text = bonusCard.GetDescription(_localizationData.Language);
     }
 
-    public void OnClick()
-    {
-        Clicked?.Invoke(_index);
-    }
-
     public void Enable()
     {
+        _animator.PressOut();
         _choiceButton.Enable();
     }
 
-    public void Disable()
+    private void OnClick()
     {
-        _choiceButton.Disable();
+        _animator.Press();
+
+        Clicked?.Invoke(_index);
     }
 }

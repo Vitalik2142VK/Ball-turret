@@ -1,21 +1,16 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 
 public class Pause : MonoBehaviour
 {
     private const float EnableTimeScale = 1f;
     private const float DisableTimeScale = 0f;
 
-    [SerializeField] private Button _menuButton;
+    private OpenWindowButton _pauseButton;
 
-    private void OnValidate()
+    public void Initialize(OpenWindowButton pauseButton)
     {
-        if (_menuButton == null)
-            throw new System.ArgumentNullException(nameof(_menuButton));
-    }
+        _pauseButton = pauseButton != null ? pauseButton : throw new System.ArgumentNullException(nameof(pauseButton));
 
-    private void Awake()
-    {
         Disable();
     }
 
@@ -23,16 +18,13 @@ public class Pause : MonoBehaviour
     {
         Time.timeScale = DisableTimeScale;
 
-        _menuButton.gameObject.SetActive(false);
-
         gameObject.SetActive(true);
     }
 
     public void Disable()
     {
         gameObject.SetActive(false);
-
-        _menuButton.gameObject.SetActive(true);
+        _pauseButton.Show();
 
         Time.timeScale = EnableTimeScale;
     }

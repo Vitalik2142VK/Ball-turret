@@ -1,13 +1,16 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 
-public class MainMenu : MonoBehaviour, IMenu
+[RequireComponent(typeof(ShiftAnimatorUI))]
+public class MainMenu : MonoBehaviour, IWindow
 {
     [SerializeField] private PlayMenu _playMenu;
     [SerializeField] private ImprovementMenu _improvementMenu;
     [SerializeField] private SettingMenu _settingMenu;
+    [SerializeField] private LeaderboardWindow _leaderboardWindow;
 
-    private GameObject _gameObject;
+    private IAnimatorUI _animator;
 
     private void OnValidate()
     {
@@ -19,38 +22,50 @@ public class MainMenu : MonoBehaviour, IMenu
 
         if (_settingMenu == null)
             throw new NullReferenceException(nameof(_settingMenu));
+
+        if (_leaderboardWindow == null)
+            throw new NullReferenceException(nameof(_leaderboardWindow));
     }
 
     private void Awake()
     {
-        _gameObject = gameObject;
+        _animator = GetComponent<IAnimatorUI>();
     }
 
     public void OnOpenPlayMenu()
     {
-        _gameObject.SetActive(false);
-        _playMenu.Open(this);
+        StartCoroutine(Close(_playMenu.Open));
     }
 
     public void OnOpenShopMenu()
     {
-        _gameObject.SetActive(false);
-        _improvementMenu.Open(this);
+        StartCoroutine(Close(_improvementMenu.Open));
     }
 
     public void OnOpenSettingMenu()
     {
-        _gameObject.SetActive(false);
-        _settingMenu.Open(this);
+        StartCoroutine(Close(_settingMenu.Open));
     }
 
     public void OnOpenLeaderboard()
     {
-        throw new NotImplementedException();
+        StartCoroutine(Close(_leaderboardWindow.Open));
     }
 
     public void Enable()
     {
-        _gameObject.SetActive(true);
+        gameObject.SetActive(true);
+        _animator.Show();
+    }
+
+    private IEnumerator Close(Action<IWindow> openOtherWindow)
+    {
+        _animator.Hide();
+
+        yield return _animator.GetYieldAnimation();
+
+        gameObject.SetActive(false);
+
+        openOtherWindow?.Invoke(this);
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 
@@ -15,7 +16,7 @@ public class UITextLocalizer : MonoBehaviour
     private void OnValidate()
     {
         if (_localizationData == null)
-            throw new System.NullReferenceException(nameof(_localizationData));
+            throw new NullReferenceException(nameof(_localizationData));
 
         if (_englishText == null || _englishText.Length == 0)
             _englishText = "Text";

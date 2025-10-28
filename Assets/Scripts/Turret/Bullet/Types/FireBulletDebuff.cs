@@ -15,7 +15,7 @@ public class FireBulletDebuff : MonoBehaviour, IBulletDebuff
         _damageAttributes = new DamageAttributes(attributes.Damage * FireDamageCoefficient);
     }
 
-    public void ApplyDebuff(IDebuffable debuffsReceiver)
+    public void ApplyDebuff(IDebuffReceiver debuffsReceiver)
     {
         if (debuffsReceiver == null)
             throw new ArgumentNullException(nameof(debuffsReceiver));

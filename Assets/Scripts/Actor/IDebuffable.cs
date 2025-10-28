@@ -1,6 +1,4 @@
-﻿public interface IDebuffable
+﻿public interface IDebuffable : IDebuffReceiver
 {
-    public void AddDebuff(IDebuff debaff);
-
     public void ActivateDebuffs();
 }

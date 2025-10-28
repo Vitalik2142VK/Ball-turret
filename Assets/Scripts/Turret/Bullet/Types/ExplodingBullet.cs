@@ -97,9 +97,9 @@ public class ExplodingBullet : MonoBehaviour, IBullet, IInitializer
 
     public bool TryGetBonuses(out IReadOnlyCollection<IBonus> bonuses) => _bullet.TryGetBonuses(out bonuses);
 
-    private void OnExplode(GameObject gameObject)
+    private void OnExplode(Collider collider)
     {
-        if (gameObject.TryGetComponent(out IDamagedObject _))
+        if (collider.TryGetComponent(out IDamagedObject _))
         {
             _exploder.Explode(transform.position);
 

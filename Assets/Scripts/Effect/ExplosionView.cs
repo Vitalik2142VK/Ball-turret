@@ -10,5 +10,5 @@ public class ExplosionView : MonoBehaviour, IExplosionView
         _explosionParticle = GetComponent<ParticleSystem>();
     }
 
-    public void Play() =>_explosionParticle.Play();
+    public void Play() => _explosionParticle.Play();
 }

@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BonusChoiceMenu : MonoBehaviour, IMenu
+[RequireComponent(typeof(ScaleAnimatorUI))]
+public class BonusChoiceMenu : MonoBehaviour, IBonusChoiceMenu
 {
     private const int MaxCountBonusButtons = 3;
 
@@ -11,7 +13,11 @@ public class BonusChoiceMenu : MonoBehaviour, IMenu
     [SerializeField] private Button _confirmationButton;
 
     private IBonusRandomizer _randomizer;
-    private IBonus _selectedBonus;
+    private IAnimatorUI _animator;
+
+    public event Action BonusSelected;
+
+    public IBonus SelectedBonus { get; private set; }
 
     private void OnValidate()
     {
@@ -31,45 +37,46 @@ public class BonusChoiceMenu : MonoBehaviour, IMenu
 
     private void Awake()
     {
+        _animator = GetComponent<IAnimatorUI>();
+
         gameObject.SetActive(false);
     }
 
     private void OnEnable()
     {
+        _confirmationButton.onClick.AddListener(OnChoiceBonus);
+
         foreach (var button in _bonusChoiceButtons)
             button.Clicked += OnSelectButton;
     }
 
     private void OnDisable()
     {
+        _confirmationButton.onClick.RemoveListener(OnChoiceBonus);
+
         foreach (var button in _bonusChoiceButtons)
             button.Clicked -= OnSelectButton;
     }
 
-    public void Initialize(IBonusRandomizer randomizer)
+    public void Initialize()
     {
-        _randomizer = randomizer ?? throw new ArgumentNullException(nameof(randomizer));
-
         for (int i = 0; i < _bonusChoiceButtons.Length; i++)
             _bonusChoiceButtons[i].Initialize(i);
+    }
+
+    public void SetBonusRandomizer(IBonusRandomizer randomizer)
+    {
+        _randomizer = randomizer ?? throw new ArgumentNullException(nameof(randomizer));
     }
 
     public void Enable()
     {
         _pause.Enable();
         gameObject.SetActive(true);
+        _animator.Show();
         _confirmationButton.interactable = false;
 
         FillButtons();
-    }
-
-    public void OnChoiceBonus()
-    {
-        DisableAllButton();
-
-        _selectedBonus.Activate();
-        gameObject.SetActive(false);
-        _pause.Disable();
     }
 
     private void FillButtons()
@@ -88,7 +95,7 @@ public class BonusChoiceMenu : MonoBehaviour, IMenu
     private void OnSelectButton(int index)
     {
         var button = _bonusChoiceButtons[index];
-        _selectedBonus = button.Bonus;
+        SelectedBonus = button.Bonus;
 
         for (int i = 0; i < _bonusChoiceButtons.Length; i++)
         {
@@ -96,16 +103,34 @@ public class BonusChoiceMenu : MonoBehaviour, IMenu
 
             if (i == index)
                 button.Disable();
-            else 
+            else
                 button.Enable();
         }
 
         _confirmationButton.interactable = true;
     }
 
+    private void OnChoiceBonus()
+    {
+        BonusSelected?.Invoke();
+
+        DisableAllButton();
+        StartCoroutine(Close());
+    }
+
     private void DisableAllButton()
     {
         foreach (var button in _bonusChoiceButtons)
             button.Disable();
+    }
+
+    private IEnumerator Close()
+    {
+        _animator.Hide();
+
+        yield return _animator.GetYieldAnimation();
+
+        gameObject.SetActive(false);
+        _pause.Disable();
     }
 }

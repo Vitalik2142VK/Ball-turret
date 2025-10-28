@@ -173,7 +173,7 @@ PrefabInstance:
     - target: {fileID: 8234357827683552692, guid: 163cd43076eecd94ab9d152a4ab0f8f2, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: af79811196565464d909fd0e9ddcc0eb, type: 2}
+      objectReference: {fileID: 2100000, guid: 04af6cc6031e5fc40ac8f5b3424d1027, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -225,6 +225,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebe71bdbc42c58a49b9a6c676a619013, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bulletPhysicsGameObject: {fileID: 9172791798341683482}
   _damageImproverAttributes: {fileID: 11400000, guid: de6c75bf0568eb14a8baff0c8aa4e4ba, type: 2}
 --- !u!114 &4843816511134905957
 MonoBehaviour:

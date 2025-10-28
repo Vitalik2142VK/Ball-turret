@@ -15,7 +15,7 @@ namespace MainMenuSpace
         [SerializeField] private DisableAdsButton _disableAdsButton;
 
         private IImprovementShop _improvementShop;
-        private AdsViewer _adsViewer;
+        private IAdsViewer _adsViewer;
 
         private void OnValidate()
         {
@@ -44,26 +44,23 @@ namespace MainMenuSpace
                 throw new NullReferenceException(nameof(_disableAdsButton));
         }
 
-        private void Awake()
-        {
-            _adsViewer = FindAnyObjectByType<AdsViewer>();
-
-            if (_adsViewer == null)
-                throw new NullReferenceException(nameof(_adsViewer));
-        }
-
         public void SetImprovementShop(IImprovementShop improvementShop)
         {
             _improvementShop = improvementShop ?? throw new ArgumentNullException(nameof(improvementShop));
         }
 
-        public void Configure(IPlayerSaver playerSaver, IPlayer player, ILevelFactory levelFactory, ICoinCountRandomizer coinCountRandomizer)
+        public void SetAdsViewer(IAdsViewer adsViewer)
         {
-            if (playerSaver == null)
-                throw new ArgumentNullException(nameof(playerSaver));
+            _adsViewer = adsViewer ?? throw new ArgumentNullException(nameof(adsViewer));
+        }
 
+        public void Configure(IPlayer player, ICoinAdder coinAdder, ILevelFactory levelFactory, ICoinCountRandomizer coinCountRandomizer)
+        {
             if (player == null)
                 throw new ArgumentNullException(nameof(player));
+
+            if (coinAdder == null)
+                throw new ArgumentNullException(nameof(coinAdder));
 
             if (levelFactory == null)
                 throw new ArgumentNullException(nameof(levelFactory));
@@ -73,10 +70,12 @@ namespace MainMenuSpace
 
             _playMenu.Initialize(player, levelFactory);
             _settingMenu.Initialize(_audioSetting);
-            _adsViewer.Initialize(player.PurchasesStorage);
             _improvementChoiseMenu.Initialize(_improvementShop, _adsViewer);
-            _addCoinsButton.Initialize(playerSaver, player.Wallet, _adsViewer, coinCountRandomizer);
             _disableAdsButton.Initialize(player.PurchasesStorage);
+            _addCoinsButton.Initialize(coinAdder, _adsViewer);
+
+            var adsViewButton = _addCoinsButton.GetComponent<AdsViewButton>();
+            adsViewButton.Initialize(_adsViewer, RewardTypes.AddCoin);
 
             InitializeImprovementChoiseButtons();
         }

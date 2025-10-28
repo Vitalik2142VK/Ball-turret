@@ -15,9 +15,11 @@ namespace PlayLevel
         [SerializeField] private TurretConfigurator _turretConfigurator;
         [SerializeField] private StepSystemConfigurator _stepSystemConfigurator;
         [SerializeField] private ActorsConfigurator _actorsConfigurator;
-        [SerializeField] private BonusesPrefabConfigurator _bonusPrefabConfigurator;
+        [SerializeField] private BonusesConfigurator _bonusPrefabConfigurator;
         [SerializeField] private BulletConfigurator _bulletConfigurator;
         [SerializeField] private UIConfigurator _userInterfaceConfigurator;
+
+        private AdsViewer _adsViewer;
 
         private void OnValidate()
         {
@@ -61,6 +63,11 @@ namespace PlayLevel
 
         private void Configure()
         {
+            _adsViewer = FindAnyObjectByType<AdsViewer>();
+
+            if (_adsViewer == null)
+                throw new NullReferenceException(nameof(_adsViewer));
+
             _bulletConfigurator.Configure(_player);
             _turretConfigurator.Configure(_player, _bulletConfigurator.BulletFactory);
 
@@ -72,14 +79,19 @@ namespace PlayLevel
             var actorsController = _actorsConfigurator.ActorsController;
 
             _stepSystemConfigurator.Configure(turret, _playerController, actorsController);
-            _bonusPrefabConfigurator.Configure(turret);
+            _bonusPrefabConfigurator.Configure(actorsController);
+
+            var bonusReservator = _bonusPrefabConfigurator.BonusReservator;
+
+            _stepSystemConfigurator.ConfigureBonusActivationStep(bonusReservator);
 
             SavedPlayerData savesData = new SavedPlayerData();
             PlayerSaver playerSaver = new PlayerSaver(_player, savesData);
-            RewardIssuer rewardIssuer = new RewardIssuer(playerSaver, _player, _selectedLevel);
+            CoinAdder coinAdder = new CoinAdder(playerSaver, _player.Wallet, _adsViewer);
+            RewardIssuer rewardIssuer = new RewardIssuer(coinAdder, _player, _selectedLevel);
             WinStatus winStatus = new WinStatus(turret, _selectedLevel);
             var closeSceneStep = _stepSystemConfigurator.CloseSceneStep;
-            _userInterfaceConfigurator.Configure(closeSceneStep, rewardIssuer, winStatus);
+            _userInterfaceConfigurator.Configure(closeSceneStep, rewardIssuer, winStatus, coinAdder, _adsViewer);
 
             if (_player.AchievedLevelIndex == 0)
                 SceneManager.LoadScene((int)SceneIndex.LearningScene, LoadSceneMode.Additive);
@@ -96,5 +108,10 @@ namespace PlayLevel
                 Console.GetException(ex);
             }
         }
+    }
+
+    public class TestLevelLoader : MonoBehaviour
+    {
+
     }
 }

@@ -1,36 +1,34 @@
 using System;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class FinishWindow : MonoBehaviour, IMenu
+[RequireComponent(typeof(IAnimatorUI))]
+public class FinishWindow : MonoBehaviour, IWindow
 {
-    private readonly string AddCoinRewardId = RewardTypes.AddCoin;
-
     [SerializeField] private Pause _pause;
-    [SerializeField] private Button _videoViewingButton;
-    [SerializeField] private TextMeshProUGUI _wonBonusCoinsText;
+    [SerializeField] private Button _finishButton;
+    [SerializeField] private ScaleAnimatorUI _videoViewingButton;
     [SerializeField] private TextMeshProUGUI _wonCoinsText;
     [SerializeField] private Image _winBord;
     [SerializeField] private Image _defeatBord;
 
+    private IAnimatorUI _animator;
     private IRewardIssuer _rewardIssuer;
     private IAdsViewer _adsViewer;
     private IWinStatus _winStatus;
-
+    
     private void OnValidate()
     {
         if (_pause == null)
             throw new ArgumentNullException(nameof(_pause));
 
+        if (_finishButton == null)
+            throw new ArgumentNullException(nameof(_finishButton));
+
         if (_videoViewingButton == null)
             throw new ArgumentNullException(nameof(_videoViewingButton));
-
-        if (_wonBonusCoinsText == null)
-            _wonBonusCoinsText = _videoViewingButton.transform.GetComponentInChildren<TextMeshProUGUI>();
-
-        if (_wonBonusCoinsText == null)
-            throw new ArgumentNullException(nameof(_wonBonusCoinsText));
 
         if (_wonCoinsText == null)
             throw new ArgumentNullException(nameof(_wonCoinsText));
@@ -45,21 +43,25 @@ public class FinishWindow : MonoBehaviour, IMenu
     private void Awake()
     {
         gameObject.SetActive(false);
-        _videoViewingButton.interactable = false;
         _winBord.gameObject.SetActive(false);
         _defeatBord.gameObject.SetActive(false);
+        _animator = GetComponent<IAnimatorUI>();
     }
 
     private void OnEnable()
     {
         if (_adsViewer != null)
-            _adsViewer.RewardAdViewed += OnAddBonusReward;
+            _adsViewer.ShowCompleted += OnAddBonusReward;
+
+        _finishButton.onClick.AddListener(OnContinue);
     }
 
     private void OnDisable()
     {
         if (_adsViewer != null)
-            _adsViewer.RewardAdViewed -= OnAddBonusReward;
+            _adsViewer.ShowCompleted -= OnAddBonusReward;
+
+        _finishButton.onClick.RemoveListener(OnContinue);
     }
 
     public void Initialize(IRewardIssuer rewardIssuer, IAdsViewer adsViewer, IWinStatus winStatus)
@@ -73,6 +75,7 @@ public class FinishWindow : MonoBehaviour, IMenu
     {
         _pause.Enable();
         gameObject.SetActive(true);
+        _animator.Show();
 
         if (_winStatus.IsWin)
             _winBord.gameObject.SetActive(true);
@@ -83,8 +86,7 @@ public class FinishWindow : MonoBehaviour, IMenu
         {
             _wonCoinsText.text = _rewardIssuer.GetMaxReward().ToString();
             _rewardIssuer.PayMaxReward();
-            _wonBonusCoinsText.text = $"0";
-            _videoViewingButton.interactable = false;
+            _videoViewingButton.gameObject.SetActive(false);
         }
         else
         {
@@ -92,20 +94,11 @@ public class FinishWindow : MonoBehaviour, IMenu
             _rewardIssuer.PayReward();
 
             if (_adsViewer.CanShowRewardAd && _adsViewer.IsAdsDisable == false)
-            {
-                _wonBonusCoinsText.text = $"+{_rewardIssuer.GetBonusReward()}";
-                _videoViewingButton.interactable = true;
-            }
+                _videoViewingButton.gameObject.SetActive(true);
         }       
     }
 
-    public void OnWatchVideo()
-    {
-        _videoViewingButton.interactable = false;
-        _adsViewer.ShowRewardAd(AddCoinRewardId);
-    }
-
-    public void OnContinue()
+    private void OnContinue()
     {
         if (_rewardIssuer.IsRewardIssued == false)
             _rewardIssuer.PayReward();
@@ -115,12 +108,18 @@ public class FinishWindow : MonoBehaviour, IMenu
         _pause.Disable();
     }
 
-    private void OnAddBonusReward(string rewardId)
+    private void OnAddBonusReward()
     {
-        if (rewardId != AddCoinRewardId)
-            return;
-
-        _rewardIssuer.PayBonusReward();
+        _videoViewingButton.Hide();
         _wonCoinsText.text = _rewardIssuer.GetMaxReward().ToString();
+
+        StartCoroutine(WaitClosureButton());
+    }
+
+    private IEnumerator WaitClosureButton()
+    {
+        yield return _videoViewingButton.GetYieldAnimation();
+
+        _videoViewingButton.gameObject.SetActive(false);
     }
 }

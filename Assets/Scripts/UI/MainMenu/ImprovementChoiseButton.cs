@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(ChoiceButton))]
+[RequireComponent(typeof(ChoiceButton), typeof(ScaleButtonAnimator))]
 public class ImprovementChoiseButton : MonoBehaviour, IChoiceButton
 {
     [SerializeField] private TextMeshProUGUI _currentValue;
@@ -15,6 +15,7 @@ public class ImprovementChoiseButton : MonoBehaviour, IChoiceButton
     private IGamePayTransaction _transaction;
     private IImprovementProduct _product;
     private IChoiceButton _choiceButton;
+    private IButtonAnimator _animator;
     private int _index;
 
     public event Action<IGamePayTransaction, int> Clicked;
@@ -40,6 +41,7 @@ public class ImprovementChoiseButton : MonoBehaviour, IChoiceButton
     private void Awake()
     {
         _choiceButton = GetComponent<ChoiceButton>();
+        _animator = GetComponent<IButtonAnimator>();
         _maxLevel.gameObject.SetActive(false);
     }
 
@@ -59,12 +61,15 @@ public class ImprovementChoiseButton : MonoBehaviour, IChoiceButton
 
     public void OnClick()
     {
+        _animator.Press();
         Clicked?.Invoke(_transaction ,_index);
     }
 
     public void Enable()
     {
         UpdateData();
+
+        _animator.PressOut();
 
         if (_transaction.IsLocked || _product.CanBuy == false)
             Disable();

@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 2349484676747267995}
   - component: {fileID: 5324064500933855176}
   - component: {fileID: 7157119874625415997}
+  - component: {fileID: 7699708657675117527}
+  - component: {fileID: 500399483425754386}
   m_Layer: 5
   m_Name: VideoViewingButton
   m_TagString: Untagged
@@ -68,7 +70,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -1439143145, guid: 76587e7bc96193e45842389b911f3b0e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f139613dc3ca24233a05524c5162cdd8, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -121,19 +123,33 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5324064500933855176}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: FinishWindow, Assembly-CSharp
-        m_MethodName: OnWatchVideo
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
+--- !u!114 &7699708657675117527
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 46559743370977114}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d1941fe76420254e8d59b6efd035d58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _clickSizeValue: 0.1
+  _duration: 0.1
+--- !u!114 &500399483425754386
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 46559743370977114}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05ad0ff5465cc49418deb9adaf13c5a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4886416265073854017
 GameObject:
   m_ObjectHideFlags: 0
@@ -243,7 +259,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2905289171673197121, guid: bf95af9186c608a4dac2f913bc6b3a98, type: 3}
       propertyPath: m_fontSize
-      value: 30.4
+      value: 25.15
       objectReference: {fileID: 0}
     - target: {fileID: 3907060305500500616, guid: bf95af9186c608a4dac2f913bc6b3a98, type: 3}
       propertyPath: m_Name

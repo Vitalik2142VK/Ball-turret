@@ -1,14 +1,17 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 
+[RequireComponent(typeof(HiderUI), typeof(ShiftAnimatorUI))]
 public class PlayMenu : MonoBehaviour
 {
     [SerializeField] private PlaySceneLoader _sceneLoader;
     [SerializeField] private SelectLevelScroll _selectLevelScroll;
-    [SerializeField] private GameObject[] _interferingUI;
 
-    private IMenu _previousMenu;
+    private IWindow _previousWindow;
     private ILevelFactory _levelFactory;
+    private IAnimatorUI _animator;
+    private HiderUI _hiderUI;
     private int _achievedLevelIndex;
 
     private void OnValidate()
@@ -22,6 +25,9 @@ public class PlayMenu : MonoBehaviour
 
     private void Awake()
     {
+        _hiderUI = GetComponent<HiderUI>();
+        _animator = GetComponent<IAnimatorUI>();
+
         gameObject.SetActive(false);
     }
 
@@ -36,14 +42,23 @@ public class PlayMenu : MonoBehaviour
         _achievedLevelIndex = user.AchievedLevelIndex;
     }
 
+    public void Open(IWindow previousWindow)
+    {
+        _previousWindow = previousWindow ?? throw new ArgumentNullException(nameof(previousWindow));
+
+        gameObject.SetActive(true);
+        _hiderUI.Disable();
+        _animator.Show();
+
+        StartCoroutine(WaitOpening());
+    }
+
     public void OnClose()
     {
-        gameObject.SetActive(false);
-        _previousMenu.Enable();
+        _hiderUI.Enable();
+        _animator.Hide();
 
-        foreach (var ui in _interferingUI)
-            if (ui != null)
-                ui.SetActive(true);
+        StartCoroutine(WaitClosure());
     }
 
     public void OnPlay()
@@ -54,14 +69,18 @@ public class PlayMenu : MonoBehaviour
         _sceneLoader.Load();
     }
 
-    public void Open(IMenu previousMenu)
+    private IEnumerator WaitOpening()
     {
-        _previousMenu = previousMenu ?? throw new ArgumentNullException(nameof(previousMenu));
-        gameObject.SetActive(true);
-        _selectLevelScroll.SelectButton(_achievedLevelIndex);
+        yield return _animator.GetYieldAnimation();
 
-        foreach (var ui in _interferingUI)
-            if (ui != null)
-                ui.SetActive(false);
+        _selectLevelScroll.SelectButton(_achievedLevelIndex);
+    }
+
+    private IEnumerator WaitClosure()
+    {
+        yield return _animator.GetYieldAnimation();
+
+        gameObject.SetActive(false);
+        _previousWindow.Enable();
     }
 }

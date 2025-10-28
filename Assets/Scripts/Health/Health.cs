@@ -19,6 +19,7 @@ public class Health : IHealth
     {
         _currentHealth = _attributes.MaxHealth;
         _healthBar.SetMaxHealth(_currentHealth);
+        _healthBar.SetActive(false);
     }
 
     public void TakeDamage(IDamageAttributes damage)
@@ -29,11 +30,19 @@ public class Health : IHealth
         if (damage.Damage < 0)
             throw new ArgumentOutOfRangeException(nameof(damage.Damage));
 
+        if (_healthBar.IsActive == false)
+            _healthBar.SetActive(true);
+
         _currentHealth -= damage.Damage;
 
-        if (IsAlive == false)
+        if (IsAlive)
+        {
+            _healthBar.UpdateDataHealth(_currentHealth);
+        }
+        else
+        {
             _currentHealth = 0;
-
-        _healthBar.UpdateDataHealth(_currentHealth);
+            _healthBar.SetActive(false);
+        }
     }
 }

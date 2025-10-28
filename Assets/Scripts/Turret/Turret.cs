@@ -6,12 +6,12 @@ public class Turret : ITurret
     private IGun _gun;
     private ITower _tower;
     private IHealth _health;
+    private ITurretView _view;
     private IEndStep _endStep;
-    private ISound _soundDestroy;
-    private IExplosionView _viewDestroy;
 
-    public Turret(IGun gun, ITower tower, IHealth health)
+    public Turret(ITurretView turretView, IGun gun, ITower tower, IHealth health)
     {
+        _view = turretView ?? throw new ArgumentNullException(nameof(turretView));
         _gun = gun ?? throw new ArgumentNullException(nameof(gun));
         _tower = tower ?? throw new ArgumentNullException(nameof(tower));
         _health = health ?? throw new ArgumentNullException(nameof(health));
@@ -25,12 +25,14 @@ public class Turret : ITurret
 
     public void Enable()
     {
-        _gun.ShootingCompleted += OnEndStep;
+        _gun.ShotExecuted += OnShoot;
+        _gun.Reloaded += OnEndStep;
     }
 
     public void Disable()
     {
-        _gun.ShootingCompleted -= OnEndStep;
+        _gun.ShotExecuted -= OnShoot;
+        _gun.Reloaded -= OnEndStep;
     }
 
     public void SetEndStep(IEndStep endStep)
@@ -60,32 +62,22 @@ public class Turret : ITurret
 
         if (_health.IsAlive == false)
             Destroy();
+        else
+            _view.PlayTakeDamage();
     }
 
     public void Destroy()
     {
-        if (_soundDestroy != null && _viewDestroy != null)
-        {
-            _soundDestroy.Play();
-            _viewDestroy.Play();
-        }
+        _view.PlayDestroy();
 
         IsDestroyed = true;
     }
 
-    public void RestoreHealth()
-    {
-        _health.Restore();
+    private void OnEndStep() 
+    { 
+        _tower.ClearDirection();
+        _endStep.End(); 
     }
 
-    public void SetViewDestroy(ISound soundDestroy, IExplosionView viewDestroy)
-    {
-        _soundDestroy = soundDestroy ?? throw new ArgumentNullException(nameof(soundDestroy));
-        _viewDestroy = viewDestroy ?? throw new ArgumentNullException(nameof(viewDestroy));
-    }
-
-    private void OnEndStep()
-    {
-        _endStep.End();
-    }
+    private void OnShoot() => _view.PlayShoot();
 }

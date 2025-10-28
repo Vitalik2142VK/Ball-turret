@@ -15,7 +15,7 @@ public class PoisonBulletDebuff : MonoBehaviour, IBulletDebuff
         _damageAttributes = new DamageAttributes(attributes.Damage * PoisonDamageCoefficient);
     }
 
-    public void ApplyDebuff(IDebuffable debuffsReceiver)
+    public void ApplyDebuff(IDebuffReceiver debuffsReceiver)
     {
         if (debuffsReceiver == null)
             throw new ArgumentNullException(nameof(debuffsReceiver));

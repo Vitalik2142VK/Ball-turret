@@ -6,6 +6,7 @@ namespace PlayLevel
     public class BulletConfigurator : MonoBehaviour
     {
         [SerializeField] private BulletFactory _bulletFactory;
+        [SerializeField] private ComboCounter _comboCounter;
         [SerializeField] private Sound _hitBulletSound;
         [SerializeField] private Scriptable.DamageAttributes _damageBulletAttributes;
 
@@ -20,6 +21,9 @@ namespace PlayLevel
         {
             if (_bulletFactory == null)
                 throw new NullReferenceException(nameof(_bulletFactory));
+
+            if (_comboCounter == null)
+                throw new NullReferenceException(nameof(_comboCounter));
 
             if (_hitBulletSound == null)
                 throw new NullReferenceException(nameof(_hitBulletSound));
@@ -45,7 +49,7 @@ namespace PlayLevel
             var damageChanger = new DamageChanger(_damageBulletAttributes);
             damageChanger.Change(player.DamageCoefficient);
 
-            _bulletFactory.Initialize(damageChanger, _hitBulletSound);
+            _bulletFactory.Initialize(damageChanger, _comboCounter, _hitBulletSound);
             _explodingBulletPrefab.SetExplosionSound(_explosionSound);
             _explodingBulletPrefab.SetBulletRepository(_bulletsCollector);
 

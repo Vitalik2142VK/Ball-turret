@@ -1,26 +1,16 @@
 using System;
-using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(Button))]
+[RequireComponent(typeof(Button), typeof(AdsViewButton))]
 public class AddCoinsButton : MonoBehaviour
 {
-    private readonly string RewardId = RewardTypes.AddCoin;
-
     [SerializeField] private TextMeshProUGUI _addCoinsText;
-    [SerializeField, Min(0.02f)] private float _timeWaitUpdate = 0.5f;
 
-    private IPlayerSaver _playerSaver;
-    private IWallet _wallet;
+    private ICoinAdder _coinAdder;
     private IAdsViewer _adsViewer;
-    private ICoinCountRandomizer _coinCountRandomizer;
-    private WaitForSeconds _waitUpdateEnable;
-    private Button _videoViewingButton;
-    private Coroutine _videoViewingCoroutine;
-
-    public event Action VideoViewed;
+    private Button _button;
 
     private void OnValidate()
     {
@@ -30,73 +20,47 @@ public class AddCoinsButton : MonoBehaviour
 
     private void Awake()
     {
-        _videoViewingButton = GetComponent<Button>();
-        _videoViewingButton.interactable = false;
-
-        _waitUpdateEnable = new WaitForSeconds(_timeWaitUpdate);
+        _button = GetComponent<Button>();
+        _button.interactable = false;
     }
 
     private void OnEnable()
     {
-        if (_adsViewer != null)
-            _adsViewer.RewardAdViewed += OnAddCoins;
+        if (_coinAdder == null || _adsViewer == null)
+            return;
 
-        if (_coinCountRandomizer != null)
-            _addCoinsText.text = _coinCountRandomizer.CountCoinsForRewardAd.ToString();
+        _addCoinsText.text = _coinAdder.CoinsCountAdsView.ToString();
+        _adsViewer.TimerRewardAdReseted += OnUpdateInteractable;
+        _button.onClick.AddListener(OnUpdateInteractable);
     }
 
     private void Start()
     {
-        if (_adsViewer == null)
+        if (_coinAdder == null || _adsViewer == null)
             return;
 
-        _videoViewingButton.interactable = _adsViewer.CanShowRewardAd;
-
-        if (_adsViewer.CanShowRewardAd == false)
-            _videoViewingCoroutine = StartCoroutine(UpdateInteractable());
+        _button.interactable = _adsViewer.CanShowRewardAd;
+        _addCoinsText.text = _coinAdder.CoinsCountAdsView.ToString();
     }
 
     private void OnDisable()
     {
-        if (_adsViewer != null)
-            _adsViewer.RewardAdViewed -= OnAddCoins;
-
-        if (_videoViewingCoroutine != null)
-            StopCoroutine(_videoViewingCoroutine);
-    }
-
-    public void Initialize(IPlayerSaver playerSaver, IWallet wallet, IAdsViewer adsViewer, ICoinCountRandomizer coinCountRandomizer)
-    {
-        _playerSaver = playerSaver ?? throw new ArgumentNullException(nameof(playerSaver));
-        _wallet = wallet ?? throw new ArgumentNullException(nameof(wallet));
-        _adsViewer = adsViewer ?? throw new ArgumentNullException(nameof(adsViewer));
-        _coinCountRandomizer = coinCountRandomizer ?? throw new ArgumentNullException(nameof(coinCountRandomizer));
-    }
-
-    public void OnWatchVideo()
-    {
-        _videoViewingButton.interactable = false;
-        _adsViewer.ShowRewardAd(RewardId);
-    }
-
-    private void OnAddCoins(string rewardId)
-    {
-        if (rewardId != RewardTypes.AddCoin)
+        if (_coinAdder == null || _adsViewer == null)
             return;
 
-        int countCoins = _coinCountRandomizer.CountCoinsForRewardAd;
-        _wallet.AddCoins(countCoins);
-        _playerSaver.Save();
-        _videoViewingCoroutine = StartCoroutine(UpdateInteractable());
-
-        VideoViewed?.Invoke();
+        _adsViewer.TimerRewardAdReseted -= OnUpdateInteractable;
+        _adsViewer.TimerRewardAdReseted -= OnUpdateInteractable;
+        _button.onClick.RemoveListener(OnUpdateInteractable);
     }
 
-    private IEnumerator UpdateInteractable()
+    public void Initialize(ICoinAdder coinAdder, IAdsViewer adsViewer)
     {
-        while (_adsViewer.CanShowRewardAd == false)
-            yield return _waitUpdateEnable;
+        _coinAdder = coinAdder ?? throw new ArgumentNullException(nameof(coinAdder));
+        _adsViewer = adsViewer ?? throw new ArgumentNullException(nameof(adsViewer));
+    }
 
-        _videoViewingButton.interactable = _adsViewer.CanShowRewardAd;
+    private void OnUpdateInteractable()
+    {
+        _button.interactable = _adsViewer.CanShowRewardAd;
     }
 }

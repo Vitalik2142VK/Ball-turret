@@ -5,67 +5,29 @@ public class RewardIssuer : IRewardIssuer
     private const float AdditionalReward = 0.5f;
     private const int InitialRewardValue = -1;
 
-    private IPlayerSaver _playerSaver;
+    private ICoinAdder _coinAdder;
     private IPlayer _player;
     private ISelectedLevel _level;
     private int _reward;
     private int _bonusReward;
 
-    public RewardIssuer(IPlayerSaver playerSaver, IPlayer player, ISelectedLevel level)
+    public RewardIssuer(ICoinAdder coinAdder, IPlayer player, ISelectedLevel level)
     {
-        _playerSaver = playerSaver ?? throw new ArgumentNullException(nameof(playerSaver));
+        _coinAdder = coinAdder ?? throw new ArgumentNullException(nameof(coinAdder));
         _player = player ?? throw new ArgumentNullException(nameof(player));
         _level = level ?? throw new ArgumentNullException(nameof(level));
         _reward = InitialRewardValue;
         _bonusReward = InitialRewardValue;
         IsRewardIssued = false;
-        IsBonusRewardIssued = false;
     }
 
     public bool IsRewardIssued { get; private set; }
-    public bool IsBonusRewardIssued { get; private set; }
 
     private bool IsFirstPass => _level.Index == _player.AchievedLevelIndex;
 
-    public void PayReward()
-    {
-        if (IsRewardIssued)
-            throw new InvalidOperationException("Reward has already been issued");
+    public void PayReward() => PayReward(_reward);
 
-        if (IsFirstPass && _level.IsFinished)
-            _player.IncreaseAchievedLevel();
-
-        _player.Wallet.AddCoins(_reward);
-        _playerSaver.Save();
-
-        IsRewardIssued = true;
-    }
-
-    public void PayBonusReward()
-    {
-        if (IsBonusRewardIssued)
-            throw new InvalidOperationException("Bonys reward has already been issued");
-
-        _player.Wallet.AddCoins(_bonusReward);
-        _playerSaver.Save();
-
-        IsBonusRewardIssued = true;
-    }
-
-    public void PayMaxReward()
-    {
-        if (IsRewardIssued || IsBonusRewardIssued)
-            throw new InvalidOperationException("Reward has already been issued");
-
-        if (IsFirstPass && _level.IsFinished)
-            _player.IncreaseAchievedLevel();
-
-        _player.Wallet.AddCoins(_reward + _bonusReward);
-        _playerSaver.Save();
-
-        IsRewardIssued = true;
-        IsBonusRewardIssued = true;
-    }
+    public void PayMaxReward() => PayReward(_reward + _bonusReward);
 
     public int GetReward()
     {
@@ -77,17 +39,20 @@ public class RewardIssuer : IRewardIssuer
         return _reward;
     }
 
-    public int GetBonusReward()
+    public int GetMaxReward() => GetReward() + _bonusReward;
+
+    private void PayReward(int reward)
     {
-        if (_bonusReward >= 0)
-            return _bonusReward;
+        if (IsRewardIssued)
+            throw new InvalidOperationException("Reward has already been issued");
 
-        CalculateRewards();
+        if (IsFirstPass && _level.IsFinished)
+            _player.IncreaseAchievedLevel();
 
-        return _bonusReward;
+        _coinAdder.AddCoins(reward);
+
+        IsRewardIssued = true;
     }
-
-    public int GetMaxReward() => GetReward() + GetBonusReward();
 
     private void CalculateRewards()
     {
@@ -97,6 +62,7 @@ public class RewardIssuer : IRewardIssuer
             _reward += _level.CountCoinsForWin;
 
         _bonusReward = _reward;
+        _coinAdder.SetCoinsAdsView(_bonusReward);
 
         CalculateAddReward();
     }

@@ -11,6 +11,7 @@ public class Bullet : MonoBehaviour, IBullet
     private IDamage _damage;
     private IBulletPhysics _bulletPhysics;
     private IBonusGatherer _gatherer;
+    private IComboCounter _comboCounter;
     private ISound _sound;
 
     public BulletType BulletType => _bulletType;
@@ -39,10 +40,11 @@ public class Bullet : MonoBehaviour, IBullet
         _bulletPhysics.EnteredCollision -= OnApplyDamage;
     }
 
-    public void Initialize(IDamageAttributes damageBulletAttributes, ISound sound)
+    public void Initialize(IDamageAttributes damageBulletAttributes, IComboCounter comboCounter, ISound sound)
     {
         DamageAttributes = damageBulletAttributes ?? throw new ArgumentNullException(nameof(damageBulletAttributes));
 
+        _comboCounter = comboCounter ?? throw new ArgumentNullException(nameof(comboCounter));
         _sound = sound ?? throw new ArgumentNullException(nameof(sound));
 
         _damage = new Damage(DamageAttributes);
@@ -76,11 +78,16 @@ public class Bullet : MonoBehaviour, IBullet
         return _gatherer.TryGetBonuses(out bonuses);
     }
 
-    private void OnApplyDamage(GameObject gameObject)
+    private void OnApplyDamage(Collider collider)
     {
-        _sound.Play();
-
-        if (gameObject.TryGetComponent(out IDamagedObject damagedObject))
+        if (collider.TryGetComponent(out IDamagedObject damagedObject))
+        {
             _damage.Apply(damagedObject);
+            _comboCounter.Count();
+        }
+        else
+        {
+            _sound.Play();
+        }
     }
 }

@@ -8,7 +8,7 @@ public class BulletRigidbodyPhysics : MonoBehaviour, IBulletPhysics
     [SerializeField] private BulletPhysicsAttributes _attributes;
     [SerializeField] private TrajectoryBullet _trajectory;
 
-    public event Action<GameObject> EnteredCollision;
+    public event Action<Collider> EnteredCollision;
 
     private Transform _transform;
     private Rigidbody _rigidbody;
@@ -39,7 +39,7 @@ public class BulletRigidbodyPhysics : MonoBehaviour, IBulletPhysics
         HandleCollision(gameObject, collision.contacts[0].normal);
 
         if (_isRecordingGoing == false)
-            EnteredCollision?.Invoke(gameObject);
+            EnteredCollision?.Invoke(collision.collider);
     }
 
     public void Activate()
@@ -83,7 +83,7 @@ public class BulletRigidbodyPhysics : MonoBehaviour, IBulletPhysics
 
             if (LayerMaskTool.IsInLayerMask(gameObject, _attributes.LayerMaskBounce))
             {
-                point.SetCollidedGameObject(gameObject);
+                point.SetCollidedObject(hit.collider);
                 _trajectory.RecordCollision();
             }
         }
@@ -101,9 +101,9 @@ public class BulletRigidbodyPhysics : MonoBehaviour, IBulletPhysics
         {
             _isThereCollision = point.IsThereCollision;
 
-            var gameObject = point.CollidedGameObject;
+            var coliider = point.CollidedObject;
 
-            if (gameObject == null || gameObject.activeSelf == false)
+            if (coliider == null || coliider.enabled == false)
             {
                 _trajectory.DeleteAfterFrame(_frame);
 
@@ -113,7 +113,7 @@ public class BulletRigidbodyPhysics : MonoBehaviour, IBulletPhysics
             }
             else
             {
-                EnteredCollision?.Invoke(gameObject);
+                EnteredCollision?.Invoke(coliider);
             }
         }
 

@@ -9,23 +9,28 @@ public class LevelFactory : ILevelFactory
     private List<ILevelActorsPlanner> _actorsPlanners;
     private ICoinCountRandomizer _coinCountRandomizer;
     private float _actorsHealthCoefficientByLevel;
+    private int _achievedLevelIndex;
 
-    public LevelFactory(ILevelActorsPlanner endlessLevelPlanner, IEnumerable<ILevelActorsPlanner> actorsPlanners, ICoinCountRandomizer coinCountRandomizer, float actorsHealthCoefficientByLevel = MinActorsHealthCoefficientByLevel)
+    public LevelFactory(ILevelActorsPlanner endlessLevelPlanner, IEnumerable<ILevelActorsPlanner> actorsPlanners, ICoinCountRandomizer coinCountRandomizer, float actorsHealthCoefficientByLevel, int achievedLevelIndex)
     {
         if (endlessLevelPlanner == null)
             throw new ArgumentNullException(nameof(endlessLevelPlanner));
 
+        if (actorsPlanners == null)
+            throw new ArgumentNullException(nameof(actorsPlanners));
+
         if (actorsHealthCoefficientByLevel < MinActorsHealthCoefficientByLevel)
             throw new ArgumentOutOfRangeException(nameof(actorsHealthCoefficientByLevel));
 
-        if (actorsPlanners == null)
-            throw new ArgumentNullException(nameof(actorsPlanners));
+        if (achievedLevelIndex < 0)
+            throw new ArgumentOutOfRangeException(nameof(achievedLevelIndex));
 
         _actorsPlanners = new List<ILevelActorsPlanner> { endlessLevelPlanner };
         _actorsPlanners.AddRange(actorsPlanners);
 
         _coinCountRandomizer = coinCountRandomizer ?? throw new ArgumentNullException(nameof(coinCountRandomizer));
         _actorsHealthCoefficientByLevel = actorsHealthCoefficientByLevel;
+        _achievedLevelIndex = achievedLevelIndex;
     }
 
     public int LevelsCount => _actorsPlanners.Count;
@@ -36,7 +41,7 @@ public class LevelFactory : ILevelFactory
             throw new ArgumentOutOfRangeException($"The index cannot be less than 0, greater than or equal to 1 {LevelsCount}");
 
         if (indexLevel == EndlessLevel.IndexLevel)
-            return CreateEndlessLevel(indexLevel);
+            return CreateEndlessLevel();
 
         ILevelActorsPlanner levelActorsPlanner = _actorsPlanners[indexLevel];
         float actorsHealthCoefficient = CalculateActorsHealthCoefficient(indexLevel);
@@ -44,13 +49,13 @@ public class LevelFactory : ILevelFactory
         return new Level(levelActorsPlanner, _coinCountRandomizer, actorsHealthCoefficient, indexLevel);
     }
 
-    private EndlessLevel CreateEndlessLevel(int indexLevel)
+    private EndlessLevel CreateEndlessLevel()
     {
         ILevelActorsPlanner endlessLevelPlanner = _actorsPlanners[EndlessLevel.IndexLevel];
         Level level = new Level(endlessLevelPlanner, _coinCountRandomizer);
         SavedLeaderBoard savedLeaderBoard = new SavedLeaderBoard();
-        float reducingCoefficient = 0.01f;
-        float healthMultiplierPerWave = _actorsHealthCoefficientByLevel + (float)(indexLevel * reducingCoefficient);
+        float reducingCoefficient = 0.15f;
+        float healthMultiplierPerWave = _actorsHealthCoefficientByLevel + (float)(_achievedLevelIndex * reducingCoefficient);
 
         return new EndlessLevel(level, savedLeaderBoard, healthMultiplierPerWave);
     }

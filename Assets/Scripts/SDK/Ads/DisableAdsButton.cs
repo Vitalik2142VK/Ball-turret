@@ -1,14 +1,28 @@
 using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using YG;
+using YG.Utils.Pay;
 
 [RequireComponent(typeof(Button))]
 public class DisableAdsButton : MonoBehaviour
 {
     private const string DisableAdsPurchseId = PurchasesTypes.DisableAds;
 
+    [SerializeField] private ImageLoadYG _currencyImage;
+    [SerializeField] private TextMeshProUGUI _currencyPrice;
+
     private Button _button;
+
+    private void OnValidate()
+    {
+        if (_currencyImage == null)
+            throw new NullReferenceException(nameof(_currencyImage));
+
+        if (_currencyPrice == null)
+            throw new NullReferenceException(nameof(_currencyPrice));
+    }
 
     private void Awake()
     {
@@ -18,12 +32,14 @@ public class DisableAdsButton : MonoBehaviour
     private void OnEnable()
     {
         _button.onClick.AddListener(OnPayPurchase);
+
         YG2.onPurchaseSuccess += OnRemove;
     }
 
     private void OnDisable()
     {
         _button.onClick.RemoveListener(OnPayPurchase);
+
         YG2.onPurchaseSuccess -= OnRemove;
     }
 
@@ -35,8 +51,29 @@ public class DisableAdsButton : MonoBehaviour
         if (purchasesStorage.TryGetPurchase(out IPlayerPurchase playerPurchase, DisableAdsPurchseId) == false)
             throw new ArgumentOutOfRangeException($"Purchase with id '{DisableAdsPurchseId}' not found.");
 
-        if (playerPurchase.IsPurchased)
-            gameObject.SetActive(false);
+        if (playerPurchase.IsPurchased == false)
+            Enable(playerPurchase);
+        else
+            Destroy(gameObject);
+    }
+
+    private void Enable(IPlayerPurchase playerPurchase)
+    {
+        Purchase purchase = YG2.PurchaseByID(playerPurchase.Id);
+
+        if (purchase == null)
+            throw new NullReferenceException(nameof(purchase));
+
+        _currencyPrice.text = purchase.priceValue;
+
+#if !UNITY_EDITOR
+        var currencyImageURL = purchase.currencyImageURL;
+
+        if (string.IsNullOrEmpty(currencyImageURL))
+            _currencyImage.Load(currencyImageURL);
+
+        Console.GetLog($"CurrencyImageURL == '{currencyImageURL}'")
+#endif
     }
 
     private void OnPayPurchase()
@@ -49,6 +86,6 @@ public class DisableAdsButton : MonoBehaviour
         if (purchseId != DisableAdsPurchseId)
             return;
 
-        gameObject.SetActive(false);
+        Destroy(gameObject);
     }
 }

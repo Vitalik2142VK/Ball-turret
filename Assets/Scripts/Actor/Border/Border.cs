@@ -1,71 +1,32 @@
 ﻿using System;
 using UnityEngine;
-using Scriptable;
 
-[RequireComponent(typeof(Collider), typeof(Rigidbody), typeof(Mover))]
-public class Border : MonoBehaviour, IBorder
+public class Border : IBorder
 {
-    [SerializeField] private ArmorAttributes _armorAttributes;
-    [SerializeField] private HealthAttributes _healthAttributes;
-    [SerializeField] private HealthBar _healthBar;
-
+    private IBorderPresenter _presenter;
+    private IMovableObject _mover;
     private IArmor _armor;
-    private IMover _mover;
     private IHealth _health;
-    private ISound _sound;
 
-    public IMover Mover => _mover;
-    public string Name => name;
+    public Border(IBorderPresenter presenter, IMovableObject mover, IArmor armor, IHealth health)
+    {
+        _presenter = presenter ?? throw new ArgumentNullException(nameof(presenter));
+        _mover = mover ?? throw new ArgumentNullException(nameof(mover));
+        _armor = armor ?? throw new ArgumentNullException(nameof(armor));
+        _health = health ?? throw new ArgumentNullException(nameof(health));
+
+        Enable();
+    }
 
     public bool IsEnable { get; private set; }
 
-    private void OnValidate()
-    {
-        if (_armorAttributes == null)
-            throw new ArgumentNullException(nameof(_armorAttributes));
-
-        if (_healthBar == null)
-            throw new NullReferenceException(nameof(_healthBar));
-    }
-
-    private void Awake()
-    {
-        Rigidbody rigidbody = GetComponent<Rigidbody>();
-        rigidbody.isKinematic = true;
-        rigidbody.useGravity = false;
-
-        _mover = GetComponent<Mover>();
-    }
-
-    private void OnEnable()
-    {
-        IsEnable = true;
-
-        _health?.Restore();
-    }
-
-    private void OnDisable()
-    {
-        IsEnable = false;
-    }
-
-    public void Initialize(ISound sound, IActorHealthModifier modifier)
-    {
-        if (modifier == null)
-            throw new ArgumentNullException(nameof(modifier));
-
-        _sound = sound ?? throw new ArgumentNullException(nameof(sound));
-        _armorAttributes.CalculateArmor();
-
-        HealthImprover healthImprover = new HealthImprover(_healthAttributes);
-        healthImprover.Improve(modifier.HealthCoefficient);
-
-        _health = new Health(healthImprover, _healthBar);
-        _armor = new Armor(_health, _armorAttributes);
-        _health.Restore();
-    }
+    public bool IsFinished => _mover.IsFinished;
 
     public void SetStartPosition(Vector3 startPosition) => _mover.SetStartPosition(startPosition);
+
+    public void SetPoint(Vector3 distance, float speed) => _mover.SetPoint(distance, speed);
+
+    public void Move() => _mover.Move();
 
     public void TakeDamage(IDamageAttributes damage)
     {
@@ -74,24 +35,35 @@ public class Border : MonoBehaviour, IBorder
 
         _armor.ReduceDamage(damage);
 
-        if (_health.IsAlive == false)
-            Destroy();
+        CheckAlive();
     }
 
-    public void IgnoreArmor(IDamageAttributes attributes)
+    public void IgnoreArmor(IDamageAttributes damage)
     {
-        if (attributes == null)
-            throw new ArgumentNullException(nameof(attributes));
+        if (damage == null)
+            throw new ArgumentNullException(nameof(damage));
 
-        _health.TakeDamage(attributes);
+        _health.TakeDamage(damage);
 
-        if (_health.IsAlive == false)
-            Destroy();
+        CheckAlive();
     }
 
     public void Destroy()
     {
-        _sound.Play();
-        Destroy(gameObject);
+        _presenter.Destroy();
+        IsEnable = false;
+    }
+
+    private void Enable()
+    {
+        IsEnable = true;
+
+        _health.Restore();
+    }
+
+    private void CheckAlive()
+    {
+        if (_health.IsAlive == false)
+            IsEnable = false;
     }
 }

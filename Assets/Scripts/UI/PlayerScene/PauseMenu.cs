@@ -1,46 +1,49 @@
+using System;
+using System.Collections;
 using UnityEngine;
 
-public class PauseMenu : MonoBehaviour, IMenu
+[RequireComponent(typeof(ScaleAnimatorUI))]
+public class PauseMenu : MonoBehaviour, IWindow
 {
     [SerializeField] private Pause _pause;
     [SerializeField] private SettingMenu _settingMenu;
 
     private IStep _closeSceneStep;
+    private IAnimatorUI _animator;
 
     private void OnValidate()
     {
         if (_pause == null)
-            throw new System.NullReferenceException(nameof(_pause));
+            throw new NullReferenceException(nameof(_pause));
 
         if (_settingMenu == null)
-            throw new System.NullReferenceException(nameof(_settingMenu));
+            throw new NullReferenceException(nameof(_settingMenu));
     }
-
+    
     private void Awake()
     {
+        _animator = GetComponent<IAnimatorUI>();
+
         gameObject.SetActive(false);
     }
 
     public void Initialize(IStep closeSceneStep)
     {
-        _closeSceneStep = closeSceneStep ?? throw new System.ArgumentNullException(nameof(closeSceneStep)); 
+        _closeSceneStep = closeSceneStep ?? throw new ArgumentNullException(nameof(closeSceneStep)); 
     }
-
+        
     public void Enable()
     {
         gameObject.SetActive(true);
-    }
-
-    public void OnOpen()
-    {
         _pause.Enable();
-        gameObject.SetActive(true);
+        _animator.Show();
     }
 
     public void OnPlay()
     {
-        gameObject.SetActive(false);
-        _pause.Disable();
+        _animator.Hide();
+
+        StartCoroutine(WaitClosure());
     }
 
     public void OnOpenSettingMenu()
@@ -52,5 +55,13 @@ public class PauseMenu : MonoBehaviour, IMenu
     public void OnExit()
     {
         _closeSceneStep.Action();
+    }
+
+    private IEnumerator WaitClosure()
+    {
+        yield return _animator.GetYieldAnimation();
+
+        gameObject.SetActive(false);
+        _pause.Disable();
     }
 }

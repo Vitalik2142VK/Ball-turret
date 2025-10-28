@@ -2,7 +2,9 @@
 
 public interface IAdsViewer
 {
-    public event Action<string> RewardAdViewed;
+    public event Action<string> RewardAdShowed;
+    public event Action ShowCompleted;
+    public event Action TimerRewardAdReseted;
 
     public bool CanShowRewardAd { get; }
     public bool IsAdsDisable { get; }

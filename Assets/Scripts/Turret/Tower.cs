@@ -9,6 +9,11 @@ public class Tower : MonoBehaviour, ITower
     [SerializeField] private Muzzle _muzzle;
     [SerializeField] private LayerMask _layerMask;
 
+    [Header("Debug")]
+    [SerializeField] private bool _isDebugOn = false;
+    [SerializeField] private Color _color = Color.red;
+    [SerializeField, Min(0.1f)] private float _radusSphere = 1f;
+
     private ITargetPoint _targetPoint;
     private ITrajectoryRenderer _trajectoryRenderer;
     private Transform _transform;
@@ -36,12 +41,23 @@ public class Tower : MonoBehaviour, ITower
         LookAtTarget();
     }
 
+    private void OnDrawGizmos()
+    {
+        if (_isDebugOn && gameObject.activeSelf)
+        {
+            Gizmos.color = _color;
+            Gizmos.DrawSphere(_targetPoint.Position, _radusSphere);
+        }
+    }
+
     public void Initialize(ITargetPoint targetPoint, ITrajectoryRenderer trajectoryRenderer)
     {
         _targetPoint = targetPoint ?? throw new ArgumentNullException(nameof(targetPoint));
         _trajectoryRenderer = trajectoryRenderer ?? throw new ArgumentNullException(nameof(trajectoryRenderer));
         _trajectoryRenderer.ShowTrajectory(_muzzle.Position, Direction);
     }
+
+    public void ClearDirection() => _trajectoryRenderer.Clear();
 
     public void TakeAim(Vector3 targertPosition)
     {

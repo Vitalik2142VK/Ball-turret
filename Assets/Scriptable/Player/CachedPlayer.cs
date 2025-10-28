@@ -17,7 +17,7 @@ namespace Scriptable
         public bool IsLearningComplete => _player.IsLearningComplete;
         public bool IsSaved => _player != null;
 
-        public void SetUser(IPlayer player)
+        public void SetPlayer(IPlayer player)
         {
             _player = player ?? throw new ArgumentNullException(nameof(player));
         }

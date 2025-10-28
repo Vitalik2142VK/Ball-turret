@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class PlayerScreenPointer : MonoBehaviour, IPlayerScreenPointer
 {
@@ -8,6 +10,7 @@ public class PlayerScreenPointer : MonoBehaviour, IPlayerScreenPointer
     [SerializeField] private LayerMask _layerMask;
 
     private PlayerInput _input;
+    private EventSystem _eventSystem;
 
     public event Action PressFinished;
 
@@ -17,12 +20,16 @@ public class PlayerScreenPointer : MonoBehaviour, IPlayerScreenPointer
     private void OnValidate()
     {
         if (_cameraAdapter == null)
-            throw new ArgumentNullException(nameof(_cameraAdapter));
+            throw new NullReferenceException(nameof(_cameraAdapter));
     }
 
     private void Awake()
     {
         _input = new PlayerInput();
+        _eventSystem = EventSystem.current;
+
+        if (_eventSystem == null)
+            throw new NullReferenceException(nameof(EventSystem.current));
     }
 
     private void OnEnable()
@@ -41,9 +48,14 @@ public class PlayerScreenPointer : MonoBehaviour, IPlayerScreenPointer
 
         if (isPress)
         {
-            IsPress = isPress;
+            Vector2 touchPosition = _input.Player.Position.ReadValue<Vector2>();
 
-            if (TryFindPositionInMap(out Vector3 position))
+            if (IsPointerOverUI(touchPosition))
+                return;
+
+                IsPress = isPress;
+
+            if (TryFindPositionInMap(out Vector3 position, touchPosition))
                 TouchPositionInMap = position;
         }
         else
@@ -57,9 +69,8 @@ public class PlayerScreenPointer : MonoBehaviour, IPlayerScreenPointer
         }
     }
 
-    private bool TryFindPositionInMap(out Vector3 position)
+    private bool TryFindPositionInMap(out Vector3 position, Vector2 touchPosition)
     {
-        Vector2 touchPosition = _input.Player.Position.ReadValue<Vector2>();
         Ray ray = _cameraAdapter.ScreenPointToRay(touchPosition);
         float maxDistanceRay = _maxDistanceRay + _cameraAdapter.CameraHeight;
 
@@ -73,5 +84,18 @@ public class PlayerScreenPointer : MonoBehaviour, IPlayerScreenPointer
         position = Vector3.zero;
 
         return false;
+    }
+
+    private bool IsPointerOverUI(Vector2 touchPosition)
+    {
+        var eventData = new PointerEventData(_eventSystem)
+        {
+            position = touchPosition
+        };
+
+        var results = new List<RaycastResult>();
+        _eventSystem.RaycastAll(eventData, results);
+
+        return results.Count > 0;
     }
 }

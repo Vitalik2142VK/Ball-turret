@@ -18,10 +18,7 @@ public class Console : MonoBehaviour
         if (s_Console == null)
             CreateSingleton();
 
-        if (s_Console == null)
-            return;
-
-        s_Console.Log(message);
+        s_Console.AddLog(message);
     }
 
     public static void GetException(Exception ex)
@@ -35,6 +32,9 @@ public class Console : MonoBehaviour
     {
         if (s_Console == null)
             s_Console = FindAnyObjectByType<Console>();
+
+        if (s_Console == null)
+            throw new InvalidOperationException($"The GameObject '{nameof(Console)}' was not found");
     }
 
     private void OnValidate()
@@ -63,7 +63,7 @@ public class Console : MonoBehaviour
         s_Console = null;
     }
 
-    private void Log(string message)
+    private void AddLog(string message)
     {
         var text = Instantiate(_textPrefab, _content.transform);
         text.text = $"{message}{EndText}";

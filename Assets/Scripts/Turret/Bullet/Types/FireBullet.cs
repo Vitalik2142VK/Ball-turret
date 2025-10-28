@@ -61,9 +61,9 @@ public class FireBullet : MonoBehaviour, IBullet, IInitializer
 
     public bool TryGetBonuses(out IReadOnlyCollection<IBonus> bonuses) => _bullet.TryGetBonuses(out bonuses);
 
-    private void OnApplyDebaff(GameObject gameObject)
+    private void OnApplyDebaff(Collider collider)
     {
-        if (gameObject.TryGetComponent(out IEnemy enemy))
-            _bulletDebaff.ApplyDebuff(enemy);
+        if (collider.TryGetComponent(out IDebuffReceiver debuffReceiver))
+            _bulletDebaff.ApplyDebuff(debuffReceiver);
     }
 }

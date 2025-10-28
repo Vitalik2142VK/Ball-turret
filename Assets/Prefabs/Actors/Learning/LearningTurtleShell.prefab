@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &1718116179900978145
+--- !u!1001 &4764636033815592551
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -8,14 +8,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: -2109719126461581933, guid: ca763b6bd7eb253428d7fe53b9924d2c, type: 3}
-      propertyPath: _enemyAttributes
-      value: 
-      objectReference: {fileID: 11400000, guid: 90ea111b08e38384eb15a4b6e2a8d0cd, type: 2}
-    - target: {fileID: -2109719126461581933, guid: ca763b6bd7eb253428d7fe53b9924d2c, type: 3}
+    - target: {fileID: 307578178117993793, guid: ca763b6bd7eb253428d7fe53b9924d2c, type: 3}
       propertyPath: _debuffReceiverGameObject
       value: 
-      objectReference: {fileID: 5398882537730313887}
+      objectReference: {fileID: 2243977590727140121}
     - target: {fileID: 823343203851408336, guid: ca763b6bd7eb253428d7fe53b9924d2c, type: 3}
       propertyPath: m_Name
       value: LearningTurtleShell
@@ -60,7 +56,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3567385694780872345, guid: ca763b6bd7eb253428d7fe53b9924d2c, type: 3}
+    - target: {fileID: 5513765459653918850, guid: ca763b6bd7eb253428d7fe53b9924d2c, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5513765459653918850, guid: ca763b6bd7eb253428d7fe53b9924d2c, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
@@ -69,8 +69,8 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ca763b6bd7eb253428d7fe53b9924d2c, type: 3}
---- !u!1 &5398882537730313887 stripped
+--- !u!1 &2243977590727140121 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6718058378194640254, guid: ca763b6bd7eb253428d7fe53b9924d2c, type: 3}
-  m_PrefabInstance: {fileID: 1718116179900978145}
+  m_PrefabInstance: {fileID: 4764636033815592551}
   m_PrefabAsset: {fileID: 0}

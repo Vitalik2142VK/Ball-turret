@@ -65,10 +65,8 @@ public class ActorsPreparator : IAdvancedActorPreparator
     public void ActivateDebuffablies()
     {
         foreach (var actor in _actors)
-        {
             if (actor is IDebuffable debuffable && actor.IsEnable == true)
                 debuffable.ActivateDebuffs();
-        }
     }
 
     private void RemoveDisabledActors()

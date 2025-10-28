@@ -3,7 +3,8 @@ using UnityEngine;
 
 public interface IGun
 {
-    public event Action ShootingCompleted;
+    public event Action Reloaded;
+    public event Action ShotExecuted;
 
     public bool IsRecharged { get; }
 

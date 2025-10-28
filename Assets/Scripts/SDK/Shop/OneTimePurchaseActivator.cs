@@ -18,7 +18,7 @@ public class OneTimePurchaseActivator : IPurchaseActivator
             throw new ArgumentNullException(nameof(purchaseId));
 
         if (purchaseId != _purchase.Id)
-            throw new InvalidOperationException($"The purchase ID - '{purchaseId}' does not match the activator ID - '{_purchase.Id}'");
+            throw new ArgumentException($"The purchase ID - '{purchaseId}' does not match the activator ID - '{_purchase.Id}'");
 
         YG2.saves.ActivatePurchase(_purchase.Id);
         YG2.SaveProgress();

@@ -2,32 +2,47 @@
 
 public class CoinCountRandomizer : ICoinCountRandomizer
 {
+    private const float DefaultCoinsRewardCoefficient = 3f;
     private const float DefaultCoefficient = 1f;
-    private const float CoinCoefficientByLevel = 0.4f;
-    private const int DefaultMaxCoinsWin = 1100;
-    private const int DefaultMinCoinsWin = 1000;
-    private const int DefaultMaxCoinsDefeat = 250;
-    private const int DefaultMinCoinsDefeat = 200;
+    private const float CoinCoefficientByLevel = 0.3f;
+    private const int DefaultCoinsWin = 1000;
+    private const int DefaultCoinsWave = 100;
+    private const int DefaultCoinsWinOffset = 200;
+    private const int DefaultCoinsWaveOffset = 50;
 
     private Random _random;
+    private float _coinsForRewardAdCoefficient;
+    private int _currenMaxLevelPlayer;
 
-    public CoinCountRandomizer()
+    public CoinCountRandomizer(int currentMaxLevelPlayer = 0, float coinsForRewardAdCoefficient = DefaultCoinsRewardCoefficient)
     {
+        if (currentMaxLevelPlayer < 0)
+            throw new ArgumentOutOfRangeException(nameof(currentMaxLevelPlayer));
+
+        if (DefaultCoefficient < 0)
+            throw new ArgumentOutOfRangeException(nameof(coinsForRewardAdCoefficient));
+
         _random = new Random();
+        _currenMaxLevelPlayer = currentMaxLevelPlayer;
+        _coinsForRewardAdCoefficient = coinsForRewardAdCoefficient;
     }
 
-    public int GetCountCoinsWin(int indexLevel)
+    public int CountCoinsForRewardAd => (int)(DefaultCoinsWin * _coinsForRewardAdCoefficient * CalculateCoefficient(_currenMaxLevelPlayer));
+
+    public int GetCountCoinsForWin(int indexLevel)
     {
-        int maxCoinsWin = (int)(DefaultMaxCoinsWin * CalculateCoefficient(indexLevel));
-        int minCoinsWin = (int)(DefaultMinCoinsWin * CalculateCoefficient(indexLevel));
+        int maxCoinsWin = DefaultCoinsWinOffset + DefaultCoinsWin;
+        maxCoinsWin = (int)(maxCoinsWin * CalculateCoefficient(indexLevel));
+        int minCoinsWin = (int)(DefaultCoinsWin * CalculateCoefficient(indexLevel));
 
         return _random.Next(minCoinsWin, ++maxCoinsWin);
     }
 
-    public int GetCountCoinsDefeat(int indexLevel)
+    public int GetCountCoinsForWave(int indexLevel)
     {
-        int maxCoinsWin = (int)(DefaultMaxCoinsDefeat * CalculateCoefficient(indexLevel));
-        int minCoinsWin = (int)(DefaultMinCoinsDefeat * CalculateCoefficient(indexLevel));
+        int maxCoinsWin = DefaultCoinsWaveOffset + DefaultCoinsWave;
+        maxCoinsWin = (int)(maxCoinsWin * CalculateCoefficient(indexLevel));
+        int minCoinsWin = (int)(DefaultCoinsWave * CalculateCoefficient(indexLevel));
 
         return _random.Next(minCoinsWin, ++maxCoinsWin);
     }

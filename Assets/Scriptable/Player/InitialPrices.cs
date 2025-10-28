@@ -2,7 +2,7 @@
 
 namespace Scriptable
 {
-    [CreateAssetMenu(menuName = "User/Initial prices", fileName = "InitialPrices", order = 51)]
+    [CreateAssetMenu(menuName = "Player/Initial prices", fileName = "InitialPrices", order = 51)]
     public class InitialPrices : ScriptableObject
     {
         [SerializeField, Min(100)] private int _damageImprovement;

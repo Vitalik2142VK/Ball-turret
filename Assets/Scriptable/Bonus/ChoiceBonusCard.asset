@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddffec690b9a64d4e80a879858b6c730, type: 3}
   m_Name: ChoiceBonusCard
   m_EditorClassIdentifier: 
-  _icon: {fileID: 21300000, guid: a5a51fadc3212c44888f04b5ec85d836, type: 3}
+  _icon: {fileID: -259797904, guid: 8a9fb79b64c0db040aa62dae0c1fcfd0, type: 3}
   _name: ChoiceBonus
-  _description: "\u041D\u0430 \u0432\u044B\u0431\u043E\u0440 \u043F\u0440\u0435\u0434\u043E\u0441\u0442\u0430\u043B\u044F\u0435\u0442
-    1 \u0438\u0437 3 \u0431\u043E\u043D\u0443\u0441\u043E\u0432"
+  _enDescription: Choosing a bonus
+  _ruDescription: "\u0412\u044B\u0431\u043E\u0440 \u0431\u043E\u043D\u0443\u0441\u0430"
+  _trDescription: "Bonus se\xE7imi"
+  _view: {fileID: 464697870270963743, guid: a2cc5a0f368930444be5124d8a13f7c1, type: 3}

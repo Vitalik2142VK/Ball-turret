@@ -5,15 +5,17 @@ namespace MainMenuSpace
 {
     public class EntryPoint : MonoBehaviour
     {
-        [SerializeField] private UserConfigurator _userConfigurator;
+        [SerializeField] private PlayerConfigurator _playerConfigurator;
         [SerializeField] private LevelPlannerConfigurator _levelsPlannerConfigurator;
         [SerializeField] private ShopConfigurator _shopConfigurator;
         [SerializeField] private UIConfigurator _userInterfaseConfigurator;
 
+        private AdsViewer _adsViewer;
+
         private void OnValidate()
         {
-            if (_userConfigurator == null)
-                throw new NullReferenceException(nameof(_userConfigurator));
+            if (_playerConfigurator == null)
+                throw new NullReferenceException(nameof(_playerConfigurator));
 
             if (_levelsPlannerConfigurator == null)
                 throw new NullReferenceException(nameof(_levelsPlannerConfigurator));
@@ -25,20 +27,59 @@ namespace MainMenuSpace
                 throw new NullReferenceException(nameof(_userInterfaseConfigurator));
         }
 
+        private void Awake()
+        {
+            _adsViewer = FindAnyObjectByType<AdsViewer>();
+
+            if (_adsViewer == null)
+                throw new NullReferenceException(nameof(_adsViewer));
+        }
+
         private void Start()
         {
-            _userConfigurator.Configure();
-            _levelsPlannerConfigurator.Configure();
+            //todo Remove ConfigureWithConsol() on realise
+#if UNITY_EDITOR
+            Configure();
+#else
+            ConfigureWithConsol();
+#endif
+        }
 
-            var user = _userConfigurator.User;
-            var turretImprover = _userConfigurator.TurretImprover;
+        private void Configure()
+        {
+            _playerConfigurator.Configure(_adsViewer);
+            var player = _playerConfigurator.Player;
+            var playerSaver = _playerConfigurator.PlayerSaver;
+            var turretImprover = _playerConfigurator.TurretImprover;
+            var coinAdder = _playerConfigurator.CoinAdder;
 
-            _shopConfigurator.Configure(user, turretImprover);
+            _levelsPlannerConfigurator.Configure(player, coinAdder);
+            _shopConfigurator.Configure(playerSaver, player, turretImprover);
 
             var levelFactory = _levelsPlannerConfigurator.LevelFactory;
             var improvementShop = _shopConfigurator.ImprovementShop;
+            var coinCountRandomizer = _levelsPlannerConfigurator.CoinCountRandomizer;
 
-            _userInterfaseConfigurator.Configure(user, levelFactory, improvementShop);
+            _userInterfaseConfigurator.SetAdsViewer(_adsViewer);
+            _userInterfaseConfigurator.SetImprovementShop(improvementShop);
+            _userInterfaseConfigurator.Configure(player, coinAdder, levelFactory, coinCountRandomizer);
+
+            if (player.AchievedLevelIndex == 0)
+                _levelsPlannerConfigurator.LoadLearningLevel();
+        }
+
+        private void ConfigureWithConsol()
+        {
+            try
+            {
+                Console.GetLog("UNITY_WEBGL");
+
+                Configure();
+            }
+            catch (Exception ex)
+            {
+                Console.GetException(ex);
+            }
         }
     }
 }

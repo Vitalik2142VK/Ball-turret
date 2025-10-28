@@ -1,0 +1,145 @@
+﻿using System;
+using System.Collections;
+using UnityEngine;
+using UnityEngine.UI;
+
+[RequireComponent(typeof(ShiftAnimatorUI))]
+public class ImprovementMenu : MonoBehaviour
+{
+    private const int MaxCountImprovementButtons = 2;
+
+    [SerializeField] private ImprovementChoiseButton[] _improvementChoiseButtons;
+    [SerializeField] private Button _updateButton;
+
+    private IWindow _previousWindow;
+    private IGamePayTransaction _selectTransaction;
+    private IImprovementShop _improvementShop;
+    private IAdsViewer _adsViewer;
+    private IAnimatorUI _animator;
+
+    private void OnValidate()
+    {
+        if (_improvementChoiseButtons == null || _improvementChoiseButtons.Length != MaxCountImprovementButtons)
+            _improvementChoiseButtons = new ImprovementChoiseButton[MaxCountImprovementButtons];
+
+        foreach (var button in _improvementChoiseButtons)
+            if (button == null)
+                throw new NullReferenceException(nameof(button));
+
+        if (_updateButton == null)
+            throw new NullReferenceException(nameof(_updateButton));
+    }
+
+    private void Awake()
+    {
+        _animator = GetComponent<IAnimatorUI>();
+
+        gameObject.SetActive(false);
+        _updateButton.interactable = false;
+    }
+
+    private void OnEnable()
+    {
+        foreach (var button in _improvementChoiseButtons)
+            button.Clicked += OnSelectButton;
+
+        if (_adsViewer != null)
+            _adsViewer.ShowCompleted += OnUpdateMenu;
+
+        _updateButton.onClick.AddListener(OnImprove);
+    }
+
+    private void OnDisable()
+    {
+        foreach (var button in _improvementChoiseButtons)
+            button.Clicked -= OnSelectButton;
+
+        if (_adsViewer != null)
+            _adsViewer.ShowCompleted -= OnUpdateMenu;
+
+        _updateButton.onClick.RemoveListener(OnImprove);
+    }
+
+    public void Initialize(IImprovementShop improvementShop, IAdsViewer adsViewer)
+    {
+        _improvementShop = improvementShop ?? throw new ArgumentNullException(nameof(improvementShop));
+        _adsViewer = adsViewer ?? throw new ArgumentNullException(nameof(adsViewer));
+
+        for (int i = 0; i < _improvementChoiseButtons.Length; i++)
+            _improvementChoiseButtons[i].SetIndex(i);
+    }
+
+    public void Open(IWindow previousWindow)
+    {
+        _previousWindow = previousWindow ?? throw new ArgumentNullException(nameof(previousWindow));
+
+        gameObject.SetActive(true);
+        _adsViewer.ShowFullScreenAd();
+        _animator.Show();
+
+        StartCoroutine(WaitOpening());
+    }
+
+    public void OnClose()
+    {
+        _updateButton.interactable = false;
+        _animator.Hide();
+
+        StartCoroutine(WaitClosure());
+    }
+
+    private void OnImprove()
+    {
+        if (_improvementShop.TryMakeTransaction(_selectTransaction))
+            foreach (var button in _improvementChoiseButtons)
+                button.Enable();
+        else
+            throw new InvalidOperationException("The transaction failed");
+
+        _selectTransaction = null;
+        _updateButton.interactable = false;
+    }
+
+    private void OnSelectButton(IGamePayTransaction gamePayTransaction, int index)
+    {
+        _selectTransaction = gamePayTransaction ?? throw new ArgumentNullException(nameof(gamePayTransaction));
+
+        ImprovementChoiseButton button;
+
+        for (int i = 0; i < _improvementChoiseButtons.Length; i++)
+        {
+            button = _improvementChoiseButtons[i];
+
+            if (i == index)
+                button.Disable();
+            else
+                button.Enable();
+        }
+
+        _updateButton.interactable = true;
+    }
+
+    private void OnUpdateMenu()
+    {
+        foreach (var button in _improvementChoiseButtons)
+            button.Enable();
+    }
+
+    private IEnumerator WaitOpening()
+    {
+        yield return _animator.GetYieldAnimation();
+
+        _updateButton.interactable = false;
+
+        foreach (var button in _improvementChoiseButtons)
+            button.Enable();
+    }
+
+    private IEnumerator WaitClosure()
+    {
+        yield return _animator.GetYieldAnimation();
+
+        gameObject.SetActive(false);
+        _previousWindow.Enable();
+    }
+}

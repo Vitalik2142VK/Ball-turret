@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2194ebbbf5d05a4bb8b086c3ba4bb41, type: 3}
   m_Name: SlimeBossAttributes
   m_EditorClassIdentifier: 
-  _damageAttributes: {fileID: 11400000, guid: 9ee000bc0b299884384b08d0f3ea00e0, type: 2}
-  _healthAttributes: {fileID: 11400000, guid: b63e3ad46573be041a1aee3385764dfa, type: 2}
+  _damage: 350
+  _maxHealth: 200

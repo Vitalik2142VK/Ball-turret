@@ -6,23 +6,34 @@ public class Tower : MonoBehaviour, ITower
     private const float MaxDistance = 100f;
     private const float CoefficientOffsetTorget = 0.5f;
 
+    [SerializeField] private Muzzle _muzzle;
     [SerializeField] private LayerMask _layerMask;
-    [SerializeField] private TrajectoryRenderer _trajectoryRenderer;
+
+    [Header("Debug")]
+    [SerializeField] private bool _isDebugOn = false;
+    [SerializeField] private Color _color = Color.red;
+    [SerializeField, Min(0.1f)] private float _radusSphere = 1f;
 
     private ITargetPoint _targetPoint;
+    private ITrajectoryRenderer _trajectoryRenderer;
     private Transform _transform;
     private Vector3 _touchPosition;
 
-    public Vector3 Direction => _transform.forward;
+    public Vector3 Direction => _muzzle.Direction;
     public bool IsReadyShoot => _targetPoint.IsInsideZoneEnemy;
+
+    private void OnValidate()
+    {
+        if (_muzzle == null)
+            _muzzle = GetComponentInChildren<Muzzle>();
+
+        if (_muzzle == null)
+            throw new NullReferenceException(nameof(_muzzle));
+    }
 
     private void Awake()
     {
-        if (_trajectoryRenderer == null)
-            throw new NullReferenceException(nameof(_trajectoryRenderer));
-
         _transform = transform;
-        _trajectoryRenderer.Disable();
     }
 
     private void FixedUpdate()
@@ -30,17 +41,36 @@ public class Tower : MonoBehaviour, ITower
         LookAtTarget();
     }
 
-    public void Initialize(ITargetPoint targetPoint)
+    private void OnDrawGizmos()
     {
-        _targetPoint = targetPoint ?? throw new ArgumentNullException(nameof(targetPoint));
-        _trajectoryRenderer.ShowTrajectory(_transform.position, _transform.forward);
+        if (_isDebugOn && gameObject.activeSelf)
+        {
+            Gizmos.color = _color;
+            Gizmos.DrawSphere(_targetPoint.Position, _radusSphere);
+        }
     }
 
-    public void TakeAim(Vector3 touchPosition)
+    public void Initialize(ITargetPoint targetPoint, ITrajectoryRenderer trajectoryRenderer)
     {
-        _touchPosition = touchPosition;
+        _targetPoint = targetPoint ?? throw new ArgumentNullException(nameof(targetPoint));
+        _trajectoryRenderer = trajectoryRenderer ?? throw new ArgumentNullException(nameof(trajectoryRenderer));
+        _trajectoryRenderer.ShowTrajectory(_muzzle.Position, Direction);
+    }
+
+    public void ClearDirection() => _trajectoryRenderer.Clear();
+
+    public void TakeAim(Vector3 targertPosition)
+    {
+        _touchPosition = targertPosition;
         _trajectoryRenderer.Enable();
-        _trajectoryRenderer.ShowTrajectory(_transform.position, _transform.forward);
+        _trajectoryRenderer.ShowTrajectory(_muzzle.Position, Direction);
+    }
+
+    public void AimBeforeShooting(Vector3 targertPosition)
+    {
+        _touchPosition = targertPosition;
+
+        LookAtTarget();
     }
 
     public void SaveDirection()
@@ -53,9 +83,9 @@ public class Tower : MonoBehaviour, ITower
 
     private void LookAtTarget()
     {
-        Vector3 direction = (_touchPosition - _transform.position);
+        Vector3 direction = (_touchPosition - _muzzle.Position);
 
-        if (Physics.Raycast(_transform.position, direction, out RaycastHit hitInfo, MaxDistance, _layerMask))
+        if (Physics.Raycast(_muzzle.Position, direction, out RaycastHit hitInfo, MaxDistance, _layerMask))
         {
             Vector3 offset = (hitInfo.point - _transform.position).normalized * CoefficientOffsetTorget;
 
@@ -63,10 +93,22 @@ public class Tower : MonoBehaviour, ITower
         }
         else
         {
+            if (_targetPoint.Position == _touchPosition)
+                return;
+
             _targetPoint.SetPosition(_touchPosition);
         }
 
-        _transform.LookAt(_targetPoint.Position);
+        Rotate();
+    }
 
+    private void Rotate()
+    {
+        Vector3 direction = _targetPoint.Position - _transform.position;
+        Vector3 horizontalDirection = new Vector3(direction.x, 0, direction.z);
+        Vector3 localTargetPosition = _transform.InverseTransformPoint(_targetPoint.Position);
+
+        _transform.rotation = Quaternion.LookRotation(horizontalDirection);
+        _muzzle.LookAtTarget(localTargetPosition);
     }
 }

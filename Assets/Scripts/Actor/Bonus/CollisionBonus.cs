@@ -1,68 +1,42 @@
 ﻿using System;
 using UnityEngine;
-using UnityEngine.UI;
 
-[RequireComponent(typeof(Bonus), typeof(Mover))]
-public class CollisionBonus : MonoBehaviour, IBonus, IActor
+public class CollisionBonus : IViewableBonus
 {
-    [SerializeField] private Image _image;
-    [SerializeField] private Bonus _bonus;
+    private IBonus _bonus;
+    private IBonusPresenter _presenter;
+    private IMovableObject _mover;
 
-    private IMover _mover;
+    public CollisionBonus(IBonus bonus, IBonusPresenter presenter, IMovableObject mover)
+    {
+        _bonus = bonus ?? throw new ArgumentNullException(nameof(bonus));
+        _presenter = presenter ?? throw new ArgumentNullException(nameof(presenter));
+        _mover = mover ?? throw new ArgumentNullException(nameof(mover));
 
-    public string Name => _bonus.Name;
+        IsEnable = true;
+    }
     public IBonusCard BonusCard => _bonus.BonusCard;
-    public IMover Mover => _mover;
+    public bool IsFinished => _mover.IsFinished;
 
     public bool IsEnable { get; private set; }
 
-    private void OnValidate()
-    {
-        if (_image == null)
-            throw new NullReferenceException(nameof(_image));
-
-        if (_bonus == null)
-            _bonus = GetComponent<Bonus>();
-    }
-
-    private void Awake()
-    {
-        _mover = GetComponent<Mover>();
-        _bonus = GetComponent<Bonus>();
-
-        _image.sprite = _bonus.BonusCard.Icon;
-    }
-
-    private void OnEnable()
-    {
-        IsEnable = true;
-    }
-
-    private void OnDisable()
-    {
-        IsEnable = false;
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.TryGetComponent(out IBonusGatherer gatheringBonus))
-        {
-            gatheringBonus.Gather(this);
-
-            Destroy();
-        }
-    }
-
-    public void Initialize(IBonusActivator bonusActivator) => _bonus.Initialize(bonusActivator);
+    public void Activate() => _bonus.Activate();
 
     public void SetStartPosition(Vector3 startPosition) => _mover.SetStartPosition(startPosition);
 
-    public void Activate() => _bonus.Activate();
+    public void SetPoint(Vector3 distance, float speed) => _mover.SetPoint(distance, speed);
 
-    public IBonusActivator GetCloneBonusActivator() => _bonus.GetCloneBonusActivator();
+    public void Move() => _mover.Move();
 
-    public void Destroy()
+    public void HandleBonusGatherer(IBonusGatherer bonusGatherer)
     {
-        Destroy(gameObject);
+        bonusGatherer.Gather(_bonus);
+        IsEnable = false;
+    }
+
+    public void Destroy() 
+    { 
+        _presenter.Destroy();
+        IsEnable = false;
     }
 }

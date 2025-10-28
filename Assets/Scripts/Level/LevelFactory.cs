@@ -9,23 +9,28 @@ public class LevelFactory : ILevelFactory
     private List<ILevelActorsPlanner> _actorsPlanners;
     private ICoinCountRandomizer _coinCountRandomizer;
     private float _actorsHealthCoefficientByLevel;
+    private int _achievedLevelIndex;
 
-    public LevelFactory(IEnumerable<ILevelActorsPlanner> actorsPlanners, float actorsHealthCoefficientByLevel = MinActorsHealthCoefficientByLevel)
+    public LevelFactory(ILevelActorsPlanner endlessLevelPlanner, IEnumerable<ILevelActorsPlanner> actorsPlanners, ICoinCountRandomizer coinCountRandomizer, float actorsHealthCoefficientByLevel, int achievedLevelIndex)
     {
-        if (actorsHealthCoefficientByLevel < MinActorsHealthCoefficientByLevel)
-            throw new ArgumentOutOfRangeException(nameof(actorsHealthCoefficientByLevel));
+        if (endlessLevelPlanner == null)
+            throw new ArgumentNullException(nameof(endlessLevelPlanner));
 
         if (actorsPlanners == null)
             throw new ArgumentNullException(nameof(actorsPlanners));
 
-        _actorsPlanners = new List<ILevelActorsPlanner>(actorsPlanners);
+        if (actorsHealthCoefficientByLevel < MinActorsHealthCoefficientByLevel)
+            throw new ArgumentOutOfRangeException(nameof(actorsHealthCoefficientByLevel));
 
-        if (_actorsPlanners.Count == 0)
-            throw new ArgumentOutOfRangeException(nameof(actorsPlanners));
+        if (achievedLevelIndex < 0)
+            throw new ArgumentOutOfRangeException(nameof(achievedLevelIndex));
 
+        _actorsPlanners = new List<ILevelActorsPlanner> { endlessLevelPlanner };
+        _actorsPlanners.AddRange(actorsPlanners);
+
+        _coinCountRandomizer = coinCountRandomizer ?? throw new ArgumentNullException(nameof(coinCountRandomizer));
         _actorsHealthCoefficientByLevel = actorsHealthCoefficientByLevel;
-
-        _coinCountRandomizer = new CoinCountRandomizer();
+        _achievedLevelIndex = achievedLevelIndex;
     }
 
     public int LevelsCount => _actorsPlanners.Count;
@@ -35,12 +40,24 @@ public class LevelFactory : ILevelFactory
         if (indexLevel < 0 || indexLevel >= LevelsCount)
             throw new ArgumentOutOfRangeException($"The index cannot be less than 0, greater than or equal to 1 {LevelsCount}");
 
+        if (indexLevel == EndlessLevel.IndexLevel)
+            return CreateEndlessLevel();
+
         ILevelActorsPlanner levelActorsPlanner = _actorsPlanners[indexLevel];
         float actorsHealthCoefficient = CalculateActorsHealthCoefficient(indexLevel);
-        int countCoinsWin = _coinCountRandomizer.GetCountCoinsWin(indexLevel);
-        int countCoinsDefeat = _coinCountRandomizer.GetCountCoinsDefeat(indexLevel);
 
-        return new Level(levelActorsPlanner, actorsHealthCoefficient, countCoinsWin, countCoinsDefeat, indexLevel);
+        return new Level(levelActorsPlanner, _coinCountRandomizer, actorsHealthCoefficient, indexLevel);
+    }
+
+    private EndlessLevel CreateEndlessLevel()
+    {
+        ILevelActorsPlanner endlessLevelPlanner = _actorsPlanners[EndlessLevel.IndexLevel];
+        Level level = new Level(endlessLevelPlanner, _coinCountRandomizer);
+        SavedLeaderBoard savedLeaderBoard = new SavedLeaderBoard();
+        float reducingCoefficient = 0.15f;
+        float healthMultiplierPerWave = _actorsHealthCoefficientByLevel + (float)(_achievedLevelIndex * reducingCoefficient);
+
+        return new EndlessLevel(level, savedLeaderBoard, healthMultiplierPerWave);
     }
 
     private float CalculateActorsHealthCoefficient(int indexLevel)

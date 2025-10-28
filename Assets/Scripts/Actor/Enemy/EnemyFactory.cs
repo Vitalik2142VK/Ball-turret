@@ -4,19 +4,29 @@ using UnityEngine;
 
 public class EnemyFactory : MonoBehaviour, IActorFactory
 {
-    [SerializeField] private Enemy[] _enemyPrefabs;
+    [SerializeField, SerializeIterface(typeof(IEnemyCreator))] private GameObject[] _enemyCreators;
 
-    private Dictionary<string, Enemy> _prefabs;
+    private Dictionary<string, IEnemyCreator> _creators;
+    private IActorHealthModifier _healthModifier;
+
+    private void OnValidate()
+    {
+        if (_enemyCreators == null || _enemyCreators.Length == 0)
+            throw new InvalidOperationException(nameof(_enemyCreators));
+
+        foreach (var gameObject in _enemyCreators)
+            if (gameObject.TryGetComponent(out IEnemyCreator _) == false)
+                throw new InvalidOperationException($"One or more objects do not have a component <{nameof(IEnemyCreator)}>");
+    }
 
     private void Awake()
     {
-        if (_enemyPrefabs == null)
-            throw new NullReferenceException(nameof(_enemyPrefabs));
+        _creators = CreateDictionaryPrefabs();
+    }
 
-        if (_enemyPrefabs.Length == 0)
-            throw new InvalidOperationException(nameof(_enemyPrefabs));
-
-        _prefabs = CreateDictionaryPrefabs();
+    public void Initialize(IActorHealthModifier healthModifier)
+    {
+        _healthModifier = healthModifier ?? throw new ArgumentNullException(nameof(healthModifier));
     }
 
     public bool IsCanCreate(string nameTypeActor)
@@ -24,28 +34,25 @@ public class EnemyFactory : MonoBehaviour, IActorFactory
         if (nameTypeActor == null || nameTypeActor.Length == 0)
             throw new ArgumentOutOfRangeException(nameof(nameTypeActor));
 
-        return _prefabs.ContainsKey(nameTypeActor);
+        return _creators.ContainsKey(nameTypeActor);
     }
 
     public IActor Create(string nameTypeActor)
     {
-        if (_prefabs.ContainsKey(nameTypeActor) == false)
+        if (IsCanCreate(nameTypeActor) == false)
             throw new ArgumentOutOfRangeException(nameof(nameTypeActor));
 
-        var prefab = _prefabs[nameTypeActor];
-        var enemy = Instantiate(prefab, Vector3.zero, prefab.transform.rotation);
-        enemy.Initialize();
-
-        return enemy;
+        return _creators[nameTypeActor].Create(_healthModifier);
     }
 
-    private Dictionary<string, Enemy> CreateDictionaryPrefabs()
+    private Dictionary<string, IEnemyCreator> CreateDictionaryPrefabs()
     {
-        int lenght = _enemyPrefabs.Length;
-        Dictionary<string, Enemy> prefabs = new Dictionary<string, Enemy>(lenght);
+        int lenght = _enemyCreators.Length;
+        Dictionary<string, IEnemyCreator> prefabs = new Dictionary<string, IEnemyCreator>(lenght);
 
-        foreach (var prefab in _enemyPrefabs)
-            prefabs.Add(prefab.Name, prefab);
+        foreach (var gameObject in _enemyCreators)
+            if (gameObject.TryGetComponent(out IEnemyCreator creator))
+                prefabs.Add(creator.Name, creator);
 
         return prefabs;
     }

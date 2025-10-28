@@ -1,29 +1,36 @@
+using Scriptable;
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace PlayLevel
 {
     public class EntryPoint : MonoBehaviour
     {
-        [SerializeField] private Player _player;
-        [SerializeField] private Scriptable.SelectedLevel _selectedLevel;
+        [SerializeField] private SelectedLevel _selectedLevel;
+        [SerializeField] private CachedPlayer _player;
+        [SerializeField] private PlayerController _playerController;
 
         [Header("Configurators")]
         [SerializeField] private TurretConfigurator _turretConfigurator;
         [SerializeField] private StepSystemConfigurator _stepSystemConfigurator;
         [SerializeField] private ActorsConfigurator _actorsConfigurator;
-        [SerializeField] private ImprovedHealthConfigurator _improvedHealthConfigurator;
-        [SerializeField] private BonusesPrefabConfigurator _bonusPrefabConfigurator;
+        [SerializeField] private BonusesConfigurator _bonusPrefabConfigurator;
         [SerializeField] private BulletConfigurator _bulletConfigurator;
         [SerializeField] private UIConfigurator _userInterfaceConfigurator;
 
+        private AdsViewer _adsViewer;
+
         private void OnValidate()
         {
+            if (_selectedLevel == null)
+                throw new NullReferenceException(nameof(_selectedLevel));
+
             if (_player == null)
                 throw new NullReferenceException(nameof(_player));
 
-            if (_selectedLevel == null)
-                throw new NullReferenceException(nameof(_selectedLevel));
+            if (_playerController == null)
+                throw new NullReferenceException(nameof(_playerController));
 
             if (_turretConfigurator == null)
                 throw new NullReferenceException(nameof(_turretConfigurator));
@@ -33,9 +40,6 @@ namespace PlayLevel
 
             if (_actorsConfigurator == null)
                 throw new NullReferenceException(nameof(_actorsConfigurator));
-
-            if (_improvedHealthConfigurator == null)
-                throw new NullReferenceException(nameof(_improvedHealthConfigurator));
 
             if (_bonusPrefabConfigurator == null)
                 throw new NullReferenceException(nameof(_bonusPrefabConfigurator));
@@ -49,26 +53,65 @@ namespace PlayLevel
 
         private void Start()
         {
-            IUser user = _player.User;
+            //todo Remove ConfigureWithConsol() on realise
+#if UNITY_EDITOR
+            Configure();
+#else
+            ConfigureWithConsol();
+#endif
+        }
 
-            _bulletConfigurator.Configure(user);
-            _turretConfigurator.Configure(user, _bulletConfigurator.BulletFactory);
+        private void Configure()
+        {
+            _adsViewer = FindAnyObjectByType<AdsViewer>();
+
+            if (_adsViewer == null)
+                throw new NullReferenceException(nameof(_adsViewer));
+
+            _bulletConfigurator.Configure(_player);
+            _turretConfigurator.Configure(_player, _bulletConfigurator.BulletFactory);
 
             var turret = _turretConfigurator.Turret;
-            var winState = _turretConfigurator.WinState;
 
-            _player.Initialize(turret);
-            _actorsConfigurator.Configure(turret, _selectedLevel.ActorsPlanner);
-            _improvedHealthConfigurator.Configure(_selectedLevel.ActorsHealthCoefficient);
+            _playerController.Initialize(turret);
+            _actorsConfigurator.Configure(turret, _selectedLevel);
 
             var actorsController = _actorsConfigurator.ActorsController;
 
-            _stepSystemConfigurator.Configure(turret, winState, _player, actorsController);
-            _bonusPrefabConfigurator.Configure(turret);
+            _stepSystemConfigurator.Configure(turret, _playerController, actorsController);
+            _bonusPrefabConfigurator.Configure(actorsController);
 
-            RewardIssuer rewardIssuer = new RewardIssuer(user, _selectedLevel, winState);
+            var bonusReservator = _bonusPrefabConfigurator.BonusReservator;
+
+            _stepSystemConfigurator.ConfigureBonusActivationStep(bonusReservator);
+
+            SavedPlayerData savesData = new SavedPlayerData();
+            PlayerSaver playerSaver = new PlayerSaver(_player, savesData);
+            CoinAdder coinAdder = new CoinAdder(playerSaver, _player.Wallet, _adsViewer);
+            RewardIssuer rewardIssuer = new RewardIssuer(coinAdder, _player, _selectedLevel);
+            WinStatus winStatus = new WinStatus(turret, _selectedLevel);
             var closeSceneStep = _stepSystemConfigurator.CloseSceneStep;
-            _userInterfaceConfigurator.Configure(closeSceneStep, rewardIssuer);
+            _userInterfaceConfigurator.Configure(closeSceneStep, rewardIssuer, winStatus, coinAdder, _adsViewer);
+
+            if (_player.AchievedLevelIndex == 0)
+                SceneManager.LoadScene((int)SceneIndex.LearningScene, LoadSceneMode.Additive);
         }
+
+        private void ConfigureWithConsol()
+        {
+            try
+            {
+                Configure();
+            }
+            catch (Exception ex)
+            {
+                Console.GetException(ex);
+            }
+        }
+    }
+
+    public class TestLevelLoader : MonoBehaviour
+    {
+
     }
 }

@@ -27,14 +27,14 @@ public class ActorSpawner : IActorSpawner
 
         foreach (var actorPlanner in actorPlanners)
         {
-            IActor actor = CreatActor(actorPlanner);
+            IActor actor = CreateActor(actorPlanner);
             actors.Add(actor);
         }
 
         return actors;
     }
 
-    private IActor CreatActor(IActorPlanner actorPlanner)
+    private IActor CreateActor(IActorPlanner actorPlanner)
     {
         string nameActor = actorPlanner.NameActor;
         Vector3 startPosition = _spawnPointsRepository.GetPositionSpawnPoint(actorPlanner.ColumnNumber, actorPlanner.LineNumber);

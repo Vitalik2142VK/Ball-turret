@@ -15,6 +15,7 @@ namespace Scriptable
         private int _countPointsBeforeCollision;
         private bool _isWasCollision;
 
+        public Vector3 Direction { get; set; }
         public float DeltaTime { get; private set; }
         public bool IsFinished { get; private set; }
 

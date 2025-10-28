@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7831532543991991704}
   - component: {fileID: 982811214627394062}
   - component: {fileID: 1478252681555332712}
-  - component: {fileID: 2634447828204231745}
+  - component: {fileID: 7566039029939602341}
   m_Layer: 7
   m_Name: Bullet
   m_TagString: Untagged
@@ -44,7 +44,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1629257130460341984}
-  m_Mesh: {fileID: 4711208715938537054, guid: 7a918aa3c784ae74fb53d4ec6138db06, type: 3}
+  m_Mesh: {fileID: 3751801816520554143, guid: f3d68d3f27b9fcc4fbf6ecf18a580e79, type: 3}
 --- !u!23 &8234357827683552692
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -65,7 +65,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d04e6c2e2c69f01498fd785fa5cde9ba, type: 2}
+  - {fileID: 2100000, guid: d9c0226bd4324f01bc178cf4a515ef84, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -148,7 +148,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _bulletType: 0
---- !u!114 &2634447828204231745
+--- !u!114 &7566039029939602341
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -164,4 +164,5 @@ MonoBehaviour:
   _trajectory: {fileID: 11400000, guid: 2a0a0022c8245fc47a5e4974d22abcb6, type: 2}
   _collisionMask:
     serializedVersion: 2
-    m_Bits: 832
+    m_Bits: 1856
+  _maxDirectionalError: 0.2

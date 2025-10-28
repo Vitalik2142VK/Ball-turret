@@ -9,8 +9,11 @@ namespace PlayLevel
         [Header("Turret")]
         [SerializeField] private Tower _tower;
         [SerializeField] private TargetPoint _targetPoint;
-        [SerializeField] private DefaultGun _gun;
+        [SerializeField] private Gun _gun;
         [SerializeField] private HealthBar _healthBar;
+        [SerializeField] private TurretView _turretView;
+        
+        [SerializeField, SerializeIterface(typeof(ITrajectoryRenderer))] private GameObject _trajectoryRendererGameObject;
 
         [Header("Bullets")]
         [SerializeField] private BulletsCollector _bulletCollector;
@@ -19,11 +22,13 @@ namespace PlayLevel
         [SerializeField] private GunAttributes _gunAttributes;
         [SerializeField] private HealthAttributes _turretHealthAttributes;
 
+        [Header("Other")]
+        [SerializeField] private FullHealthTurretActivatorCreator _fullHealthTurretBonus;
+
         private Turret _turret;
-        private WinState _winState;
+        private ITrajectoryRenderer _trajectoryRenderer;
 
         public ITurret Turret => _turret;
-        public IWinState WinState => _winState;
 
         private void OnValidate()
         {
@@ -39,6 +44,12 @@ namespace PlayLevel
             if (_healthBar == null)
                 throw new NullReferenceException(nameof(_healthBar));
 
+            if (_turretView == null)
+                throw new NullReferenceException(nameof(_turretView));
+
+            if (_trajectoryRendererGameObject == null)
+                throw new NullReferenceException(nameof(_trajectoryRendererGameObject));
+
             if (_bulletCollector == null)
                 throw new NullReferenceException(nameof(_bulletCollector));
 
@@ -47,6 +58,14 @@ namespace PlayLevel
 
             if (_turretHealthAttributes == null)
                 throw new NullReferenceException(nameof(_turretHealthAttributes));
+
+            if (_fullHealthTurretBonus == null)
+                throw new NullReferenceException(nameof(_fullHealthTurretBonus));
+        }
+
+        private void Awake()
+        {
+            _trajectoryRenderer = _trajectoryRendererGameObject.GetComponent<ITrajectoryRenderer>();
         }
 
         private void OnDisable()
@@ -54,7 +73,7 @@ namespace PlayLevel
             _turret.Disable();
         }
 
-        public void Configure(IUser user, IBulletFactory bulletFactory)
+        public void Configure(IPlayer user, IBulletFactory bulletFactory)
         {
             if (bulletFactory == null)
                 throw new NullReferenceException(nameof(bulletFactory));
@@ -62,16 +81,17 @@ namespace PlayLevel
             IGunMagazine gunMagazine = CreateGunMagazine(bulletFactory);
 
             _gun.Initialize(gunMagazine, _gunAttributes.TimeBetweenShots);
-            _tower.Initialize(_targetPoint);
+            _tower.Initialize(_targetPoint, _trajectoryRenderer);
 
             IHealthImprover healthImprover = new HealthImprover(_turretHealthAttributes);
             healthImprover.Improve(user.HealthCoefficient);
             IHealth health = new Health(healthImprover, _healthBar);
             health.Restore();
-            _winState = new WinState();
 
-            _turret = new Turret(_gun, _tower, health, _winState);
+            _turret = new Turret(_turretView, _gun, _tower, health);
             _turret.Enable();
+
+            _fullHealthTurretBonus.SetHealthTurret(health);
         }
 
         private IGunMagazine CreateGunMagazine(IBulletFactory bulletFactory)

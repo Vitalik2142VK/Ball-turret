@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: 6_LevelActorsPlanner
   m_EditorClassIdentifier: 
   _waveis:
-  - {fileID: 11400000, guid: c4de54c7c7edce9439c299837368dbcc, type: 2}
-  - {fileID: 11400000, guid: 512164a7e7f02c041ba0a7bd487526d4, type: 2}
-  - {fileID: 11400000, guid: d0e7e805969f3a04789ff6124230e09e, type: 2}
-  - {fileID: 11400000, guid: 2b57d07fbc1be2348b00f7e85926ab14, type: 2}
+  - {fileID: 11400000, guid: c7f63f3a767aa7341853db6e48cc410a, type: 2}
+  - {fileID: 11400000, guid: ecc6c729eb0082646a96481510d56da1, type: 2}
+  - {fileID: 11400000, guid: 883e87abfd58d2b499f6efa000800148, type: 2}
   - {fileID: 11400000, guid: a44769f84c8430247a474eb313adf421, type: 2}
+  - {fileID: 11400000, guid: 573e4e666b6e7994592c3eaa2ff2492f, type: 2}

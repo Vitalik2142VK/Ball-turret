@@ -6,7 +6,7 @@ public class SpecialBulletInitializer : MonoBehaviour, IBulletInitializer
     public void Initialize(IBullet bullet)
     {
         if (bullet == null)
-            throw new System.ArgumentNullException(nameof(bullet));
+            throw new ArgumentNullException(nameof(bullet));
 
         if (bullet is Bullet bulletMono)
         {

@@ -21,6 +21,12 @@ public class BonusRandomizer : IBonusRandomizer
 
     public IEnumerable<IBonus> GetBonuses(int countBonuses)
     {
+        if (countBonuses > _prefabs.Count)
+            throw new ArgumentOutOfRangeException(nameof(countBonuses));
+
+        if (countBonuses == _prefabs.Count)
+            return _prefabs.ToArray();
+
         IBonus[] randomBonuses = new IBonus[countBonuses];
 
         for (int i = 0; i < randomBonuses.Length; i++)

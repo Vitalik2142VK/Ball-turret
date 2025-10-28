@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Bullet), typeof(FireBulletDebuff), typeof(BulletPhysics))]
+[RequireComponent(typeof(Bullet), typeof(FireBulletDebuff))]
 public class FireBullet : MonoBehaviour, IBullet, IInitializer
 {
+    [SerializeField, SerializeIterface(typeof(IBulletPhysics))] private GameObject _bulletPhysicsGameObject;
     [SerializeField] private Scriptable.DamageImproverAttributes _damageImproverAttributes;
 
     private IBullet _bullet;
@@ -15,12 +17,18 @@ public class FireBullet : MonoBehaviour, IBullet, IInitializer
     private void OnValidate()
     {
         if (_damageImproverAttributes == null)
-            throw new System.NullReferenceException(nameof(_damageImproverAttributes));
+            throw new NullReferenceException(nameof(_damageImproverAttributes));
+
+        if (_bulletPhysicsGameObject == null)
+            if (TryGetComponent(out IBulletPhysics _))
+                _bulletPhysicsGameObject = gameObject;
+            else
+                throw new NullReferenceException(nameof(_damageImproverAttributes));
     }
 
     private void Awake()
     {
-        _bulletPhysics = GetComponent<IBulletPhysics>();
+        _bulletPhysics = _bulletPhysicsGameObject.GetComponent<IBulletPhysics>();
     }
 
     private void OnEnable()
@@ -53,9 +61,9 @@ public class FireBullet : MonoBehaviour, IBullet, IInitializer
 
     public bool TryGetBonuses(out IReadOnlyCollection<IBonus> bonuses) => _bullet.TryGetBonuses(out bonuses);
 
-    private void OnApplyDebaff(GameObject gameObject)
+    private void OnApplyDebaff(Collider collider)
     {
-        if (gameObject.TryGetComponent(out IEnemy enemy))
-            _bulletDebaff.ApplyDebuff(enemy);
+        if (collider.TryGetComponent(out IDebuffReceiver debuffReceiver))
+            _bulletDebaff.ApplyDebuff(debuffReceiver);
     }
 }

@@ -1,54 +1,44 @@
 ﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
 
-public class BonusFactory : MonoBehaviour, IActorFactory
+public class BonusFactory
 {
-    private Dictionary<string, CollisionBonus> _prefabs;
+    private Dictionary<string, IBonusCreator> _creators;
 
-    public void Initialize(IEnumerable<CollisionBonus> bonusPrefabs)
+    public BonusFactory(IEnumerable<IBonusCreator> bonusCreators)
     {
-        if (bonusPrefabs == null)
-            throw new ArgumentNullException(nameof(bonusPrefabs));
+        if (bonusCreators == null)
+            throw new ArgumentNullException(nameof(bonusCreators));
 
-        _prefabs = CreateDictionaryPrefabs(bonusPrefabs);
+        _creators = CreateDictionaryPrefabs(bonusCreators);
     }
 
-    public bool IsCanCreate(string nameTypeActor)
+    public IBonus Create(string nameTypeActor)
+    {
+        if (IsCanCreate(nameTypeActor) == false)
+            throw new ArgumentOutOfRangeException(nameof(nameTypeActor));
+
+        return _creators[nameTypeActor].Create();
+    }
+
+    private bool IsCanCreate(string nameTypeActor)
     {
         if (nameTypeActor == null || nameTypeActor.Length == 0)
             throw new ArgumentOutOfRangeException(nameof(nameTypeActor));
 
-        return _prefabs.ContainsKey(nameTypeActor);
+        return _creators.ContainsKey(nameTypeActor);
     }
 
-    public IActor Create(string nameTypeActor)
+    private Dictionary<string, IBonusCreator> CreateDictionaryPrefabs(IEnumerable<IBonusCreator> bonusPrefabs)
     {
-        if (nameTypeActor == null)
-            throw new ArgumentNullException(nameof(nameTypeActor));
+        Dictionary<string, IBonusCreator> creators = new Dictionary<string, IBonusCreator>();
 
-        if (_prefabs.ContainsKey(nameTypeActor) == false)
-            throw new ArgumentOutOfRangeException(nameof(nameTypeActor));
+        foreach (var creator in bonusPrefabs)
+            creators.Add(creator.Name, creator);
 
-        CollisionBonus prefab = _prefabs[nameTypeActor];
-        IBonusActivator bonusActivator = prefab.GetCloneBonusActivator();
-        CollisionBonus collisionBonus = Instantiate(prefab, prefab.transform.position, transform.rotation);
-        collisionBonus.Initialize(bonusActivator);
-
-        return collisionBonus;
-    }
-
-    private Dictionary<string, CollisionBonus> CreateDictionaryPrefabs(IEnumerable<CollisionBonus> bonusPrefabs)
-    {
-        Dictionary<string, CollisionBonus> prefabs = new Dictionary<string, CollisionBonus>();
-
-        foreach (var prefab in bonusPrefabs)
-            prefabs.Add(prefab.Name, prefab);
-                
-
-        if (prefabs.Count == 0)
+        if (creators.Count == 0)
             throw new InvalidOperationException($"{nameof(bonusPrefabs)} should not be empty");
 
-        return prefabs;
+        return creators;
     }
 }

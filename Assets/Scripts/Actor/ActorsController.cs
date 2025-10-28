@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
-public class ActorsController : IActorsController, IActorsPreparator, IActorsMover, IActorsRemover, IEnemiesAttacker
+public class ActorsController : IActorsController, IActorsPreparator, IActorsMover, IActorsRemover, IEnemiesAttacker, IEnemyCounter
 {
     private IAdvancedActorPreparator _actorsPreparator;
     private IRemovedActorsRepository _removedActorsRepository;
@@ -54,5 +53,10 @@ public class ActorsController : IActorsController, IActorsPreparator, IActorsMov
     public void AttackAll()
     {
         _enemyAttacker.AttackAll();
+    }
+
+    public void Count()
+    {
+        _actorsPreparator.CountRemainingEnemies();
     }
 }

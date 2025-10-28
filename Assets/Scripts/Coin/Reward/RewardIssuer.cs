@@ -2,59 +2,82 @@
 
 public class RewardIssuer : IRewardIssuer
 {
-    private const float AdditionalRewardFirstPass = 0.5f;
-    private const int DoubleReward = 2;
+    private const float AdditionalReward = 0.5f;
+    private const int InitialRewardValue = -1;
 
-    private IUser _user;
-    private ILevel _level;
-    private IWinState _winState;
-    private int _rewardMultiplier;
-    private bool _rewardIssued;
+    private ICoinAdder _coinAdder;
+    private IPlayer _player;
+    private ISelectedLevel _level;
+    private int _reward;
+    private int _bonusReward;
 
-    public RewardIssuer(IUser user, ILevel level, IWinState winState)
+    public RewardIssuer(ICoinAdder coinAdder, IPlayer player, ISelectedLevel level)
     {
-        _user = user ?? throw new ArgumentNullException(nameof(user));
+        _coinAdder = coinAdder ?? throw new ArgumentNullException(nameof(coinAdder));
+        _player = player ?? throw new ArgumentNullException(nameof(player));
         _level = level ?? throw new ArgumentNullException(nameof(level));
-        _winState = winState ?? throw new ArgumentNullException(nameof(winState));
-        _rewardMultiplier = 1;
-        _rewardIssued = false;
+        _reward = InitialRewardValue;
+        _bonusReward = InitialRewardValue;
+        IsRewardIssued = false;
     }
 
-    private bool IsFirstPass => _level.Index == _user.AchievedLevelIndex;
+    public bool IsRewardIssued { get; private set; }
 
-    public void AwardReward()
-    {
-        if (_rewardIssued)
-            throw new InvalidOperationException("Reward has already been issued.");
+    private bool IsFirstPass => _level.Index == _player.AchievedLevelIndex;
 
-        int reward = GetReward();
-        _user.Wallet.AddCoins(reward);
+    public void PayReward() => PayReward(_reward);
 
-        if (IsFirstPass && _winState.IsWin)
-            _user.IncreaseAchievedLevel();
-    }
-
-    public void ApplyDoublingReward()
-    {
-        if (DoubleReward <= _rewardMultiplier)
-            throw new InvalidOperationException($"The rewards cannot be increased by more than {DoubleReward} times.");
-
-        _rewardMultiplier = DoubleReward;
-    }
+    public void PayMaxReward() => PayReward(_reward + _bonusReward);
 
     public int GetReward()
     {
-        int reward;
-        int rewardFirstPass = 0;
+        if (_reward >= 0)
+            return _reward;
 
-        if (_winState.IsWin)
-            reward = _level.CountCoinsWin;
-        else
-            reward = _level.CountCoinsDefeat;
+        CalculateRewards();
 
-        if (IsFirstPass)
-            rewardFirstPass = (int)(AdditionalRewardFirstPass * reward);
+        return _reward;
+    }
 
-        return reward * _rewardMultiplier + rewardFirstPass;
+    public int GetMaxReward() => GetReward() + _bonusReward;
+
+    private void PayReward(int reward)
+    {
+        if (IsRewardIssued)
+            throw new InvalidOperationException("Reward has already been issued");
+
+        if (IsFirstPass && _level.IsFinished)
+            _player.IncreaseAchievedLevel();
+
+        _coinAdder.AddCoins(reward);
+
+        IsRewardIssued = true;
+    }
+
+    private void CalculateRewards()
+    {
+        _reward = _level.CountCoinsForWaves;
+
+        if (_level.IsFinished)
+            _reward += _level.CountCoinsForWin;
+
+        _bonusReward = _reward;
+        _coinAdder.SetCoinsAdsView(_bonusReward);
+
+        CalculateAddReward();
+    }
+
+    private void CalculateAddReward()
+    {
+        int addedRevard = 0;
+
+        if (IsFirstPass && _level.IsFinished)
+            addedRevard = (int)(AdditionalReward * _reward);
+
+        if (_player.PurchasesStorage.TryGetPurchase(out IPlayerPurchase purchase, PurchasesTypes.DisableAds))
+            if (purchase.IsPurchased)
+                addedRevard = (int)(AdditionalReward * GetMaxReward());
+
+        _reward += addedRevard;
     }
 }

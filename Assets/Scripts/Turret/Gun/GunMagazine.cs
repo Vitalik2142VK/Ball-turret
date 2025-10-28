@@ -7,7 +7,7 @@
         _bulletRepository = bulletRepository ?? throw new System.ArgumentNullException(nameof(bulletRepository));
     }
 
-    public bool AreThereBullets => _bulletRepository.AreThereFreeBullets;
+    public bool HasFreeBullets => _bulletRepository.HasFreeBullets;
     public bool IsFull => _bulletRepository.AreBulletsReturned;
 
     public void AddBullet(IBullet bullet)

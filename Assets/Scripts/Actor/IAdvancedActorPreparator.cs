@@ -6,7 +6,7 @@ public interface IAdvancedActorPreparator : IActorsPreparator
     public int EnemiesCount { get; }
     public bool AreWavesOver { get; }
 
-    public void SetLevelActorsPlanner(ILevelActorsPlanner levelActorsPlanner);
+    public void SetLevelActorsPlanner(ILevel level);
 
     public List<IActor> PopActors();
 

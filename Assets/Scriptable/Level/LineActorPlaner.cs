@@ -5,16 +5,23 @@ using UnityEngine;
 namespace Scriptable
 {
     [Serializable]
-    public class LineActorPlaner
+    public struct LineActorPlaner
     {
         private const int CountColumns = 3;
 
-        [SerializeField, SerializeIterface(typeof(IActor))] private GameObject[] _actors;
+        [SerializeField] private GameObject[] _actors;
 
         public void Validate()
         {
             if (_actors == null || _actors.Length != CountColumns)
+            {
                 _actors = new GameObject[CountColumns];
+            }
+            else
+            {
+                if (IsValidGameObjects() == false)
+                    throw new InvalidOperationException($"One or more objects do not contain a component <{nameof(IActorView)}>");
+            }
         }
 
         public bool IsEmpty()
@@ -37,13 +44,23 @@ namespace Scriptable
             {
                 if (_actors[i] != null)
                 {
-                    string nameActor = _actors[i].GetComponent<IActor>().Name;
+                    string nameActor = _actors[i].GetComponent<IActorView>().Name;
                     ActorPlanner actorPlanner = new ActorPlanner(nameActor, lineNumber, i);
                     actorPlanners.Add(actorPlanner);
                 }
             }
 
             return actorPlanners;
+        }
+
+        private bool IsValidGameObjects()
+        {
+            foreach (var actor in _actors)
+                if (actor != null)
+                    if (actor.TryGetComponent(out IActorView _) == false)
+                        return false;
+
+            return true;
         }
     }
 }

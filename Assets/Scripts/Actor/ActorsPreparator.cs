@@ -4,16 +4,15 @@ using System.Collections.Generic;
 public class ActorsPreparator : IAdvancedActorPreparator
 {
     private List<IActor> _actors;
-    private int _currentWaveNumber;
 
     private IActorSpawner _spawner;
-    private ILevelActorsPlanner _levelActorsPlanner;
+    private ILevel _level;
     private IAdvancedActorsMover _actorsMover;
     private IMoveAttributes _startMoveAttributes;
     private IMoveAttributes _defaultMoveAttributes;
 
     public IActorsMover ActorsMover => _actorsMover;
-    public bool AreWavesOver => _levelActorsPlanner.CountWaves <= _currentWaveNumber;
+    public bool AreWavesOver => _level.AreWavesOver;
 
     public int EnemiesCount { get; private set; }
 
@@ -25,14 +24,13 @@ public class ActorsPreparator : IAdvancedActorPreparator
         _defaultMoveAttributes = defaultMoveAttributes ?? throw new ArgumentNullException(nameof(defaultMoveAttributes));
 
         _actors = new List<IActor>();
-        _currentWaveNumber = 0;
 
         EnemiesCount = 0;
     }
 
-    public void SetLevelActorsPlanner(ILevelActorsPlanner levelActorsPlanner)
+    public void SetLevelActorsPlanner(ILevel level)
     {
-        _levelActorsPlanner = levelActorsPlanner ?? throw new ArgumentNullException(nameof(levelActorsPlanner));
+        _level = level ?? throw new ArgumentNullException(nameof(level));
     }
 
     public void Prepare()
@@ -67,10 +65,8 @@ public class ActorsPreparator : IAdvancedActorPreparator
     public void ActivateDebuffablies()
     {
         foreach (var actor in _actors)
-        {
             if (actor is IDebuffable debuffable && actor.IsEnable == true)
                 debuffable.ActivateDebuffs();
-        }
     }
 
     private void RemoveDisabledActors()
@@ -98,10 +94,9 @@ public class ActorsPreparator : IAdvancedActorPreparator
 
     private void SpawnActors()
     {
-        if (AreWavesOver)
+        if (_level.TryGetNextWaveActorsPlanner(out IWaveActorsPlanner waveActorsPlanner) == false)
             return;
 
-        IWaveActorsPlanner waveActorsPlanner = _levelActorsPlanner.GetWaveActorsPlanner(++_currentWaveNumber);
         _actors = _spawner.Spawn(waveActorsPlanner);
         _actorsMover.SetMoveAttributes(_startMoveAttributes);
     }

@@ -1,4 +1,4 @@
 ﻿public interface IBulletDebuff
 {
-    public void ApplyDebuff(IDebuffable debuffsReceiver);
+    public void ApplyDebuff(IDebuffReceiver debuffReceiver);
 }

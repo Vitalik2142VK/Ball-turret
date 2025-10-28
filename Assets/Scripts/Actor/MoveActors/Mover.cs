@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class Mover : MonoBehaviour, IMover
+public class Mover : IMovableObject
 {
     private Transform _transform;
     private Vector3 _point;
@@ -8,9 +8,14 @@ public class Mover : MonoBehaviour, IMover
 
     public bool IsFinished { get; private set; }
 
-    private void Awake()
+    public Mover(Transform movingObject)
     {
-        _transform = transform;
+        if (movingObject == null)
+            throw new System.ArgumentNullException(nameof(movingObject));
+
+        _transform = movingObject;
+
+        IsFinished = true;
     }
 
     public void SetStartPosition(Vector3 startPosition)
@@ -19,7 +24,7 @@ public class Mover : MonoBehaviour, IMover
         _transform.position = new Vector3(startPosition.x, y, startPosition.z);
     }
 
-    public void SetParameters(Vector3 distance, float speed)
+    public void SetPoint(Vector3 distance, float speed)
     {
         if (speed <= 0f)
             throw new System.ArgumentOutOfRangeException();

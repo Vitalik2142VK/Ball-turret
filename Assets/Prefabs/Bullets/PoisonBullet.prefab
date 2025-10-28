@@ -16,6 +16,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PoisonBullet
       objectReference: {fileID: 0}
+    - target: {fileID: 2844714841655934074, guid: 163cd43076eecd94ab9d152a4ab0f8f2, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: -2012101747358868093, guid: 7e64bff2b0d24c049a5536fbe81251c7, type: 3}
     - target: {fileID: 4263260762200817227, guid: 163cd43076eecd94ab9d152a4ab0f8f2, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -59,7 +63,7 @@ PrefabInstance:
     - target: {fileID: 8234357827683552692, guid: 163cd43076eecd94ab9d152a4ab0f8f2, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 4e16a711d3412bd468bf7dccdb09c9d5, type: 2}
+      objectReference: {fileID: 2100000, guid: 04af6cc6031e5fc40ac8f5b3424d1027, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -111,6 +115,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8adfc7e3d7627d4e8ce43129430dea9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bulletPhysicsGameObject: {fileID: 2314494864102494935}
   _damageImproverAttributes: {fileID: 11400000, guid: 7381522d4ac8999489e3a6e13a0f640c, type: 2}
 --- !u!114 &-8631157105123616000
 MonoBehaviour:

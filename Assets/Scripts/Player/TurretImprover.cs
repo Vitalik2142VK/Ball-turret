@@ -6,15 +6,7 @@ public class TurretImprover : ITurretImprover
 
     private IImprovementTurretAttributes _improvementAttributes;
 
-    public TurretImprover(IImprovementTurretAttributes improvementAttributes)
-    {
-        _improvementAttributes = improvementAttributes ?? throw new ArgumentNullException(nameof(improvementAttributes));
-
-        HealthCoefficient = DefaultCoefficient;
-        DamageCoefficient = DefaultCoefficient;
-    }
-
-    public TurretImprover(IImprovementTurretAttributes improvementAttributes, float healthCoefficient, float damageCoefficient)
+    public TurretImprover(IImprovementTurretAttributes improvementAttributes, float healthCoefficient = DefaultCoefficient, float damageCoefficient = DefaultCoefficient)
     {
         if (healthCoefficient < DefaultCoefficient)
             throw new ArgumentOutOfRangeException(nameof(healthCoefficient));

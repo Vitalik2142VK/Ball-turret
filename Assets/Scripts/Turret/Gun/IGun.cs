@@ -3,11 +3,10 @@ using UnityEngine;
 
 public interface IGun
 {
-    public event Action ShootingCompleted;
+    public event Action Reloaded;
+    public event Action ShotExecuted;
 
     public bool IsRecharged { get; }
-
-    public void TakeAim(Vector3 direction);
 
     public void Shoot(Vector3 direction);
 }

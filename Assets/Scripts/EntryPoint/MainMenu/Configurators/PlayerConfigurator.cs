@@ -13,12 +13,13 @@ namespace MainMenuSpace
 
         private IPlayerLoader _playerLoader;
         private ISavedPlayerData _savedData;
+        private CoinAdder _coinAdder;
 
         public IPlayerSaver PlayerSaver { get; private set; }
-        public ICoinAdder CoinAdder { get; private set; }
 
         public ITurretImprover TurretImprover => _cachedUser.TurretImprover;
         public IPlayer Player => _cachedUser;
+        public ICoinAdder CoinAdder => _coinAdder;
 
         private void OnValidate()
         {
@@ -33,6 +34,11 @@ namespace MainMenuSpace
 
             if (_purchasesHandler == null)
                 throw new NullReferenceException(nameof(_purchasesHandler));
+        }
+
+        public void OnDisable()
+        {
+            _coinAdder.Disable();
         }
 
         public void Configure(AdsViewer adsViewer)
@@ -56,7 +62,7 @@ namespace MainMenuSpace
 
             adsViewer.Initialize(_cachedUser.PurchasesStorage);
 
-            CoinAdder = new CoinAdder(PlayerSaver, _cachedUser.Wallet, adsViewer);
+            _coinAdder = new CoinAdder(PlayerSaver, _cachedUser.Wallet, adsViewer);
         }
 
         //todo Remove on realise

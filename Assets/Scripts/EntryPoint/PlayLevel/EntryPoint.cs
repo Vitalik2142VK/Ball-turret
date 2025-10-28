@@ -20,6 +20,7 @@ namespace PlayLevel
         [SerializeField] private UIConfigurator _userInterfaceConfigurator;
 
         private AdsViewer _adsViewer;
+        private CoinAdder _coinsAdder;
 
         private void OnValidate()
         {
@@ -61,6 +62,11 @@ namespace PlayLevel
 #endif
         }
 
+        private void OnDisable()
+        {
+            _coinsAdder.Disable();
+        }
+
         private void Configure()
         {
             _adsViewer = FindAnyObjectByType<AdsViewer>();
@@ -87,11 +93,11 @@ namespace PlayLevel
 
             SavedPlayerData savesData = new SavedPlayerData();
             PlayerSaver playerSaver = new PlayerSaver(_player, savesData);
-            CoinAdder coinAdder = new CoinAdder(playerSaver, _player.Wallet, _adsViewer);
-            RewardIssuer rewardIssuer = new RewardIssuer(coinAdder, _player, _selectedLevel);
+            _coinsAdder = new CoinAdder(playerSaver, _player.Wallet, _adsViewer);
+            RewardIssuer rewardIssuer = new RewardIssuer(_coinsAdder, _player, _selectedLevel);
             WinStatus winStatus = new WinStatus(turret, _selectedLevel);
             var closeSceneStep = _stepSystemConfigurator.CloseSceneStep;
-            _userInterfaceConfigurator.Configure(closeSceneStep, rewardIssuer, winStatus, coinAdder, _adsViewer);
+            _userInterfaceConfigurator.Configure(closeSceneStep, rewardIssuer, winStatus, _coinsAdder, _adsViewer);
 
             if (_player.AchievedLevelIndex == 0)
                 SceneManager.LoadScene((int)SceneIndex.LearningScene, LoadSceneMode.Additive);

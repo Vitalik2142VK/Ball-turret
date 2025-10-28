@@ -12,6 +12,8 @@ public class CoinAdder : ICoinAdder
         _wallet = wallet ?? throw new ArgumentNullException(nameof(wallet));
         _adsViewer = adsViewer ?? throw new ArgumentNullException(nameof(adsViewer));
         CoinsCountAdsView = 0;
+
+        _adsViewer.RewardAdShowed += OnAddCoins;
     }
 
     public int CoinsCountAdsView { get; private set; }
@@ -22,8 +24,6 @@ public class CoinAdder : ICoinAdder
             throw new ArgumentOutOfRangeException(nameof(coinsCount));
 
         CoinsCountAdsView = coinsCount;
-
-        _adsViewer.RewardAdShowed += OnAddCoins;
     }
 
     public void AddCoins(int coinsCount)
@@ -35,6 +35,10 @@ public class CoinAdder : ICoinAdder
         _playerSaver.Save();
     }
 
+    public void Disable()
+    {
+        _adsViewer.RewardAdShowed -= OnAddCoins;
+    }
 
     private void OnAddCoins(string rewardId)
     {
@@ -42,10 +46,5 @@ public class CoinAdder : ICoinAdder
             return;
 
         AddCoins(CoinsCountAdsView);
-    }
-
-    ~CoinAdder()
-    {
-        _adsViewer.RewardAdShowed -= OnAddCoins;
     }
 }

@@ -18,6 +18,7 @@ namespace PlayLevel
         [SerializeField] private BonusesConfigurator _bonusPrefabConfigurator;
         [SerializeField] private BulletConfigurator _bulletConfigurator;
         [SerializeField] private UIConfigurator _userInterfaceConfigurator;
+        [SerializeField] private BonusesWindowHiderConfigurator _bonusesWindowHiderConfigurator;
 
         private AdsViewer _adsViewer;
         private CoinAdder _coinsAdder;
@@ -50,6 +51,9 @@ namespace PlayLevel
 
             if (_userInterfaceConfigurator == null)
                 throw new NullReferenceException(nameof(_userInterfaceConfigurator));
+
+            if (_bonusesWindowHiderConfigurator == null)
+                throw new NullReferenceException(nameof(_bonusesWindowHiderConfigurator));
         }
 
         private void Start()
@@ -98,6 +102,7 @@ namespace PlayLevel
             WinStatus winStatus = new WinStatus(turret, _selectedLevel);
             var closeSceneStep = _stepSystemConfigurator.CloseSceneStep;
             _userInterfaceConfigurator.Configure(closeSceneStep, rewardIssuer, winStatus, _coinsAdder, _adsViewer);
+            _bonusesWindowHiderConfigurator.Configure();
 
             if (_player.AchievedLevelIndex == 0)
                 SceneManager.LoadScene((int)SceneIndex.LearningScene, LoadSceneMode.Additive);

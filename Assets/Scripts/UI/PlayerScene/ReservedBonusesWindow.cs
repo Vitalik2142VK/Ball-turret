@@ -5,17 +5,18 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(IAnimatorUI))]
-public class ReservedBonusesWindow : MonoBehaviour, IWindow
+public class ReservedBonusesWindow : MonoBehaviour, IReservedBonusesWindow
 {
     [SerializeField] private ReservedBonusButton _reservedBonusButtonPrefab;
     [SerializeField] private ContentSizeFitter _content;
     [SerializeField] private Button _closeButton;
     [SerializeField] private OpenWindowButton _openButton;
-    [SerializeField] private GameObject _raycastBlock;
 
     private IAnimatorUI _animator;
     private IBonusReservator _bonusReservator;
     private List<ReservedBonusButton> _reservedBonusButtons;
+
+    public bool IsActive => gameObject.activeSelf;
 
     private void OnValidate()
     {
@@ -30,16 +31,12 @@ public class ReservedBonusesWindow : MonoBehaviour, IWindow
 
         if (_openButton == null)
             throw new NullReferenceException(nameof(_openButton));
-
-        if (_raycastBlock == null)
-            throw new NullReferenceException(nameof(_raycastBlock));
     }
 
     private void Awake()
     {
         _animator = GetComponent<IAnimatorUI>();
         gameObject.SetActive(false);
-        _raycastBlock.SetActive(false);
         _openButton.gameObject.SetActive(false);
     }
 
@@ -95,8 +92,13 @@ public class ReservedBonusesWindow : MonoBehaviour, IWindow
     public void Enable()
     {
         gameObject.SetActive(true);
-        _raycastBlock.SetActive(true);
         _animator.Show();
+    }
+
+    public void Hide()
+    {
+        if (gameObject.activeSelf)
+            _animator.Hide();
     }
 
     private void OnClose()
@@ -118,9 +120,8 @@ public class ReservedBonusesWindow : MonoBehaviour, IWindow
         yield return _animator.GetYieldAnimation();
 
         gameObject.SetActive(false);
-        _raycastBlock.SetActive(false);
 
-        if (_bonusReservator.IsBonusActivated == false)
+        if (_bonusReservator.IsBonusActivated == false && _bonusReservator.HasBonuses)
             _openButton.Show();
     }
 }

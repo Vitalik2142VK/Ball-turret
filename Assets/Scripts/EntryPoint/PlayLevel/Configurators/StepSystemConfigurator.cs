@@ -12,6 +12,7 @@ namespace PlayLevel
         [SerializeField] private FinishWindow _finishWindow;
         [SerializeField] private FreezingBonusActivatorCreator _freezerCreator;
         [SerializeField] private OpenWindowButton _openReservedBonusesButton;
+        [SerializeField] private ReservedBonusesWindow _reservedBonusesWindow;
 
         private ITurret _turret;
         private PlayerController _playerController;
@@ -54,6 +55,9 @@ namespace PlayLevel
 
             if (_openReservedBonusesButton == null)
                 throw new NullReferenceException(nameof(_openReservedBonusesButton));
+
+            if (_reservedBonusesWindow == null)
+                throw new NullReferenceException(nameof(_reservedBonusesWindow));
         }
 
         public void Configure(ITurret turret, PlayerController playerController, ActorsController actorsController)
@@ -93,7 +97,7 @@ namespace PlayLevel
 
         private void CreateSteps()
         {
-            _playerStep = new PlayerStep(_playerController, _actorsController);
+            _playerStep = new PlayerStep(_playerController, _actorsController, _reservedBonusesWindow);
             _resetComboStep = new ResetComboStep(_comboCounter);
             _bonusActivationStep = new BonusActivationStep(_bulletCollector, _openReservedBonusesButton);
             _prepareActorsStep = new PrepareActorsStep(_actorsController);

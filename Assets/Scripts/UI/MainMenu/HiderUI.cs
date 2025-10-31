@@ -7,14 +7,13 @@ public class HiderUI : MonoBehaviour
 
     private Dictionary<GameObject, IAnimatorUI> _animators;
 
-
     private void Awake()
     {
         _animators = new Dictionary<GameObject, IAnimatorUI>();
 
-        foreach (var animator in _interferingUI)
-            if (animator != null)
-                _animators.Add(animator, animator.GetComponent<IAnimatorUI>());
+        foreach (var userInterface in _interferingUI)
+            if (userInterface != null)
+                _animators.Add(userInterface, userInterface.GetComponent<IAnimatorUI>());
     }
 
     public void Enable()

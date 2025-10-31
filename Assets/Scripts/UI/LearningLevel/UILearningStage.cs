@@ -7,6 +7,7 @@ public class UILearningStage : MonoBehaviour, ILearningStage
     [SerializeField] private StageElements[] _stages;
 
     private ILearningStage _learningStage;
+    private int _currentIndexStage;
 
     private void OnValidate()
     {
@@ -28,6 +29,7 @@ public class UILearningStage : MonoBehaviour, ILearningStage
     {
         _learningStage = _learningStageGameObject.GetComponent<ILearningStage>();
         _learningStage.Initialize();
+        _currentIndexStage = 0;
 
         foreach (var stage in _stages)
             stage.SetActiveElements(false);
@@ -45,14 +47,31 @@ public class UILearningStage : MonoBehaviour, ILearningStage
 
     public void HandleСlick()
     {
-        SetActiveStage(false);
-
         _learningStage.HandleСlick();
 
         if (IsActive)
-            SetActiveStage(true);
+        {
+            ChangeStage();
+        }
         else
+        {
+            SetActiveStage(false);
             gameObject.SetActive(false);
+        }
+    }
+
+    private void ChangeStage()
+    {
+        int nextIndexStage = CurrentStage - 1;
+
+        if (_currentIndexStage == nextIndexStage)
+            return;
+
+        SetActiveStage(false);
+
+        _currentIndexStage = nextIndexStage;
+
+        SetActiveStage(true);
     }
 
     private void SetActiveStage(bool isAvtive)
@@ -60,9 +79,7 @@ public class UILearningStage : MonoBehaviour, ILearningStage
         if (CurrentStage > NumberStages)
             throw new InvalidOperationException($"{nameof(CurrentStage)} cannot be greater than {nameof(NumberStages)}");
 
-        int index = CurrentStage - 1;
-
-        StageElements stage = _stages[index];
+        StageElements stage = _stages[_currentIndexStage];
 
         if (stage.IsEmpty == false)
             stage.SetActiveElements(isAvtive);

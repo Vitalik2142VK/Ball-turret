@@ -67,12 +67,7 @@ public class DisableAdsButton : MonoBehaviour
         _currencyPrice.text = purchase.priceValue;
 
 #if !UNITY_EDITOR
-        var currencyImageURL = purchase.currencyImageURL;
-
-        if (string.IsNullOrEmpty(currencyImageURL))
-            _currencyImage.Load(currencyImageURL);
-
-        Console.GetLog($"CurrencyImageURL == '{currencyImageURL}'")
+        LoadImage(purchase);
 #endif
     }
 
@@ -87,5 +82,15 @@ public class DisableAdsButton : MonoBehaviour
             return;
 
         Destroy(gameObject);
+    }
+
+    private void LoadImage(Purchase purchase)
+    {
+        var currencyImageURL = purchase.currencyImageURL;
+
+        if (string.IsNullOrEmpty(currencyImageURL))
+            _currencyImage.Load(currencyImageURL);
+
+        Console.GetLog($"CurrencyImageURL == '{currencyImageURL}'");
     }
 }

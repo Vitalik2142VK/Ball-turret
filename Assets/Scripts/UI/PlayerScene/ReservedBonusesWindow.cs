@@ -97,8 +97,12 @@ public class ReservedBonusesWindow : MonoBehaviour, IReservedBonusesWindow
 
     public void Hide()
     {
-        if (gameObject.activeSelf)
-            _animator.Hide();
+        if (gameObject.activeSelf == false)
+            return;
+
+        _animator.Hide();
+
+        StartCoroutine(WaitDisable());
     }
 
     private void OnClose()
@@ -113,6 +117,13 @@ public class ReservedBonusesWindow : MonoBehaviour, IReservedBonusesWindow
         foreach (var button in _reservedBonusButtons)
             if (button.Index != buttonIndex)
                 button.Enable();
+    }
+
+    private IEnumerator WaitDisable()
+    {
+        yield return _animator.GetYieldAnimation();
+
+        gameObject.SetActive(false);
     }
 
     private IEnumerator WaitClosure()

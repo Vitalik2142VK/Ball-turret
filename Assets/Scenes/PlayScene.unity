@@ -4028,7 +4028,6 @@ GameObject:
   - component: {fileID: 647794590}
   - component: {fileID: 647794589}
   - component: {fileID: 647794581}
-  - component: {fileID: 647794591}
   m_Layer: 5
   m_Name: ReservedBonusesButton
   m_TagString: Untagged
@@ -4203,18 +4202,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _clickSizeValue: 0.1
   _duration: 0.1
---- !u!114 &647794591
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 647794579}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 80ba6f02a9d25e444ac4e32078989f3d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &647930416
 GameObject:
   m_ObjectHideFlags: 0
@@ -6376,7 +6363,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9419daab8eb66db4cb02b3d753f5e6eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _openWindowButton: {fileID: 647794591}
+  _openWindowButton: {fileID: 647794581}
   _reservedBonusesWindow: {fileID: 2096123122}
   _bonusesWindowHider: {fileID: 1224045268}
 --- !u!4 &958220883
@@ -11988,7 +11975,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4032713288837835839, guid: 02f1bc7ecacf5b14f8249756240f1519, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 1893.1797
+      value: 1893
       objectReference: {fileID: 0}
     - target: {fileID: 4032713288837835839, guid: 02f1bc7ecacf5b14f8249756240f1519, type: 3}
       propertyPath: m_SizeDelta.y
@@ -11996,7 +11983,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4032713288837835839, guid: 02f1bc7ecacf5b14f8249756240f1519, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 956.58984
+      value: 956.5
       objectReference: {fileID: 0}
     - target: {fileID: 4032713288837835839, guid: 02f1bc7ecacf5b14f8249756240f1519, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -12020,7 +12007,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9091109465146168853, guid: 02f1bc7ecacf5b14f8249756240f1519, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -5.818028
+      value: -5.8188486
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

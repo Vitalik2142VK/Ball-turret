@@ -5,7 +5,7 @@ namespace PlayLevel
 {
     public class BonusesWindowHiderConfigurator : MonoBehaviour
     {
-        [SerializeField] private AdvancedOpenWindowButton _openWindowButton;
+        [SerializeField] private OpenWindowButton _openWindowButton;
         [SerializeField] private ReservedBonusesWindow _reservedBonusesWindow;
         [SerializeField] private BonusesWindowHider _bonusesWindowHider;
 

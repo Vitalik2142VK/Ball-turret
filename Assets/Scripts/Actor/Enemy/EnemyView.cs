@@ -102,12 +102,13 @@ public class EnemyView : MonoBehaviour, IEnemyView
     private IEnumerator StartDeadProcess()
     {
         IsActive = false;
-        _collider.enabled = false;
+        HealthBar.SetActive(IsActive);
+        _collider.enabled = IsActive;
         _enemyAnimator.PlayDead();
 
         yield return new WaitForSeconds(_enemyAnimator.TimeCompletionDeath);
 
-        SetEnable(false);
+        SetEnable(IsActive);
 
         _audioController.PlayDead();
         _particleController.PlayDead();

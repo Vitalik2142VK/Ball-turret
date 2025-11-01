@@ -454,7 +454,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d9c0226bd4324f01bc178cf4a515ef84, type: 2}
+  - {fileID: 2100000, guid: 644f91b6b5885be43b2cf43bcb83ae78, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1064,6 +1064,10 @@ PrefabInstance:
       propertyPath: InitialModule.startColor.minMaxState
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3102995025199945965, guid: d3d119157b188eb42a2126101985a46c, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 644f91b6b5885be43b2cf43bcb83ae78, type: 2}
     - target: {fileID: 3448816047974414396, guid: d3d119157b188eb42a2126101985a46c, type: 3}
       propertyPath: InitialModule.startColor.maxColor.b
       value: 0
@@ -1332,6 +1336,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6063795464241460805}
     m_Modifications:
+    - target: {fileID: 1992172698385598027, guid: 6a6352da1fe27a24abec2bcda48b9e94, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: a0a4d8e99ba9c2c45acfd356d59a8eb5, type: 2}
     - target: {fileID: 2951144983080113914, guid: 6a6352da1fe27a24abec2bcda48b9e94, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

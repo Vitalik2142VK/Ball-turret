@@ -10,16 +10,12 @@ public class DisableAdsButton : MonoBehaviour
 {
     private const string DisableAdsPurchseId = PurchasesTypes.DisableAds;
 
-    [SerializeField] private ImageLoadYG _currencyImage;
     [SerializeField] private TextMeshProUGUI _currencyPrice;
 
     private Button _button;
 
     private void OnValidate()
     {
-        if (_currencyImage == null)
-            throw new NullReferenceException(nameof(_currencyImage));
-
         if (_currencyPrice == null)
             throw new NullReferenceException(nameof(_currencyPrice));
     }
@@ -65,10 +61,6 @@ public class DisableAdsButton : MonoBehaviour
             throw new NullReferenceException(nameof(purchase));
 
         _currencyPrice.text = purchase.priceValue;
-
-#if !UNITY_EDITOR
-        LoadImage(purchase);
-#endif
     }
 
     private void OnPayPurchase()
@@ -82,15 +74,5 @@ public class DisableAdsButton : MonoBehaviour
             return;
 
         Destroy(gameObject);
-    }
-
-    private void LoadImage(Purchase purchase)
-    {
-        var currencyImageURL = purchase.currencyImageURL;
-
-        if (string.IsNullOrEmpty(currencyImageURL))
-            _currencyImage.Load(currencyImageURL);
-
-        Console.GetLog($"CurrencyImageURL == '{currencyImageURL}'");
     }
 }

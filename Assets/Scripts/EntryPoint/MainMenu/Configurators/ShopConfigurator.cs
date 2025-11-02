@@ -48,12 +48,12 @@ namespace MainMenuSpace
         {
             float magnificationFactor = 1.4f;
             float lowImprovementCoefficient = 0.05f;
-            int maxLevelImprovement = 12;
+            int maxLevelImprovement = 10;
             PriceEnlarger damagePriceEnlarger = new PriceEnlarger(_initialPrices.DamageImprovement, maxLevelImprovement, magnificationFactor, lowImprovementCoefficient);
 
             magnificationFactor = 1.9f;
             lowImprovementCoefficient = 0.2f;
-            maxLevelImprovement = 6;
+            maxLevelImprovement = 5;
             PriceEnlarger healthPriceEnlarger = new PriceEnlarger(_initialPrices.HealthImprovement, maxLevelImprovement, magnificationFactor, lowImprovementCoefficient);
 
             return new List<IGamePayTransaction>

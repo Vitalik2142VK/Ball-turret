@@ -1368,9 +1368,14 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 6a1611870f902bf408c158bea97018ac, type: 2}
   - {fileID: 11400000, guid: 24a2a5b8f181faa46951e8db60dc7a85, type: 2}
   - {fileID: 11400000, guid: ae1ca72afbf2ccd46928d7ce2b326132, type: 2}
+  - {fileID: 11400000, guid: 8d1c9c0f65524304eb41532b12c45e07, type: 2}
+  - {fileID: 11400000, guid: d6cf84a77ca480b40871981b1bf73965, type: 2}
+  - {fileID: 11400000, guid: ca9cfce7391f1d64eb956a64aec122f0, type: 2}
   - {fileID: 11400000, guid: 6a8331c9f2bf17041931298c8d99ab87, type: 2}
   - {fileID: 11400000, guid: bcaf8c81e4dd984418148cdd2fdb8643, type: 2}
   - {fileID: 11400000, guid: 8fcd13d9999c869498a16d7c44f4dc9b, type: 2}
+  - {fileID: 11400000, guid: 2e040a23ec38ccd4688bedb96cb4362f, type: 2}
+  - {fileID: 11400000, guid: 07f63b46f6536234b80766b5d91a331b, type: 2}
   _waveMask: 30
 --- !u!4 &396053446
 Transform:
@@ -6774,7 +6779,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b240d807b85ff7e42b736a5894a7f168, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _currencyImage: {fileID: 1957471974}
   _currencyPrice: {fileID: 23418661}
 --- !u!114 &1817410479
 MonoBehaviour:
@@ -7028,7 +7032,6 @@ GameObject:
   - component: {fileID: 1957471971}
   - component: {fileID: 1957471973}
   - component: {fileID: 1957471972}
-  - component: {fileID: 1957471974}
   m_Layer: 5
   m_Name: CurrencyImage
   m_TagString: Untagged
@@ -7075,8 +7078,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 1
+  m_Sprite: {fileID: -734491130, guid: 8a9fb79b64c0db040aa62dae0c1fcfd0, type: 3}
+  m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
@@ -7093,24 +7096,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1957471970}
   m_CullTransparentMesh: 1
---- !u!114 &1957471974
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1957471970}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e48d8d781d3e59d409adef5e128d2b04, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  startLoad: 0
-  urlImage: 
-  rawImage: {fileID: 0}
-  spriteImage: {fileID: 1957471972}
-  loadAnimObj: {fileID: 0}
-  log: 0
 --- !u!1 &1989642999
 GameObject:
   m_ObjectHideFlags: 0

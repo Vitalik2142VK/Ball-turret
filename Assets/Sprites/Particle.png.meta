@@ -676,8 +676,8 @@ TextureImporter:
         y: 256
         width: 256
         height: 256
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: -0.41775465, y: 0.5682111}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -731,6 +731,27 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: Particle_19
+      rect:
+        serializedVersion: 2
+        x: 1280
+        y: 256
+        width: 256
+        height: 256
+      alignment: 9
+      pivot: {x: -0.41775465, y: 0.5682111}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cae2208d945bfe84298d891318313aa5
+      internalID: -734491130
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -754,6 +775,7 @@ TextureImporter:
       Particle_16: -259797904
       Particle_17: -1760609284
       Particle_18: 534275994
+      Particle_19: -734491130
       Particle_2: 1981882166
       Particle_3: -2090397520
       Particle_4: 96872753

@@ -20,7 +20,7 @@ public class CoinAdder : ICoinAdder
 
     public void SetCoinsAdsView(int coinsCount)
     {
-        if (coinsCount <= 0)
+        if (coinsCount < 0)
             throw new ArgumentOutOfRangeException(nameof(coinsCount));
 
         CoinsCountAdsView = coinsCount;
@@ -28,7 +28,7 @@ public class CoinAdder : ICoinAdder
 
     public void AddCoins(int coinsCount)
     {
-        if (coinsCount <= 0)
+        if (coinsCount < 0)
             throw new ArgumentOutOfRangeException(nameof(coinsCount));
 
         _wallet.AddCoins(coinsCount);

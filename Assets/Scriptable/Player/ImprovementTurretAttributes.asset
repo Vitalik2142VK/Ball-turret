@@ -15,6 +15,6 @@ MonoBehaviour:
   _maxHealthCoefficient: 5
   _improveHealthCoefficient: 0.25
   _countLevelHealthImprovements: 20
-  _maxDamageCoefficient: 10
+  _maxDamageCoefficient: 15
   _improveDamageCoefficient: 0.1
-  _countLevelDamageImprovements: 100
+  _countLevelDamageImprovements: 150

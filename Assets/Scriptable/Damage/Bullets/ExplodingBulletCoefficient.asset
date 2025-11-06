@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91c514c2381599f4db4f3a3b6df64374, type: 3}
   m_Name: ExplodingBulletCoefficient
   m_EditorClassIdentifier: 
-  _percentageDamageIncrease: 50
+  _percentageDamageIncrease: 30

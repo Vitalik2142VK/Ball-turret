@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 [RequireComponent(typeof(Bullet), typeof(Exploder), typeof(Renderer))]
 public class ExplodingBullet : MonoBehaviour, IBullet, IInitializer
@@ -14,6 +15,7 @@ public class ExplodingBullet : MonoBehaviour, IBullet, IInitializer
     private IExploder _exploder;
     private IBulletPhysics _bulletPhysics;
     private IExplosionView _explosionView;
+    private Transform _transform;
     private Bullet _bullet;
     private Renderer _renderer;
     private WaitForSeconds _wait;
@@ -40,6 +42,7 @@ public class ExplodingBullet : MonoBehaviour, IBullet, IInitializer
 
     private void Awake()
     {
+        _transform = transform;
         _bulletPhysics = _bulletPhysicsGameObject.GetComponent<IBulletPhysics>();
         _explosionView = _explosionParticle.GetComponent<IExplosionView>();
     }
@@ -99,15 +102,15 @@ public class ExplodingBullet : MonoBehaviour, IBullet, IInitializer
 
     private void OnExplode(Collider collider)
     {
+        if (collider.TryGetComponent(out IArmoredObject armoredObject))
+            armoredObject.IgnoreArmor(_bullet.DamageAttributes);
+
         if (collider.TryGetComponent(out IDamagedObject _))
         {
-            _exploder.Explode(transform.position);
+            _exploder.Explode(_transform.position);
 
             StartCoroutine(HideBeforePut());
         }
-
-        if (gameObject.TryGetComponent(out IArmoredObject armoredObject))
-            armoredObject.IgnoreArmor(_bullet.DamageAttributes);
     }
 
     private IEnumerator HideBeforePut()

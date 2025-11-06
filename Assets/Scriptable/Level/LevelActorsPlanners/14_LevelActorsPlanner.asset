@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7b162dfad3a01346851fa2ee9bef464, type: 3}
+  m_Name: 14_LevelActorsPlanner
+  m_EditorClassIdentifier: 
+  _waveis:
+  - {fileID: 11400000, guid: 44c06deb10c6d23468413db23555f14e, type: 2}
+  - {fileID: 11400000, guid: 7b4e02e18d941b74ca147f85a04dc7b1, type: 2}
+  - {fileID: 11400000, guid: 1286996a6a29fb346b2a6e296e9d5081, type: 2}
+  - {fileID: 11400000, guid: 288c973fceaa9a6458d8847b92038746, type: 2}
+  - {fileID: 11400000, guid: 2d6222efba3cf97469cb2ec6feaa4c52, type: 2}
+  - {fileID: 11400000, guid: 6a8331c9f2bf17041931298c8d99ab87, type: 2}
+  - {fileID: 11400000, guid: 3b78e15302ef1424d986ee22746372aa, type: 2}

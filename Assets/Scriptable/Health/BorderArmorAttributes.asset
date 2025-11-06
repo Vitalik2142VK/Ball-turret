@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e1082004177d044485e833895651112, type: 3}
   m_Name: BorderArmorAttributes
   m_EditorClassIdentifier: 
-  _armorPercent: 75
+  _armorPercent: 80

@@ -6,7 +6,7 @@ public class EndlessLevel : ILevel
 
     private const float DefaultCoefficient = 1f;
     private const float MinHealthMultiplierPerWave = 0.1f;
-    private const float ReducingCoefficientCoins = 0.5f;
+    private const float ReducingCoefficientCoins = 1.25f;
 
     private ILevel _endlesslevel;
     private ISavedLeaderBoard _savedLeaderBoard;

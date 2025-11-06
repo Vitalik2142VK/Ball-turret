@@ -10,18 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 099a4bc78e4679d46b6d4e4e77209302, type: 3}
-  m_Name: b_Easy_10_WavePlanner
+  m_Name: Middle_10_WavePlanner
   m_EditorClassIdentifier: 
   _lines:
+  - _actors:
+    - {fileID: 823343203851408336, guid: ca763b6bd7eb253428d7fe53b9924d2c, type: 3}
+    - {fileID: 823343203851408336, guid: ca763b6bd7eb253428d7fe53b9924d2c, type: 3}
+    - {fileID: 823343203851408336, guid: ca763b6bd7eb253428d7fe53b9924d2c, type: 3}
   - _actors:
     - {fileID: 2811465424896689287, guid: 9d03265b6cfbebf439e00cc09c7b5e17, type: 3}
     - {fileID: 0}
     - {fileID: 2811465424896689287, guid: 9d03265b6cfbebf439e00cc09c7b5e17, type: 3}
   - _actors:
-    - {fileID: 1462222068255907341, guid: 990416ae3ebdbce4ab1fa242fc6aa62d, type: 3}
-    - {fileID: 2811465424896689287, guid: 9d03265b6cfbebf439e00cc09c7b5e17, type: 3}
-    - {fileID: 1462222068255907341, guid: 990416ae3ebdbce4ab1fa242fc6aa62d, type: 3}
-  - _actors:
-    - {fileID: 7690942557182064526, guid: d685e3a53e220ac4d8c6f852b47fb287, type: 3}
-    - {fileID: 4310026885427982331, guid: a2cc5a0f368930444be5124d8a13f7c1, type: 3}
-    - {fileID: 7690942557182064526, guid: d685e3a53e220ac4d8c6f852b47fb287, type: 3}
+    - {fileID: 7690942557182064526, guid: 8c2be75b0d25c44408ce1522d55ba06c, type: 3}
+    - {fileID: 8711603895194612266, guid: 988e0673a235aa541b0f7677b59439d5, type: 3}
+    - {fileID: 7690942557182064526, guid: 8c2be75b0d25c44408ce1522d55ba06c, type: 3}

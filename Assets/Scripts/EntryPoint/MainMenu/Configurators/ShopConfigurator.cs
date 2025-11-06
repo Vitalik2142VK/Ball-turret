@@ -46,9 +46,9 @@ namespace MainMenuSpace
 
         private List<IGamePayTransaction> CreateTransactions()
         {
-            float magnificationFactor = 1.4f;
+            float magnificationFactor = 1.35f;
             float lowImprovementCoefficient = 0.05f;
-            int maxLevelImprovement = 10;
+            int maxLevelImprovement = 8;
             PriceEnlarger damagePriceEnlarger = new PriceEnlarger(_initialPrices.DamageImprovement, maxLevelImprovement, magnificationFactor, lowImprovementCoefficient);
 
             magnificationFactor = 1.9f;

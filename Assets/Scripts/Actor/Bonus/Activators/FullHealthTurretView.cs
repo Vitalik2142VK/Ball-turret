@@ -17,8 +17,6 @@ public class FullHealthTurretView : MonoBehaviour, IBonusActicatorView
 
     public void PlayActivation()
     {
-        Debug.Log("FullHealthTurretView.PlayActivation");
-
         _fullTurretParticle.Play();
         _turretRepairSound.Play();
     }

@@ -1,7 +1,5 @@
-﻿public interface IActorsController
+﻿public interface IActorsController : IEnemyCounter, IActorsPreparator
 {
-    public bool AreNoEnemies { get; }
-
     public bool AreWavesOver { get; }
 
     public void Reboot();

@@ -29,6 +29,7 @@ namespace PlayLevel
         private ITrajectoryRenderer _trajectoryRenderer;
 
         public ITurret Turret => _turret;
+        public IShotAction ShotAction => _turret;
 
         private void OnValidate()
         {

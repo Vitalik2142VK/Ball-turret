@@ -19,7 +19,7 @@ public class LeaderboardWindow : MonoBehaviour
 
     public void OnClose()
     {
-        _hiderUI.Enable();
+        _hiderUI.Show();
         _animator.Hide();
 
         StartCoroutine(WaitClosure());
@@ -30,7 +30,7 @@ public class LeaderboardWindow : MonoBehaviour
         _previousWindow = previousWindow ?? throw new ArgumentNullException(nameof(previousWindow));
 
         gameObject.SetActive(true);
-        _hiderUI.Disable();
+        _hiderUI.Hide();
         _animator.Show();
     }
 

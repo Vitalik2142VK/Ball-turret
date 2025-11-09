@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(IAnimatorUI))]
+[RequireComponent(typeof(IAnimatorUI), typeof(HiderUI))]
 public class FinishWindow : MonoBehaviour, IWindow
 {
     [SerializeField] private Pause _pause;
@@ -18,6 +18,7 @@ public class FinishWindow : MonoBehaviour, IWindow
     private IRewardIssuer _rewardIssuer;
     private IAdsViewer _adsViewer;
     private IWinStatus _winStatus;
+    private HiderUI _hiderUI;
     
     private void OnValidate()
     {
@@ -42,10 +43,12 @@ public class FinishWindow : MonoBehaviour, IWindow
 
     private void Awake()
     {
+        _animator = GetComponent<IAnimatorUI>();
+        _hiderUI = GetComponent<HiderUI>();
+
         gameObject.SetActive(false);
         _winBord.gameObject.SetActive(false);
         _defeatBord.gameObject.SetActive(false);
-        _animator = GetComponent<IAnimatorUI>();
     }
 
     private void OnEnable()
@@ -76,6 +79,7 @@ public class FinishWindow : MonoBehaviour, IWindow
         _pause.Enable();
         gameObject.SetActive(true);
         _animator.Show();
+        _hiderUI.Hide();
 
         if (_winStatus.IsWin)
             _winBord.gameObject.SetActive(true);

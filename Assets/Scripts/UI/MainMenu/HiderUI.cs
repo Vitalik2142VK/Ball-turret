@@ -16,17 +16,22 @@ public class HiderUI : MonoBehaviour
                 _animators.Add(userInterface, userInterface.GetComponent<IAnimatorUI>());
     }
 
-    public void Enable()
+    public void Show()
     {
         foreach (var animator in _animators)
             if (animator.Key != null)
                 animator.Value.Show();
+            
     }
 
-    public void Disable()
+    public void Hide()
     {
         foreach (var animator in _animators)
-            if (animator.Key != null)
+        {
+            GameObject gameObject = animator.Key;
+
+            if (gameObject != null && gameObject.activeSelf)
                 animator.Value.Hide();
+        }
     }
 }

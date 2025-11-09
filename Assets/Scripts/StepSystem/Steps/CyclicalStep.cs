@@ -3,9 +3,8 @@
 public class CyclicalStep : IStep
 {
     private IActorsController _actorsController;
-    private IDynamicEndStep _dynamicEndStep;
     private ITurretState _turretState;
-
+    private IDynamicEndStep _dynamicEndStep;
     private IStep _startStep;
     private IStep _loopingStep;
     private IStep _finishStep;

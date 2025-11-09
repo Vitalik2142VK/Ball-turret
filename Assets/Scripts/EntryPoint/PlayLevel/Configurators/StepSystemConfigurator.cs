@@ -67,14 +67,12 @@ namespace PlayLevel
             _actorsController = actorsController ?? throw new NullReferenceException(nameof(actorsController));
 
             CreateSteps();
-            CreateFinalSteps();
+            CreatePrepareActorsStep();
+            CreateFinalStep();
             ConnectSteps();
-            CreateDynamicNextStepPrepareActors();
+            CreateActorsFreezeStep();
 
             _stepSystem.EstablishNextStep(_cyclicalStep);
-
-            _actorsFreezeStep = new ActorsFreezeStep(_nextStepPrepareActors, _objectsMoveStep);
-            AddNextStepToEndPoint(_actorsFreezeStep, _removeActorsStep);
             _freezerCreator.Initialize(_nextStepPrepareActors, _actorsFreezeStep);
         }
 
@@ -100,12 +98,41 @@ namespace PlayLevel
             _playerStep = new PlayerStep(_playerController, _actorsController, _reservedBonusesWindow);
             _resetComboStep = new ResetComboStep(_comboCounter);
             _bonusActivationStep = new BonusActivationStep(_bulletCollector, _openReservedBonusesButton);
-            _prepareActorsStep = new PrepareActorsStep(_actorsController);
             _objectsMoveStep = new ActorsMoveStep(_actorsController);
             _enemyAttackStep = new EnemyAttackStep(_actorsController);
             _removeActorsStep = new RemoveActorsStep(_actorsController);
             _rewardStep = new RewardStep(_finishWindow);
             _closeSceneStep = new CloseSceneStep(_mainMenuLoader);
+        }
+
+        private void AddNextStepToEndPoint(IEndPointStep endPointStep, IStep nextStep)
+        {
+            IEndStep endStep = new NextStep(_stepSystem, nextStep);
+            endPointStep.SetEndStep(endStep);
+        }
+
+        private void CreatePrepareActorsStep()
+        {
+            _nextStepPrepareActors = new DynamicNextStep(_stepSystem);
+            _prepareActorsStep = new PrepareActorsStep(_actorsController, _nextStepPrepareActors, _objectsMoveStep);
+        }
+
+        private void CreateFinalStep()
+        {
+            DynamicNextStep dynamicNextStep = new DynamicNextStep(_stepSystem);
+            _cyclicalStep = new CyclicalStep(_actorsController, dynamicNextStep, _turret);
+            _cyclicalStep.SetStartStep(_prepareActorsStep);
+            _cyclicalStep.SetLoopingStep(_playerStep);
+            _cyclicalStep.SetFinishStep(_rewardStep);
+
+            AddNextStepToEndPoint(_removeActorsStep, _cyclicalStep);
+        }
+
+        private void CreateActorsFreezeStep()
+        {
+            _actorsFreezeStep = new ActorsFreezeStep(_nextStepPrepareActors, _objectsMoveStep);
+
+            AddNextStepToEndPoint(_actorsFreezeStep, _removeActorsStep);
         }
 
         private void ConnectSteps()
@@ -117,30 +144,6 @@ namespace PlayLevel
             AddNextStepToEndPoint(_objectsMoveStep, _enemyAttackStep);
             AddNextStepToEndPoint(_enemyAttackStep, _removeActorsStep);
             AddNextStepToEndPoint(_rewardStep, _closeSceneStep);
-        }
-
-        private void AddNextStepToEndPoint(IEndPointStep endPointStep, IStep nextStep)
-        {
-            IEndStep endStep = new NextStep(_stepSystem, nextStep);
-            endPointStep.SetEndStep(endStep);
-        }
-
-        private void CreateFinalSteps()
-        {
-            DynamicNextStep dynamicNextStep = new DynamicNextStep(_stepSystem);
-            _cyclicalStep = new CyclicalStep(_actorsController, dynamicNextStep, _turret);
-            _cyclicalStep.SetStartStep(_prepareActorsStep);
-            _cyclicalStep.SetLoopingStep(_playerStep);
-            _cyclicalStep.SetFinishStep(_rewardStep);
-
-            AddNextStepToEndPoint(_removeActorsStep, _cyclicalStep);
-        }
-
-        private void CreateDynamicNextStepPrepareActors()
-        {
-            _nextStepPrepareActors = new DynamicNextStep(_stepSystem);
-            _prepareActorsStep.SetEndStep(_nextStepPrepareActors);
-            _nextStepPrepareActors.SetNextStep(_objectsMoveStep);
         }
     }
 }

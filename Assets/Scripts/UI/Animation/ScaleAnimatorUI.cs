@@ -1,6 +1,5 @@
 ﻿using DG.Tweening;
 using UnityEngine;
-using UnityEngine.InputSystem.XR;
 
 [RequireComponent(typeof(RectTransform), typeof(CanvasGroup))]
 public class ScaleAnimatorUI : MonoBehaviour, IAnimatorUI

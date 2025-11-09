@@ -54,7 +54,7 @@ public class LevelFactory : ILevelFactory
         ILevelActorsPlanner endlessLevelPlanner = _actorsPlanners[EndlessLevel.IndexLevel];
         Level level = new Level(endlessLevelPlanner, _coinCountRandomizer);
         SavedLeaderBoard savedLeaderBoard = new SavedLeaderBoard();
-        float reducingCoefficient = 0.15f;
+        float reducingCoefficient = 0.1f;
         float healthMultiplierPerWave = _actorsHealthCoefficientByLevel + (float)(_achievedLevelIndex * reducingCoefficient);
 
         return new EndlessLevel(level, savedLeaderBoard, healthMultiplierPerWave);

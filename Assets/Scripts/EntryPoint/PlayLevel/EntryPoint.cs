@@ -90,10 +90,7 @@ namespace PlayLevel
 
             _stepSystemConfigurator.Configure(turret, _playerController, actorsController);
             _bonusPrefabConfigurator.Configure(actorsController);
-
-            var bonusReservator = _bonusPrefabConfigurator.BonusReservator;
-
-            _stepSystemConfigurator.ConfigureBonusActivationStep(bonusReservator);
+            _stepSystemConfigurator.ConfigureBonusActivationStep(_bonusPrefabConfigurator.BonusReservator);
 
             SavedPlayerData savesData = new SavedPlayerData();
             PlayerSaver playerSaver = new PlayerSaver(_player, savesData);
@@ -102,7 +99,7 @@ namespace PlayLevel
             WinStatus winStatus = new WinStatus(turret, _selectedLevel);
             var closeSceneStep = _stepSystemConfigurator.CloseSceneStep;
             _userInterfaceConfigurator.Configure(closeSceneStep, rewardIssuer, winStatus, _coinsAdder, _adsViewer);
-            _bonusesWindowHiderConfigurator.Configure();
+            _bonusesWindowHiderConfigurator.Configure(_turretConfigurator.ShotAction);
 
             if (_player.AchievedLevelIndex == 0)
                 SceneManager.LoadScene((int)SceneIndex.LearningScene, LoadSceneMode.Additive);

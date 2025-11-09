@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-public class ActorsController : IActorsController, IActorsPreparator, IActorsMover, IActorsRemover, IEnemiesAttacker, IEnemyCounter
+public class ActorsController : IActorsController, IActorsMover, IActorsRemover, IEnemiesAttacker
 {
     private IAdvancedActorPreparator _actorsPreparator;
     private IRemovedActorsRepository _removedActorsRepository;
@@ -25,14 +25,17 @@ public class ActorsController : IActorsController, IActorsPreparator, IActorsMov
     {
         List<IActor> removedActors = _actorsPreparator.PopActors();
         _removedActorsRepository.AddRange(removedActors);
-        _removedActorsRepository.RemoveAll();
+        _removedActorsRepository.RemoveAllDisabled();
     }
 
     public void Prepare()
     {
-        _actorsPreparator.ActivateDebuffablies();
-        _actorsPreparator.CountRemainingEnemies();
-
+        if (AreNoEnemies == false)
+        {
+            _actorsPreparator.ActivateDebuffablies();
+            _actorsPreparator.CountRemainingEnemies();
+        }
+        
         if (AreNoEnemies)
             Reboot();
 
@@ -44,9 +47,9 @@ public class ActorsController : IActorsController, IActorsPreparator, IActorsMov
         _actorsMover.MoveAll();
     }
 
-    public void RemoveAll()
+    public void RemoveAllDisabled()
     {
-        _removedActorsRepository.RemoveAll();
+        _removedActorsRepository.RemoveAllDisabled();
         _actorsPreparator.CountRemainingEnemies();
     }
 

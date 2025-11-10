@@ -123,7 +123,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Particles_1
+      name: Particle_1
       rect:
         serializedVersion: 2
         x: 0
@@ -144,7 +144,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Particles_2
+      name: Particle_2
       rect:
         serializedVersion: 2
         x: 256
@@ -165,10 +165,10 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Particles_3
+      name: Linerender_1
       rect:
         serializedVersion: 2
-        x: 512
+        x: 514
         y: 1792
         width: 256
         height: 256
@@ -186,7 +186,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Particles_4
+      name: Particle_3
       rect:
         serializedVersion: 2
         x: 768
@@ -207,7 +207,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Particles_5
+      name: Particle_7
       rect:
         serializedVersion: 2
         x: 0
@@ -228,7 +228,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Particles_6
+      name: Particle_8
       rect:
         serializedVersion: 2
         x: 512
@@ -249,7 +249,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Particles_7
+      name: Particle_9
       rect:
         serializedVersion: 2
         x: 1024
@@ -270,7 +270,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Particles_8
+      name: Particle_10
       rect:
         serializedVersion: 2
         x: 1536
@@ -291,7 +291,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Particles_0
+      name: Particle_4
       rect:
         serializedVersion: 2
         x: 0
@@ -312,7 +312,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Particles_9
+      name: Linerender_2
       rect:
         serializedVersion: 2
         x: 1024
@@ -333,7 +333,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Particle_0
+      name: Shadow_1
       rect:
         serializedVersion: 2
         x: 0
@@ -354,7 +354,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Particle_1
+      name: Shadow_2
       rect:
         serializedVersion: 2
         x: 512
@@ -375,7 +375,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Particle_2
+      name: Particle_5
       rect:
         serializedVersion: 2
         x: 256
@@ -396,7 +396,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Particle_3
+      name: Particle_6
       rect:
         serializedVersion: 2
         x: 512
@@ -417,7 +417,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Particle_4
+      name: Clicker
       rect:
         serializedVersion: 2
         x: 1024
@@ -438,7 +438,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Particle_5
+      name: Icon_2
       rect:
         serializedVersion: 2
         x: 1280
@@ -459,7 +459,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Particle_6
+      name: Icon_3
       rect:
         serializedVersion: 2
         x: 1536
@@ -480,7 +480,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Particle_7
+      name: Icon_4
       rect:
         serializedVersion: 2
         x: 1792
@@ -501,7 +501,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Particle_8
+      name: Icon_7
       rect:
         serializedVersion: 2
         x: 1792
@@ -522,7 +522,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Particle_9
+      name: Icon_6
       rect:
         serializedVersion: 2
         x: 1536
@@ -543,7 +543,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Particle_10
+      name: Icon_5
       rect:
         serializedVersion: 2
         x: 1280
@@ -564,7 +564,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Particle_11
+      name: Icon_13
       rect:
         serializedVersion: 2
         x: 1024
@@ -585,7 +585,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Particle_12
+      name: Icon_1
       rect:
         serializedVersion: 2
         x: 814
@@ -606,7 +606,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Particle_13
+      name: Icon_12
       rect:
         serializedVersion: 2
         x: 1792
@@ -627,7 +627,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Particle_14
+      name: Icon_10
       rect:
         serializedVersion: 2
         x: 1792
@@ -648,7 +648,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Particle_15
+      name: Icon_11
       rect:
         serializedVersion: 2
         x: 1536
@@ -669,7 +669,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Particle_16
+      name: Icon_9
       rect:
         serializedVersion: 2
         x: 1536
@@ -690,7 +690,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Particle_17
+      name: Particle_12
       rect:
         serializedVersion: 2
         x: 1280
@@ -711,7 +711,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Particle_18
+      name: Particle_11
       rect:
         serializedVersion: 2
         x: 1536
@@ -732,7 +732,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Particle_19
+      name: Icon_8
       rect:
         serializedVersion: 2
         x: 1280
@@ -764,36 +764,36 @@ TextureImporter:
     secondaryTextures: []
     nameFileIdTable:
       0: 520286241
-      Particle_0: -1581197540
-      Particle_1: 853859432
-      Particle_10: 1294683192
-      Particle_11: -1588639131
-      Particle_12: 1347090291
-      Particle_13: -696108769
-      Particle_14: -558414611
-      Particle_15: 2104497138
-      Particle_16: -259797904
-      Particle_17: -1760609284
-      Particle_18: 534275994
-      Particle_19: -734491130
-      Particle_2: 1981882166
-      Particle_3: -2090397520
-      Particle_4: 96872753
-      Particle_5: -239386257
-      Particle_6: 1833942508
-      Particle_7: 490547609
-      Particle_8: -832777863
-      Particle_9: 964607463
-      Particles_0: 1141978723
-      Particles_1: 654246524
-      Particles_2: -1348143095
-      Particles_3: 24808398
-      Particles_4: 1164347391
-      Particles_5: 843373088
-      Particles_6: -1253181093
-      Particles_7: 846387498
-      Particles_8: 861378672
-      Particles_9: -708411009
+      Clicker: 96872753
+      Icon_1: 1347090291
+      Icon_10: -558414611
+      Icon_11: 2104497138
+      Icon_12: -696108769
+      Icon_13: -1588639131
+      Icon_2: -239386257
+      Icon_3: 1833942508
+      Icon_4: 490547609
+      Icon_5: 1294683192
+      Icon_6: 964607463
+      Icon_7: -832777863
+      Icon_8: -734491130
+      Icon_9: -259797904
+      Linerender_1: 24808398
+      Linerender_2: -708411009
+      Particle_1: 654246524
+      Particle_10: 861378672
+      Particle_11: 534275994
+      Particle_12: -1760609284
+      Particle_2: -1348143095
+      Particle_3: 1164347391
+      Particle_4: 1141978723
+      Particle_5: 1981882166
+      Particle_6: -2090397520
+      Particle_7: 843373088
+      Particle_8: -1253181093
+      Particle_9: 846387498
+      Shadow_1: -1581197540
+      Shadow_2: 853859432
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

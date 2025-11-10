@@ -58,12 +58,7 @@ namespace PlayLevel
 
         private void Start()
         {
-            //todo Remove ConfigureWithConsol() on realise
-#if UNITY_EDITOR
             Configure();
-#else
-            ConfigureWithConsol();
-#endif
         }
 
         private void OnDisable()
@@ -104,22 +99,5 @@ namespace PlayLevel
             if (_player.AchievedLevelIndex == 0)
                 SceneManager.LoadScene((int)SceneIndex.LearningScene, LoadSceneMode.Additive);
         }
-
-        private void ConfigureWithConsol()
-        {
-            try
-            {
-                Configure();
-            }
-            catch (Exception ex)
-            {
-                Console.GetException(ex);
-            }
-        }
-    }
-
-    public class TestLevelLoader : MonoBehaviour
-    {
-
     }
 }

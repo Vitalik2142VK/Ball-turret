@@ -64,14 +64,5 @@ namespace MainMenuSpace
 
             _coinAdder = new CoinAdder(PlayerSaver, _cachedUser.Wallet, adsViewer);
         }
-
-        //todo Remove on realise
-        public void OnRemoveSave()
-        {
-            if (_savedData is SavedPlayerData data == false)
-                return;
-
-            data.RemoveAll();
-        }
     }
 }

@@ -37,12 +37,7 @@ namespace MainMenuSpace
 
         private void Start()
         {
-            //todo Remove ConfigureWithConsol() on realise
-#if UNITY_EDITOR
             Configure();
-#else
-            ConfigureWithConsol();
-#endif
         }
 
         private void Configure()
@@ -66,20 +61,6 @@ namespace MainMenuSpace
 
             if (player.AchievedLevelIndex == 0)
                 _levelsPlannerConfigurator.LoadLearningLevel();
-        }
-
-        private void ConfigureWithConsol()
-        {
-            try
-            {
-                Console.GetLog("UNITY_WEBGL");
-
-                Configure();
-            }
-            catch (Exception ex)
-            {
-                Console.GetException(ex);
-            }
         }
     }
 }

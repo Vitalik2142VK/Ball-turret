@@ -65,12 +65,7 @@ namespace LearningLevel
 
         private void Start()
         {
-            //todo Remove ConfigureWithConsol() on realise
-#if UNITY_EDITOR
             Configure();
-#else
-            ConfigureWithConsol();
-#endif
         }
 
         private void Configure()
@@ -85,18 +80,6 @@ namespace LearningLevel
             _pauseMenu.Initialize(closeSceneStep);
             _pause.Initialize(_pauseButton);
             _settingMenu.Initialize(_audioSetting);
-        }
-
-        private void ConfigureWithConsol()
-        {
-            try
-            {
-                Configure();
-            }
-            catch (Exception ex)
-            {
-                Console.GetException(ex);
-            }
         }
     }
 }

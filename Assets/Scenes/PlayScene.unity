@@ -4853,9 +4853,9 @@ GameObject:
   - component: {fileID: 647794588}
   - component: {fileID: 647794585}
   - component: {fileID: 647794584}
-  - component: {fileID: 647794587}
   - component: {fileID: 647794590}
   - component: {fileID: 647794589}
+  - component: {fileID: 647794587}
   - component: {fileID: 647794581}
   m_Layer: 5
   m_Name: ReservedBonusesButton
@@ -5029,7 +5029,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d1941fe76420254e8d59b6efd035d58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _clickSizeValue: 0.1
+  _clickSizeValue: -0.1
   _duration: 0.1
 --- !u!1 &647930416
 GameObject:
@@ -9900,7 +9900,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d1941fe76420254e8d59b6efd035d58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _clickSizeValue: 0.1
+  _clickSizeValue: -0.1
   _duration: 0.1
 --- !u!114 &1224045268
 MonoBehaviour:
@@ -12624,7 +12624,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d1941fe76420254e8d59b6efd035d58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _clickSizeValue: 0.1
+  _clickSizeValue: -0.1
   _duration: 0.1
 --- !u!114 &1679217152
 MonoBehaviour:

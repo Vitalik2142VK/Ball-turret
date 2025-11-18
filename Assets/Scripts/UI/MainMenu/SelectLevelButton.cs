@@ -11,6 +11,7 @@ public class SelectLevelButton : MonoBehaviour
 
     private IButtonAnimator _animator;
     private Button _button;
+    private RectTransform _rectTransform;
 
     public event Action<int> Clicked;
 
@@ -36,12 +37,17 @@ public class SelectLevelButton : MonoBehaviour
     {
         _animator = GetComponent<IButtonAnimator>();
         _button = GetComponent<Button>();
+
+        _rectTransform = GetComponent<RectTransform>();
         Index = -1;
     }
 
     private void OnEnable()
     {
         _button.onClick.AddListener(OnPress);
+
+        if (IsBocked == false)
+            _animator.Press();
     }
 
     private void OnDisable()
@@ -78,7 +84,19 @@ public class SelectLevelButton : MonoBehaviour
         }
     }
 
-    public void Press()
+    public void SetSize(float scale)
+    {
+        if (scale < 0)
+            throw new ArgumentOutOfRangeException(nameof(scale));
+
+        var rect = _rectTransform.rect;
+
+        Debug.Log($"sizes == {rect.size}");
+
+        _rectTransform.sizeDelta *= scale;
+    }
+
+    public void Select()
     {
         _button.interactable = false;
         _animator.Press();
@@ -86,11 +104,11 @@ public class SelectLevelButton : MonoBehaviour
         Clicked?.Invoke(Index);
     }
 
-    public void PressOut()
+    public void CancelSelection()
     {
         _button.interactable = true;
         _animator.PressOut();
     }
 
-    private void OnPress() => Press();
+    private void OnPress() => Select();
 }

@@ -136,7 +136,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d1941fe76420254e8d59b6efd035d58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _clickSizeValue: 0.1
+  _clickSizeValue: -0.1
   _duration: 0.1
 --- !u!114 &500399483425754386
 MonoBehaviour:

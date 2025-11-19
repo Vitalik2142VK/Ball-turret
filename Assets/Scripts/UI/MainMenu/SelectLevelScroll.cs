@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(ScrollRect))]
+[RequireComponent(typeof(ScrollRect), typeof(ScrollerToElement))]
 public class SelectLevelScroll : MonoBehaviour
 {
     [SerializeField] private ContentSizeFitter _content;
     [SerializeField] private SelectLevelButton _selectLevelButtonPrefab;
-    [SerializeField, Range(0.5f, 1.5f)] private float _scaleButton = 1f;
 
     private List<SelectLevelButton> _selectLevelButtons;
     private ScrollRect _scrollRect;
+    private ScrollerToElement _scrollerToElement;
 
     public int SelectedLevelIndex { get; private set; }
 
@@ -32,6 +32,7 @@ public class SelectLevelScroll : MonoBehaviour
     private void Awake()
     {
         _scrollRect = GetComponent<ScrollRect>();
+        _scrollerToElement = GetComponent<ScrollerToElement>();
     }
 
     private void OnEnable()
@@ -61,9 +62,9 @@ public class SelectLevelScroll : MonoBehaviour
             var button = Instantiate(_selectLevelButtonPrefab);
             button.SetIndex(i);
             button.SetBlock(achievedLevelIndex < i);
-            button.SetSize(_scaleButton);
             button.transform.SetParent(_content.transform);
             button.transform.localScale = _selectLevelButtonPrefab.transform.localScale;
+
             _selectLevelButtons.Add(button);
         }
     }
@@ -108,6 +109,6 @@ public class SelectLevelScroll : MonoBehaviour
         if (button.TryGetComponent(out RectTransform rectTransform) == false)
             throw new InvalidOperationException($"{nameof(button)} does not contain the '{nameof(RectTransform)}' component");
 
-        ScrollRectUtil.ScrollToElement(_scrollRect, rectTransform);
+        _scrollerToElement.ScrollToElement(rectTransform);
     }
 }

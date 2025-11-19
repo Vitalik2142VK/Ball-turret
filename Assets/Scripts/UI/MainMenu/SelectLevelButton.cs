@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 
 [RequireComponent(typeof(Button), typeof(ScaleButtonAnimator))]
 public class SelectLevelButton : MonoBehaviour
@@ -11,7 +13,6 @@ public class SelectLevelButton : MonoBehaviour
 
     private IButtonAnimator _animator;
     private Button _button;
-    private RectTransform _rectTransform;
 
     public event Action<int> Clicked;
 
@@ -38,7 +39,7 @@ public class SelectLevelButton : MonoBehaviour
         _animator = GetComponent<IButtonAnimator>();
         _button = GetComponent<Button>();
 
-        _rectTransform = GetComponent<RectTransform>();
+        IsBocked = false;
         Index = -1;
     }
 
@@ -46,7 +47,9 @@ public class SelectLevelButton : MonoBehaviour
     {
         _button.onClick.AddListener(OnPress);
 
-        if (IsBocked == false)
+        if (IsBocked)
+            _animator.PressOut();
+        else
             _animator.Press();
     }
 
@@ -84,30 +87,21 @@ public class SelectLevelButton : MonoBehaviour
         }
     }
 
-    public void SetSize(float scale)
-    {
-        if (scale < 0)
-            throw new ArgumentOutOfRangeException(nameof(scale));
-
-        var rect = _rectTransform.rect;
-
-        Debug.Log($"sizes == {rect.size}");
-
-        _rectTransform.sizeDelta *= scale;
-    }
-
     public void Select()
     {
         _button.interactable = false;
-        _animator.Press();
+        _animator.PressOut();
 
         Clicked?.Invoke(Index);
     }
 
     public void CancelSelection()
     {
+        if (IsBocked || _button.interactable)
+            return;
+
         _button.interactable = true;
-        _animator.PressOut();
+        _animator.Press();
     }
 
     private void OnPress() => Select();

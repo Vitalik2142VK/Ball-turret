@@ -4,4 +4,6 @@
     public bool IsLocked { get; }
 
     public bool TrySpend(IWallet wallet);
+
+    public int GetMissingAmount();
 }

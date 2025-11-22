@@ -33,7 +33,7 @@ public class Wallet : IWallet
         _walletView.UpdateValueCoins(CountCoins);
     }
 
-    public bool TryPay(int countCoins)
+    public bool TryPay(long countCoins)
     {
         if (countCoins <= 0)
             throw new ArgumentOutOfRangeException(nameof(countCoins));

@@ -6,5 +6,5 @@
 
     public void AddCoins(int countCoins);
 
-    public bool TryPay(int countCoins);
+    public bool TryPay(long countCoins);
 }

@@ -30,6 +30,10 @@ namespace MainMenuSpace
 
             if (_levelActorsPlanners == null || _levelActorsPlanners.Length == 0)
                 throw new InvalidOperationException(nameof(_levelActorsPlanners));
+
+            foreach (var levelActorsPlanner in _levelActorsPlanners)
+                if (levelActorsPlanner == null)
+                    throw new NullReferenceException($"{_levelActorsPlanners} contains null objects");
         }
 
         public void Configure(IPlayer player, ICoinAdder coinAdder)

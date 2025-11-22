@@ -6,28 +6,23 @@ using UnityEngine.UI;
 [RequireComponent(typeof(ShiftAnimatorUI))]
 public class ImprovementMenu : MonoBehaviour
 {
-    private const int MaxCountImprovementButtons = 2;
+    private const int MaxCountProductWindows = 2;
 
-    [SerializeField] private ImprovementChoiseButton[] _improvementChoiseButtons;
-    [SerializeField] private Button _updateButton;
+    [SerializeField] private GameProductWindow[] _gameProductWindows;
 
     private IWindow _previousWindow;
-    private IGamePayTransaction _selectTransaction;
     private IImprovementShop _improvementShop;
     private IAdsViewer _adsViewer;
     private IAnimatorUI _animator;
 
     private void OnValidate()
     {
-        if (_improvementChoiseButtons == null || _improvementChoiseButtons.Length != MaxCountImprovementButtons)
-            _improvementChoiseButtons = new ImprovementChoiseButton[MaxCountImprovementButtons];
+        if (_gameProductWindows == null || _gameProductWindows.Length != MaxCountProductWindows)
+            _gameProductWindows = new GameProductWindow[MaxCountProductWindows];
 
-        foreach (var button in _improvementChoiseButtons)
-            if (button == null)
-                throw new NullReferenceException(nameof(button));
-
-        if (_updateButton == null)
-            throw new NullReferenceException(nameof(_updateButton));
+        foreach (var window in _gameProductWindows)
+            if (window == null)
+                throw new NullReferenceException($"{_gameProductWindows} contains null objects");
     }
 
     private void Awake()
@@ -35,38 +30,30 @@ public class ImprovementMenu : MonoBehaviour
         _animator = GetComponent<IAnimatorUI>();
 
         gameObject.SetActive(false);
-        _updateButton.interactable = false;
     }
 
     private void OnEnable()
     {
-        foreach (var button in _improvementChoiseButtons)
-            button.Clicked += OnSelectButton;
+        foreach (var window in _gameProductWindows)
+            window.Clicked += OnImprove;
 
         if (_adsViewer != null)
-            _adsViewer.ShowCompleted += OnUpdateMenu;
-
-        _updateButton.onClick.AddListener(OnImprove);
+            _adsViewer.ShowCompleted += OnUpdate;
     }
 
     private void OnDisable()
     {
-        foreach (var button in _improvementChoiseButtons)
-            button.Clicked -= OnSelectButton;
+        foreach (var window in _gameProductWindows)
+            window.Clicked -= OnImprove;
 
         if (_adsViewer != null)
-            _adsViewer.ShowCompleted -= OnUpdateMenu;
-
-        _updateButton.onClick.RemoveListener(OnImprove);
+            _adsViewer.ShowCompleted -= OnUpdate;
     }
 
     public void Initialize(IImprovementShop improvementShop, IAdsViewer adsViewer)
     {
         _improvementShop = improvementShop ?? throw new ArgumentNullException(nameof(improvementShop));
         _adsViewer = adsViewer ?? throw new ArgumentNullException(nameof(adsViewer));
-
-        for (int i = 0; i < _improvementChoiseButtons.Length; i++)
-            _improvementChoiseButtons[i].SetIndex(i);
     }
 
     public void Open(IWindow previousWindow)
@@ -82,57 +69,33 @@ public class ImprovementMenu : MonoBehaviour
 
     public void OnClose()
     {
-        _updateButton.interactable = false;
         _animator.Hide();
 
         StartCoroutine(WaitClosure());
     }
 
-    private void OnImprove()
+    private void OnImprove(IGamePayTransaction gamePayTransaction)
     {
-        if (_improvementShop.TryMakeTransaction(_selectTransaction))
-            foreach (var button in _improvementChoiseButtons)
-                button.Enable();
+        if (gamePayTransaction == null)
+            throw new ArgumentNullException(nameof(gamePayTransaction));
+
+        if (_improvementShop.TryMakeTransaction(gamePayTransaction))
+            OnUpdate();
         else
             throw new InvalidOperationException("The transaction failed");
-
-        _selectTransaction = null;
-        _updateButton.interactable = false;
     }
 
-    private void OnSelectButton(IGamePayTransaction gamePayTransaction, int index)
+    private void OnUpdate()
     {
-        _selectTransaction = gamePayTransaction ?? throw new ArgumentNullException(nameof(gamePayTransaction));
-
-        ImprovementChoiseButton button;
-
-        for (int i = 0; i < _improvementChoiseButtons.Length; i++)
-        {
-            button = _improvementChoiseButtons[i];
-
-            if (i == index)
-                button.Disable();
-            else
-                button.Enable();
-        }
-
-        _updateButton.interactable = true;
-    }
-
-    private void OnUpdateMenu()
-    {
-        foreach (var button in _improvementChoiseButtons)
-            button.Enable();
+        foreach (var window in _gameProductWindows)
+            window.UpdateData();
     }
 
     private IEnumerator WaitOpening()
     {
         yield return _animator.GetYieldAnimation();
 
-        _updateButton.interactable = false;
-
-        foreach (var button in _improvementChoiseButtons)
-            button.Enable();
+        OnUpdate();
     }
 
     private IEnumerator WaitClosure()

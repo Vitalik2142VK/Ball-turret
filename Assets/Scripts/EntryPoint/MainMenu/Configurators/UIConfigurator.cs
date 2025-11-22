@@ -9,8 +9,8 @@ namespace MainMenuSpace
         [SerializeField] private SettingMenu _settingMenu;
         [SerializeField] private AudioSetting _audioSetting;
         [SerializeField] private ImprovementMenu _improvementChoiseMenu;
-        [SerializeField] private ImprovementChoiseButton _updateHealthButton;
-        [SerializeField] private ImprovementChoiseButton _updateDamageButton;
+        [SerializeField] private GameProductWindow _updateHealthButton;
+        [SerializeField] private GameProductWindow _updateDamageButton;
         [SerializeField] private AddCoinsButton _addCoinsButton;
         [SerializeField] private DisableAdsButton _disableAdsButton;
 
@@ -77,18 +77,20 @@ namespace MainMenuSpace
             var adsViewButton = _addCoinsButton.GetComponent<AdsViewButton>();
             adsViewButton.Initialize(_adsViewer, RewardTypes.AddCoin);
 
-            InitializeImprovementChoiseButtons();
+            InitializeImprovementChoiseButtons(coinAdder);
         }
 
-        public void InitializeImprovementChoiseButtons()
+        public void InitializeImprovementChoiseButtons(ICoinAdder coinAdder)
         {
             var transaction = _improvementShop.GetTransaction(typeof(HealthImprovementTransaction));
             var product = _improvementShop.GetProduct(typeof(HealthImprovementProduct));
+            float priceCoefficient = 0.4f;
+            PurchaseRewardService rewardService = new PurchaseRewardService(coinAdder, priceCoefficient);
 
             _updateHealthButton.Initialize(transaction, product);
 
             transaction = _improvementShop.GetTransaction(typeof(DamageImprovementTransaction));
-            product = _improvementShop.GetProduct( typeof(DamageImprovementProduct));
+            product = _improvementShop.GetProduct(typeof(DamageImprovementProduct));
 
             _updateDamageButton.Initialize(transaction, product);
         }

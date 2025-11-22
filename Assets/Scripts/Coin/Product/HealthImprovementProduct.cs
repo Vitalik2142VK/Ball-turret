@@ -18,5 +18,5 @@ public class HealthImprovementProduct : IImprovementProduct
 
     public float ImproveValue => (float)Math.Round(_heath * _turretImprover.ImproveHealthCoefficient, Remains);
     public int CurrentValue => (int)Math.Round(_heath * _turretImprover.HealthCoefficient);
-    public bool CanBuy => _turretImprover.CanImproveHealth;
+    public bool CanImprove => _turretImprover.CanImproveHealth;
 }

@@ -2,5 +2,5 @@
 {
     public float ImproveValue { get; }
     public int CurrentValue { get; }
-    public bool CanBuy { get; }
+    public bool CanImprove { get; }
 }

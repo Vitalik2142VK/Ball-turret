@@ -74,7 +74,7 @@ namespace PlayLevel
             _turret.Disable();
         }
 
-        public void Configure(IPlayer user, IBulletFactory bulletFactory)
+        public void Configure(IPlayer player, IBulletFactory bulletFactory)
         {
             if (bulletFactory == null)
                 throw new NullReferenceException(nameof(bulletFactory));
@@ -85,7 +85,7 @@ namespace PlayLevel
             _tower.Initialize(_targetPoint, _trajectoryRenderer);
 
             IHealthImprover healthImprover = new HealthImprover(_turretHealthAttributes);
-            healthImprover.Improve(user.HealthCoefficient);
+            healthImprover.Improve(player.HealthCoefficient);
             IHealth health = new Health(healthImprover, _healthBar);
             health.Restore();
 

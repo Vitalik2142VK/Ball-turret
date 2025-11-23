@@ -6,7 +6,7 @@ public class Wallet : IWallet
 
     public Wallet(long countCoinsPlayer)
     {
-        if (countCoinsPlayer <= 0)
+        if (countCoinsPlayer < 0)
             throw new ArgumentOutOfRangeException(nameof(countCoinsPlayer));
 
         CountCoins = countCoinsPlayer;

@@ -57,7 +57,7 @@ public class EnemyView : MonoBehaviour, IEnemyView
     public void Initialize(IEnemyPresenter presenter, IActorAudioController audioController)
     {
         _presenter = presenter ?? throw new ArgumentNullException(nameof(presenter));
-        _audioController = audioController ?? throw new ArgumentNullException(nameof(audioController)); ;
+        _audioController = audioController ?? throw new ArgumentNullException(nameof(audioController));
     }
 
     public void PrepareDeleted(IRemovedActorsCollector removedCollector) => _presenter.PrepareDeleted(removedCollector);

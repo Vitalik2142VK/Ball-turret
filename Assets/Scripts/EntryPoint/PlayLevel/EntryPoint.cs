@@ -117,9 +117,4 @@ namespace PlayLevel
             }
         }
     }
-
-    public class TestLevelLoader : MonoBehaviour
-    {
-
-    }
 }

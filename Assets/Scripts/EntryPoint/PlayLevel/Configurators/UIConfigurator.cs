@@ -65,10 +65,7 @@ namespace PlayLevel
             _settingMenu.Initialize(_audioSetting);
             _pause.Initialize(_pauseButton);
             _bonusChoiceMenu.Initialize();
-            _addCoinsButton.Initialize(coinAdder, adsViewer);
-
-            var adsViewButton = _addCoinsButton.GetComponent<AdsViewButton>();
-            adsViewButton.Initialize(adsViewer, RewardTypes.AddCoin);
+            _addCoinsButton.Initialize(coinAdder, adsViewer, RewardTypes.AddCoin);
         }
     }
 }

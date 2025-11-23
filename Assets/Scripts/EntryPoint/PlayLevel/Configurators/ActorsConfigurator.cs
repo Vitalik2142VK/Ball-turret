@@ -56,10 +56,10 @@ namespace PlayLevel
             _healthModifier = level ?? throw new ArgumentNullException(nameof(level));
             
             IActorSpawner actorSpawner = CreatActorSpawner();
-            IAdvancedActorsMover actorMover = new ActorsMover();
+            IAdvancedActorsMover actorsMover = new ActorsMover();
             IRemovedActorsRepository removedActorsRepository = new ActorsRemover();
             EnemiesAttacker enemiesAttacker = new EnemiesAttacker(turret);
-            ActorsPreparator actorsPreparator = new ActorsPreparator(actorSpawner, actorMover, _startMoveAttributes, _defaultMoveAttributes);
+            ActorsPreparator actorsPreparator = new ActorsPreparator(actorSpawner, actorsMover, _startMoveAttributes, _defaultMoveAttributes);
             actorsPreparator.SetLevelActorsPlanner(level);
 
             _zoneEnemy.Initialize(removedActorsRepository, enemiesAttacker);

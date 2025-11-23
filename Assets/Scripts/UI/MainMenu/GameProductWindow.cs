@@ -5,14 +5,15 @@ using UnityEngine.UI;
 public class GameProductWindow : MonoBehaviour
 {
     [SerializeField] private GameProductData _data;
+    [SerializeField] private AddCoinsButton _addCoinsButton;
     [SerializeField] private Button _updateButton;
-    [SerializeField] private Button _addCoinsButton;
     [SerializeField] private Image _maxLevel;
 
     private IGamePayTransaction _transaction;
     private IImprovementProduct _product;
+    private IPurchaseRewardService _rewardService;
 
-    public event Action<IGamePayTransaction> Clicked;
+    public event Action<IGamePayTransaction> Selected;
 
     private void OnValidate()
     {
@@ -36,55 +37,92 @@ public class GameProductWindow : MonoBehaviour
 
     private void OnEnable()
     {
+        _addCoinsButton.Clicked += OnEstablishRewardAd;
         _updateButton.onClick.AddListener(OnSendTransaction);
-        _addCoinsButton.onClick.AddListener(OnEstablishRevardAd);
     }
 
     private void OnDisable()
     {
+        _addCoinsButton.Clicked -= OnEstablishRewardAd;
         _updateButton.onClick.RemoveListener(OnSendTransaction);
-        _addCoinsButton.onClick.RemoveListener(OnEstablishRevardAd);
     }
 
-    public void Initialize(IGamePayTransaction transaction, IImprovementProduct product)
+    public void Initialize(IGamePayTransaction transaction, IImprovementProduct product, IPurchaseRewardService rewardService)
     {
         _transaction = transaction ?? throw new ArgumentNullException(nameof(transaction));
         _product = product ?? throw new ArgumentNullException(nameof(product));
+        _rewardService = rewardService ?? throw new ArgumentNullException(nameof(rewardService));
     }
 
     public void UpdateData()
     {
-        if (_transaction.IsLocked || _product.CanImprove == false)
-            Disable();
-
-        _data.SetCurrentValue(_product.CurrentValue.ToString());
-        _data.SetImproveValue(_product.ImproveValue.ToString());
-        _data.SetPrice(_transaction.Price.ToString());
+        ApplyToTransactionState();
+        ApplyToProductState();
+        UpdateViewData();
     }
 
     private void OnSendTransaction()
     {
-        Clicked?.Invoke(_transaction);
+        Selected?.Invoke(_transaction);
     }
 
-    private void OnEstablishRevardAd()
+    private void OnEstablishRewardAd()
     {
-        throw new NotImplementedException();
+        int missingAmount = _transaction.GetMissingAmount();
+        _rewardService.AssignReward(missingAmount);
+
+        ActivateAddCoinsButton(false);
     }
 
-    private void Disable()
+    private void ApplyToTransactionState()
     {
-        if (_product.CanImprove == false)
-        {
-            _data.SetActive(false);
-            _maxLevel.gameObject.SetActive(true);
-
-            return;
-        }
-
         if (_transaction.IsLocked)
         {
+            int missingAmount = _transaction.GetMissingAmount();
+            bool canProvideReward = _rewardService.CanProvideReward(_transaction.Price, missingAmount);
 
+            if (canProvideReward)
+            {
+                _rewardService.AssignReward(missingAmount);
+                _addCoinsButton.UpdateData();
+            }
+            else
+            {
+                _updateButton.interactable = false;
+            }
+
+            ActivateAddCoinsButton(canProvideReward);
         }
+        else
+        {
+            ActivateAddCoinsButton(false);
+        }
+    }
+
+    private void ApplyToProductState()
+    {
+        if (_product.CanImprove)
+            return;
+
+        _data.SetActive(false);
+        _maxLevel.gameObject.SetActive(true);
+        _updateButton.interactable = false;
+    }
+
+    private void UpdateViewData()
+    {
+        var currentValue = _product.CurrentValue;
+        var improveValue = _product.ImproveValue + currentValue;
+        var price = _transaction.Price;
+
+        _data.SetCurrentValue(currentValue.ToString());
+        _data.SetImproveValue(improveValue.ToString());
+        _data.SetPrice(price.ToString());
+    }
+
+    private void ActivateAddCoinsButton(bool IsActive)
+    {
+        _addCoinsButton.SetActive(IsActive);
+        _updateButton.gameObject.SetActive(IsActive == false);
     }
 }

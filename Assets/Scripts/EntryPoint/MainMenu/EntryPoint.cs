@@ -53,7 +53,7 @@ namespace MainMenuSpace
             var turretImprover = _playerConfigurator.TurretImprover;
             var coinAdder = _playerConfigurator.CoinAdder;
 
-            _levelsPlannerConfigurator.Configure(player, coinAdder);
+            _levelsPlannerConfigurator.Configure(player);
             _shopConfigurator.Configure(playerSaver, player, turretImprover);
 
             var levelFactory = _levelsPlannerConfigurator.LevelFactory;

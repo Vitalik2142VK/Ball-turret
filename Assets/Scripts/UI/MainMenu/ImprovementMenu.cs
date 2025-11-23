@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
 
 [RequireComponent(typeof(ShiftAnimatorUI))]
 public class ImprovementMenu : MonoBehaviour
@@ -35,7 +34,7 @@ public class ImprovementMenu : MonoBehaviour
     private void OnEnable()
     {
         foreach (var window in _gameProductWindows)
-            window.Clicked += OnImprove;
+            window.Selected += OnImprove;
 
         if (_adsViewer != null)
             _adsViewer.ShowCompleted += OnUpdate;
@@ -44,7 +43,7 @@ public class ImprovementMenu : MonoBehaviour
     private void OnDisable()
     {
         foreach (var window in _gameProductWindows)
-            window.Clicked -= OnImprove;
+            window.Selected -= OnImprove;
 
         if (_adsViewer != null)
             _adsViewer.ShowCompleted -= OnUpdate;

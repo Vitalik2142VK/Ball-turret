@@ -48,8 +48,14 @@ public class GroupSizeAdapter : MonoBehaviour
     {
         yield return null;
 
-        float widthRect = (_rectTransform.rect.size.x - _gridLayoutGroup.padding.right - _gridLayoutGroup.padding.left);
-        float heightRect = (_rectTransform.rect.size.y - _gridLayoutGroup.padding.bottom - _gridLayoutGroup.padding.top);
+        var rect = _rectTransform.rect;
+        var padding = _gridLayoutGroup.padding;
+        var spacing = _gridLayoutGroup.spacing;
+        int offsetsCount = _countElementsGroup - 1;
+        float widthSpacing = spacing.x * offsetsCount;
+        float heightSpacing = spacing.y * offsetsCount;
+        float widthRect = rect.size.x - padding.right - padding.left - widthSpacing;
+        float heightRect = rect.size.y - padding.bottom - padding.top - heightSpacing;
         var startAxis = _gridLayoutGroup.startAxis;
 
         if (startAxis == GridLayoutGroup.Axis.Vertical)

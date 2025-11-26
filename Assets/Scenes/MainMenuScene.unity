@@ -2427,6 +2427,9 @@ MonoBehaviour:
     Position: {x: -16, y: 54.5, z: 5.5}
     Rotation: {x: 73.6, y: 90, z: 0}
     FieldOfView: 13
+  _minRaion: 0.4
+  _maxFieldOfView: 23
+  _minFieldOfView: 10
   _isDebug: 0
 --- !u!81 &313535231
 AudioListener:

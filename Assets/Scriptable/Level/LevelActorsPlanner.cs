@@ -25,10 +25,9 @@ namespace Scriptable
             int index = waveNumber - 1;
 
             if (index < 0 || index >= CountWaves)
-                throw new System.ArgumentOutOfRangeException(nameof(waveNumber));
+                throw new ArgumentOutOfRangeException(nameof(waveNumber));
 
             return _waveis[index];
         }
     }
 }
-

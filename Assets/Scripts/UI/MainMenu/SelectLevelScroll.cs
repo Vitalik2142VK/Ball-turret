@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(ScrollRect), typeof(ScrollerToElement))]
+[RequireComponent(typeof(ScrollerToElement))]
 public class SelectLevelScroll : MonoBehaviour
 {
     [SerializeField] private ContentSizeFitter _content;
     [SerializeField] private SelectLevelButton _selectLevelButtonPrefab;
 
     private List<SelectLevelButton> _selectLevelButtons;
-    private ScrollRect _scrollRect;
     private ScrollerToElement _scrollerToElement;
 
     public int SelectedLevelIndex { get; private set; }
@@ -31,7 +30,6 @@ public class SelectLevelScroll : MonoBehaviour
 
     private void Awake()
     {
-        _scrollRect = GetComponent<ScrollRect>();
         _scrollerToElement = GetComponent<ScrollerToElement>();
     }
 

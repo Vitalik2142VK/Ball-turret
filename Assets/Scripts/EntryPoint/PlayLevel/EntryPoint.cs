@@ -18,6 +18,7 @@ namespace PlayLevel
         [SerializeField] private BonusesConfigurator _bonusPrefabConfigurator;
         [SerializeField] private BulletConfigurator _bulletConfigurator;
         [SerializeField] private UIConfigurator _userInterfaceConfigurator;
+        [SerializeField] private FinishWindowConfigurator _finishWindowConfigurator;
         [SerializeField] private BonusesWindowHiderConfigurator _bonusesWindowHiderConfigurator;
 
         private AdsViewer _adsViewer;
@@ -52,6 +53,9 @@ namespace PlayLevel
             if (_userInterfaceConfigurator == null)
                 throw new NullReferenceException(nameof(_userInterfaceConfigurator));
 
+            if (_finishWindowConfigurator == null)
+                throw new NullReferenceException(nameof(_finishWindowConfigurator));
+
             if (_bonusesWindowHiderConfigurator == null)
                 throw new NullReferenceException(nameof(_bonusesWindowHiderConfigurator));
         }
@@ -82,23 +86,25 @@ namespace PlayLevel
             _turretConfigurator.Configure(_player, _bulletConfigurator.BulletFactory);
 
             var turret = _turretConfigurator.Turret;
+            SavedPlayerData savesData = new SavedPlayerData();
+            PlayerSaver playerSaver = new PlayerSaver(_player, savesData);
+            _coinsAdder = new CoinAdder(playerSaver, _player.Wallet, _adsViewer);
+            RewardIssuer rewardIssuer = new RewardIssuer(_coinsAdder, _player, _selectedLevel);
+            WinStatus winStatus = new WinStatus(turret, _selectedLevel);
 
             _playerController.Initialize(turret);
             _actorsConfigurator.Configure(turret, _selectedLevel);
 
             var actorsController = _actorsConfigurator.ActorsController;
 
-            _stepSystemConfigurator.Configure(turret, _playerController, actorsController);
+            _stepSystemConfigurator.Configure(turret, _adsViewer, rewardIssuer, _playerController, actorsController);
             _bonusPrefabConfigurator.Configure(actorsController);
             _stepSystemConfigurator.ConfigureBonusActivationStep(_bonusPrefabConfigurator.BonusReservator);
 
-            SavedPlayerData savesData = new SavedPlayerData();
-            PlayerSaver playerSaver = new PlayerSaver(_player, savesData);
-            _coinsAdder = new CoinAdder(playerSaver, _player.Wallet, _adsViewer);
-            RewardIssuer rewardIssuer = new RewardIssuer(_coinsAdder, _player, _selectedLevel);
-            WinStatus winStatus = new WinStatus(turret, _selectedLevel);
-            var closeSceneStep = _stepSystemConfigurator.CloseSceneStep;
-            _userInterfaceConfigurator.Configure(closeSceneStep, rewardIssuer, winStatus, _coinsAdder, _adsViewer);
+            var changeSceneStep = _stepSystemConfigurator.ChangeSceneStep;
+
+            _userInterfaceConfigurator.Configure(changeSceneStep);
+            _finishWindowConfigurator.Configure(_coinsAdder, rewardIssuer, _adsViewer, winStatus);
             _bonusesWindowHiderConfigurator.Configure(_turretConfigurator.ShotAction);
 
             if (_player.AchievedLevelIndex == 0)

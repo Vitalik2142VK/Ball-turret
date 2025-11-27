@@ -8,13 +8,14 @@ namespace PlayLevel
         [SerializeField] private StepSystem _stepSystem;
         [SerializeField] private ComboCounter _comboCounter;
         [SerializeField] private BulletsCollector _bulletCollector;
-        [SerializeField] private MainMenuLoader _mainMenuLoader;
         [SerializeField] private FinishWindow _finishWindow;
         [SerializeField] private FreezingBonusActivatorCreator _freezerCreator;
         [SerializeField] private OpenWindowButton _openReservedBonusesButton;
         [SerializeField] private ReservedBonusesWindow _reservedBonusesWindow;
 
         private ITurret _turret;
+        private IAdsViewer _adsViewer;
+        private IRewardIssuer _rewardIssuer;
         private PlayerController _playerController;
         private ActorsController _actorsController;
 
@@ -29,9 +30,8 @@ namespace PlayLevel
         private RemoveActorsStep _removeActorsStep;
         private CyclicalStep _cyclicalStep;
         private RewardStep _rewardStep;
-        private CloseSceneStep _closeSceneStep;
 
-        public IStep CloseSceneStep => _closeSceneStep;
+        public IChangeSceneStep ChangeSceneStep { get; private set; }
 
         private void OnValidate()
         {
@@ -43,9 +43,6 @@ namespace PlayLevel
 
             if (_bulletCollector == null)
                 throw new NullReferenceException(nameof(_bulletCollector));
-
-            if (_mainMenuLoader == null)
-                throw new NullReferenceException(nameof(_mainMenuLoader));
 
             if (_finishWindow == null)
                 throw new NullReferenceException(nameof(_finishWindow));
@@ -60,15 +57,17 @@ namespace PlayLevel
                 throw new NullReferenceException(nameof(_reservedBonusesWindow));
         }
 
-        public void Configure(ITurret turret, PlayerController playerController, ActorsController actorsController)
+        public void Configure(ITurret turret, IAdsViewer adsViewer, IRewardIssuer rewardIssuer, PlayerController playerController, ActorsController actorsController)
         {
             _turret = turret ?? throw new NullReferenceException(nameof(turret));
+            _adsViewer = adsViewer ?? throw new NullReferenceException(nameof(adsViewer));
+            _rewardIssuer = rewardIssuer ?? throw new NullReferenceException(nameof(rewardIssuer));
             _playerController = playerController != null ? playerController : throw new NullReferenceException(nameof(playerController));
             _actorsController = actorsController ?? throw new NullReferenceException(nameof(actorsController));
 
             CreateSteps();
             CreatePrepareActorsStep();
-            CreateFinalStep();
+            CyclicalStep();
             ConnectSteps();
             CreateActorsFreezeStep();
 
@@ -101,8 +100,9 @@ namespace PlayLevel
             _objectsMoveStep = new ActorsMoveStep(_actorsController);
             _enemyAttackStep = new EnemyAttackStep(_actorsController);
             _removeActorsStep = new RemoveActorsStep(_actorsController);
-            _rewardStep = new RewardStep(_finishWindow);
-            _closeSceneStep = new CloseSceneStep(_mainMenuLoader);
+            _rewardStep = new RewardStep(_finishWindow, _adsViewer, _rewardIssuer);
+
+            ChangeSceneStep = new ChangeSceneStep();
         }
 
         private void AddNextStepToEndPoint(IEndPointStep endPointStep, IStep nextStep)
@@ -117,7 +117,7 @@ namespace PlayLevel
             _prepareActorsStep = new PrepareActorsStep(_actorsController, _nextStepPrepareActors, _objectsMoveStep);
         }
 
-        private void CreateFinalStep()
+        private void CyclicalStep()
         {
             DynamicNextStep dynamicNextStep = new DynamicNextStep(_stepSystem);
             _cyclicalStep = new CyclicalStep(_actorsController, dynamicNextStep, _turret);
@@ -143,7 +143,7 @@ namespace PlayLevel
             AddNextStepToEndPoint(_bonusActivationStep, _prepareActorsStep);
             AddNextStepToEndPoint(_objectsMoveStep, _enemyAttackStep);
             AddNextStepToEndPoint(_enemyAttackStep, _removeActorsStep);
-            AddNextStepToEndPoint(_rewardStep, _closeSceneStep);
+            AddNextStepToEndPoint(_rewardStep, ChangeSceneStep);
         }
     }
 }

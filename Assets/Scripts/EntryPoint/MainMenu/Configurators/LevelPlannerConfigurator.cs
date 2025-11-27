@@ -9,7 +9,7 @@ namespace MainMenuSpace
         [SerializeField] private PlaySceneLoader _sceneLoader;
         [SerializeField] private EndlessLevelPlanner _endlessLevelPlanner;
         [SerializeField] private LevelActorsPlanner _learningLevelActorsPlanners;
-        [SerializeField] private LevelActorsPlanner[] _levelActorsPlanners;
+        [SerializeField] private ActorsPlannerStore _actorsPlannerStore;
 
         [Header("Actors health coefficient by level")]
         [SerializeField, Range(0.3f, 2f)] private float _healthCoefficient;
@@ -28,12 +28,8 @@ namespace MainMenuSpace
             if (_learningLevelActorsPlanners == null)
                 throw new NullReferenceException(nameof(_learningLevelActorsPlanners));
 
-            if (_levelActorsPlanners == null || _levelActorsPlanners.Length == 0)
-                throw new InvalidOperationException(nameof(_levelActorsPlanners));
-
-            foreach (var levelActorsPlanner in _levelActorsPlanners)
-                if (levelActorsPlanner == null)
-                    throw new NullReferenceException($"{_levelActorsPlanners} contains null objects");
+            if (_actorsPlannerStore == null)
+                throw new NullReferenceException(nameof(_actorsPlannerStore));
         }
 
         public void Configure(IPlayer player)
@@ -45,8 +41,10 @@ namespace MainMenuSpace
 
             float coinsForRewardAdCoefficient = 3.5f;
             int achievedLevelIndex = player.AchievedLevelIndex;
+            LevelFactory levelFactory = new LevelFactory(_actorsPlannerStore, CoinCountRandomizer, _healthCoefficient);
             CoinCountRandomizer = new CoinCountRandomizer(achievedLevelIndex, coinsForRewardAdCoefficient);
-            LevelFactory = new LevelFactory(_endlessLevelPlanner, _levelActorsPlanners, CoinCountRandomizer, _healthCoefficient, achievedLevelIndex);
+
+            LevelFactory = new AdvancedLevelFactory(levelFactory, _endlessLevelPlanner, CoinCountRandomizer, _healthCoefficient, achievedLevelIndex);
         }
 
         public void LoadLearningLevel()

@@ -6,8 +6,6 @@ namespace LearningLevel
 {
     public class EntryPoint : MonoBehaviour
     {
-        private const string TagPauseButton = "PauseButton";
-
         [SerializeField] private Scriptable.SelectedLevel _selectedLevel;
         [SerializeField] private LearningUI _learningUI;
         [SerializeField] private EnemyFactory _learningEnemyFactory;
@@ -17,7 +15,6 @@ namespace LearningLevel
 
         private StepSystemConfigurator _stepSystemConfigurator;
         private ActorsConfigurator _actorsConfigurator;
-        private UIConfigurator _configuratorUI;
         private AudioSetting _audioSetting;
         private OpenWindowButton _pauseButton;
 
@@ -47,8 +44,10 @@ namespace LearningLevel
             _stepSystemConfigurator = FindAnyObjectByType<StepSystemConfigurator>();
             _actorsConfigurator = FindAnyObjectByType<ActorsConfigurator>();
             _audioSetting = FindAnyObjectByType<AudioSetting>();
-            _configuratorUI = FindAnyObjectByType<UIConfigurator>();
-            _pauseButton = _configuratorUI.PauseButton;
+
+
+            UIConfigurator configuratorUI = FindAnyObjectByType<UIConfigurator>();
+            _pauseButton = configuratorUI.PauseButton;
 
             if (_stepSystemConfigurator == null)
                 throw new NullReferenceException(nameof(_stepSystemConfigurator));
@@ -59,8 +58,8 @@ namespace LearningLevel
             if (_audioSetting == null)
                 throw new NullReferenceException(nameof(_audioSetting));
 
-            if (_configuratorUI == null)
-                throw new NullReferenceException(nameof(_configuratorUI));
+            if (configuratorUI == null)
+                throw new NullReferenceException(nameof(configuratorUI));
         }
 
         private void Start()
@@ -78,11 +77,11 @@ namespace LearningLevel
             _learningEnemyFactory.Initialize(_selectedLevel);
             _actorsConfigurator.AddActorFactory(_learningEnemyFactory);
 
-            var closeSceneStep = _stepSystemConfigurator.CloseSceneStep;
+            var changeSceneStep = _stepSystemConfigurator.ChangeSceneStep;
             LearningStep learningStep = new LearningStep(_learningUI, _selectedLevel);
             _stepSystemConfigurator.AddLearningStep(learningStep);
             _pauseButton.SetPauseMenu(_pauseMenu);
-            _pauseMenu.Initialize(closeSceneStep);
+            _pauseMenu.Initialize(changeSceneStep);
             _pause.Initialize(_pauseButton);
             _settingMenu.Initialize(_audioSetting);
         }

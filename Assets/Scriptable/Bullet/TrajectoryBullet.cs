@@ -81,6 +81,14 @@ namespace Scriptable
             return _points.Values.Select(p => p.Position).ToArray();
         }
 
+        public bool HasFrame(int frame)
+        {
+            if (_points == null || _points.Count == 0)
+                return false;
+
+            return _points.ContainsKey(frame);
+        }
+
         public void Clear()
         {
             if (_points == null)
@@ -88,7 +96,5 @@ namespace Scriptable
 
             _points.Clear();
         }
-
-        public bool HasFrame(int frame) => _points.ContainsKey(frame);
     }
 }

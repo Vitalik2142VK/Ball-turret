@@ -16,7 +16,7 @@ namespace Scriptable
 
         public bool IsFinished { get; private set; }
 
-        public void Initialize(ILevel level)
+        public void SetLevel(ILevel level)
         {
             _level = level ?? throw new System.ArgumentNullException(nameof(level));
             IsFinished = false;

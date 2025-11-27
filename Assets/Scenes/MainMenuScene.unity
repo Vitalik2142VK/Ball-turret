@@ -5569,56 +5569,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1025612346
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1025612348}
-  - component: {fileID: 1025612347}
-  m_Layer: 0
-  m_Name: TestLevelPlannerConfigurator
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 2147483647
-  m_IsActive: 1
---- !u!114 &1025612347
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1025612346}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5472eac1d7c84bb4484f19182ff08aed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _sceneLoader: {fileID: 825714262}
-  _endlessLevelPlanner: {fileID: 1013481402}
-  _learningLevelActorsPlanners: {fileID: 11400000, guid: cf0d18f35a7fbac4cbf18c8f8d193d68, type: 2}
-  _levelActorsPlanners:
-  - {fileID: 11400000, guid: 7f065bdc00efe944b82ce0ef98c99c4c, type: 2}
-  _healthCoefficient: 0.7
---- !u!4 &1025612348
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1025612346}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1043478512
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6180,37 +6130,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1013481403}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1133143146
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1133143147}
-  m_Layer: 0
-  m_Name: ===Gebug===
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 2147483647
-  m_IsActive: 1
---- !u!4 &1133143147
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1133143146}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1144772198
 GameObject:
@@ -9239,27 +9158,7 @@ MonoBehaviour:
   _sceneLoader: {fileID: 825714262}
   _endlessLevelPlanner: {fileID: 1013481402}
   _learningLevelActorsPlanners: {fileID: 11400000, guid: cf0d18f35a7fbac4cbf18c8f8d193d68, type: 2}
-  _levelActorsPlanners:
-  - {fileID: 11400000, guid: da682e913638d224d912e51e7e0317a8, type: 2}
-  - {fileID: 11400000, guid: f854d0b2518eb3e43a8a398a2b0889c0, type: 2}
-  - {fileID: 11400000, guid: 72365fa18e305a54490c24cf3d04b5fe, type: 2}
-  - {fileID: 11400000, guid: 293fbb0d0c01f9844a74a1c53ea93715, type: 2}
-  - {fileID: 11400000, guid: 1b82e4f48eb81324ab142d14d0e1a27e, type: 2}
-  - {fileID: 11400000, guid: cb451f26589dd0f49993f6ea01e44681, type: 2}
-  - {fileID: 11400000, guid: 39a2fd1c700cb544fb357ea48accaaf4, type: 2}
-  - {fileID: 11400000, guid: ec1bbc9fd06175748af4b5625188f56e, type: 2}
-  - {fileID: 11400000, guid: 8aff131fc4d70664dbdede9d888973c9, type: 2}
-  - {fileID: 11400000, guid: c124a674c33c685478209ebc86c62610, type: 2}
-  - {fileID: 11400000, guid: 4c79ded9bf2a2944ca8a69804294f9aa, type: 2}
-  - {fileID: 11400000, guid: f56b2f49958067b4abc3f001c8b64912, type: 2}
-  - {fileID: 11400000, guid: 54d52cc71b748b3418c28775803ee150, type: 2}
-  - {fileID: 11400000, guid: 062c88426831117439aea6a3124c654a, type: 2}
-  - {fileID: 11400000, guid: 28cf55557d748d44dbb84f6866a53192, type: 2}
-  - {fileID: 11400000, guid: 209496567df436548ad1b578307b88d3, type: 2}
-  - {fileID: 11400000, guid: b2beb4ebd643afa448136c9ccfab285e, type: 2}
-  - {fileID: 11400000, guid: 5456ded87e8b46b42b3ea52a5176623d, type: 2}
-  - {fileID: 11400000, guid: c7577861b9d060048bdbd6f399eb8c33, type: 2}
-  - {fileID: 11400000, guid: 8bfb508f19ea40247b7bd864c67c0bd2, type: 2}
+  _actorsPlannerStore: {fileID: 11400000, guid: fe6a8a5a97af4814e96cb5ddc7c64646, type: 2}
   _healthCoefficient: 0.85
 --- !u!1001 &1686392511
 PrefabInstance:
@@ -13339,6 +13238,4 @@ SceneRoots:
   - {fileID: 581100629}
   - {fileID: 258467218}
   - {fileID: 678814623}
-  - {fileID: 1133143147}
-  - {fileID: 1025612348}
   - {fileID: 595421233}

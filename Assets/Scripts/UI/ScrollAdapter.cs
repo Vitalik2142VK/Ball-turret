@@ -47,6 +47,7 @@ public class ScrollAdapter : MonoBehaviour
     private void OnEnable()
     {
         _cameraAdapter.OrientationChanged += OnChangeScrollSetting;
+        _cameraAdapter.RatioChanged += OnChangeScrollSetting;
     }
 
 
@@ -58,6 +59,7 @@ public class ScrollAdapter : MonoBehaviour
     private void OnDisable()
     {
         _cameraAdapter.OrientationChanged -= OnChangeScrollSetting;
+        _cameraAdapter.RatioChanged -= OnChangeScrollSetting;
     }
 
     private void OnChangeScrollSetting()

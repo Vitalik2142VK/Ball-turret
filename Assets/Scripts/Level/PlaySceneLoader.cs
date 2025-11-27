@@ -17,7 +17,7 @@ public class PlaySceneLoader : MonoBehaviour, ISceneLoader
         if (level == null)
             throw new ArgumentNullException(nameof(level));
 
-        _selectedLevel.Initialize(level);
+        _selectedLevel.SetLevel(level);
     }
 
     public void Load()

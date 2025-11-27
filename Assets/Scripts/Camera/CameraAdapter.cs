@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [RequireComponent(typeof(Camera))]
@@ -19,7 +20,8 @@ public class CameraAdapter : MonoBehaviour, ICameraAdapter
     private float _height;
     private float _width;
 
-    public event System.Action OrientationChanged;
+    public event Action OrientationChanged;
+    public event Action RatioChanged;
 
     public float CameraHeight => _transform.position.y;
     public Vector3 Rotation => _transform.rotation.eulerAngles;
@@ -29,7 +31,7 @@ public class CameraAdapter : MonoBehaviour, ICameraAdapter
     private void OnValidate()
     {
         if (_maxFieldOfView < _minFieldOfView)
-            throw new System.InvalidOperationException($"{_minFieldOfView} cannot be greater than {_maxFieldOfView}.");
+            throw new InvalidOperationException($"{_minFieldOfView} cannot be greater than {_maxFieldOfView}.");
     }
 
     private void Awake()
@@ -110,9 +112,11 @@ public class CameraAdapter : MonoBehaviour, ICameraAdapter
         float ratio = _height / _width;
         float verticalRatioNormalized = Mathf.InverseLerp(_minRaion, MaxRaion, ratio);
         _camera.fieldOfView = Mathf.Lerp(_minFieldOfView, _maxFieldOfView, verticalRatioNormalized);
+
+        RatioChanged?.Invoke();
     }
 
-    [System.Serializable]
+    [Serializable]
     private struct Setting
     {
         public Vector3 Position;

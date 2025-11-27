@@ -1,4 +1,5 @@
 ﻿using System;
+using static UnityEngine.InputSystem.LowLevel.InputStateHistory;
 
 public class Wallet : IWallet
 {

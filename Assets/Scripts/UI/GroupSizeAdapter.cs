@@ -27,6 +27,7 @@ public class GroupSizeAdapter : MonoBehaviour
     private void OnEnable()
     {
         _cameraAdapter.OrientationChanged += OnUpdateCellSize;
+        _cameraAdapter.RatioChanged += OnUpdateCellSize;
     }
 
     private void Start()
@@ -37,6 +38,7 @@ public class GroupSizeAdapter : MonoBehaviour
     private void OnDisable()
     {
         _cameraAdapter.OrientationChanged -= OnUpdateCellSize;
+        _cameraAdapter.RatioChanged -= OnUpdateCellSize;
     }
 
     private void OnUpdateCellSize()
@@ -48,10 +50,11 @@ public class GroupSizeAdapter : MonoBehaviour
     {
         yield return null;
 
+        int offset = 1;
         var rect = _rectTransform.rect;
         var padding = _gridLayoutGroup.padding;
         var spacing = _gridLayoutGroup.spacing;
-        int offsetsCount = _countElementsGroup - 1;
+        int offsetsCount = _countElementsGroup - offset;
         float widthSpacing = spacing.x * offsetsCount;
         float heightSpacing = spacing.y * offsetsCount;
         float widthRect = rect.size.x - padding.right - padding.left - widthSpacing;
@@ -59,9 +62,9 @@ public class GroupSizeAdapter : MonoBehaviour
         var startAxis = _gridLayoutGroup.startAxis;
 
         if (startAxis == GridLayoutGroup.Axis.Vertical)
-            heightRect /= _countElementsGroup;
+            heightRect = (heightRect - offset) / _countElementsGroup;
         else
-            widthRect /= _countElementsGroup;
+            widthRect = (widthRect - offset) / _countElementsGroup;
 
         _gridLayoutGroup.cellSize = new Vector2(widthRect, heightRect);
     }

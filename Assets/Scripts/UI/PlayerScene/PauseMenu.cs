@@ -8,7 +8,7 @@ public class PauseMenu : MonoBehaviour, IWindow
     [SerializeField] private Pause _pause;
     [SerializeField] private SettingMenu _settingMenu;
 
-    private IStep _closeSceneStep;
+    private IChangeSceneStep _changeSceneStep;
     private IAnimatorUI _animator;
 
     private void OnValidate()
@@ -27,9 +27,9 @@ public class PauseMenu : MonoBehaviour, IWindow
         gameObject.SetActive(false);
     }
 
-    public void Initialize(IStep closeSceneStep)
+    public void Initialize(IChangeSceneStep changeSceneStep)
     {
-        _closeSceneStep = closeSceneStep ?? throw new ArgumentNullException(nameof(closeSceneStep)); 
+        _changeSceneStep = changeSceneStep ?? throw new ArgumentNullException(nameof(changeSceneStep)); 
     }
         
     public void Enable()
@@ -54,7 +54,10 @@ public class PauseMenu : MonoBehaviour, IWindow
 
     public void OnExit()
     {
-        _closeSceneStep.Action();
+        MainMenuLoader mainMenuLoader = new MainMenuLoader();
+
+        _changeSceneStep.SetSceneLoader(mainMenuLoader);
+        _changeSceneStep.Action();
     }
 
     private IEnumerator WaitClosure()

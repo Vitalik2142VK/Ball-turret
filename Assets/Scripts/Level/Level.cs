@@ -50,4 +50,9 @@ public class Level : ILevel
             return false;
         }
     }
+
+    public ILevel Clone()
+    {
+        return new Level(_actorsPlanner, _coinCountRandomizer, HealthCoefficient, Index);
+    }
 }

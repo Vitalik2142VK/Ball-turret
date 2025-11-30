@@ -10,7 +10,7 @@ public class AdvancedLevelFactory : ILevelFactory
 
     public AdvancedLevelFactory(ILevelFactory levelFactory, ILevelActorsPlanner endlessLevelPlanner, ICoinCountRandomizer coinCountRandomizer, float actorsHealthCoefficientByLevel, int achievedLevelIndex)
     {
-        if (actorsHealthCoefficientByLevel < LevelFactory.MinActorsHealthCoefficientByLevel)
+        if (actorsHealthCoefficientByLevel < ILevelFactory.MinActorsHealthCoefficientByLevel)
             throw new ArgumentOutOfRangeException(nameof(actorsHealthCoefficientByLevel));
 
         if (achievedLevelIndex < 0)

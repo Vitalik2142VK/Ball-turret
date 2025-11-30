@@ -22,6 +22,9 @@ public class PlaySceneLoader : MonoBehaviour, ISceneLoader
 
     public void Load()
     {
+        if (_selectedLevel.HasLevel == false)
+            throw new InvalidOperationException("The download level is not specified");
+
         SceneManager.LoadScene((int)SceneIndex.PlayScene);
     }
 }

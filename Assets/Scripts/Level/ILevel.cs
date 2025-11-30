@@ -7,4 +7,6 @@
     public bool AreWavesOver { get; }
 
     public bool TryGetNextWaveActorsPlanner(out IWaveActorsPlanner waveActorsPlanner);
+
+    public ILevel Clone();
 }

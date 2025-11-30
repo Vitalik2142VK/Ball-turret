@@ -9158,7 +9158,7 @@ MonoBehaviour:
   _sceneLoader: {fileID: 825714262}
   _endlessLevelPlanner: {fileID: 1013481402}
   _learningLevelActorsPlanners: {fileID: 11400000, guid: cf0d18f35a7fbac4cbf18c8f8d193d68, type: 2}
-  _actorsPlannerStore: {fileID: 11400000, guid: fe6a8a5a97af4814e96cb5ddc7c64646, type: 2}
+  _levelFactory: {fileID: 11400000, guid: ce0b24f2545d8754ea4d53a1cc1bfbbd, type: 2}
   _healthCoefficient: 0.85
 --- !u!1001 &1686392511
 PrefabInstance:

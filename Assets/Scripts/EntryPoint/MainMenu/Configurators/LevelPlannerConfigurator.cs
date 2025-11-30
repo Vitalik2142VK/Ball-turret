@@ -9,7 +9,7 @@ namespace MainMenuSpace
         [SerializeField] private PlaySceneLoader _sceneLoader;
         [SerializeField] private EndlessLevelPlanner _endlessLevelPlanner;
         [SerializeField] private LevelActorsPlanner _learningLevelActorsPlanners;
-        [SerializeField] private ActorsPlannerStore _actorsPlannerStore;
+        [SerializeField] private LevelFactory _levelFactory;
 
         [Header("Actors health coefficient by level")]
         [SerializeField, Range(0.3f, 2f)] private float _healthCoefficient;
@@ -28,8 +28,8 @@ namespace MainMenuSpace
             if (_learningLevelActorsPlanners == null)
                 throw new NullReferenceException(nameof(_learningLevelActorsPlanners));
 
-            if (_actorsPlannerStore == null)
-                throw new NullReferenceException(nameof(_actorsPlannerStore));
+            if (_levelFactory == null)
+                throw new NullReferenceException(nameof(_levelFactory));
         }
 
         public void Configure(IPlayer player)
@@ -37,14 +37,14 @@ namespace MainMenuSpace
             if (player == null)
                 throw new ArgumentNullException(nameof(player));
 
-            _endlessLevelPlanner.Initialize();
-
             float coinsForRewardAdCoefficient = 3.5f;
             int achievedLevelIndex = player.AchievedLevelIndex;
-            LevelFactory levelFactory = new LevelFactory(_actorsPlannerStore, CoinCountRandomizer, _healthCoefficient);
             CoinCountRandomizer = new CoinCountRandomizer(achievedLevelIndex, coinsForRewardAdCoefficient);
 
-            LevelFactory = new AdvancedLevelFactory(levelFactory, _endlessLevelPlanner, CoinCountRandomizer, _healthCoefficient, achievedLevelIndex);
+            _endlessLevelPlanner.Initialize();
+            _levelFactory.Initioalize(CoinCountRandomizer, _healthCoefficient);
+
+            LevelFactory = new AdvancedLevelFactory(_levelFactory, _endlessLevelPlanner, CoinCountRandomizer, _healthCoefficient, achievedLevelIndex);
         }
 
         public void LoadLearningLevel()

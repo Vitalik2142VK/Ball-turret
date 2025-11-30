@@ -104,7 +104,7 @@ namespace PlayLevel
             var changeSceneStep = _stepSystemConfigurator.ChangeSceneStep;
 
             _userInterfaceConfigurator.Configure(changeSceneStep);
-            _finishWindowConfigurator.Configure(_coinsAdder, rewardIssuer, _adsViewer, winStatus);
+            _finishWindowConfigurator.Configure(_coinsAdder, rewardIssuer, _adsViewer, winStatus, changeSceneStep, _selectedLevel);
             _bonusesWindowHiderConfigurator.Configure(_turretConfigurator.ShotAction);
 
             if (_player.AchievedLevelIndex == 0)

@@ -84,7 +84,7 @@ public class FinishWindow : MonoBehaviour, IWindow
         _animator.Show();
         _hiderUI.Hide();
 
-        _pause.Enable();
+        //_pause.Enable();
 
         EnableWinBord(_winStatus.IsWin);
 
@@ -107,7 +107,7 @@ public class FinishWindow : MonoBehaviour, IWindow
         gameObject.SetActive(false);
         _adsViewer.ShowFullScreenAd();
 
-        _pause.Disable();
+        //_pause.Disable();
     }
 
     private void OnRefreshBonusRewardData()

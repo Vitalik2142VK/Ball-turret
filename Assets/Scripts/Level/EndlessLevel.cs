@@ -46,4 +46,10 @@ public class EndlessLevel : ILevel
 
         return _endlesslevel.TryGetNextWaveActorsPlanner(out waveActorsPlanner);
     }
+
+    public ILevel Clone()
+    {
+        return new EndlessLevel(_endlesslevel, _savedLeaderBoard, _healthMultiplierPerWave);
+    }
+
 }

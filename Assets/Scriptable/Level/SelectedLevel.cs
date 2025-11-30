@@ -13,8 +13,11 @@ namespace Scriptable
         public int CountCoinsForWaves => _level.CountCoinsForWaves;
         public int Index => _level.Index;
         public bool AreWavesOver => _level.AreWavesOver;
+        public bool HasLevel => _level != null;
 
         public bool IsFinished { get; private set; }
+
+        public ILevel Clone() => _level.Clone();
 
         public void SetLevel(ILevel level)
         {

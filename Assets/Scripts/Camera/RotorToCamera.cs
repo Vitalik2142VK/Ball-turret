@@ -2,6 +2,8 @@
 
 public class RotorToCamera : MonoBehaviour
 {
+    [SerializeField] private float _angle = 0f;
+
     private ICameraAdapter _cameraAdapter;
     private Transform _transform;
 
@@ -35,8 +37,8 @@ public class RotorToCamera : MonoBehaviour
     private void OnRotate()
     {
         Vector3 oldRotation = _transform.rotation.eulerAngles;
-        Vector3 rotationCamera = _cameraAdapter.Rotation;
-        Vector3 newRotation = new Vector3(oldRotation.x, rotationCamera.y, oldRotation.z);
+        float rotationY = _cameraAdapter.Rotation.y + _angle;
+        Vector3 newRotation = new Vector3(oldRotation.x, rotationY, oldRotation.z);
 
         _transform.rotation = Quaternion.Euler(newRotation);
     }

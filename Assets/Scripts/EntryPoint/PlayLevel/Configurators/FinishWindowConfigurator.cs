@@ -12,6 +12,8 @@ namespace PlayLevel
         [SerializeField] private RestartLevelButton _restartButton;
         [SerializeField] private Scriptable.LevelFactory _levelFactory;
 
+        public FinishWindow FinishWindow => _finishWindow;
+
         private void OnValidate()
         {
             if (_finishWindow == null)

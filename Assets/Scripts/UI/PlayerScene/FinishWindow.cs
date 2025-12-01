@@ -7,7 +7,6 @@ using UnityEngine.UI;
 [RequireComponent(typeof(IAnimatorUI), typeof(HiderUI))]
 public class FinishWindow : MonoBehaviour, IWindow
 {
-    [SerializeField] private Pause _pause;
     [SerializeField] private ScaleAnimatorUI _videoViewingButton;
     [SerializeField] private TextMeshProUGUI _wonCoinsText;
     [SerializeField] private Image _winBord;
@@ -22,9 +21,6 @@ public class FinishWindow : MonoBehaviour, IWindow
 
     private void OnValidate()
     {
-        if (_pause == null)
-            throw new ArgumentNullException(nameof(_pause));
-
         if (_videoViewingButton == null)
             throw new ArgumentNullException(nameof(_videoViewingButton));
 
@@ -84,8 +80,6 @@ public class FinishWindow : MonoBehaviour, IWindow
         _animator.Show();
         _hiderUI.Hide();
 
-        //_pause.Enable();
-
         EnableWinBord(_winStatus.IsWin);
 
         if (_adsViewer.IsAdsDisable || _rewardData.Reward == 0)
@@ -106,8 +100,6 @@ public class FinishWindow : MonoBehaviour, IWindow
     {
         gameObject.SetActive(false);
         _adsViewer.ShowFullScreenAd();
-
-        //_pause.Disable();
     }
 
     private void OnRefreshBonusRewardData()

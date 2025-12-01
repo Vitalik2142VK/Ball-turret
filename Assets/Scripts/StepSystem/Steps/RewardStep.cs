@@ -31,4 +31,9 @@ public class RewardStep : IStep, IEndPointStep
     {
         _endStep = endStep ?? throw new ArgumentNullException(nameof(endStep));
     }
+
+    public void SetFinishWindow(IWindow finishWindow)
+    {
+        _finishWindow = finishWindow ?? throw new ArgumentNullException(nameof(finishWindow));
+    }
 }

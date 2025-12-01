@@ -91,6 +91,14 @@ namespace PlayLevel
             AddNextStepToEndPoint(learningStep, _playerStep);
             _cyclicalStep.SetLoopingStep(learningStep);
         }
+        
+        public void ChangeFinishWindow(IWindow window)
+        {
+            if (window == null)
+                throw new ArgumentNullException(nameof(window));
+
+            _rewardStep.SetFinishWindow(window);
+        }
 
         private void CreateSteps()
         {

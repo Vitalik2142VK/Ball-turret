@@ -12,11 +12,14 @@ namespace LearningLevel
         [SerializeField] private PauseMenu _pauseMenu;
         [SerializeField] private Pause _pause;
         [SerializeField] private SettingMenu _settingMenu;
+        [SerializeField] private LearningFinishWindow _learningFinishWindow;
 
         private StepSystemConfigurator _stepSystemConfigurator;
         private ActorsConfigurator _actorsConfigurator;
         private AudioSetting _audioSetting;
         private OpenWindowButton _pauseButton;
+        private FinishWindow _finishWindow;
+        private IWinStatus _winStatus;
 
         private void OnValidate()
         {
@@ -37,29 +40,31 @@ namespace LearningLevel
 
             if (_settingMenu == null)
                 throw new NullReferenceException(nameof(_settingMenu));
+
+            if (_learningFinishWindow == null)
+                throw new NullReferenceException(nameof(_learningFinishWindow));
         }
 
         private void Awake()
         {
-            _stepSystemConfigurator = FindAnyObjectByType<StepSystemConfigurator>();
-            _actorsConfigurator = FindAnyObjectByType<ActorsConfigurator>();
+            var playLevelConfigs = FindAnyObjectByType<PlayLevel.EntryPoint>().Configs;
             _audioSetting = FindAnyObjectByType<AudioSetting>();
 
-
-            UIConfigurator configuratorUI = FindAnyObjectByType<UIConfigurator>();
-            _pauseButton = configuratorUI.PauseButton;
-
-            if (_stepSystemConfigurator == null)
-                throw new NullReferenceException(nameof(_stepSystemConfigurator));
-
-            if (_actorsConfigurator == null)
-                throw new NullReferenceException(nameof(_actorsConfigurator));
+            if (playLevelConfigs == null)
+                throw new NullReferenceException(nameof(playLevelConfigs));
 
             if (_audioSetting == null)
                 throw new NullReferenceException(nameof(_audioSetting));
 
-            if (configuratorUI == null)
-                throw new NullReferenceException(nameof(configuratorUI));
+            _stepSystemConfigurator = playLevelConfigs.StepSystemConfigurator;
+            _actorsConfigurator = playLevelConfigs.ActorsConfigurator;
+            _winStatus = playLevelConfigs.WinStatus;
+
+            var configuratorUI = playLevelConfigs.UIConfigurator;
+            _pauseButton = configuratorUI.PauseButton;
+
+            var finishWindowConfigurator = playLevelConfigs.FinishWindowConfigurator;
+            _finishWindow = finishWindowConfigurator.FinishWindow;
         }
 
         private void Start()
@@ -75,11 +80,13 @@ namespace LearningLevel
         private void Configure()
         {
             _learningEnemyFactory.Initialize(_selectedLevel);
+            _learningFinishWindow.Initialize(_finishWindow, _winStatus);
             _actorsConfigurator.AddActorFactory(_learningEnemyFactory);
 
             var changeSceneStep = _stepSystemConfigurator.ChangeSceneStep;
             LearningStep learningStep = new LearningStep(_learningUI, _selectedLevel);
             _stepSystemConfigurator.AddLearningStep(learningStep);
+            _stepSystemConfigurator.ChangeFinishWindow(_learningFinishWindow);
             _pauseButton.SetPauseMenu(_pauseMenu);
             _pauseMenu.Initialize(changeSceneStep);
             _pause.Initialize(_pauseButton);

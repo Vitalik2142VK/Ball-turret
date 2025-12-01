@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 namespace PlayLevel
 {
-    public class EntryPoint : MonoBehaviour
+    public partial class EntryPoint : MonoBehaviour
     {
         [SerializeField] private SelectedLevel _selectedLevel;
         [SerializeField] private CachedPlayer _player;
@@ -23,6 +23,8 @@ namespace PlayLevel
 
         private AdsViewer _adsViewer;
         private CoinAdder _coinsAdder;
+
+        public Config Configs { get; private set; }
 
         private void OnValidate()
         {
@@ -106,6 +108,8 @@ namespace PlayLevel
             _userInterfaceConfigurator.Configure(changeSceneStep);
             _finishWindowConfigurator.Configure(_coinsAdder, rewardIssuer, _adsViewer, winStatus, changeSceneStep, _selectedLevel);
             _bonusesWindowHiderConfigurator.Configure(_turretConfigurator.ShotAction);
+
+            Configs = new Config(_stepSystemConfigurator, _actorsConfigurator, _userInterfaceConfigurator, _finishWindowConfigurator, winStatus);
 
             if (_player.AchievedLevelIndex == 0)
                 SceneManager.LoadScene((int)SceneIndex.LearningScene, LoadSceneMode.Additive);

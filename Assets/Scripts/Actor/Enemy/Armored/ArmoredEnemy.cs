@@ -29,6 +29,8 @@ public class ArmoredEnemy : IEnemy, IArmoredObject
 
     public void Destroy() => _enemy.Destroy();
 
+    public void Win(bool isWin) => _enemy.Win(isWin);
+
     public void TakeDamage(IDamageAttributes damage)
     {
         if (damage == null)

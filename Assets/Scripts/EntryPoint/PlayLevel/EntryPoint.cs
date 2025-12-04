@@ -95,7 +95,7 @@ namespace PlayLevel
             WinStatus winStatus = new WinStatus(turret, _selectedLevel);
 
             _playerController.Initialize(turret);
-            _actorsConfigurator.Configure(turret, _selectedLevel);
+            _actorsConfigurator.Configure(turret, _selectedLevel, winStatus);
 
             var actorsController = _actorsConfigurator.ActorsController;
 
@@ -105,7 +105,7 @@ namespace PlayLevel
 
             var changeSceneStep = _stepSystemConfigurator.ChangeSceneStep;
 
-            _userInterfaceConfigurator.Configure(changeSceneStep);
+            _userInterfaceConfigurator.Configure(changeSceneStep, _selectedLevel);
             _finishWindowConfigurator.Configure(_coinsAdder, rewardIssuer, _adsViewer, winStatus, changeSceneStep, _selectedLevel);
             _bonusesWindowHiderConfigurator.Configure(_turretConfigurator.ShotAction);
 

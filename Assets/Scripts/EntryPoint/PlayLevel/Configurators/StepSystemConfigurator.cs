@@ -30,6 +30,7 @@ namespace PlayLevel
         private RemoveActorsStep _removeActorsStep;
         private CyclicalStep _cyclicalStep;
         private RewardStep _rewardStep;
+        private PlayVictoryEnemyStep _playVictoryEnemyStep;
 
         public IChangeSceneStep ChangeSceneStep { get; private set; }
 
@@ -62,8 +63,8 @@ namespace PlayLevel
             _turret = turret ?? throw new NullReferenceException(nameof(turret));
             _adsViewer = adsViewer ?? throw new NullReferenceException(nameof(adsViewer));
             _rewardIssuer = rewardIssuer ?? throw new NullReferenceException(nameof(rewardIssuer));
-            _playerController = playerController != null ? playerController : throw new NullReferenceException(nameof(playerController));
             _actorsController = actorsController ?? throw new NullReferenceException(nameof(actorsController));
+            _playerController = playerController != null ? playerController : throw new NullReferenceException(nameof(playerController));
 
             CreateSteps();
             CreatePrepareActorsStep();
@@ -109,14 +110,9 @@ namespace PlayLevel
             _enemyAttackStep = new EnemyAttackStep(_actorsController);
             _removeActorsStep = new RemoveActorsStep(_actorsController);
             _rewardStep = new RewardStep(_finishWindow, _adsViewer, _rewardIssuer);
+            _playVictoryEnemyStep = new PlayVictoryEnemyStep(_actorsController);
 
             ChangeSceneStep = new ChangeSceneStep();
-        }
-
-        private void AddNextStepToEndPoint(IEndPointStep endPointStep, IStep nextStep)
-        {
-            IEndStep endStep = new NextStep(_stepSystem, nextStep);
-            endPointStep.SetEndStep(endStep);
         }
 
         private void CreatePrepareActorsStep()
@@ -151,7 +147,14 @@ namespace PlayLevel
             AddNextStepToEndPoint(_bonusActivationStep, _prepareActorsStep);
             AddNextStepToEndPoint(_objectsMoveStep, _enemyAttackStep);
             AddNextStepToEndPoint(_enemyAttackStep, _removeActorsStep);
-            AddNextStepToEndPoint(_rewardStep, ChangeSceneStep);
+            AddNextStepToEndPoint(_rewardStep, _playVictoryEnemyStep);
+            AddNextStepToEndPoint(_playVictoryEnemyStep, ChangeSceneStep);
+        }
+
+        private void AddNextStepToEndPoint(IEndPointStep endPointStep, IStep nextStep)
+        {
+            IEndStep endStep = new NextStep(_stepSystem, nextStep);
+            endPointStep.SetEndStep(endStep);
         }
     }
 }

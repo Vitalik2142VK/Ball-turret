@@ -42,7 +42,7 @@ public class EnemyView : MonoBehaviour, IEnemyView
     {
         DebuffReceiver = _debuffReceiverGameObject.GetComponent<IDebuffHandler>();
         _collider = GetComponent<CapsuleCollider>();
-        _enemyAnimator = GetComponent<EnemyAnimator>();
+        _enemyAnimator = GetComponent<IEnemyAnimator>();
 
         Rigidbody rigidbody = GetComponent<Rigidbody>();
         rigidbody.isKinematic = true;
@@ -68,16 +68,15 @@ public class EnemyView : MonoBehaviour, IEnemyView
 
     public void TakeDamage(IDamageAttributes damage) => _presenter.TakeDamage(damage);
 
+    public void PlayMovement(bool isMovinng) => _enemyAnimator.PlayMovement(isMovinng);
+
+    public void PlayVictory(bool isWin) => _enemyAnimator.PlayVictory(isWin);
+
     public void PlayDamage()
     {
         _enemyAnimator.PlayHit();
         _particleController.PlayHit();
         _audioController.PlayHit();
-    }
-
-    public void PlayMovement(bool isMovinng)
-    {
-        _enemyAnimator.PlayMovement(isMovinng);
     }
 
     public void PlayDead()

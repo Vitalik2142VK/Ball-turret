@@ -71,5 +71,7 @@ namespace RecorderLevel
             _mover.Move();
             _view.PlayMovement(IsFinished == false);
         }
+
+        public void Win(bool isWin) => _view.PlayVictory(isWin);
     }
 }

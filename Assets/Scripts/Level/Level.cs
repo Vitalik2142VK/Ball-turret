@@ -29,9 +29,11 @@ public class Level : ILevel
     public int Index { get; }
     public int CurrentWaveNumber { get; private set; }
 
+    public int WavesCount => _actorsPlanner.WavesCount;
     public int CountCoinsForWin => _coinCountRandomizer.GetCountCoinsForWin(Index);
     public int CountCoinsForWaves => _coinCountRandomizer.GetCountCoinsForWave(Index) * _passedWavesNumber;
-    public bool AreWavesOver => _actorsPlanner.CountWaves <= CurrentWaveNumber;
+    public bool AreWavesOver => _actorsPlanner.WavesCount <= CurrentWaveNumber;
+
 
     public bool TryGetNextWaveActorsPlanner(out IWaveActorsPlanner waveActorsPlanner)
     {
@@ -45,7 +47,7 @@ public class Level : ILevel
         else
         {
             waveActorsPlanner = null;
-            _passedWavesNumber = _actorsPlanner.CountWaves;
+            _passedWavesNumber = _actorsPlanner.WavesCount;
 
             return false;
         }

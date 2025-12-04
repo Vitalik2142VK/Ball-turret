@@ -11,6 +11,7 @@ namespace PlayLevel
         [SerializeField] private SettingMenu _settingMenu;
         [SerializeField] private AudioSetting _audioSetting;
         [SerializeField] private BonusChoiceMenu _bonusChoiceMenu;
+        [SerializeField] private ViewWavesCounter _viewWavesCounter;
 
         public OpenWindowButton PauseButton => _pauseButton;
 
@@ -33,13 +34,20 @@ namespace PlayLevel
 
             if (_bonusChoiceMenu == null)
                 throw new NullReferenceException(nameof(_bonusChoiceMenu));
+
+            if (_viewWavesCounter == null)
+                throw new NullReferenceException(nameof(_viewWavesCounter));
         }
 
-        public void Configure(IChangeSceneStep changeSceneStep)
+        public void Configure(IChangeSceneStep changeSceneStep, ISelectedLevel level)
         {
             if (changeSceneStep == null)
                 throw new ArgumentNullException(nameof(changeSceneStep));
 
+            if (level == null)
+                throw new ArgumentNullException(nameof(level));
+
+            level.SetViewWavesCounter(_viewWavesCounter);
             _pauseMenu.Initialize(changeSceneStep);
             _settingMenu.Initialize(_audioSetting);
             _pause.Initialize(_pauseButton);

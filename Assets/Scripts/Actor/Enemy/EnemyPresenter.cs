@@ -40,6 +40,8 @@ public class EnemyPresenter : IEnemyPresenter
         _view.PlayMovement(isMovement);
     }
 
+    public void Win(bool isWin) => _view.PlayVictory(isWin);
+
     public void Destroy()
     {
         if (_view.IsActive)

@@ -6,6 +6,8 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Button), typeof(ScaleButtonAnimator))]
 public class SelectLevelButton : MonoBehaviour
 {
+    public const string InfiniteValue = "∞";
+
     [SerializeField] private TextMeshProUGUI _text;
     [SerializeField] private Image _blockImage;
 
@@ -64,7 +66,7 @@ public class SelectLevelButton : MonoBehaviour
         Index = index;
 
         if (index == EndlessLevel.IndexLevel)
-            TextIndex = "∞";
+            TextIndex = InfiniteValue;
         else
             TextIndex = index.ToString();
 

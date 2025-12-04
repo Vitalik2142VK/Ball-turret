@@ -20,7 +20,7 @@ public class EndlessLevelPlanner : MonoBehaviour, ILevelActorsPlanner
                 throw new NullReferenceException($"{_waveRepositories} has null elements");
     }
 
-    public int CountWaves => int.MaxValue;
+    public int WavesCount => int.MaxValue;
 
     public void Initialize()
     {

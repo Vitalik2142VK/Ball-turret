@@ -16,6 +16,7 @@ public class ShiftAnimatorUI : MonoBehaviour, IAnimatorUI
     private TweenController _controller;
     private Vector2 _defaultPosition;
     private ShiftUI _shift;
+    private bool _isBlocksRaycasts;
 
     private void Awake()
     {
@@ -23,6 +24,7 @@ public class ShiftAnimatorUI : MonoBehaviour, IAnimatorUI
         _rectTransform = GetComponent<RectTransform>();
 
         _defaultPosition = _rectTransform.anchoredPosition;
+        _isBlocksRaycasts = _canvasGroup.blocksRaycasts;
         _controller = new TweenController();
         _shift = new ShiftUI();
     }
@@ -30,7 +32,7 @@ public class ShiftAnimatorUI : MonoBehaviour, IAnimatorUI
     private void Start()
     {
         _canvasGroup.alpha = EnableValue;
-        _canvasGroup.blocksRaycasts = true;
+        _canvasGroup.blocksRaycasts = _isBlocksRaycasts;
     }
 
     private void OnDestroy()
@@ -52,7 +54,7 @@ public class ShiftAnimatorUI : MonoBehaviour, IAnimatorUI
             .SetUpdate(true);
 
         _controller.PlayAnimation(_animation);
-        _canvasGroup.blocksRaycasts = true;
+        _canvasGroup.blocksRaycasts = _isBlocksRaycasts;
     }
 
     public void Hide()

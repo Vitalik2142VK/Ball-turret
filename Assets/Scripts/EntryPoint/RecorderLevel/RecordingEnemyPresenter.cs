@@ -39,14 +39,6 @@ namespace RecorderLevel
             Debug.Log($"Add debuff: {debaff.DebuffType}");
         }
 
-        public void Destroy()
-        {
-            if (_view.IsActive)
-                _view.PlayDead();
-            else
-                gameObject.SetActive(false);
-        }
-
         public void PrepareAttacked(IAttackingEnemiesCollector attackingCollector)
         {
             Debug.Log($"PrepareAttacked");
@@ -55,6 +47,14 @@ namespace RecorderLevel
         public void PrepareDeleted(IRemovedActorsCollector removedCollector)
         {
             Debug.Log($"PrepareDeleted");
+        }
+
+        public void Destroy()
+        {
+            if (_view.IsActive)
+                _view.PlayDead();
+            else
+                gameObject.SetActive(false);
         }
 
         public void TakeDamage(IDamageAttributes damage)

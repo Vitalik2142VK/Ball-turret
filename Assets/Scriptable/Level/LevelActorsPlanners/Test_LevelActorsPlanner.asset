@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7b162dfad3a01346851fa2ee9bef464, type: 3}
   m_Name: Test_LevelActorsPlanner
   m_EditorClassIdentifier: 
-  _waveis:
+  _waves:
   - {fileID: 11400000, guid: 3dab549881045854880c804fc43d0644, type: 2}

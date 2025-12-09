@@ -277,6 +277,27 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: Shadow_9
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 512
+        width: 512
+        height: 512
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: add7bf4207fdb1249a0ef1cb9eb4b44e
+      internalID: -1182722978
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -296,6 +317,7 @@ TextureImporter:
       Shadow_6: 1818411883
       Shadow_7: 1062081268
       Shadow_8: -376107611
+      Shadow_9: -1182722978
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

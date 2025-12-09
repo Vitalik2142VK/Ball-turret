@@ -12,11 +12,14 @@ public class AlphaAnimatorUI : MonoBehaviour, IAnimatorUI
     private CanvasGroup _canvasGroup;
     private Tween _animation;
     private TweenController _controller;
+    private bool _isBlocksRaycasts;
 
     private void Awake()
     {
         _canvasGroup = GetComponent<CanvasGroup>();
         _controller = new TweenController();
+
+        _isBlocksRaycasts = _canvasGroup.blocksRaycasts;
     }
 
     private void OnDestroy()
@@ -34,6 +37,7 @@ public class AlphaAnimatorUI : MonoBehaviour, IAnimatorUI
             .SetUpdate(true);
 
         _controller.PlayAnimation(_animation);
+        _canvasGroup.blocksRaycasts = _isBlocksRaycasts;
     }
 
     public void Hide()
@@ -44,5 +48,6 @@ public class AlphaAnimatorUI : MonoBehaviour, IAnimatorUI
             .SetUpdate(true);
 
         _controller.PlayAnimation(_animation);
+        _canvasGroup.blocksRaycasts = false;
     }
 }

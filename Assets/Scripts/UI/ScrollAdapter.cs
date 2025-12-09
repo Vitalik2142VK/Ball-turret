@@ -41,32 +41,53 @@ public class ScrollAdapter : MonoBehaviour
 
         _cameraAdapter = cameraAdapter;
         _defaultCellSize = _gridLayoutGroup.cellSize;
-
     }
 
     private void OnEnable()
     {
+        if (_cameraAdapter == null)
+            return;
+
         _cameraAdapter.OrientationChanged += OnChangeScrollSetting;
         _cameraAdapter.RatioChanged += OnChangeScrollSetting;
+
+        OnChangeScrollSetting();
     }
 
 
     private void Start()
     {
-        OnChangeScrollSetting();
+        //if (_cameraAdapter != null)
+        //    return;
+
+        //_cameraAdapter = FindCameraAdapter();
+
+        //OnChangeScrollSetting();
     }
 
     private void OnDisable()
     {
+        if (_cameraAdapter == null)
+            return;
+
         _cameraAdapter.OrientationChanged -= OnChangeScrollSetting;
         _cameraAdapter.RatioChanged -= OnChangeScrollSetting;
+    }
+
+    private ICameraAdapter FindCameraAdapter()
+    {
+        Camera camera = Camera.main;
+
+        if (camera.TryGetComponent(out ICameraAdapter cameraAdapter) == false)
+            throw new InvalidOperationException($"The main camera does not contain the component: <{nameof(ICameraAdapter)}>");
+
+        return cameraAdapter;
     }
 
     private void OnChangeScrollSetting()
     {
         if (_cameraAdapter.IsPortraitOrientation)
             EstablishVerticalSettings();
-
         else
             EstablishHorisontalSettings();
     }

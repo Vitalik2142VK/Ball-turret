@@ -10,7 +10,7 @@ namespace RecorderLevel
         [SerializeField] private Tower _tower;
         [SerializeField] private TargetPoint _targetPoint;
         [SerializeField] private Gun _gun;
-        [SerializeField] private TurretView _turretView;
+        [SerializeField] private RecordingTurretView _turretView;
 
         [SerializeField, SerializeIterface(typeof(ITrajectoryRenderer))] private GameObject _trajectoryRendererGameObject;
 

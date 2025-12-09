@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(IAnimatorUI))]
+[RequireComponent(typeof(IAnimatorUI), typeof(HiderUI))]
 public class ReservedBonusesWindow : MonoBehaviour, IReservedBonusesWindow
 {
     [SerializeField] private ReservedBonusButton _reservedBonusButtonPrefab;
@@ -15,6 +15,7 @@ public class ReservedBonusesWindow : MonoBehaviour, IReservedBonusesWindow
     private IAnimatorUI _animator;
     private IBonusReservator _bonusReservator;
     private List<ReservedBonusButton> _reservedBonusButtons;
+    private HiderUI _hiderUI;
 
     public bool IsActive => gameObject.activeSelf;
 
@@ -36,6 +37,7 @@ public class ReservedBonusesWindow : MonoBehaviour, IReservedBonusesWindow
     private void Awake()
     {
         _animator = GetComponent<IAnimatorUI>();
+        _hiderUI = GetComponent<HiderUI>();
         gameObject.SetActive(false);
         _openButton.gameObject.SetActive(false);
     }
@@ -93,6 +95,7 @@ public class ReservedBonusesWindow : MonoBehaviour, IReservedBonusesWindow
     {
         gameObject.SetActive(true);
         _animator.Show();
+        _hiderUI.Hide();
     }
 
     public void Hide()
@@ -108,6 +111,7 @@ public class ReservedBonusesWindow : MonoBehaviour, IReservedBonusesWindow
     private void OnClose()
     {
         _animator.Hide();
+        _hiderUI.Show();
 
         StartCoroutine(WaitClosure());
     }

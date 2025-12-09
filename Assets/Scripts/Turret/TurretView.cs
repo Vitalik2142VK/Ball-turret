@@ -18,6 +18,9 @@ public class TurretView : MonoBehaviour, ITurretView
     [Header("Animation")]
     [SerializeField] private Animator _animator;
 
+    [Header("Optional")]
+    [SerializeField] private DestroyedTurretView _destroyedTurretView;
+
     private int _hashShot;
     private int _hashGetHit;
 
@@ -52,6 +55,9 @@ public class TurretView : MonoBehaviour, ITurretView
     {
         _destroySound.Play();
         _explosionDestroyParticles.Play();
+
+        if (_destroyedTurretView != null)
+            _destroyedTurretView.Enable();
     }
 
     public void PlayTakeDamage()

@@ -43,7 +43,7 @@ namespace Scriptable
             _countPointsBeforeCollision = _points.Count;
         }
 
-        public void AddPoint(BulletTrajectoryPoint point)
+        public void AddPoint(IBulletTrajectoryPoint point)
         {
             if (point == null)
                 throw new ArgumentNullException(nameof(point));

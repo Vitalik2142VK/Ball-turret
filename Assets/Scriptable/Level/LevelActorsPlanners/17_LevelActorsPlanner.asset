@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7b162dfad3a01346851fa2ee9bef464, type: 3}
   m_Name: 17_LevelActorsPlanner
   m_EditorClassIdentifier: 
-  _waveis:
+  _waves:
   - {fileID: 11400000, guid: 4f3a075593566ea4e9f5939134d54a70, type: 2}
   - {fileID: 11400000, guid: ecc6c729eb0082646a96481510d56da1, type: 2}
   - {fileID: 11400000, guid: 2ece2550a1a392048b0bd072640915f7, type: 2}

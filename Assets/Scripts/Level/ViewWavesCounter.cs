@@ -5,19 +5,17 @@ using UnityEngine;
 public class ViewWavesCounter : MonoBehaviour, IViewWavesCounter
 {
     public const string InfiniteValue = "∞";
+    public const string WaveCountFormat = "{0}/{1}";
 
-    [SerializeField] private TextMeshProUGUI _wavesCount;
-    [SerializeField] private TextMeshProUGUI _currentWaveNumber;
+    [SerializeField] private TextMeshProUGUI _waveCountText;
 
     private ILevelWaveData _levelWaveData;
+    private string _wavesCount;
 
     private void OnValidate()
     {
-        if (_wavesCount == null)
-            throw new NullReferenceException(nameof(_wavesCount));
-
-        if (_currentWaveNumber == null)
-            throw new NullReferenceException(nameof(_currentWaveNumber));
+        if (_waveCountText == null)
+            throw new NullReferenceException(nameof(_waveCountText));
     }
 
     public void Initialize(ILevelWaveData levelWaveData)
@@ -26,9 +24,9 @@ public class ViewWavesCounter : MonoBehaviour, IViewWavesCounter
         int wavesCount = _levelWaveData.WavesCount;
 
         if (wavesCount == int.MaxValue)
-            _wavesCount.text = InfiniteValue;
+            _wavesCount = InfiniteValue;
         else
-            _wavesCount.text = wavesCount.ToString();
+            _wavesCount = wavesCount.ToString();
 
         UpdateData();
     }
@@ -39,9 +37,7 @@ public class ViewWavesCounter : MonoBehaviour, IViewWavesCounter
 
         if (_levelWaveData.AreWavesOver)
             waveNumber = _levelWaveData.WavesCount;
-        else
-            waveNumber++;
 
-        _currentWaveNumber.text = waveNumber.ToString();
+        _waveCountText.text = string.Format(WaveCountFormat, waveNumber, _wavesCount);
     }
 }

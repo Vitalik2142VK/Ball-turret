@@ -5,7 +5,7 @@ namespace RecorderLevel
 {
     public class EntryPoint : MonoBehaviour
     {
-        [SerializeField] private PlayerController _playerController;
+        [SerializeField] private AIPlayerController _playerController;
         [SerializeField] private TurretConfigurator _turretConfigurator;
         [SerializeField] private EnemiesConfigurator _actorsConfigurator;
         [SerializeField] private StepSystemConfigurator _stepSystemConfigurator;
@@ -39,7 +39,7 @@ namespace RecorderLevel
             _playerController.Initialize(turret);
 
             _actorsConfigurator.Configure();
-            _stepSystemConfigurator.Configure(turret, _actorsConfigurator.ActorsMover);
+            _stepSystemConfigurator.Configure(_playerController, turret, _actorsConfigurator.ActorsMover);
         }
     }
 }

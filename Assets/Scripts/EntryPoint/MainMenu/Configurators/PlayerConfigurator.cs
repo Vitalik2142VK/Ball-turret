@@ -38,7 +38,8 @@ namespace MainMenuSpace
 
         public void OnDisable()
         {
-            _coinAdder.Disable();
+            if (_coinAdder != null)
+                _coinAdder.Disable();
         }
 
         public void Configure(AdsViewer adsViewer)

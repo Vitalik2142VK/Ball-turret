@@ -87,7 +87,10 @@ public class ImprovementMenu : MonoBehaviour
     private void OnUpdate()
     {
         foreach (var window in _gameProductWindows)
+        {
+            window.HandleReservation();
             window.UpdateData();
+        }
     }
 
     private IEnumerator WaitOpening()

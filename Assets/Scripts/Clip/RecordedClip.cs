@@ -50,7 +50,8 @@ public class RecordedClip : MonoBehaviour
         int randomIndex = UnityEngine.Random.Range(0, _timelineAssets.Length);
         playableDirector.playableAsset = _timelineAssets[randomIndex];
 
-        StartCoroutine(WaitSpawn());
+        if (gameObject.activeSelf)
+            StartCoroutine(WaitSpawn());
     }
 
     private IEnumerator WaitSpawn()

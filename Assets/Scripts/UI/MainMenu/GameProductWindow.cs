@@ -12,6 +12,7 @@ public class GameProductWindow : MonoBehaviour
     private IGamePayTransaction _transaction;
     private IImprovementProduct _product;
     private IPurchaseRewardService _rewardService;
+    private bool _isReserved;
 
     public event Action<IGamePayTransaction> Selected;
 
@@ -39,6 +40,7 @@ public class GameProductWindow : MonoBehaviour
     {
         _addCoinsButton.Clicked += OnEstablishRewardAd;
         _updateButton.onClick.AddListener(OnSendTransaction);
+        _isReserved = false;
     }
 
     private void OnDisable()
@@ -61,17 +63,28 @@ public class GameProductWindow : MonoBehaviour
         UpdateViewData();
     }
 
-    private void OnSendTransaction()
+    public void HandleReservation()
     {
-        Selected?.Invoke(_transaction);
+        if (_isReserved == false)
+            return;
+
+        _isReserved = false;
+
+        OnSendTransaction();
     }
 
     private void OnEstablishRewardAd()
     {
         int missingAmount = _transaction.GetMissingAmount();
         _rewardService.AssignReward(missingAmount);
+        _isReserved = true;
 
         ActivateAddCoinsButton(false);
+    }
+
+    private void OnSendTransaction()
+    {
+        Selected?.Invoke(_transaction);
     }
 
     private void ApplyToTransactionState()

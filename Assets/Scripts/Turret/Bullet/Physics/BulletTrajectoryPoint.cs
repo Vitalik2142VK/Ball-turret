@@ -27,8 +27,6 @@ public class BulletTrajectoryPoint : IBulletTrajectoryPoint
 
     public void SetCollidedObject(Collider collidedObject)
     {
-        Debug.Log($"collidedObject = {nameof(collidedObject.name)}");
-
         CollidedObject = collidedObject != null ? collidedObject : throw new ArgumentNullException(nameof(collidedObject));
         IsThereCollision = true;
     }

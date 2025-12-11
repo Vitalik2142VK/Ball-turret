@@ -25,7 +25,7 @@ public class ScaleAnimatorUI : MonoBehaviour, IAnimatorUI
         _defaultSize = _rectTransform.localScale;
         _isBlocksRaycasts = _canvasGroup.blocksRaycasts;
         _controller = new TweenController();
-        _startSize = new Vector2(_defaultSize.x * _startSizeValue, _defaultSize.y * _startSizeValue);
+        _startSize = _defaultSize * _startSizeValue;
     }
 
     private void Start()

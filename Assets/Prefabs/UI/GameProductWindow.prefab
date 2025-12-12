@@ -257,6 +257,7 @@ GameObject:
   - component: {fileID: 6949461960449853560}
   - component: {fileID: 5716016025179792731}
   - component: {fileID: 764554045064688780}
+  - component: {fileID: 1984966166034556740}
   m_Layer: 5
   m_Name: GameProductWindow
   m_TagString: Untagged
@@ -313,6 +314,20 @@ MonoBehaviour:
   _addCoinsButton: {fileID: 4538140923781612627}
   _updateButton: {fileID: 8103754638286026709}
   _maxLevel: {fileID: 225329530178681604}
+--- !u!114 &1984966166034556740
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7060592120354025882}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3eac163400a79aa439145df729c680f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _duration: 0.2
+  _scaleCoeficient: 0.8
 --- !u!1 &8015349344618033461
 GameObject:
   m_ObjectHideFlags: 0
@@ -816,7 +831,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3514103277606644295, guid: 92bec8f101935ad47aab3a3cf65126b5, type: 3}
       propertyPath: m_fontSize
-      value: 43
+      value: 43.65
       objectReference: {fileID: 0}
     - target: {fileID: 3514103277606644295, guid: 92bec8f101935ad47aab3a3cf65126b5, type: 3}
       propertyPath: m_colorMode
@@ -1403,7 +1418,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3558584303552229164, guid: 76facf34bf1e98a4d9fb6c0a856e3f7e, type: 3}
       propertyPath: m_fontSize
-      value: 44.5
+      value: 44.6
       objectReference: {fileID: 0}
     - target: {fileID: 4051576423814761969, guid: 76facf34bf1e98a4d9fb6c0a856e3f7e, type: 3}
       propertyPath: m_PixelsPerUnitMultiplier

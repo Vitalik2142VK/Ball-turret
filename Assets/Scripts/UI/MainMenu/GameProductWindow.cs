@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(PulsingScaleAnimation))]
 public class GameProductWindow : MonoBehaviour
 {
     [SerializeField] private GameProductData _data;
@@ -12,6 +13,7 @@ public class GameProductWindow : MonoBehaviour
     private IGamePayTransaction _transaction;
     private IImprovementProduct _product;
     private IPurchaseRewardService _rewardService;
+    private PulsingScaleAnimation _animation;
     private bool _isReserved;
 
     public event Action<IGamePayTransaction> Selected;
@@ -33,6 +35,8 @@ public class GameProductWindow : MonoBehaviour
 
     private void Awake()
     {
+        _animation = GetComponent<PulsingScaleAnimation>();
+
         _maxLevel.gameObject.SetActive(false);
     }
 
@@ -84,6 +88,8 @@ public class GameProductWindow : MonoBehaviour
 
     private void OnSendTransaction()
     {
+        _animation.Play();
+
         Selected?.Invoke(_transaction);
     }
 

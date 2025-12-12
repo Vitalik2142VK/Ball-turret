@@ -1,7 +1,11 @@
-﻿[System.Flags]
-public enum WaveNumberMask
+﻿using System;
+
+[Flags]
+public enum WaveMask
 {
+    [Obsolete("Empty mask is not allowed", true)]
     None = 0,
+
     Boss = 1 << 0,
     WithBonuses1 = 1 << 1,
     WithBonuses2 = 1 << 2,

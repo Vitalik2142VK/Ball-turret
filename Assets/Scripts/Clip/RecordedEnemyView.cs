@@ -39,6 +39,8 @@ public class RecordedEnemyView : MonoBehaviour
         SetEnable(true);
     }
 
+    public void SetActive(bool isActive) => gameObject.SetActive(isActive);
+
     public void PlayDead()
     {
         if (_isActive)

@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using UnityEngine;
 
 namespace RecorderLevel
@@ -7,12 +6,11 @@ namespace RecorderLevel
     public class AIPlayerController : MonoBehaviour, IPlayerController
     {
         [SerializeField] private Transform _touchPosition;
-        [SerializeField] private Transform _target;
+        [SerializeField] private AITarget _target;
         [SerializeField, Min(0.5f)] private float _aimSpeed = 1f;
         [SerializeField, Min(0.5f)] private float _waitFixTurrgetTime = 1f;
 
         private ITurret _turret;
-        private Vector3 _targetPosition;
         private Timer _waitFixTurrget;
         private float _aimDistance = 0.1f;
 
@@ -30,10 +28,7 @@ namespace RecorderLevel
             _turret = turret ?? throw new ArgumentNullException(nameof(turret));
 
             _waitFixTurrget = new Timer(_waitFixTurrgetTime);
-            _targetPosition = _target.position;
         }
-
-        private bool IsAimedTarget() => Vector3.Distance(_touchPosition.position, _targetPosition) < _aimDistance;
 
         public void SelectTarget()
         {
@@ -48,19 +43,32 @@ namespace RecorderLevel
                 WaitFixTouchPosition();
         }
 
+        private bool IsAimedTarget() => Vector3.Distance(_touchPosition.position, _target.Position) < _aimDistance;
+
         private void UpdateAim()
         {
+            if (_target.IsSelected == false)
+            {
+                _target.Select();
+                _waitFixTurrget.UpdateWaitingTime();
+            }
+
             Vector3 curretnTouchPosition = _touchPosition.position;
 
-            _touchPosition.position = Vector3.MoveTowards(curretnTouchPosition, _targetPosition, Time.deltaTime * _aimSpeed);
+            _touchPosition.position = Vector3.MoveTowards(curretnTouchPosition, _target.Position, Time.deltaTime * _aimSpeed);
         }
 
         private void WaitFixTouchPosition()
         {
             if (_waitFixTurrget.IsTimeUp)
+            {
+                _target.ThrowOff();
                 _turret.FixTargetPostion(_touchPosition.position);
+            }
             else
+            {
                 _waitFixTurrget.MakeCountdown(Time.deltaTime);
+            }
         }
     }
 }

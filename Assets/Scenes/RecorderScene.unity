@@ -1269,7 +1269,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _touchPosition: {fileID: 546698916}
   _target: {fileID: 1646952310}
-  _aimSpeed: 2.5
+  _aimSpeed: 15
   _waitFixTurrgetTime: 0.5
 --- !u!1 &681090242
 GameObject:

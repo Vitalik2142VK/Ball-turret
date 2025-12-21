@@ -33,8 +33,8 @@ public class TrajectoryRenderer : MonoBehaviour, ITrajectoryRenderer
         _lineRenderer = GetComponent<LineRenderer>();
 
         _lineRenderer.alignment = LineAlignment.TransformZ;
-        _lineRenderer.numCapVertices = 0;
-        _lineRenderer.numCornerVertices = 0;
+        //_lineRenderer.numCapVertices = 0;
+        //_lineRenderer.numCornerVertices = 0;
         _lineRenderer.widthMultiplier = 0.2f;
 
         transform.forward = Camera.main.transform.forward;

@@ -4930,7 +4930,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _selectedLevel: {fileID: 11400000, guid: 1b5a6e3b79e8b4c4ea592fa9d8f574aa, type: 2}
   _player: {fileID: 11400000, guid: 7657b4ab90a8c5d44a5b96508438ba7e, type: 2}
-  _playerController: {fileID: 757441780}
+  _playerController: {fileID: 757441779}
   _turretConfigurator: {fileID: 1563366847}
   _stepSystemConfigurator: {fileID: 1081096997}
   _actorsConfigurator: {fileID: 1226189861}
@@ -23934,6 +23934,10 @@ PrefabInstance:
     - target: {fileID: 4456031843211636467, guid: 3ba9bd6665930a942917ff9abf74bb53, type: 3}
       propertyPath: m_Name
       value: Plane
+      objectReference: {fileID: 0}
+    - target: {fileID: 4456031843211636467, guid: 3ba9bd6665930a942917ff9abf74bb53, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

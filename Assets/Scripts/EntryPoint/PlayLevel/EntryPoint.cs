@@ -9,7 +9,7 @@ namespace PlayLevel
     {
         [SerializeField] private SelectedLevel _selectedLevel;
         [SerializeField] private CachedPlayer _player;
-        [SerializeField] private RecorderLevel.AIPlayerController _playerController;
+        [SerializeField, SerializeIterface(typeof(IPlayerController))] private GameObject _playerController;
 
         [Header("Configurators")]
         [SerializeField] private TurretConfigurator _turretConfigurator;
@@ -84,6 +84,8 @@ namespace PlayLevel
             if (_adsViewer == null)
                 throw new NullReferenceException(nameof(_adsViewer));
 
+            IPlayerController playerController = _playerController.GetComponent<IPlayerController>();
+
             _bulletConfigurator.Configure(_player);
             _turretConfigurator.Configure(_player, _bulletConfigurator.BulletFactory);
 
@@ -94,12 +96,12 @@ namespace PlayLevel
             RewardIssuer rewardIssuer = new RewardIssuer(_coinsAdder, _player, _selectedLevel);
             WinStatus winStatus = new WinStatus(turret, _selectedLevel);
 
-            _playerController.Initialize(turret);
+            playerController.Initialize(turret);
             _actorsConfigurator.Configure(turret, _selectedLevel, winStatus);
 
             var actorsController = _actorsConfigurator.ActorsController;
 
-            _stepSystemConfigurator.Configure(turret, _adsViewer, rewardIssuer, _playerController, actorsController);
+            _stepSystemConfigurator.Configure(turret, _adsViewer, rewardIssuer, playerController, actorsController);
             _bonusPrefabConfigurator.Configure(actorsController);
             _stepSystemConfigurator.ConfigureBonusActivationStep(_bonusPrefabConfigurator.BonusReservator);
 

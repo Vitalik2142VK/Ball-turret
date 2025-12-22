@@ -9,7 +9,7 @@ namespace PlayLevel
     {
         [SerializeField] private SelectedLevel _selectedLevel;
         [SerializeField] private CachedPlayer _player;
-        [SerializeField] private PlayerController _playerController;
+        [SerializeField] private RecorderLevel.AIPlayerController _playerController;
 
         [Header("Configurators")]
         [SerializeField] private TurretConfigurator _turretConfigurator;

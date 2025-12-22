@@ -16,7 +16,7 @@ namespace PlayLevel
         private ITurret _turret;
         private IAdsViewer _adsViewer;
         private IRewardIssuer _rewardIssuer;
-        private PlayerController _playerController;
+        private IPlayerController _playerController;
         private ActorsController _actorsController;
 
         private IDynamicEndStep _nextStepPrepareActors;
@@ -58,13 +58,13 @@ namespace PlayLevel
                 throw new NullReferenceException(nameof(_reservedBonusesWindow));
         }
 
-        public void Configure(ITurret turret, IAdsViewer adsViewer, IRewardIssuer rewardIssuer, PlayerController playerController, ActorsController actorsController)
+        public void Configure(ITurret turret, IAdsViewer adsViewer, IRewardIssuer rewardIssuer, IPlayerController playerController, ActorsController actorsController)
         {
             _turret = turret ?? throw new NullReferenceException(nameof(turret));
             _adsViewer = adsViewer ?? throw new NullReferenceException(nameof(adsViewer));
             _rewardIssuer = rewardIssuer ?? throw new NullReferenceException(nameof(rewardIssuer));
+            _playerController = playerController ?? throw new NullReferenceException(nameof(playerController));
             _actorsController = actorsController ?? throw new NullReferenceException(nameof(actorsController));
-            _playerController = playerController != null ? playerController : throw new NullReferenceException(nameof(playerController));
 
             CreateSteps();
             CreatePrepareActorsStep();

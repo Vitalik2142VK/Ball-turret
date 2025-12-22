@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: ActorsPlannerStore
   m_EditorClassIdentifier: 
   _levelActorsPlanners:
-  - {fileID: 11400000, guid: 7f065bdc00efe944b82ce0ef98c99c4c, type: 2}
   - {fileID: 11400000, guid: da682e913638d224d912e51e7e0317a8, type: 2}
   - {fileID: 11400000, guid: f854d0b2518eb3e43a8a398a2b0889c0, type: 2}
   - {fileID: 11400000, guid: 72365fa18e305a54490c24cf3d04b5fe, type: 2}

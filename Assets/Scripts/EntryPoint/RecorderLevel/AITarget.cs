@@ -11,12 +11,14 @@ namespace RecorderLevel
 
         [Header("Debug")]
         [SerializeField] private bool _isDebugOn = false;
-        [SerializeField] private Color _color = Color.yellow;
+        [SerializeField] private Color _targetColor = Color.yellow;
+        [SerializeField] private Color _findRadiusColor = Color.green;
         [SerializeField, Min(0.1f)] private float _radusSphere = 0.5f;
 
         private Transform _transform;
         private Vector3 _startPosition;
-        private int _enemiesCount;
+        private float _correctionOffsetValue;
+        private int _maxEnemiesCount;
 
         public Vector3 Position => _transform.position;
 
@@ -26,7 +28,8 @@ namespace RecorderLevel
         {
             _transform = transform;
             _startPosition = _startPoint.position;
-            _enemiesCount = 9;
+            _correctionOffsetValue = 0.5f;
+            _maxEnemiesCount = 9;
 
             IsSelected = false;
         }
@@ -35,8 +38,9 @@ namespace RecorderLevel
         {
             if (_isDebugOn)
             {
-                Gizmos.color = _color;
+                Gizmos.color = _targetColor;
                 Gizmos.DrawSphere(transform.position, _radusSphere);
+                Gizmos.DrawWireSphere(_startPosition, _findRadius);
             }
         }
 
@@ -47,16 +51,15 @@ namespace RecorderLevel
             float directionLength = direction.magnitude;
             Vector3 offsetDirection;
 
-            if (direction.y > 0f)
+            if (direction.x > _correctionOffsetValue)
                 offsetDirection = Vector3.right;
-            else if (direction.y < 0f)
+            else if (direction.x < -_correctionOffsetValue)
                 offsetDirection = Vector3.left;
             else
                 offsetDirection = Vector3.zero;
 
-            Debug.Log($"Result vector == {direction.normalized * (directionLength * _offset)}");
-
-            _transform.position = direction.normalized * (directionLength * _offset) + enemyPosition + offsetDirection;
+            offsetDirection = (direction.normalized + offsetDirection) * (directionLength * _offset);
+            _transform.position = offsetDirection + enemyPosition;
 
             IsSelected = true;
         }
@@ -68,16 +71,30 @@ namespace RecorderLevel
 
         private Vector3 FindEnemyPosition()
         {
-            Collider[] colliders = new Collider[_enemiesCount];
+            Collider[] colliders = new Collider[_maxEnemiesCount];
             int count = Physics.OverlapSphereNonAlloc(_startPosition, _findRadius, colliders, _layerMask, QueryTriggerInteraction.Ignore);
 
-            Debug.Log($"count == {count}");
+            if (count != 0 && TryFindEnemy(out Collider enemy, colliders))
+                return enemy.transform.position;
+            else
+                return Vector3.zero;
+        }
+
+        private bool TryFindEnemy(out Collider enemy, Collider[] colliders)
+        {
+            enemy = null;
 
             foreach (var collider in colliders)
+            {
                 if (collider.TryGetComponent(out IEnemyView _))
-                    return collider.transform.position;
+                {
+                    enemy = collider;
 
-            return Vector3.zero;
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

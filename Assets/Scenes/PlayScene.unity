@@ -22647,10 +22647,11 @@ MonoBehaviour:
   _layerMask:
     serializedVersion: 2
     m_Bits: 512
-  _findRadius: 15
-  _offset: 0.3
+  _findRadius: 20
+  _offset: 0.08
   _isDebugOn: 1
-  _color: {r: 1, g: 0.34523785, b: 0.015686274, a: 1}
+  _targetColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  _findRadiusColor: {r: 0, g: 1, b: 0, a: 1}
   _radusSphere: 0.35
 --- !u!4 &2099774400
 Transform:

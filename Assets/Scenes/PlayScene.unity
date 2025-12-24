@@ -4930,7 +4930,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _selectedLevel: {fileID: 11400000, guid: 1b5a6e3b79e8b4c4ea592fa9d8f574aa, type: 2}
   _player: {fileID: 11400000, guid: 7657b4ab90a8c5d44a5b96508438ba7e, type: 2}
-  _playerController: {fileID: 757441779}
+  _playerController: {fileID: 680478343}
   _turretConfigurator: {fileID: 1563366847}
   _stepSystemConfigurator: {fileID: 1081096997}
   _actorsConfigurator: {fileID: 1226189861}
@@ -7441,13 +7441,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _bonusChoiceMenu: {fileID: 126665121}
   _randomBonusCreators:
-  - {fileID: 799205651}
   - {fileID: 1037722401}
   - {fileID: 988645865}
   - {fileID: 165822631}
-  - {fileID: 184509904}
-  - {fileID: 1901299419}
-  - {fileID: 1631347060}
 --- !u!114 &665626682
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9769,7 +9765,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f982812516efe6949949c9cd768ac6ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _timeScale: 1
+  _timeScale: 2
 --- !u!4 &869962348
 Transform:
   m_ObjectHideFlags: 0

@@ -2,7 +2,7 @@
 
 public class TimeScale : MonoBehaviour
 {
-    [SerializeField, Range(0f, 1f)] private float _timeScale;
+    [SerializeField, Range(0f, 1.5f)] private float _timeScale;
 
     private void Start()
     {

@@ -62,7 +62,7 @@ namespace PlayLevel
             ActorsMover actorsMover = new ActorsMover();
             ActorsRemover removedActorsRepository = new ActorsRemover();
             EnemiesAttacker enemiesAttacker = new EnemiesAttacker(turret);
-            EnemiesVictory enemiesVictory = new EnemiesVictory(winStatus);
+            EnemiesController enemiesVictory = new EnemiesController(winStatus);
             ActorsPreparator actorsPreparator = new ActorsPreparator(actorSpawner, actorsMover, _startMoveAttributes, _defaultMoveAttributes);
             actorsPreparator.SetLevel(level);
 

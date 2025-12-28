@@ -1,4 +1,4 @@
-﻿public interface IActorsController : IEnemyCounter, IActorsPreparator
+﻿public interface IActorsController : IActorsPreparator
 {
     public bool AreWavesOver { get; }
 

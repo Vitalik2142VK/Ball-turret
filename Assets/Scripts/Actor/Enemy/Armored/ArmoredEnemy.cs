@@ -29,7 +29,7 @@ public class ArmoredEnemy : IEnemy, IArmoredObject
 
     public void Destroy() => _enemy.Destroy();
 
-    public void Win(bool isWin) => _enemy.Win(isWin);
+    public void Win() => _enemy.Win();
 
     public void TakeDamage(IDamageAttributes damage)
     {

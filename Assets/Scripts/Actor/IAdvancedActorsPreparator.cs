@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-public interface IAdvancedActorPreparator : IActorsPreparator
+public interface IAdvancedActorsPreparator : IActorsPreparator
 {
     public IActorsMover ActorsMover { get; }
     public int EnemiesCount { get; }

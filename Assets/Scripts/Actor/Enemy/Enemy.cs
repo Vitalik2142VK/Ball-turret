@@ -32,6 +32,8 @@ public class Enemy : IEnemy
 
     public void SetPoint(Vector3 distance, float speed) => _mover.SetPoint(distance, speed);
 
+    public void Win() => _presenter.Win();
+
     public void Move() 
     {
         _mover.Move();
@@ -57,11 +59,6 @@ public class Enemy : IEnemy
         IsEnable = false;
         _debuffReceiver.Clean();
         _presenter.Destroy();
-    }
-
-    public void Win(bool isWin)
-    {
-        _presenter.Win(isWin);
     }
 
     private void Enable()

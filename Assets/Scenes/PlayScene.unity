@@ -23953,6 +23953,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tower
       objectReference: {fileID: 0}
+    - target: {fileID: 1682067694396854169, guid: efc5a24321c3db54c93151a25f3e8aaf, type: 3}
+      propertyPath: m_Name
+      value: Shooter
+      objectReference: {fileID: 0}
     - target: {fileID: 4488448293369362934, guid: efc5a24321c3db54c93151a25f3e8aaf, type: 3}
       propertyPath: m_Enabled
       value: 1

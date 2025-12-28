@@ -17,6 +17,7 @@ namespace PlayLevel
         private IAdsViewer _adsViewer;
         private IRewardIssuer _rewardIssuer;
         private IPlayerController _playerController;
+        private IEnemiesController _enemiesController;
         private ActorsController _actorsController;
 
         private IDynamicEndStep _nextStepPrepareActors;
@@ -30,7 +31,7 @@ namespace PlayLevel
         private RemoveActorsStep _removeActorsStep;
         private CyclicalStep _cyclicalStep;
         private RewardStep _rewardStep;
-        private PlayVictoryEnemyStep _playVictoryEnemyStep;
+        private PlayVictoryStep _playVictoryStep;
 
         public IChangeSceneStep ChangeSceneStep { get; private set; }
 
@@ -58,12 +59,13 @@ namespace PlayLevel
                 throw new NullReferenceException(nameof(_reservedBonusesWindow));
         }
 
-        public void Configure(ITurret turret, IAdsViewer adsViewer, IRewardIssuer rewardIssuer, IPlayerController playerController, ActorsController actorsController)
+        public void Configure(ITurret turret, IAdsViewer adsViewer, IRewardIssuer rewardIssuer, IPlayerController playerController, IEnemiesController enemiesController, ActorsController actorsController)
         {
             _turret = turret ?? throw new NullReferenceException(nameof(turret));
             _adsViewer = adsViewer ?? throw new NullReferenceException(nameof(adsViewer));
             _rewardIssuer = rewardIssuer ?? throw new NullReferenceException(nameof(rewardIssuer));
             _playerController = playerController ?? throw new NullReferenceException(nameof(playerController));
+            _enemiesController = enemiesController ?? throw new NullReferenceException(nameof(enemiesController));
             _actorsController = actorsController ?? throw new NullReferenceException(nameof(actorsController));
 
             CreateSteps();
@@ -107,10 +109,10 @@ namespace PlayLevel
             _resetComboStep = new ResetComboStep(_comboCounter);
             _bonusActivationStep = new BonusActivationStep(_bulletCollector, _openReservedBonusesButton);
             _objectsMoveStep = new ActorsMoveStep(_actorsController);
-            _enemyAttackStep = new EnemyAttackStep(_actorsController);
+            _enemyAttackStep = new EnemyAttackStep(_enemiesController);
             _removeActorsStep = new RemoveActorsStep(_actorsController);
             _rewardStep = new RewardStep(_finishWindow, _adsViewer, _rewardIssuer);
-            _playVictoryEnemyStep = new PlayVictoryEnemyStep(_actorsController);
+            _playVictoryStep = new PlayVictoryStep(_actorsController);
 
             ChangeSceneStep = new ChangeSceneStep();
         }
@@ -147,8 +149,8 @@ namespace PlayLevel
             AddNextStepToEndPoint(_bonusActivationStep, _prepareActorsStep);
             AddNextStepToEndPoint(_objectsMoveStep, _enemyAttackStep);
             AddNextStepToEndPoint(_enemyAttackStep, _removeActorsStep);
-            AddNextStepToEndPoint(_rewardStep, _playVictoryEnemyStep);
-            AddNextStepToEndPoint(_playVictoryEnemyStep, ChangeSceneStep);
+            AddNextStepToEndPoint(_rewardStep, _playVictoryStep);
+            AddNextStepToEndPoint(_playVictoryStep, ChangeSceneStep);
         }
 
         private void AddNextStepToEndPoint(IEndPointStep endPointStep, IStep nextStep)

@@ -40,7 +40,7 @@ public class EnemyPresenter : IEnemyPresenter
         _view.PlayMovement(isMovement);
     }
 
-    public void Win(bool isWin) => _view.PlayVictory(isWin);
+    public void Win() => _view.PlayVictory();
 
     public void Destroy()
     {

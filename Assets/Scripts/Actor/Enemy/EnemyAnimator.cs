@@ -4,13 +4,13 @@
 public class EnemyAnimator : MonoBehaviour, IEnemyAnimator
 {
     private const string Run = nameof(Run);
-    private const string Victory = nameof(Victory);
+    private const string Win = nameof(Win);
 
     [SerializeField] private DamagedObjectAnimator _damagedObjectAnimator;
 
     private Animator _animator;
     private int _hashRun;
-    private int _hashVictory;
+    private int _hashWin;
 
     public float TimeCompletionDeath => _damagedObjectAnimator.TimeCompletionDeath;
 
@@ -24,7 +24,7 @@ public class EnemyAnimator : MonoBehaviour, IEnemyAnimator
     {
         _animator = GetComponent<Animator>();
         _hashRun = Animator.StringToHash(Run);
-        _hashVictory = Animator.StringToHash(Victory);
+        _hashWin = Animator.StringToHash(Win);
     }
 
     public void PlayHit() => _damagedObjectAnimator.PlayHit();
@@ -33,5 +33,5 @@ public class EnemyAnimator : MonoBehaviour, IEnemyAnimator
 
     public void PlayMovement(bool isRunning) => _animator.SetBool(_hashRun, isRunning);
 
-    public void PlayVictory(bool isWin) => _animator.SetBool(_hashVictory, isWin);
+    public void PlayVictory() => _animator.SetTrigger(_hashWin);
 }

@@ -2,5 +2,5 @@
 {
     public void ApplyDamage(IDamagedObject damagedObject);
 
-    public void Win(bool isWin);
+    public void Win();
 }

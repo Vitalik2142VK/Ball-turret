@@ -2,3 +2,8 @@
 {
     public void AttackAll();
 }
+
+public interface IEnemiesWinPlayer
+{
+    public void WinAll();
+}

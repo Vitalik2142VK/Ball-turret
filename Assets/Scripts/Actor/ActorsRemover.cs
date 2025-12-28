@@ -22,7 +22,7 @@ public class ActorsRemover : IRemovedActorsRepository
         _removedActors.AddRange(actors);
     }
 
-    public void RemoveAll()
+    public void RemoveAllDisabled()
     {
         foreach (var actor in _removedActors)
             actor.Destroy();

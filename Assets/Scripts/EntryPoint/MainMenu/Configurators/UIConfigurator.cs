@@ -9,10 +9,10 @@ namespace MainMenuSpace
         [SerializeField] private SettingMenu _settingMenu;
         [SerializeField] private AudioSetting _audioSetting;
         [SerializeField] private ImprovementMenu _improvementChoiseMenu;
-        [SerializeField] private ImprovementChoiseButton _updateHealthButton;
-        [SerializeField] private ImprovementChoiseButton _updateDamageButton;
-        [SerializeField] private AddCoinsButton _addCoinsButton;
+        [SerializeField] private GameProductWindow _updateHealthWindow;
+        [SerializeField] private GameProductWindow _updateDamageWindow;
         [SerializeField] private DisableAdsButton _disableAdsButton;
+        [SerializeField] private AddCoinsButton[] _addCoinsButtons;
 
         private IImprovementShop _improvementShop;
         private IAdsViewer _adsViewer;
@@ -25,14 +25,11 @@ namespace MainMenuSpace
             if (_improvementChoiseMenu == null)
                 throw new NullReferenceException(nameof(_improvementChoiseMenu));
 
-            if (_updateHealthButton == null)
-                throw new NullReferenceException(nameof(_updateHealthButton));
+            if (_updateHealthWindow == null)
+                throw new NullReferenceException(nameof(_updateHealthWindow));
 
-            if (_updateDamageButton == null)
-                throw new NullReferenceException(nameof(_updateDamageButton));
-
-            if (_addCoinsButton == null)
-                throw new NullReferenceException(nameof(_addCoinsButton));
+            if (_updateDamageWindow == null)
+                throw new NullReferenceException(nameof(_updateDamageWindow));
 
             if (_settingMenu == null)
                 throw new NullReferenceException(nameof(_settingMenu));
@@ -42,6 +39,13 @@ namespace MainMenuSpace
 
             if (_disableAdsButton == null)
                 throw new NullReferenceException(nameof(_disableAdsButton));
+
+            if (_addCoinsButtons == null || _addCoinsButtons.Length == 0)
+                throw new InvalidOperationException(nameof(_addCoinsButtons));
+
+            foreach (var button in _addCoinsButtons)
+                if (button == null)
+                    throw new NullReferenceException($"{_addCoinsButtons} contains null objects");
         }
 
         public void SetImprovementShop(IImprovementShop improvementShop)
@@ -72,25 +76,27 @@ namespace MainMenuSpace
             _settingMenu.Initialize(_audioSetting);
             _improvementChoiseMenu.Initialize(_improvementShop, _adsViewer);
             _disableAdsButton.Initialize(player.PurchasesStorage);
-            _addCoinsButton.Initialize(coinAdder, _adsViewer);
 
-            var adsViewButton = _addCoinsButton.GetComponent<AdsViewButton>();
-            adsViewButton.Initialize(_adsViewer, RewardTypes.AddCoin);
+            foreach (var button in _addCoinsButtons)
+                button.Initialize(coinAdder, _adsViewer, RewardTypes.AddCoin);
 
-            InitializeImprovementChoiseButtons();
+            InitializeImprovementChoiseButtons(coinAdder);
         }
 
-        public void InitializeImprovementChoiseButtons()
+        public void InitializeImprovementChoiseButtons(ICoinAdder coinAdder)
         {
             var transaction = _improvementShop.GetTransaction(typeof(HealthImprovementTransaction));
             var product = _improvementShop.GetProduct(typeof(HealthImprovementProduct));
+            float priceCoefficient = 0.4f;
+            PurchaseRewardService rewardService = new PurchaseRewardService(coinAdder, priceCoefficient);
 
-            _updateHealthButton.Initialize(transaction, product);
+            _updateHealthWindow.Initialize(transaction, product, rewardService);
 
             transaction = _improvementShop.GetTransaction(typeof(DamageImprovementTransaction));
-            product = _improvementShop.GetProduct( typeof(DamageImprovementProduct));
+            product = _improvementShop.GetProduct(typeof(DamageImprovementProduct));
+            rewardService = new PurchaseRewardService(coinAdder, priceCoefficient);
 
-            _updateDamageButton.Initialize(transaction, product);
+            _updateDamageWindow.Initialize(transaction, product, rewardService);
         }
     }
 }

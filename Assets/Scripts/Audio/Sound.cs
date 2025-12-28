@@ -15,13 +15,15 @@ public class Sound : MonoBehaviour, ISound
         _pitch = _audioSource.pitch;
     }
 
+    public void Stop() => _audioSource.Stop();
+
     public void Play()
     {
         if (_rangePitch != 0)
             _audioSource.pitch = _pitch + GetRandomPitch();
 
         if (_duration != 0)
-            Invoke(nameof(StopSound), _duration);
+            Invoke(nameof(Stop), _duration);
 
         _audioSource.Play();
     }
@@ -29,10 +31,5 @@ public class Sound : MonoBehaviour, ISound
     private float GetRandomPitch()
     {
         return Random.Range(-_rangePitch, _rangePitch);
-    }
-
-    private void StopSound()
-    {
-        _audioSource.Stop();
     }
 }

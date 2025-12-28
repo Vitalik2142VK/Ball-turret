@@ -6,8 +6,11 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Button), typeof(ScaleButtonAnimator))]
 public class SelectLevelButton : MonoBehaviour
 {
+    public const string InfiniteValue = "∞";
+
     [SerializeField] private TextMeshProUGUI _text;
     [SerializeField] private Image _blockImage;
+    [SerializeField] private Image _glowImage;
 
     private IButtonAnimator _animator;
     private Button _button;
@@ -30,23 +33,34 @@ public class SelectLevelButton : MonoBehaviour
 
         if (_blockImage == null)
             throw new NullReferenceException(nameof(_blockImage));
+
+        if (_glowImage == null)
+            throw new NullReferenceException(nameof(_glowImage));
     }
 
     private void Awake()
     {
         _animator = GetComponent<IButtonAnimator>();
         _button = GetComponent<Button>();
+
+        _glowImage.gameObject.SetActive(false);
+        IsBocked = false;
         Index = -1;
     }
 
     private void OnEnable()
     {
         _button.onClick.AddListener(OnPress);
+
+        if (IsBocked)
+            _animator.PressOut();
+        else
+            _animator.Press();
     }
 
     private void OnDisable()
     {
-        _button.onClick.RemoveListener(OnPress);   
+        _button.onClick.RemoveListener(OnPress);
     }
 
     public void SetIndex(int index)
@@ -57,7 +71,7 @@ public class SelectLevelButton : MonoBehaviour
         Index = index;
 
         if (index == EndlessLevel.IndexLevel)
-            TextIndex = "∞";
+            TextIndex = InfiniteValue;
         else
             TextIndex = index.ToString();
 
@@ -74,23 +88,29 @@ public class SelectLevelButton : MonoBehaviour
         if (isBlock)
         {
             var colorsButton = _button.colors;
-            colorsButton.normalColor = colorsButton.disabledColor;
+            colorsButton.disabledColor = colorsButton.normalColor;
+            _button.colors = colorsButton;
         }
     }
 
-    public void Press()
+    public void Select()
     {
         _button.interactable = false;
-        _animator.Press();
+        _glowImage.gameObject.SetActive(true);
+        _animator.PressOut();
 
         Clicked?.Invoke(Index);
     }
 
-    public void PressOut()
+    public void CancelSelection()
     {
+        if (IsBocked || _button.interactable)
+            return;
+
         _button.interactable = true;
-        _animator.PressOut();
+        _glowImage.gameObject.SetActive(false);
+        _animator.Press();
     }
 
-    private void OnPress() => Press();
+    private void OnPress() => Select();
 }

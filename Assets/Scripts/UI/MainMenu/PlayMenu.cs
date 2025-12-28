@@ -47,7 +47,7 @@ public class PlayMenu : MonoBehaviour
         _previousWindow = previousWindow ?? throw new ArgumentNullException(nameof(previousWindow));
 
         gameObject.SetActive(true);
-        _hiderUI.Disable();
+        _hiderUI.Hide();
         _animator.Show();
 
         StartCoroutine(WaitOpening());
@@ -55,7 +55,7 @@ public class PlayMenu : MonoBehaviour
 
     public void OnClose()
     {
-        _hiderUI.Enable();
+        _hiderUI.Show();
         _animator.Hide();
 
         StartCoroutine(WaitClosure());

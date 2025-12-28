@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Scriptable;
+using UnityEngine;
 
 [RequireComponent(typeof(ParticleSystem))]
 public class ExplosionView : MonoBehaviour, IExplosionView

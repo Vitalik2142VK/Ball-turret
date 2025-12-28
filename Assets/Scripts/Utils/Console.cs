@@ -12,6 +12,43 @@ public class Console : MonoBehaviour
 
     [SerializeField] private ContentSizeFitter _content;
     [SerializeField] private TextMeshProUGUI _textPrefab;
+    [SerializeField] private bool _isDontDestroyOnLoad;
+
+    private void OnValidate()
+    {
+        if (_content == null)
+            _content = transform.GetComponentInChildren<ContentSizeFitter>();
+
+        if (_content == null)
+            throw new NullReferenceException(nameof(_content));
+
+        if (_textPrefab == null)
+            _textPrefab = transform.GetComponentInChildren<TextMeshProUGUI>();
+
+        if (_textPrefab == null)
+            throw new NullReferenceException(nameof(_textPrefab));
+    }
+
+    private void OnEnable()
+    {
+        if (s_Console == null)
+            s_Console = this;
+    }
+
+    private void Awake()
+    {
+        if (_isDontDestroyOnLoad)
+        {
+            CreateSingleton();
+            DontDestroyOnLoad(gameObject);
+        }
+
+    }
+
+    private void OnDisable()
+    {
+        s_Console = null;
+    }
 
     public static void GetLog(string message)
     {
@@ -35,32 +72,6 @@ public class Console : MonoBehaviour
 
         if (s_Console == null)
             throw new InvalidOperationException($"The GameObject '{nameof(Console)}' was not found");
-    }
-
-    private void OnValidate()
-    {
-        if (_content == null)
-            _content = transform.GetComponentInChildren<ContentSizeFitter>();
-
-        if (_content == null)
-            throw new NullReferenceException(nameof(_content));
-
-        if (_textPrefab == null)
-            _textPrefab = transform.GetComponentInChildren<TextMeshProUGUI>();
-
-        if (_textPrefab == null)
-            throw new NullReferenceException(nameof(_textPrefab));
-    }
-
-    private void OnEnable()
-    {
-        if (s_Console == null)
-            s_Console = this;
-    }
-
-    private void OnDisable()
-    {
-        s_Console = null;
     }
 
     private void AddLog(string message)

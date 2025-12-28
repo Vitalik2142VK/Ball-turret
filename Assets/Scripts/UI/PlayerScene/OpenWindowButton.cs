@@ -12,6 +12,8 @@ public class OpenWindowButton : MonoBehaviour, IOpenWindowButton
     private IAnimatorUI _animator;
     private IWindow _window;
 
+    public bool IsActive => gameObject.activeSelf;
+
     private void OnValidate()
     {
         if (_windowGameObject == null)
@@ -50,12 +52,18 @@ public class OpenWindowButton : MonoBehaviour, IOpenWindowButton
         _animator.Show();
     }
 
-    private void OnClick()
+    public void Hide()
     {
-        _window.Enable();
         _animator.Hide();
 
         StartCoroutine(WaitClosure());
+    }
+
+    private void OnClick()
+    {
+        _window.Enable();
+
+        Hide();
     }
 
     private IEnumerator WaitClosure()

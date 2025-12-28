@@ -4,18 +4,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(IAnimatorUI))]
-public class ReservedBonusesWindow : MonoBehaviour, IWindow
+[RequireComponent(typeof(IAnimatorUI), typeof(HiderUI))]
+public class ReservedBonusesWindow : MonoBehaviour, IReservedBonusesWindow
 {
     [SerializeField] private ReservedBonusButton _reservedBonusButtonPrefab;
     [SerializeField] private ContentSizeFitter _content;
     [SerializeField] private Button _closeButton;
     [SerializeField] private OpenWindowButton _openButton;
-    [SerializeField] private GameObject _raycastBlock;
 
     private IAnimatorUI _animator;
     private IBonusReservator _bonusReservator;
     private List<ReservedBonusButton> _reservedBonusButtons;
+    private HiderUI _hiderUI;
+
+    public bool IsActive => gameObject.activeSelf;
 
     private void OnValidate()
     {
@@ -30,16 +32,13 @@ public class ReservedBonusesWindow : MonoBehaviour, IWindow
 
         if (_openButton == null)
             throw new NullReferenceException(nameof(_openButton));
-
-        if (_raycastBlock == null)
-            throw new NullReferenceException(nameof(_raycastBlock));
     }
 
     private void Awake()
     {
         _animator = GetComponent<IAnimatorUI>();
+        _hiderUI = GetComponent<HiderUI>();
         gameObject.SetActive(false);
-        _raycastBlock.SetActive(false);
         _openButton.gameObject.SetActive(false);
     }
 
@@ -95,13 +94,24 @@ public class ReservedBonusesWindow : MonoBehaviour, IWindow
     public void Enable()
     {
         gameObject.SetActive(true);
-        _raycastBlock.SetActive(true);
         _animator.Show();
+        _hiderUI.Hide();
+    }
+
+    public void Hide()
+    {
+        if (gameObject.activeSelf == false)
+            return;
+
+        _animator.Hide();
+
+        StartCoroutine(WaitDisable());
     }
 
     private void OnClose()
     {
         _animator.Hide();
+        _hiderUI.Show();
 
         StartCoroutine(WaitClosure());
     }
@@ -113,14 +123,20 @@ public class ReservedBonusesWindow : MonoBehaviour, IWindow
                 button.Enable();
     }
 
+    private IEnumerator WaitDisable()
+    {
+        yield return _animator.GetYieldAnimation();
+
+        gameObject.SetActive(false);
+    }
+
     private IEnumerator WaitClosure()
     {
         yield return _animator.GetYieldAnimation();
 
         gameObject.SetActive(false);
-        _raycastBlock.SetActive(false);
 
-        if (_bonusReservator.IsBonusActivated == false)
+        if (_bonusReservator.IsBonusActivated == false && _bonusReservator.HasBonuses)
             _openButton.Show();
     }
 }

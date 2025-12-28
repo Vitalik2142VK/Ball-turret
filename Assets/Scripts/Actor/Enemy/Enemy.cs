@@ -59,6 +59,11 @@ public class Enemy : IEnemy
         _presenter.Destroy();
     }
 
+    public void Win(bool isWin)
+    {
+        _presenter.Win(isWin);
+    }
+
     private void Enable()
     {
         IsEnable = true;

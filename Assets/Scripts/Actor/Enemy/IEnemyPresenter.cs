@@ -10,5 +10,7 @@
 
     public void Move();
 
+    public void Win(bool isWin);
+
     public void Destroy();
 }

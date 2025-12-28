@@ -6,7 +6,7 @@ public class EndlessLevel : ILevel
 
     private const float DefaultCoefficient = 1f;
     private const float MinHealthMultiplierPerWave = 0.1f;
-    private const float ReducingCoefficientCoins = 0.5f;
+    private const float ReducingCoefficientCoins = 1.25f;
 
     private ILevel _endlesslevel;
     private ISavedLeaderBoard _savedLeaderBoard;
@@ -30,11 +30,13 @@ public class EndlessLevel : ILevel
 
     public int CountCoinsForWin { get; private set; }
 
-    public int Index => IndexLevel;
-    public bool AreWavesOver => _endlesslevel.AreWavesOver;
-    public int CurrentWaveNumber => _endlesslevel.CurrentWaveNumber;
     public float HealthCoefficient => DefaultCoefficient + _healthMultiplierPerWave * CurrentWaveNumber;
+    public int Index => IndexLevel;
+    public int CurrentWaveNumber => _endlesslevel.CurrentWaveNumber;
+    public int WavesCount => _endlesslevel.WavesCount;
     public int CountCoinsForWaves => (int)((_endlesslevel.CountCoinsForWaves + CountCoinsForWin) * _countCoinsMultiplier);
+    public bool AreWavesOver => _endlesslevel.AreWavesOver;
+
 
     public bool TryGetNextWaveActorsPlanner(out IWaveActorsPlanner waveActorsPlanner)
     {
@@ -46,4 +48,10 @@ public class EndlessLevel : ILevel
 
         return _endlesslevel.TryGetNextWaveActorsPlanner(out waveActorsPlanner);
     }
+
+    public ILevel Clone()
+    {
+        return new EndlessLevel(_endlesslevel, _savedLeaderBoard, _healthMultiplierPerWave);
+    }
+
 }

@@ -9,6 +9,7 @@ public class BonusChoiceButton : MonoBehaviour, IChoiceButton
     [SerializeField] private Scriptable.LocalizationData _localizationData;
     [SerializeField] private Image _icon;
     [SerializeField] private TextMeshProUGUI _description;
+    [SerializeField] private Button _infoButton;
 
     private IChoiceButton _choiceButton;
     private IBonus _bonus;
@@ -30,6 +31,9 @@ public class BonusChoiceButton : MonoBehaviour, IChoiceButton
 
         if (_description == null)
             throw new NullReferenceException(nameof(_description));
+
+        if (_infoButton == null)
+            throw new NullReferenceException(nameof(_infoButton));
     }
 
     private void Awake()
@@ -41,11 +45,14 @@ public class BonusChoiceButton : MonoBehaviour, IChoiceButton
 
     private void OnEnable()
     {
+        _infoButton.onClick.AddListener(OnChangeImageDiscripcion);
         _button.onClick.AddListener(OnClick);
+        SetActiveDiscription(false);
     }
 
     private void OnDisable()
     {
+        _infoButton.onClick.AddListener(OnChangeImageDiscripcion);
         _button.onClick.AddListener(OnClick);
     }
 
@@ -79,5 +86,18 @@ public class BonusChoiceButton : MonoBehaviour, IChoiceButton
         _animator.Press();
 
         Clicked?.Invoke(_index);
+    }
+
+    private void OnChangeImageDiscripcion()
+    {
+        bool isActiveImage = _icon.gameObject.activeSelf;
+
+        SetActiveDiscription(isActiveImage);
+    }
+
+    private void SetActiveDiscription(bool isActive)
+    {
+        _description.gameObject.SetActive(isActive);
+        _icon.gameObject.SetActive(isActive == false);
     }
 }

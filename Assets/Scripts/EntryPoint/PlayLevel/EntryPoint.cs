@@ -5,11 +5,11 @@ using UnityEngine.SceneManagement;
 
 namespace PlayLevel
 {
-    public class EntryPoint : MonoBehaviour
+    public partial class EntryPoint : MonoBehaviour
     {
         [SerializeField] private SelectedLevel _selectedLevel;
         [SerializeField] private CachedPlayer _player;
-        [SerializeField] private PlayerController _playerController;
+        [SerializeField, SerializeIterface(typeof(IPlayerController))] private GameObject _playerController;
 
         [Header("Configurators")]
         [SerializeField] private TurretConfigurator _turretConfigurator;
@@ -18,8 +18,13 @@ namespace PlayLevel
         [SerializeField] private BonusesConfigurator _bonusPrefabConfigurator;
         [SerializeField] private BulletConfigurator _bulletConfigurator;
         [SerializeField] private UIConfigurator _userInterfaceConfigurator;
+        [SerializeField] private FinishWindowConfigurator _finishWindowConfigurator;
+        [SerializeField] private BonusesWindowHiderConfigurator _bonusesWindowHiderConfigurator;
 
         private AdsViewer _adsViewer;
+        private CoinAdder _coinsAdder;
+
+        public Config Configs { get; private set; }
 
         private void OnValidate()
         {
@@ -49,6 +54,12 @@ namespace PlayLevel
 
             if (_userInterfaceConfigurator == null)
                 throw new NullReferenceException(nameof(_userInterfaceConfigurator));
+
+            if (_finishWindowConfigurator == null)
+                throw new NullReferenceException(nameof(_finishWindowConfigurator));
+
+            if (_bonusesWindowHiderConfigurator == null)
+                throw new NullReferenceException(nameof(_bonusesWindowHiderConfigurator));
         }
 
         private void Start()
@@ -61,6 +72,11 @@ namespace PlayLevel
 #endif
         }
 
+        private void OnDisable()
+        {
+            _coinsAdder.Disable();
+        }
+
         private void Configure()
         {
             _adsViewer = FindAnyObjectByType<AdsViewer>();
@@ -68,30 +84,34 @@ namespace PlayLevel
             if (_adsViewer == null)
                 throw new NullReferenceException(nameof(_adsViewer));
 
+            IPlayerController playerController = _playerController.GetComponent<IPlayerController>();
+
             _bulletConfigurator.Configure(_player);
             _turretConfigurator.Configure(_player, _bulletConfigurator.BulletFactory);
 
             var turret = _turretConfigurator.Turret;
+            SavedPlayerData savesData = new SavedPlayerData();
+            PlayerSaver playerSaver = new PlayerSaver(_player, savesData);
+            _coinsAdder = new CoinAdder(playerSaver, _player.Wallet, _adsViewer);
+            RewardIssuer rewardIssuer = new RewardIssuer(_coinsAdder, _player, _selectedLevel);
+            WinStatus winStatus = new WinStatus(turret, _selectedLevel);
 
-            _playerController.Initialize(turret);
-            _actorsConfigurator.Configure(turret, _selectedLevel);
+            playerController.Initialize(turret);
+            _actorsConfigurator.Configure(turret, _selectedLevel, winStatus);
 
             var actorsController = _actorsConfigurator.ActorsController;
 
-            _stepSystemConfigurator.Configure(turret, _playerController, actorsController);
+            _stepSystemConfigurator.Configure(turret, _adsViewer, rewardIssuer, playerController, actorsController);
             _bonusPrefabConfigurator.Configure(actorsController);
+            _stepSystemConfigurator.ConfigureBonusActivationStep(_bonusPrefabConfigurator.BonusReservator);
 
-            var bonusReservator = _bonusPrefabConfigurator.BonusReservator;
+            var changeSceneStep = _stepSystemConfigurator.ChangeSceneStep;
 
-            _stepSystemConfigurator.ConfigureBonusActivationStep(bonusReservator);
+            _userInterfaceConfigurator.Configure(changeSceneStep, _selectedLevel);
+            _finishWindowConfigurator.Configure(_coinsAdder, rewardIssuer, _adsViewer, winStatus, changeSceneStep, _selectedLevel);
+            _bonusesWindowHiderConfigurator.Configure(_turretConfigurator.ShotAction);
 
-            SavedPlayerData savesData = new SavedPlayerData();
-            PlayerSaver playerSaver = new PlayerSaver(_player, savesData);
-            CoinAdder coinAdder = new CoinAdder(playerSaver, _player.Wallet, _adsViewer);
-            RewardIssuer rewardIssuer = new RewardIssuer(coinAdder, _player, _selectedLevel);
-            WinStatus winStatus = new WinStatus(turret, _selectedLevel);
-            var closeSceneStep = _stepSystemConfigurator.CloseSceneStep;
-            _userInterfaceConfigurator.Configure(closeSceneStep, rewardIssuer, winStatus, coinAdder, _adsViewer);
+            Configs = new Config(_stepSystemConfigurator, _actorsConfigurator, _userInterfaceConfigurator, _finishWindowConfigurator, winStatus);
 
             if (_player.AchievedLevelIndex == 0)
                 SceneManager.LoadScene((int)SceneIndex.LearningScene, LoadSceneMode.Additive);
@@ -108,10 +128,5 @@ namespace PlayLevel
                 Console.GetException(ex);
             }
         }
-    }
-
-    public class TestLevelLoader : MonoBehaviour
-    {
-
     }
 }

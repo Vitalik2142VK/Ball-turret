@@ -9,7 +9,7 @@ namespace MainMenuSpace
         [SerializeField] private PlaySceneLoader _sceneLoader;
         [SerializeField] private EndlessLevelPlanner _endlessLevelPlanner;
         [SerializeField] private LevelActorsPlanner _learningLevelActorsPlanners;
-        [SerializeField] private LevelActorsPlanner[] _levelActorsPlanners;
+        [SerializeField] private LevelFactory _levelFactory;
 
         [Header("Actors health coefficient by level")]
         [SerializeField, Range(0.3f, 2f)] private float _healthCoefficient;
@@ -28,26 +28,23 @@ namespace MainMenuSpace
             if (_learningLevelActorsPlanners == null)
                 throw new NullReferenceException(nameof(_learningLevelActorsPlanners));
 
-            if (_levelActorsPlanners == null || _levelActorsPlanners.Length == 0)
-                throw new InvalidOperationException(nameof(_levelActorsPlanners));
+            if (_levelFactory == null)
+                throw new NullReferenceException(nameof(_levelFactory));
         }
 
-        public void Configure(IPlayer player, ICoinAdder coinAdder)
+        public void Configure(IPlayer player)
         {
             if (player == null)
                 throw new ArgumentNullException(nameof(player));
 
-            if (coinAdder == null)
-                throw new ArgumentNullException(nameof(coinAdder));
-
-            _endlessLevelPlanner.Initialize();
-
             float coinsForRewardAdCoefficient = 3.5f;
             int achievedLevelIndex = player.AchievedLevelIndex;
             CoinCountRandomizer = new CoinCountRandomizer(achievedLevelIndex, coinsForRewardAdCoefficient);
-            LevelFactory = new LevelFactory(_endlessLevelPlanner, _levelActorsPlanners, CoinCountRandomizer, _healthCoefficient, achievedLevelIndex);
 
-            coinAdder.SetCoinsAdsView(CoinCountRandomizer.CountCoinsForRewardAd);
+            _endlessLevelPlanner.Initialize();
+            _levelFactory.Initioalize(CoinCountRandomizer, _healthCoefficient);
+
+            LevelFactory = new AdvancedLevelFactory(_levelFactory, _endlessLevelPlanner, CoinCountRandomizer, _healthCoefficient, achievedLevelIndex);
         }
 
         public void LoadLearningLevel()

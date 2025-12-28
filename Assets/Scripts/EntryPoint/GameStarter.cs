@@ -2,16 +2,13 @@ using UnityEngine;
 
 public class GameStarter : MonoBehaviour
 {
-    [SerializeField] private MainMenuLoader _mainMenuLoader;
-
-    private void OnValidate()
-    {
-        if (_mainMenuLoader == null)
-            throw new System.NullReferenceException(nameof(_mainMenuLoader));
-    }
+    private MainMenuLoader _mainMenuLoader;
 
     private void Start()
     {
+        if (_mainMenuLoader == null)
+            _mainMenuLoader = new MainMenuLoader();
+
         _mainMenuLoader.Load();
     }
 }

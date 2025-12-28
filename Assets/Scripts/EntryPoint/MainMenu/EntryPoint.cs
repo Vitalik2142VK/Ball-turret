@@ -30,19 +30,29 @@ namespace MainMenuSpace
         private void Awake()
         {
             _adsViewer = FindAnyObjectByType<AdsViewer>();
-
-            if (_adsViewer == null)
-                throw new NullReferenceException(nameof(_adsViewer));
         }
 
         private void Start()
         {
+            if (_adsViewer == null)
+            {
+                LoadStartScene();
+
+                return;
+            }
+
             //todo Remove ConfigureWithConsol() on realise
 #if UNITY_EDITOR
             Configure();
 #else
             ConfigureWithConsol();
 #endif
+        }
+
+        private void LoadStartScene()
+        {
+            StartSceneLoader sceneLoader = new StartSceneLoader();
+            sceneLoader.Load();
         }
 
         private void Configure()
@@ -53,7 +63,7 @@ namespace MainMenuSpace
             var turretImprover = _playerConfigurator.TurretImprover;
             var coinAdder = _playerConfigurator.CoinAdder;
 
-            _levelsPlannerConfigurator.Configure(player, coinAdder);
+            _levelsPlannerConfigurator.Configure(player);
             _shopConfigurator.Configure(playerSaver, player, turretImprover);
 
             var levelFactory = _levelsPlannerConfigurator.LevelFactory;

@@ -18,5 +18,5 @@ public class DamageImprovementProduct : IImprovementProduct
 
     public float ImproveValue => (float)Math.Round(_damage * _turretImprover.ImproveDamageCoefficient, Remains);
     public int CurrentValue => (int)Math.Round(_damage * _turretImprover.DamageCoefficient);
-    public bool CanBuy => _turretImprover.CanImproveDamage;
+    public bool CanImprove => _turretImprover.CanImproveDamage;
 }

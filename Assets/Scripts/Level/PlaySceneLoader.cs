@@ -17,11 +17,14 @@ public class PlaySceneLoader : MonoBehaviour, ISceneLoader
         if (level == null)
             throw new ArgumentNullException(nameof(level));
 
-        _selectedLevel.Initialize(level);
+        _selectedLevel.SetLevel(level);
     }
 
     public void Load()
     {
+        if (_selectedLevel.HasLevel == false)
+            throw new InvalidOperationException("The download level is not specified");
+
         SceneManager.LoadScene((int)SceneIndex.PlayScene);
     }
 }

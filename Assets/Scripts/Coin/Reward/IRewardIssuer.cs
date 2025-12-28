@@ -1,12 +1,8 @@
-﻿public interface IRewardIssuer
+﻿public interface IRewardIssuer : IRewardData
 {
-    public bool IsRewardIssued { get; }
-
     public void PayReward();
 
     public void PayMaxReward();
 
-    public int GetReward();
-
-    public int GetMaxReward();
+    public void CalculateRevard();
 }

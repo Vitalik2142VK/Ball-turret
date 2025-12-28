@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: InitialPrices
   m_EditorClassIdentifier: 
   _damageImprovement: 600
-  _healthImprovement: 4500
+  _healthImprovement: 5500

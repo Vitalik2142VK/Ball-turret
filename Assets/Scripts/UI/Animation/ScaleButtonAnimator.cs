@@ -4,7 +4,7 @@ using UnityEngine;
 [RequireComponent(typeof(RectTransform))]
 public class ScaleButtonAnimator : MonoBehaviour, IButtonAnimator
 {
-    [SerializeField, Range(0.05f, 0.95f)] private float _clickSizeValue = 0.1f;
+    [SerializeField, Range(-0.95f, 0.95f)] private float _clickSizeValue = -0.1f;
     [SerializeField, Range(0.05f, 0.3f)] private float _duration = 0.1f;
 
     private Tween _animation;
@@ -19,7 +19,7 @@ public class ScaleButtonAnimator : MonoBehaviour, IButtonAnimator
         _rectTransform = GetComponent<RectTransform>();
 
         _defaultSize = _rectTransform.localScale;
-        _clickSize = new Vector2(_defaultSize.x - _clickSizeValue, _defaultSize.y - _clickSizeValue);
+        _clickSize = new Vector2(_defaultSize.x + _clickSizeValue, _defaultSize.y + _clickSizeValue);
 
         IsPressed = true;
     }

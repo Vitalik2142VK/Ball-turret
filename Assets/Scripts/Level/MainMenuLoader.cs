@@ -1,7 +1,6 @@
-using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class MainMenuLoader : MonoBehaviour, ISceneLoader
+public class MainMenuLoader : ISceneLoader
 {
     public void Load()
     {

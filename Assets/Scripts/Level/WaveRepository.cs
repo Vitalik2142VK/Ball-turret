@@ -6,9 +6,10 @@ public class WaveRepository : MonoBehaviour
     public const int WaveDivider = 5;
 
     [SerializeField] private Scriptable.WaveActorsPlanner[] _waves;
-    [SerializeField] private WaveNumberMask _waveMask;
+    [SerializeField] private WaveMask _waveMask;
 
     private System.Random _random;
+    private string _name;
 
     private void OnValidate()
     {
@@ -23,25 +24,23 @@ public class WaveRepository : MonoBehaviour
     public void Initialize(System.Random random)
     {
         _random = random ?? throw new ArgumentNullException(nameof(random));
+        _name = gameObject.name;
     }
 
-    public bool HasWaveNumber(int waveNumber)
+    public bool TryGetWaveActorsPlanner(out IWaveActorsPlanner planner, WaveMask waveMask)
     {
-        if (waveNumber >= WaveDivider)
-            throw new ArgumentOutOfRangeException(nameof(waveNumber));
+        planner = null;
 
-        WaveNumberMask waveNumberMask = (WaveNumberMask)(1 << waveNumber);
+        if (HasWaveNumber(waveMask))
+        {
+            int indexRandom = _random.Next(_waves.Length);
+            planner = _waves[indexRandom];
 
-        return (_waveMask & waveNumberMask) != 0;
+            return true;
+        }
+
+        return false;
     }
 
-    public IWaveActorsPlanner GetWaveActorsPlanner(int waveNumber)
-    {
-        if (HasWaveNumber(waveNumber) == false)
-            throw new ArgumentOutOfRangeException(nameof(waveNumber));
-
-        int indexRandom = _random.Next(_waves.Length);
-
-        return _waves[indexRandom];
-    }
+    private bool HasWaveNumber(WaveMask waveMask) => (_waveMask & waveMask) != 0;
 }

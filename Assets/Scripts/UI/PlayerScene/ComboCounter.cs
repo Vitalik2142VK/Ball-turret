@@ -3,6 +3,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 
+[RequireComponent(typeof(PulsingScaleAnimation))]
 public class ComboCounter : MonoBehaviour, IComboCounter, IComboCounterResetter
 {
     [SerializeField] private TextMeshProUGUI _comboCounterTitle;
@@ -12,6 +13,7 @@ public class ComboCounter : MonoBehaviour, IComboCounter, IComboCounterResetter
     [SerializeField, Min(9)] private int _maxCombo = 30;
     [SerializeField, Min(3)] private int _minCombo = 3;
 
+    private PulsingScaleAnimation _pulsingScaleAnimation;
     private WaitForSeconds _wait;
     private int _currentCombo;
 
@@ -26,6 +28,7 @@ public class ComboCounter : MonoBehaviour, IComboCounter, IComboCounterResetter
 
     private void Awake()
     {
+        _pulsingScaleAnimation = GetComponent<PulsingScaleAnimation>();
         _wait = new WaitForSeconds(_timeRemove);
         _currentCombo = 0;
 
@@ -46,6 +49,7 @@ public class ComboCounter : MonoBehaviour, IComboCounter, IComboCounterResetter
         _comboCounter.text = _currentCombo.ToString();
         _comboCounterTitle.color = color;
         _comboCounter.color = color;
+        _pulsingScaleAnimation.Play();
     }
 
     public void ResetCombo()

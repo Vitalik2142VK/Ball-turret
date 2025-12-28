@@ -1,6 +1,6 @@
 ﻿public interface ILevelActorsPlanner
 {
-    public int CountWaves { get; }
+    public int WavesCount { get; }
 
     public IWaveActorsPlanner GetWaveActorsPlanner(int waveNumber);
 }

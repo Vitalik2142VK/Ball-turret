@@ -45,10 +45,11 @@ public class BonusActivationStep : IStep, IEndPointStep
 
     private void FinishStep()
     {
+        _bonusReservator.Update();
+
         if (_bonusReservator.HasBonuses)
             _openWindowButton.Show();
 
-        _bonusReservator.Update();
         _endStep.End();
     }
 }

@@ -42,7 +42,7 @@ public class EnemyView : MonoBehaviour, IEnemyView
     {
         DebuffReceiver = _debuffReceiverGameObject.GetComponent<IDebuffHandler>();
         _collider = GetComponent<CapsuleCollider>();
-        _enemyAnimator = GetComponent<EnemyAnimator>();
+        _enemyAnimator = GetComponent<IEnemyAnimator>();
 
         Rigidbody rigidbody = GetComponent<Rigidbody>();
         rigidbody.isKinematic = true;
@@ -57,7 +57,7 @@ public class EnemyView : MonoBehaviour, IEnemyView
     public void Initialize(IEnemyPresenter presenter, IActorAudioController audioController)
     {
         _presenter = presenter ?? throw new ArgumentNullException(nameof(presenter));
-        _audioController = audioController ?? throw new ArgumentNullException(nameof(audioController)); ;
+        _audioController = audioController ?? throw new ArgumentNullException(nameof(audioController));
     }
 
     public void PrepareDeleted(IRemovedActorsCollector removedCollector) => _presenter.PrepareDeleted(removedCollector);
@@ -68,16 +68,15 @@ public class EnemyView : MonoBehaviour, IEnemyView
 
     public void TakeDamage(IDamageAttributes damage) => _presenter.TakeDamage(damage);
 
+    public void PlayMovement(bool isMovinng) => _enemyAnimator.PlayMovement(isMovinng);
+
+    public void PlayVictory(bool isWin) => _enemyAnimator.PlayVictory(isWin);
+
     public void PlayDamage()
     {
         _enemyAnimator.PlayHit();
         _particleController.PlayHit();
         _audioController.PlayHit();
-    }
-
-    public void PlayMovement(bool isMovinng)
-    {
-        _enemyAnimator.PlayMovement(isMovinng);
     }
 
     public void PlayDead()
@@ -102,12 +101,13 @@ public class EnemyView : MonoBehaviour, IEnemyView
     private IEnumerator StartDeadProcess()
     {
         IsActive = false;
-        _collider.enabled = false;
+        HealthBar.SetActive(IsActive);
+        _collider.enabled = IsActive;
         _enemyAnimator.PlayDead();
 
         yield return new WaitForSeconds(_enemyAnimator.TimeCompletionDeath);
 
-        SetEnable(false);
+        SetEnable(IsActive);
 
         _audioController.PlayDead();
         _particleController.PlayDead();

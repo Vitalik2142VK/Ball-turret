@@ -39,4 +39,12 @@ public class DamageImprovementTransaction : IGamePayTransaction
 
         return false;
     }
+
+    public int GetMissingAmount()
+    {
+        if (IsLocked)
+            return Price - (int)_wallet.CountCoins;
+        else
+            return 0;
+    }
 }

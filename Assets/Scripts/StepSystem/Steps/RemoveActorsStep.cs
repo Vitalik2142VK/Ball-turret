@@ -12,7 +12,7 @@ public class RemoveActorsStep : IStep, IEndPointStep
 
     public void Action()
     {
-        _actorsRemover.RemoveAll();
+        _actorsRemover.RemoveAllDisabled();
         _endStep.End();
     }
 

@@ -6,7 +6,7 @@ namespace Scriptable
     public class ImprovementTurretAttributes : ScriptableObject, IImprovementTurretAttributes
     {
         [Header("Health")]
-        [SerializeField, Min(2f)] private float _maxHealthCoefficient;
+        [SerializeField, Min(1.5f)] private float _maxHealthCoefficient;
         [SerializeField, Min(0.1f)] private float _improveHealthCoefficient;
         [SerializeField, Min(1)] private int _countLevelHealthImprovements;
 

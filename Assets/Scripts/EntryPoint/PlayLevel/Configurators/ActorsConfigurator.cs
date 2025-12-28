@@ -48,23 +48,27 @@ namespace PlayLevel
                 throw new NullReferenceException(nameof(_defaultMoveAttributes));
         }
 
-        public void Configure(IDamagedObject turret, ILevel level)
+        public void Configure(IDamagedObject turret, ILevel level, IWinStatus winStatus)
         {
             if (turret == null)
                 throw new ArgumentNullException(nameof(turret));
 
+            if (winStatus == null)
+                throw new ArgumentNullException(nameof(winStatus));
+
             _healthModifier = level ?? throw new ArgumentNullException(nameof(level));
             
             IActorSpawner actorSpawner = CreatActorSpawner();
-            IAdvancedActorsMover actorMover = new ActorsMover();
-            IRemovedActorsRepository removedActorsRepository = new ActorsRemover();
+            ActorsMover actorsMover = new ActorsMover();
+            ActorsRemover removedActorsRepository = new ActorsRemover();
             EnemiesAttacker enemiesAttacker = new EnemiesAttacker(turret);
-            ActorsPreparator actorsPreparator = new ActorsPreparator(actorSpawner, actorMover, _startMoveAttributes, _defaultMoveAttributes);
-            actorsPreparator.SetLevelActorsPlanner(level);
+            EnemiesVictory enemiesVictory = new EnemiesVictory(winStatus);
+            ActorsPreparator actorsPreparator = new ActorsPreparator(actorSpawner, actorsMover, _startMoveAttributes, _defaultMoveAttributes);
+            actorsPreparator.SetLevel(level);
 
             _zoneEnemy.Initialize(removedActorsRepository, enemiesAttacker);
 
-            ActorsController = new ActorsController(actorsPreparator, removedActorsRepository, enemiesAttacker);
+            ActorsController = new ActorsController(actorsPreparator, removedActorsRepository, enemiesAttacker, enemiesVictory);
         }
 
         public void AddActorFactory(IActorFactory actorFactory)

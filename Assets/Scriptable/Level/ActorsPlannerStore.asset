@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ad96d43d013e094c93bab77d0236e91, type: 3}
+  m_Name: ActorsPlannerStore
+  m_EditorClassIdentifier: 
+  _levelActorsPlanners:
+  - {fileID: 11400000, guid: 7f065bdc00efe944b82ce0ef98c99c4c, type: 2}
+  - {fileID: 11400000, guid: da682e913638d224d912e51e7e0317a8, type: 2}
+  - {fileID: 11400000, guid: f854d0b2518eb3e43a8a398a2b0889c0, type: 2}
+  - {fileID: 11400000, guid: 72365fa18e305a54490c24cf3d04b5fe, type: 2}
+  - {fileID: 11400000, guid: 293fbb0d0c01f9844a74a1c53ea93715, type: 2}
+  - {fileID: 11400000, guid: 1b82e4f48eb81324ab142d14d0e1a27e, type: 2}
+  - {fileID: 11400000, guid: cb451f26589dd0f49993f6ea01e44681, type: 2}
+  - {fileID: 11400000, guid: 39a2fd1c700cb544fb357ea48accaaf4, type: 2}
+  - {fileID: 11400000, guid: ec1bbc9fd06175748af4b5625188f56e, type: 2}
+  - {fileID: 11400000, guid: 8aff131fc4d70664dbdede9d888973c9, type: 2}
+  - {fileID: 11400000, guid: c124a674c33c685478209ebc86c62610, type: 2}
+  - {fileID: 11400000, guid: 4c79ded9bf2a2944ca8a69804294f9aa, type: 2}
+  - {fileID: 11400000, guid: f56b2f49958067b4abc3f001c8b64912, type: 2}
+  - {fileID: 11400000, guid: 54d52cc71b748b3418c28775803ee150, type: 2}
+  - {fileID: 11400000, guid: 062c88426831117439aea6a3124c654a, type: 2}
+  - {fileID: 11400000, guid: 28cf55557d748d44dbb84f6866a53192, type: 2}
+  - {fileID: 11400000, guid: 209496567df436548ad1b578307b88d3, type: 2}
+  - {fileID: 11400000, guid: b2beb4ebd643afa448136c9ccfab285e, type: 2}
+  - {fileID: 11400000, guid: 5456ded87e8b46b42b3ea52a5176623d, type: 2}
+  - {fileID: 11400000, guid: c7577861b9d060048bdbd6f399eb8c33, type: 2}
+  - {fileID: 11400000, guid: 8bfb508f19ea40247b7bd864c67c0bd2, type: 2}

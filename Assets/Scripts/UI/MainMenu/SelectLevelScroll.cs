@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(ScrollerToElement))]
 public class SelectLevelScroll : MonoBehaviour
 {
     [SerializeField] private ContentSizeFitter _content;
     [SerializeField] private SelectLevelButton _selectLevelButtonPrefab;
-    [SerializeField] private TextMeshProUGUI _currentLevelTest;
 
     private List<SelectLevelButton> _selectLevelButtons;
+    private ScrollerToElement _scrollerToElement;
 
     public int SelectedLevelIndex { get; private set; }
 
@@ -26,9 +26,11 @@ public class SelectLevelScroll : MonoBehaviour
 
         if (_selectLevelButtonPrefab == null)
             throw new NullReferenceException(nameof(_selectLevelButtonPrefab));
+    }
 
-        if (_currentLevelTest == null)
-            throw new NullReferenceException(nameof(_currentLevelTest));
+    private void Awake()
+    {
+        _scrollerToElement = GetComponent<ScrollerToElement>();
     }
 
     private void OnEnable()
@@ -60,6 +62,7 @@ public class SelectLevelScroll : MonoBehaviour
             button.SetBlock(achievedLevelIndex < i);
             button.transform.SetParent(_content.transform);
             button.transform.localScale = _selectLevelButtonPrefab.transform.localScale;
+
             _selectLevelButtons.Add(button);
         }
     }
@@ -69,9 +72,20 @@ public class SelectLevelScroll : MonoBehaviour
         if (levelIndex < 0 || levelIndex > _selectLevelButtons.Count)
             throw new ArgumentOutOfRangeException(nameof(levelIndex));
 
+        if (levelIndex == _selectLevelButtons.Count)
+            levelIndex = 0;
+
         foreach (var button in _selectLevelButtons)
+        {
             if (button.Index == levelIndex)
-                button.Press();
+            {
+                button.Select();
+
+                ScrollToButton(button);
+
+                return;
+            }
+        }
     }
 
     private void OnSelectButton(int buttonIndex)
@@ -82,14 +96,17 @@ public class SelectLevelScroll : MonoBehaviour
                 continue;
 
             if (button.Index != buttonIndex)
-            {
-                button.PressOut();
-            }
+                button.CancelSelection();
             else
-            {
                 SelectedLevelIndex = button.Index;
-                _currentLevelTest.text = button.TextIndex;
-            }
         }
+    }
+
+    private void ScrollToButton(SelectLevelButton button)
+    {
+        if (button.TryGetComponent(out RectTransform rectTransform) == false)
+            throw new InvalidOperationException($"{nameof(button)} does not contain the '{nameof(RectTransform)}' component");
+
+        _scrollerToElement.ScrollToElement(rectTransform);
     }
 }

@@ -4,29 +4,23 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(IAnimatorUI))]
+[RequireComponent(typeof(IAnimatorUI), typeof(HiderUI))]
 public class FinishWindow : MonoBehaviour, IWindow
 {
-    [SerializeField] private Pause _pause;
-    [SerializeField] private Button _finishButton;
     [SerializeField] private ScaleAnimatorUI _videoViewingButton;
     [SerializeField] private TextMeshProUGUI _wonCoinsText;
     [SerializeField] private Image _winBord;
     [SerializeField] private Image _defeatBord;
+    [SerializeField] private Button[] _finishButtons;
 
     private IAnimatorUI _animator;
-    private IRewardIssuer _rewardIssuer;
+    private IRewardData _rewardData;
     private IAdsViewer _adsViewer;
     private IWinStatus _winStatus;
-    
+    private HiderUI _hiderUI;
+
     private void OnValidate()
     {
-        if (_pause == null)
-            throw new ArgumentNullException(nameof(_pause));
-
-        if (_finishButton == null)
-            throw new ArgumentNullException(nameof(_finishButton));
-
         if (_videoViewingButton == null)
             throw new ArgumentNullException(nameof(_videoViewingButton));
 
@@ -38,80 +32,80 @@ public class FinishWindow : MonoBehaviour, IWindow
 
         if (_defeatBord == null)
             throw new ArgumentNullException(nameof(_defeatBord));
+
+        if (_finishButtons == null || _finishButtons.Length == 0)
+            throw new InvalidOperationException(nameof(_finishButtons));
+
+        foreach (var button in _finishButtons)
+            if (button == null)
+                throw new NullReferenceException($"{_finishButtons} contains null objects");
     }
 
     private void Awake()
     {
-        gameObject.SetActive(false);
-        _winBord.gameObject.SetActive(false);
-        _defeatBord.gameObject.SetActive(false);
         _animator = GetComponent<IAnimatorUI>();
+        _hiderUI = GetComponent<HiderUI>();
+
+        gameObject.SetActive(false);
     }
 
     private void OnEnable()
     {
         if (_adsViewer != null)
-            _adsViewer.ShowCompleted += OnAddBonusReward;
+            _adsViewer.ShowCompleted += OnRefreshBonusRewardData;
 
-        _finishButton.onClick.AddListener(OnContinue);
+        foreach (var button in _finishButtons)
+            button.onClick.AddListener(OnContinue);
     }
 
     private void OnDisable()
     {
         if (_adsViewer != null)
-            _adsViewer.ShowCompleted -= OnAddBonusReward;
+            _adsViewer.ShowCompleted -= OnRefreshBonusRewardData;
 
-        _finishButton.onClick.RemoveListener(OnContinue);
+        foreach (var button in _finishButtons)
+            button.onClick.RemoveListener(OnContinue);
     }
 
-    public void Initialize(IRewardIssuer rewardIssuer, IAdsViewer adsViewer, IWinStatus winStatus)
+    public void Initialize(IRewardData rewardData, IAdsViewer adsViewer, IWinStatus winStatus)
     {
-        _rewardIssuer = rewardIssuer ?? throw new ArgumentNullException(nameof(rewardIssuer));
+        _rewardData = rewardData ?? throw new ArgumentNullException(nameof(rewardData));
         _adsViewer = adsViewer ?? throw new ArgumentNullException(nameof(adsViewer));
         _winStatus = winStatus ?? throw new ArgumentNullException(nameof(winStatus));
     }
 
     public void Enable()
     {
-        _pause.Enable();
         gameObject.SetActive(true);
         _animator.Show();
+        _hiderUI.Hide();
 
-        if (_winStatus.IsWin)
-            _winBord.gameObject.SetActive(true);
-        else
-            _defeatBord.gameObject.SetActive(true);
+        EnableWinBord(_winStatus.IsWin);
 
-        if (_adsViewer.IsAdsDisable || _rewardIssuer.GetReward() == 0)
+        if (_adsViewer.IsAdsDisable || _rewardData.Reward == 0)
         {
-            _wonCoinsText.text = _rewardIssuer.GetMaxReward().ToString();
-            _rewardIssuer.PayMaxReward();
+            _wonCoinsText.text = _rewardData.MaxReward.ToString();
             _videoViewingButton.gameObject.SetActive(false);
         }
         else
         {
-            _wonCoinsText.text = _rewardIssuer.GetReward().ToString();
-            _rewardIssuer.PayReward();
+            _wonCoinsText.text = _rewardData.Reward.ToString();
 
             if (_adsViewer.CanShowRewardAd && _adsViewer.IsAdsDisable == false)
                 _videoViewingButton.gameObject.SetActive(true);
-        }       
+        }
     }
 
     private void OnContinue()
     {
-        if (_rewardIssuer.IsRewardIssued == false)
-            _rewardIssuer.PayReward();
-
         gameObject.SetActive(false);
         _adsViewer.ShowFullScreenAd();
-        _pause.Disable();
     }
 
-    private void OnAddBonusReward()
+    private void OnRefreshBonusRewardData()
     {
         _videoViewingButton.Hide();
-        _wonCoinsText.text = _rewardIssuer.GetMaxReward().ToString();
+        _wonCoinsText.text = _rewardData.MaxReward.ToString();
 
         StartCoroutine(WaitClosureButton());
     }
@@ -121,5 +115,11 @@ public class FinishWindow : MonoBehaviour, IWindow
         yield return _videoViewingButton.GetYieldAnimation();
 
         _videoViewingButton.gameObject.SetActive(false);
+    }
+
+    private void EnableWinBord(bool isEnable)
+    {
+        _winBord.gameObject.SetActive(isEnable);
+        _defeatBord.gameObject.SetActive(isEnable == false);
     }
 }

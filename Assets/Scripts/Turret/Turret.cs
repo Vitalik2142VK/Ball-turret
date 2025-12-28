@@ -1,13 +1,15 @@
 using System;
 using UnityEngine;
 
-public class Turret : ITurret
+public class Turret : ITurret, IShotAction
 {
     private IGun _gun;
     private ITower _tower;
     private IHealth _health;
     private ITurretView _view;
     private IEndStep _endStep;
+
+    public event Action Fired;
 
     public Turret(ITurretView turretView, IGun gun, ITower tower, IHealth health)
     {
@@ -51,6 +53,8 @@ public class Turret : ITurret
         {
             _tower.AimBeforeShooting(targetPostion);
             _gun.Shoot(_tower.Direction);
+
+            Fired?.Invoke();
         }
 
         _tower.SaveDirection();

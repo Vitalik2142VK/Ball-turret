@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(ScaleAnimatorUI))]
+[RequireComponent(typeof(ScaleAnimatorUI), typeof(HiderUI))]
 public class BonusChoiceMenu : MonoBehaviour, IBonusChoiceMenu
 {
     private const int MaxCountBonusButtons = 3;
@@ -14,6 +14,7 @@ public class BonusChoiceMenu : MonoBehaviour, IBonusChoiceMenu
 
     private IBonusRandomizer _randomizer;
     private IAnimatorUI _animator;
+    private HiderUI _hiderUI;
 
     public event Action BonusSelected;
 
@@ -38,6 +39,7 @@ public class BonusChoiceMenu : MonoBehaviour, IBonusChoiceMenu
     private void Awake()
     {
         _animator = GetComponent<IAnimatorUI>();
+        _hiderUI = GetComponent<HiderUI>();
 
         gameObject.SetActive(false);
     }
@@ -74,6 +76,7 @@ public class BonusChoiceMenu : MonoBehaviour, IBonusChoiceMenu
         _pause.Enable();
         gameObject.SetActive(true);
         _animator.Show();
+        _hiderUI.Hide();
         _confirmationButton.interactable = false;
 
         FillButtons();
@@ -131,6 +134,7 @@ public class BonusChoiceMenu : MonoBehaviour, IBonusChoiceMenu
         yield return _animator.GetYieldAnimation();
 
         gameObject.SetActive(false);
+        _hiderUI.Show();
         _pause.Disable();
     }
 }

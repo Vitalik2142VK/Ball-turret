@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 public class ActorsPreparator : IAdvancedActorPreparator
 {
@@ -28,11 +29,6 @@ public class ActorsPreparator : IAdvancedActorPreparator
         EnemiesCount = 0;
     }
 
-    public void SetLevelActorsPlanner(ILevel level)
-    {
-        _level = level ?? throw new ArgumentNullException(nameof(level));
-    }
-
     public void Prepare()
     {
         if (_actors.Count == 0)
@@ -48,7 +44,7 @@ public class ActorsPreparator : IAdvancedActorPreparator
         _actorsMover.SetMovableObjects(_actors);
     }
 
-    public List<IActor> PopActors()
+    public IEnumerable<IActor> PopActors()
     {
         List<IActor> actors = new List<IActor>(_actors);
         _actors.Clear();
@@ -69,6 +65,16 @@ public class ActorsPreparator : IAdvancedActorPreparator
                 debuffable.ActivateDebuffs();
     }
 
+    public void SetLevel(ILevel level)
+    {
+        _level = level ?? throw new ArgumentNullException(nameof(level));
+    }
+
+    public IEnumerable<IEnemy> GetEnemies()
+    {
+        return _actors.Where(a => a is IEnemy).Select(a => (IEnemy)a).ToArray();
+    }
+
     private void RemoveDisabledActors()
     {
         for (int i = 0; i < _actors.Count; i++)
@@ -86,10 +92,8 @@ public class ActorsPreparator : IAdvancedActorPreparator
         EnemiesCount = 0;
 
         foreach (var actor in _actors)
-        {
             if (actor is IEnemy)
                 EnemiesCount++;
-        }
     }
 
     private void SpawnActors()

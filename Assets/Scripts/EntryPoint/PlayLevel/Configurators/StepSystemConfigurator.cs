@@ -13,13 +13,7 @@ namespace PlayLevel
         [SerializeField] private OpenWindowButton _openReservedBonusesButton;
         [SerializeField] private ReservedBonusesWindow _reservedBonusesWindow;
 
-        private ITurret _turret;
-        private IAdsViewer _adsViewer;
-        private IRewardIssuer _rewardIssuer;
-        private IPlayerController _playerController;
-        private IEnemiesController _enemiesController;
-        private ActorsController _actorsController;
-
+        private IDataForStepSystem _dataForStepSystem;
         private IDynamicEndStep _nextStepPrepareActors;
         private PlayerStep _playerStep;
         private ResetComboStep _resetComboStep;
@@ -59,18 +53,17 @@ namespace PlayLevel
                 throw new NullReferenceException(nameof(_reservedBonusesWindow));
         }
 
-        public void Configure(ITurret turret, IAdsViewer adsViewer, IRewardIssuer rewardIssuer, IPlayerController playerController, IEnemiesController enemiesController, ActorsController actorsController)
+        public void Configure(IDataForStepSystem dataForStepSystem)
         {
-            _turret = turret ?? throw new NullReferenceException(nameof(turret));
-            _adsViewer = adsViewer ?? throw new NullReferenceException(nameof(adsViewer));
-            _rewardIssuer = rewardIssuer ?? throw new NullReferenceException(nameof(rewardIssuer));
-            _playerController = playerController ?? throw new NullReferenceException(nameof(playerController));
-            _enemiesController = enemiesController ?? throw new NullReferenceException(nameof(enemiesController));
-            _actorsController = actorsController ?? throw new NullReferenceException(nameof(actorsController));
+            _dataForStepSystem = dataForStepSystem ?? throw new NullReferenceException(nameof(dataForStepSystem));
 
-            CreateSteps();
-            CreatePrepareActorsStep();
-            CyclicalStep();
+            var controllersAccess = _dataForStepSystem.ControllersAccess;
+            var actorsController = controllersAccess.ActorsController;
+            var enemiesController = controllersAccess.EnemiesController;
+
+            CreateSteps(actorsController, enemiesController);
+            CreatePrepareActorsStep(actorsController, enemiesController);
+            CreateCyclicalStep(actorsController, enemiesController);
             ConnectSteps();
             CreateActorsFreezeStep();
 
@@ -94,7 +87,7 @@ namespace PlayLevel
             AddNextStepToEndPoint(learningStep, _playerStep);
             _cyclicalStep.SetLoopingStep(learningStep);
         }
-        
+
         public void ChangeFinishWindow(IWindow window)
         {
             if (window == null)
@@ -103,30 +96,30 @@ namespace PlayLevel
             _rewardStep.SetFinishWindow(window);
         }
 
-        private void CreateSteps()
+        private void CreateSteps(IActorsController actorsController, IEnemiesController enemiesController)
         {
-            _playerStep = new PlayerStep(_playerController, _actorsController, _reservedBonusesWindow);
+            _playerStep = new PlayerStep(_dataForStepSystem.PlayerController, enemiesController, _reservedBonusesWindow);
             _resetComboStep = new ResetComboStep(_comboCounter);
             _bonusActivationStep = new BonusActivationStep(_bulletCollector, _openReservedBonusesButton);
-            _objectsMoveStep = new ActorsMoveStep(_actorsController);
-            _enemyAttackStep = new EnemyAttackStep(_enemiesController);
-            _removeActorsStep = new RemoveActorsStep(_actorsController);
-            _rewardStep = new RewardStep(_finishWindow, _adsViewer, _rewardIssuer);
-            _playVictoryStep = new PlayVictoryStep(_actorsController);
+            _objectsMoveStep = new ActorsMoveStep(actorsController);
+            _enemyAttackStep = new EnemyAttackStep(enemiesController);
+            _removeActorsStep = new RemoveActorsStep(actorsController);
+            _rewardStep = new RewardStep(_finishWindow, _dataForStepSystem.AdsViewer, _dataForStepSystem.RewardIssuer);
+            _playVictoryStep = new PlayVictoryStep(_dataForStepSystem.VictoryController);
 
             ChangeSceneStep = new ChangeSceneStep();
         }
 
-        private void CreatePrepareActorsStep()
+        private void CreatePrepareActorsStep(IActorsController actorsController, IEnemiesController enemiesController)
         {
             _nextStepPrepareActors = new DynamicNextStep(_stepSystem);
-            _prepareActorsStep = new PrepareActorsStep(_actorsController, _nextStepPrepareActors, _objectsMoveStep);
+            _prepareActorsStep = new PrepareActorsStep(actorsController, enemiesController, _nextStepPrepareActors, _objectsMoveStep);
         }
 
-        private void CyclicalStep()
+        private void CreateCyclicalStep(IActorsRemover actorsRemover, IEnemiesController enemiesController)
         {
             DynamicNextStep dynamicNextStep = new DynamicNextStep(_stepSystem);
-            _cyclicalStep = new CyclicalStep(_actorsController, dynamicNextStep, _turret);
+            _cyclicalStep = new CyclicalStep(dynamicNextStep, actorsRemover, enemiesController, _dataForStepSystem.LevelStatus);
             _cyclicalStep.SetStartStep(_prepareActorsStep);
             _cyclicalStep.SetLoopingStep(_playerStep);
             _cyclicalStep.SetFinishStep(_rewardStep);
@@ -144,7 +137,7 @@ namespace PlayLevel
         private void ConnectSteps()
         {
             AddNextStepToEndPoint(_playerStep, _resetComboStep);
-            AddNextStepToEndPoint(_turret, _resetComboStep);
+            AddNextStepToEndPoint(_dataForStepSystem.Turret, _resetComboStep);
             AddNextStepToEndPoint(_resetComboStep, _bonusActivationStep);
             AddNextStepToEndPoint(_bonusActivationStep, _prepareActorsStep);
             AddNextStepToEndPoint(_objectsMoveStep, _enemyAttackStep);

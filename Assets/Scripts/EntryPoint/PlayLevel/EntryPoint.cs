@@ -90,19 +90,24 @@ namespace PlayLevel
             _turretConfigurator.Configure(_player, _bulletConfigurator.BulletFactory);
 
             var turret = _turretConfigurator.Turret;
+            var shooterView = _turretConfigurator.ShooterView;
             SavedPlayerData savesData = new SavedPlayerData();
             PlayerSaver playerSaver = new PlayerSaver(_player, savesData);
             _coinsAdder = new CoinAdder(playerSaver, _player.Wallet, _adsViewer);
             RewardIssuer rewardIssuer = new RewardIssuer(_coinsAdder, _player, _selectedLevel);
             WinStatus winStatus = new WinStatus(turret, _selectedLevel);
+            LevelStatus levelStatus = new LevelStatus(turret, _selectedLevel);
 
             playerController.Initialize(turret);
             _actorsConfigurator.Configure(turret, _selectedLevel, winStatus);
 
-            var actorsController = _actorsConfigurator.ActorsController;
+            var actorsControllersAccess = _actorsConfigurator.ControllersAccess;
+            var enemiesController = actorsControllersAccess.EnemiesController;
+            VictoryController victoryController = new VictoryController(enemiesController, shooterView, winStatus);
+            DataForStepSystem dataForStepSystem = new DataForStepSystem(turret, _adsViewer, rewardIssuer, playerController, victoryController, actorsControllersAccess, levelStatus);
 
-            _stepSystemConfigurator.Configure(turret, _adsViewer, rewardIssuer, playerController, actorsController);
-            _bonusPrefabConfigurator.Configure(actorsController);
+            _stepSystemConfigurator.Configure(dataForStepSystem);
+            _bonusPrefabConfigurator.Configure(enemiesController);
             _stepSystemConfigurator.ConfigureBonusActivationStep(_bonusPrefabConfigurator.BonusReservator);
 
             var changeSceneStep = _stepSystemConfigurator.ChangeSceneStep;

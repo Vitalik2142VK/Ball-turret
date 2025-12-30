@@ -20,7 +20,6 @@ namespace Scriptable
 
         public bool IsFinished { get; private set; }
 
-
         public ILevel Clone() => _level.Clone();
 
         public void SetLevel(ILevel level)
@@ -38,10 +37,9 @@ namespace Scriptable
         public bool TryGetNextWaveActorsPlanner(out IWaveActorsPlanner waveActorsPlanner)
         {
             bool hasWave = _level.TryGetNextWaveActorsPlanner(out waveActorsPlanner);
+            IsFinished = hasWave == false;
 
-            if (hasWave == false)
-                IsFinished = true;
-            else
+            if (hasWave)
                 _viewWavesCounter.UpdateData();
 
             return hasWave;

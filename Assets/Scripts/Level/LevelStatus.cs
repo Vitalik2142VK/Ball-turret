@@ -1,15 +1,16 @@
 using System;
 
-public class WinStatus : IWinStatus
+public class LevelStatus : ILevelStatus
 {
     private ITurret _turret;
     private ISelectedLevel _selectedLevel;
 
-    public WinStatus(ITurret turret, ISelectedLevel selectedLevel)
+    public LevelStatus(ITurret turret, ISelectedLevel selectedLevel)
     {
         _turret = turret ?? throw new ArgumentNullException(nameof(turret));
         _selectedLevel = selectedLevel ?? throw new ArgumentNullException(nameof(selectedLevel));
     }
 
-    public bool IsWin => _turret.IsDestroyed == false && _selectedLevel.IsFinished;
+    public bool IsComplete => _selectedLevel.IsFinished;
+    public bool IsLose => _turret.IsDestroyed;
 }

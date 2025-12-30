@@ -60,7 +60,7 @@ public class TurretView : MonoBehaviour, ITurretView
     {
         _destroySound.Play();
         _explosionDestroyParticles.Play();
-        _shooterView.RunAway();
+        _shooterView.PlayRunAway();
 
         if (_destroyedTurretView != null)
             _destroyedTurretView.Enable();
@@ -70,7 +70,7 @@ public class TurretView : MonoBehaviour, ITurretView
     {
         _animator.SetTrigger(_hashGetHit);
         _takeDamageSound.Play();
-        _shooterView.TakeDamage();
+        _shooterView.PlayTakeDamage();
     }
 
     public void PlayShoot()
@@ -78,6 +78,6 @@ public class TurretView : MonoBehaviour, ITurretView
         _animator.SetTrigger(_hashShot);
         _shotParticles.Play();
         _shotSound.Play();
-        _shooterView.Shot();
+        _shooterView.PlayShot();
     }
 }

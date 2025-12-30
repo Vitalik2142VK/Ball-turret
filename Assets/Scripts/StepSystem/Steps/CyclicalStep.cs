@@ -2,18 +2,20 @@
 
 public class CyclicalStep : IStep
 {
-    private IActorsController _actorsController;
-    private ITurretState _turretState;
+    private IActorsRemover _actorsRemover;
+    private IEnemiesController _enemiesController;
+    private ILevelStatus _levelStatus;
     private IDynamicEndStep _dynamicEndStep;
     private IStep _startStep;
     private IStep _loopingStep;
     private IStep _finishStep;
 
-    public CyclicalStep(IActorsController actorController, IDynamicEndStep dynamicEndStep, ITurretState turretState)
+    public CyclicalStep(IDynamicEndStep dynamicEndStep, IActorsRemover actorsRemover, IEnemiesController enemiesController, ILevelStatus levelStatus)
     {
-        _actorsController = actorController ?? throw new ArgumentNullException(nameof(actorController));
         _dynamicEndStep = dynamicEndStep ?? throw new ArgumentNullException(nameof(dynamicEndStep));
-        _turretState = turretState ?? throw new ArgumentNullException(nameof(turretState));
+        _actorsRemover = actorsRemover ?? throw new ArgumentNullException(nameof(actorsRemover));
+        _enemiesController = enemiesController ?? throw new ArgumentNullException(nameof(enemiesController));
+        _levelStatus = levelStatus ?? throw new ArgumentNullException(nameof(levelStatus));
     }
 
     public void SetStartStep(IStep startStep)
@@ -33,13 +35,13 @@ public class CyclicalStep : IStep
 
     public void Action()
     {
-        if (_actorsController.AreNoEnemies && _actorsController.AreWavesOver || _turretState.IsDestroyed)
+        if (_enemiesController.AreNoEnemies && _levelStatus.IsComplete || _levelStatus.IsLose)
         {
             _dynamicEndStep.SetNextStep(_finishStep);
         }
-        else if (_actorsController.AreNoEnemies)
+        else if (_enemiesController.AreNoEnemies)
         {
-            _actorsController.Reboot();
+            _actorsRemover.RemoveAll();
             _dynamicEndStep.SetNextStep(_startStep);
         }
         else

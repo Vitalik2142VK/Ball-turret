@@ -1,6 +1,6 @@
 using System;
 
-public class ActorsController : IActorsController, IActorsMover, IActorsRemover
+public class ActorsController : IActorsController
 {
     private IAdvancedActorsPreparator _actorsPreparator;
     private IRemovedActorsRepository _removedActorsRepository;
@@ -10,7 +10,7 @@ public class ActorsController : IActorsController, IActorsMover, IActorsRemover
     public bool AreWavesOver => _actorsPreparator.AreWavesOver;
     public bool AreMovesFinished => _actorsMover.AreMovesFinished;
 
-    public ActorsController(IAdvancedActorsPreparator actorsPreparator, IRemovedActorsRepository removedActorsRepository, IEnemiesAttacker enemiesAttacker)
+    public ActorsController(IAdvancedActorsPreparator actorsPreparator, IRemovedActorsRepository removedActorsRepository)
     {
         _actorsPreparator = actorsPreparator ?? throw new ArgumentNullException(nameof(actorsPreparator));
         _removedActorsRepository = removedActorsRepository ?? throw new ArgumentNullException(nameof(removedActorsRepository));
@@ -19,13 +19,6 @@ public class ActorsController : IActorsController, IActorsMover, IActorsRemover
     }
 
     public void MoveAll() => _actorsMover.MoveAll();
-
-    public void Reboot()
-    {
-        var removedActors = _actorsPreparator.PopActors();
-        _removedActorsRepository.AddRange(removedActors);
-        _removedActorsRepository.RemoveAllDisabled();
-    }
 
     public void Prepare()
     {
@@ -36,9 +29,16 @@ public class ActorsController : IActorsController, IActorsMover, IActorsRemover
         }
         
         if (_actorsPreparator.EnemiesCount == 0)
-            Reboot();
+            RemoveAll();
 
         _actorsPreparator.Prepare();
+    }
+
+    public void RemoveAll()
+    {
+        var removedActors = _actorsPreparator.PopActors();
+        _removedActorsRepository.AddRange(removedActors);
+        _removedActorsRepository.RemoveAllDisabled();
     }
 
     public void RemoveAllDisabled()

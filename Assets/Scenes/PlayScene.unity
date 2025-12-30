@@ -12683,6 +12683,22 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1994495625022116240, guid: 76d17683f8fd021449c33272772caceb, type: 3}
   m_PrefabInstance: {fileID: 1165825340}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1173837479 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1682067694396854169, guid: efc5a24321c3db54c93151a25f3e8aaf, type: 3}
+  m_PrefabInstance: {fileID: 7052186215403248060}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1173837480 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6219758300010030549, guid: efc5a24321c3db54c93151a25f3e8aaf, type: 3}
+  m_PrefabInstance: {fileID: 7052186215403248060}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1173837479}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9e6cc0b4e921a14f9c5add25b594799, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1176425465
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17098,6 +17114,7 @@ MonoBehaviour:
   _gunAttributes: {fileID: 11400000, guid: 6291a783f3ae04644b38485df481048e, type: 2}
   _turretHealthAttributes: {fileID: 11400000, guid: e78ef94c2ea702e4192a478f0e019755, type: 2}
   _fullHealthTurretBonus: {fileID: 1901299422}
+  _shooterView: {fileID: 1173837479}
 --- !u!4 &1563366848
 Transform:
   m_ObjectHideFlags: 0
@@ -23961,6 +23978,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6219758300010030549, guid: efc5a24321c3db54c93151a25f3e8aaf, type: 3}
+      propertyPath: _rocketView
+      value: 
+      objectReference: {fileID: 112581004}
     - target: {fileID: 8338447303685516549, guid: efc5a24321c3db54c93151a25f3e8aaf, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.02
@@ -24120,6 +24141,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 800a1baff5207ec46bb8b74e0b920187, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _shooterView: {fileID: 1173837480}
   _shotSound: {fileID: 632149853}
   _takeDamageSound: {fileID: 1272785662}
   _destroySound: {fileID: 1295294272}

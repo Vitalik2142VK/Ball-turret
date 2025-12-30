@@ -29,7 +29,7 @@ public class EnemyFactory : MonoBehaviour, IActorFactory
         _healthModifier = healthModifier ?? throw new ArgumentNullException(nameof(healthModifier));
     }
 
-    public bool IsCanCreate(string nameTypeActor)
+    public bool CanCreate(string nameTypeActor)
     {
         if (nameTypeActor == null || nameTypeActor.Length == 0)
             throw new ArgumentOutOfRangeException(nameof(nameTypeActor));
@@ -39,7 +39,7 @@ public class EnemyFactory : MonoBehaviour, IActorFactory
 
     public IActor Create(string nameTypeActor)
     {
-        if (IsCanCreate(nameTypeActor) == false)
+        if (CanCreate(nameTypeActor) == false)
             throw new ArgumentOutOfRangeException(nameof(nameTypeActor));
 
         return _creators[nameTypeActor].Create(_healthModifier);

@@ -33,13 +33,4 @@ public class ActorsRemover : IRemovedActorsRepository
 
         _removedActors.Clear();
     }
-
-    public void RemoveAllDisabled()
-    {
-        foreach (var actor in _removedActors)
-            if (actor.IsEnable == false)
-                actor.Destroy();
-
-        _removedActors.Clear();
-    }
 }

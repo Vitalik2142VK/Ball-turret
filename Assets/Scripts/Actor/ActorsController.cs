@@ -6,8 +6,6 @@ public class ActorsController : IActorsController
     private IRemovedActorsRepository _removedActorsRepository;
     private IActorsMover _actorsMover;
 
-    public bool AreNoEnemies => _actorsPreparator.EnemiesCount == 0;
-    public bool AreWavesOver => _actorsPreparator.AreWavesOver;
     public bool AreMovesFinished => _actorsMover.AreMovesFinished;
 
     public ActorsController(IAdvancedActorsPreparator actorsPreparator, IRemovedActorsRepository removedActorsRepository)
@@ -38,12 +36,12 @@ public class ActorsController : IActorsController
     {
         var removedActors = _actorsPreparator.PopActors();
         _removedActorsRepository.AddRange(removedActors);
-        _removedActorsRepository.RemoveAllDisabled();
+        _removedActorsRepository.RemoveAll();
     }
 
     public void RemoveAllDisabled()
     {
-        _removedActorsRepository.RemoveAllDisabled();
+        _removedActorsRepository.RemoveAll();
         _actorsPreparator.CountRemainingEnemies();
     }
 }

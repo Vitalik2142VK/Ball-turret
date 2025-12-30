@@ -10389,6 +10389,7 @@ MonoBehaviour:
   _animator: {fileID: 1523948983}
   _shotParticles: {fileID: 1523948981}
   _shotSound: {fileID: 637164218}
+  _shooterView: {fileID: 2006262193}
 --- !u!1 &1533330095
 GameObject:
   m_ObjectHideFlags: 0
@@ -14830,6 +14831,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 061a5c6b6dcbb644ea29c756e2c97288, type: 3}
+--- !u!114 &2006262193 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6219758300010030549, guid: efc5a24321c3db54c93151a25f3e8aaf, type: 3}
+  m_PrefabInstance: {fileID: 1523948980}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9e6cc0b4e921a14f9c5add25b594799, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2028724914
 GameObject:
   m_ObjectHideFlags: 0

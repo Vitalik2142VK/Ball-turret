@@ -3,9 +3,9 @@
 public class RemoveActorsStep : IStep, IEndPointStep
 {
     private IEndStep _endStep;
-    private IActorsRemover _actorsRemover;
+    private IDisableActorsRemover _actorsRemover;
 
-    public RemoveActorsStep(IActorsRemover actorsRemover)
+    public RemoveActorsStep(IDisableActorsRemover actorsRemover)
     {
         _actorsRemover = actorsRemover ?? throw new ArgumentNullException(nameof(actorsRemover));
     }

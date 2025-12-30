@@ -6,7 +6,7 @@ public interface IMovableObject
 
     public void SetStartPosition(Vector3 startPosition);
 
-    public void SetPoint(Vector3 distance, float speed);
+    public void EstablishPoint(Vector3 distance, float speed);
 
     public void Move();
 }

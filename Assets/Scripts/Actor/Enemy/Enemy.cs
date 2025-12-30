@@ -30,7 +30,7 @@ public class Enemy : IEnemy
 
     public void SetStartPosition(Vector3 startPosition) => _mover.SetStartPosition(startPosition);
 
-    public void SetPoint(Vector3 distance, float speed) => _mover.SetPoint(distance, speed);
+    public void EstablishPoint(Vector3 distance, float speed) => _mover.EstablishPoint(distance, speed);
 
     public void Win() => _presenter.Win();
 

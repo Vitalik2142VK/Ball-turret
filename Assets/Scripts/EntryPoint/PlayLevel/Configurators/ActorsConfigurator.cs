@@ -60,15 +60,15 @@ namespace PlayLevel
             
             IActorSpawner actorSpawner = CreatActorSpawner();
             ActorsMover actorsMover = new ActorsMover();
-            ActorsRemover removedActorsRepository = new ActorsRemover();
+            ActorsRemover actorsRemover = new ActorsRemover();
             ActorsPreparator actorsPreparator = new ActorsPreparator(actorSpawner, actorsMover, _startMoveAttributes, _defaultMoveAttributes);
-            ActorsController actorsController = new ActorsController(actorsPreparator, removedActorsRepository);
+            ActorsController actorsController = new ActorsController(actorsPreparator, actorsRemover);
             actorsPreparator.SetLevel(level);
 
             EnemiesAttacker enemiesAttacker = new EnemiesAttacker(turret);
             EnemiesController enemiesController = new EnemiesController(actorsPreparator, enemiesAttacker);
 
-            _zoneEnemy.Initialize(removedActorsRepository, enemiesAttacker);
+            _zoneEnemy.Initialize(actorsRemover, enemiesAttacker);
 
             ControllersAccess = new ActorsControllersAccess(actorsController, enemiesController);
         }

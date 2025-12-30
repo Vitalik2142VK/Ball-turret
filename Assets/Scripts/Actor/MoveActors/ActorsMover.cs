@@ -59,6 +59,6 @@ public class ActorsMover : IAdvancedActorsMover
     private void SpecifyNewPosition()
     {
         foreach (var movableObject in _movableObjects)
-            movableObject.SetPoint(_moveAttributes.Distance, _moveAttributes.Speed);
+            movableObject.EstablishPoint(_moveAttributes.Distance, _moveAttributes.Speed);
     }
 }

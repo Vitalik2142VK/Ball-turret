@@ -1,1 +1,1 @@
-﻿public interface IActorsController : IActorsPreparator, IActorsMover, IActorsRemover { }
+﻿public interface IActorsController : IActorsPreparator, IActorsMover, IActorsRemover, IDisableActorsRemover { }

@@ -1,1 +1,1 @@
-﻿public interface IRemovedActorsRepository : IActorsRemover, IRemovedActorsCollector {}
+﻿public interface IRemovedActorsRepository : IActorsRemover, IRemovedActorsCollector { }

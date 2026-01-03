@@ -15,6 +15,8 @@ public class AddCoinsButton : MonoBehaviour
 
     public event Action Clicked;
 
+    public bool IsEnbale => _adsViewer.CanShowRewardAd;
+
     private void OnValidate()
     {
         if (_addCoinsText == null)
@@ -75,7 +77,7 @@ public class AddCoinsButton : MonoBehaviour
 
     private void OnClick()
     {
-        OnUpdateInteractable();
+        _button.interactable = false;
 
         Clicked?.Invoke();
     }

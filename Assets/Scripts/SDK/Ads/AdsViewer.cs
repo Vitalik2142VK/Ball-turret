@@ -16,7 +16,7 @@ public class AdsViewer : MonoBehaviour, IAdsViewer
     private bool _canShowFullScreen;
 
     public event Action<string> RewardAdShowed;
-    public event Action ShowCompleted;
+    public event Action<bool> ShowCompleted;
     public event Action TimerRewardAdReseted;
 
     public bool IsAdsDisable => _disableAdsPurchase.IsPurchased;
@@ -44,11 +44,15 @@ public class AdsViewer : MonoBehaviour, IAdsViewer
     private void OnEnable()
     {
         YG2.onRewardAdv += OnConfirmReward;
+        YG2.onCloseRewardedAdv += OnRefuseReward;
+        YG2.onErrorRewardedAdv += OnRefuseReward;
     }
 
     private void OnDisable()
     {
         YG2.onRewardAdv -= OnConfirmReward;
+        YG2.onCloseRewardedAdv += OnRefuseReward;
+        YG2.onErrorRewardedAdv += OnRefuseReward;
     }
 
     public void Initialize(IPurchasesStorage purchasesStorage)
@@ -88,7 +92,12 @@ public class AdsViewer : MonoBehaviour, IAdsViewer
             throw new ArgumentOutOfRangeException(nameof(rewardId));
 
         RewardAdShowed?.Invoke(rewardId);
-        ShowCompleted?.Invoke();
+        ShowCompleted?.Invoke(true);
+    }
+
+    private void OnRefuseReward()
+    {
+        ShowCompleted?.Invoke(false);
     }
 
     private IEnumerator WaitShowFullScreen()

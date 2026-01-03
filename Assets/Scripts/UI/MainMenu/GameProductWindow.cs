@@ -14,9 +14,10 @@ public class GameProductWindow : MonoBehaviour
     private IImprovementProduct _product;
     private IPurchaseRewardService _rewardService;
     private PulsingScaleAnimation _animation;
-    private bool _isReserved;
 
     public event Action<IGamePayTransaction> Selected;
+
+    public bool IsReserved { get; private set; }
 
     private void OnValidate()
     {
@@ -44,7 +45,7 @@ public class GameProductWindow : MonoBehaviour
     {
         _addCoinsButton.Clicked += OnEstablishRewardAd;
         _updateButton.onClick.AddListener(OnSendTransaction);
-        _isReserved = false;
+        IsReserved = false;
     }
 
     private void OnDisable()
@@ -67,21 +68,22 @@ public class GameProductWindow : MonoBehaviour
         UpdateViewData();
     }
 
-    public void HandleReservation()
+    public void HandleReservation(bool hasAdsViewedEnd)
     {
-        if (_isReserved == false)
+        if (IsReserved == false)
             return;
 
-        _isReserved = false;
+        IsReserved = false;
 
-        OnSendTransaction();
+        if (hasAdsViewedEnd)
+            OnSendTransaction();
     }
 
     private void OnEstablishRewardAd()
     {
         int missingAmount = _transaction.GetMissingAmount();
         _rewardService.AssignReward(missingAmount);
-        _isReserved = true;
+        IsReserved = true;
 
         ActivateAddCoinsButton(false);
     }
@@ -98,9 +100,9 @@ public class GameProductWindow : MonoBehaviour
         if (_transaction.IsLocked)
         {
             int missingAmount = _transaction.GetMissingAmount();
-            bool canProvideReward = _rewardService.CanProvideReward(_transaction.Price, missingAmount);
+            bool isViewingAdsAvailable = _rewardService.CanProvideReward(_transaction.Price, missingAmount) && _addCoinsButton.IsEnbale;
 
-            if (canProvideReward)
+            if (isViewingAdsAvailable)
             {
                 _rewardService.AssignReward(missingAmount);
                 _addCoinsButton.UpdateData();
@@ -110,7 +112,7 @@ public class GameProductWindow : MonoBehaviour
                 _updateButton.interactable = false;
             }
 
-            ActivateAddCoinsButton(canProvideReward);
+            ActivateAddCoinsButton(isViewingAdsAvailable);
         }
         else
         {

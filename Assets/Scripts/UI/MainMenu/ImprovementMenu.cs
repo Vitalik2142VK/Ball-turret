@@ -37,7 +37,10 @@ public class ImprovementMenu : MonoBehaviour
             window.Selected += OnImprove;
 
         if (_adsViewer != null)
-            _adsViewer.ShowCompleted += OnUpdate;
+        {
+            _adsViewer.ShowCompleted += OnHadleShowAds;
+            _adsViewer.TimerRewardAdReseted += OnUpdateData;
+        }
     }
 
     private void OnDisable()
@@ -46,7 +49,10 @@ public class ImprovementMenu : MonoBehaviour
             window.Selected -= OnImprove;
 
         if (_adsViewer != null)
-            _adsViewer.ShowCompleted -= OnUpdate;
+        {
+            _adsViewer.ShowCompleted -= OnHadleShowAds;
+            _adsViewer.TimerRewardAdReseted -= OnUpdateData;
+        }
     }
 
     public void Initialize(IImprovementShop improvementShop, IAdsViewer adsViewer)
@@ -79,16 +85,22 @@ public class ImprovementMenu : MonoBehaviour
             throw new ArgumentNullException(nameof(gamePayTransaction));
 
         if (_improvementShop.TryMakeTransaction(gamePayTransaction))
-            OnUpdate();
+            OnUpdateData();
         else
             throw new InvalidOperationException("The transaction failed");
     }
 
-    private void OnUpdate()
+    private void OnUpdateData()
+    {
+        foreach (var window in _gameProductWindows)
+            window.UpdateData();
+    }
+
+    private void OnHadleShowAds(bool hasAdsViewedEnd)
     {
         foreach (var window in _gameProductWindows)
         {
-            window.HandleReservation();
+            window.HandleReservation(hasAdsViewedEnd);
             window.UpdateData();
         }
     }
@@ -97,7 +109,7 @@ public class ImprovementMenu : MonoBehaviour
     {
         yield return _animator.GetYieldAnimation();
 
-        OnUpdate();
+        OnUpdateData();
     }
 
     private IEnumerator WaitClosure()

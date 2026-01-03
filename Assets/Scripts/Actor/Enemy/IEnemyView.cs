@@ -8,7 +8,7 @@
 
     public void PlayMovement(bool isMovinng);
 
-    public void PlayVictory(bool isWin);
+    public void PlayVictory();
 
     public void PlayDead();
 }

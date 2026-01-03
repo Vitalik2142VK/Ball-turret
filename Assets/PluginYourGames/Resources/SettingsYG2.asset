@@ -267,14 +267,15 @@ MonoBehaviour:
     syncInitSDK: 0
     loadSceneIfSDKLate: 0
     loadSceneIndex: 0
-    simulationLoadScene: 0
+    initDelaySimulation: 0
+    buildNumber: 14
   Simulation:
     device: 1
     language: ru
     advIntervalSimulation: 60
     durationAdv: 0.5
     loadAdv: 0
-    testFailAds: 0
+    testFailAds: 1
   Templates:
     logoImageFormat: 0
     backgroundImgFormat: 0
@@ -311,6 +312,7 @@ MonoBehaviour:
     showFirstAdv: 0
     interAdvInterval: 0
     postponeCallByFail: 0
+    setLanguageMod: 0
     skipInterAdvAfterReward: 0
     saveLocal: 0
     saveCloud: 0

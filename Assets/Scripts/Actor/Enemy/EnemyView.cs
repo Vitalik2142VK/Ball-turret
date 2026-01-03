@@ -70,7 +70,7 @@ public class EnemyView : MonoBehaviour, IEnemyView
 
     public void PlayMovement(bool isMovinng) => _enemyAnimator.PlayMovement(isMovinng);
 
-    public void PlayVictory(bool isWin) => _enemyAnimator.PlayVictory(isWin);
+    public void PlayVictory() => _enemyAnimator.PlayVictory();
 
     public void PlayDamage()
     {

@@ -2,14 +2,16 @@
 
 public class PrepareActorsStep : IStep
 {
-    private IActorsController _actorsController;
+    private IActorsPreparator _actorsPreparator;
+    private IEnemiesController _enemiesController;
     private IDynamicEndStep _dynamicEndStep;
     private IStep _defaultNextStep;
 
 
-    public PrepareActorsStep(IActorsController actorsController, IDynamicEndStep dynamicEndStep, IStep defaultNextStep)
+    public PrepareActorsStep(IActorsPreparator actorsPreparator, IEnemiesController enemiesController, IDynamicEndStep dynamicEndStep, IStep defaultNextStep)
     {
-        _actorsController = actorsController ?? throw new ArgumentNullException(nameof(actorsController));
+        _actorsPreparator = actorsPreparator ?? throw new ArgumentNullException(nameof(actorsPreparator));
+        _enemiesController = enemiesController ?? throw new ArgumentNullException(nameof(enemiesController));
         _dynamicEndStep = dynamicEndStep ?? throw new ArgumentNullException(nameof(dynamicEndStep));
         _defaultNextStep = defaultNextStep ?? throw new ArgumentNullException(nameof(defaultNextStep));
 
@@ -18,12 +20,12 @@ public class PrepareActorsStep : IStep
 
     public void Action()
     {
-        _actorsController.Count();
+        _enemiesController.Count();
 
-        if (_actorsController.AreNoEnemies)
+        if (_enemiesController.AreNoEnemies)
             _dynamicEndStep.SetNextStep(_defaultNextStep);
 
-        _actorsController.Prepare();
+        _actorsPreparator.Prepare();
         _dynamicEndStep.End();
     }
 }

@@ -4,13 +4,13 @@ public class PlayerStep : IStep, IEndPointStep
 {
     private IEndStep _endStep;
     private IPlayerController _playerController;
-    private IActorsController _actorsController;
+    private IEnemiesController _enemiesController;
     private IActivableUI _reservedBonusesWindow;
 
-    public PlayerStep(IPlayerController playerController, IActorsController actorsController, IActivableUI reservedBonusesWindow)
+    public PlayerStep(IPlayerController playerController, IEnemiesController enemiesController, IActivableUI reservedBonusesWindow)
     {
         _playerController = playerController ?? throw new ArgumentNullException(nameof(playerController));
-        _actorsController = actorsController ?? throw new ArgumentNullException(nameof(actorsController));
+        _enemiesController = enemiesController ?? throw new ArgumentNullException(nameof(enemiesController));
         _reservedBonusesWindow = reservedBonusesWindow ?? throw new ArgumentNullException(nameof(reservedBonusesWindow));
     }
 
@@ -19,7 +19,7 @@ public class PlayerStep : IStep, IEndPointStep
         if (_reservedBonusesWindow.IsActive == false)
             _playerController.SelectTarget();
 
-        if (_actorsController.AreNoEnemies)
+        if (_enemiesController.AreNoEnemies)
             _endStep.End();
     }
 

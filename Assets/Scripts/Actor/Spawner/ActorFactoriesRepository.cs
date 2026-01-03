@@ -29,7 +29,7 @@ public class ActorFactoriesRepository : IActorFactoriesRepository
 
         foreach (var factory in _factories)
         {
-            if (factory.IsCanCreate(nameTypeActor))
+            if (factory.CanCreate(nameTypeActor))
                 return factory;
         }
 

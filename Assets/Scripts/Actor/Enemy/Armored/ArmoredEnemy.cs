@@ -23,13 +23,13 @@ public class ArmoredEnemy : IEnemy, IArmoredObject
 
     public void SetStartPosition(Vector3 startPosition) => _enemy.SetStartPosition(startPosition);
 
-    public void SetPoint(Vector3 distance, float speed) => _enemy.SetPoint(distance, speed);
+    public void EstablishPoint(Vector3 distance, float speed) => _enemy.EstablishPoint(distance, speed);
 
     public void Move() => _enemy.Move();
 
     public void Destroy() => _enemy.Destroy();
 
-    public void Win(bool isWin) => _enemy.Win(isWin);
+    public void Win() => _enemy.Win();
 
     public void TakeDamage(IDamageAttributes damage)
     {

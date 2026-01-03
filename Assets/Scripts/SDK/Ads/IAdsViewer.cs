@@ -3,7 +3,7 @@
 public interface IAdsViewer
 {
     public event Action<string> RewardAdShowed;
-    public event Action ShowCompleted;
+    public event Action<bool> ShowCompleted;
     public event Action TimerRewardAdReseted;
 
     public bool CanShowRewardAd { get; }

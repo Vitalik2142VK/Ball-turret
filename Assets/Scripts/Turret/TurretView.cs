@@ -6,6 +6,8 @@ public class TurretView : MonoBehaviour, ITurretView
     private const string Shot = nameof(Shot);
     private const string GetHit = nameof(GetHit);
 
+    [SerializeField] private ShooterView _shooterView;
+
     [Header("Sound")]
     [SerializeField] private Sound _shotSound;
     [SerializeField] private Sound _takeDamageSound;
@@ -26,6 +28,9 @@ public class TurretView : MonoBehaviour, ITurretView
 
     private void OnValidate()
     {
+        if (_shooterView == null)
+            throw new NullReferenceException(nameof(_shooterView));
+
         if (_shotSound == null)
             throw new NullReferenceException(nameof(_shotSound));
 
@@ -55,6 +60,7 @@ public class TurretView : MonoBehaviour, ITurretView
     {
         _destroySound.Play();
         _explosionDestroyParticles.Play();
+        _shooterView.PlayRunAway();
 
         if (_destroyedTurretView != null)
             _destroyedTurretView.Enable();
@@ -64,6 +70,7 @@ public class TurretView : MonoBehaviour, ITurretView
     {
         _animator.SetTrigger(_hashGetHit);
         _takeDamageSound.Play();
+        _shooterView.PlayTakeDamage();
     }
 
     public void PlayShoot()
@@ -71,5 +78,6 @@ public class TurretView : MonoBehaviour, ITurretView
         _animator.SetTrigger(_hashShot);
         _shotParticles.Play();
         _shotSound.Play();
+        _shooterView.PlayShot();
     }
 }

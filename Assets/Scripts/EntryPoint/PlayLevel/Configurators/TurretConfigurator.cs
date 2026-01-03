@@ -12,7 +12,6 @@ namespace PlayLevel
         [SerializeField] private Gun _gun;
         [SerializeField] private HealthBar _healthBar;
         [SerializeField] private TurretView _turretView;
-        
         [SerializeField, SerializeIterface(typeof(ITrajectoryRenderer))] private GameObject _trajectoryRendererGameObject;
 
         [Header("Bullets")]
@@ -24,12 +23,15 @@ namespace PlayLevel
 
         [Header("Other")]
         [SerializeField] private FullHealthTurretActivatorCreator _fullHealthTurretBonus;
+        [SerializeField, SerializeIterface(typeof(IShooterView))] private GameObject _shooterView;
 
         private Turret _turret;
         private ITrajectoryRenderer _trajectoryRenderer;
 
         public ITurret Turret => _turret;
         public IShotAction ShotAction => _turret;
+
+        public IShooterView ShooterView { get; private set; }
 
         private void OnValidate()
         {
@@ -62,11 +64,16 @@ namespace PlayLevel
 
             if (_fullHealthTurretBonus == null)
                 throw new NullReferenceException(nameof(_fullHealthTurretBonus));
+
+            if (_shooterView == null)
+                throw new NullReferenceException(nameof(_shooterView));
         }
 
         private void Awake()
         {
             _trajectoryRenderer = _trajectoryRendererGameObject.GetComponent<ITrajectoryRenderer>();
+
+            ShooterView = _shooterView.GetComponent<IShooterView>();
         }
 
         private void OnDisable()

@@ -102,8 +102,11 @@ public class FinishWindow : MonoBehaviour, IWindow
         _adsViewer.ShowFullScreenAd();
     }
 
-    private void OnRefreshBonusRewardData()
+    private void OnRefreshBonusRewardData(bool hasAdsViewedEnd)
     {
+        if (hasAdsViewedEnd == false)
+            return;
+
         _videoViewingButton.Hide();
         _wonCoinsText.text = _rewardData.MaxReward.ToString();
 

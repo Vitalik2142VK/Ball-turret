@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class Mover : IMovableObject
 {
@@ -11,7 +12,7 @@ public class Mover : IMovableObject
     public Mover(Transform movingObject)
     {
         if (movingObject == null)
-            throw new System.ArgumentNullException(nameof(movingObject));
+            throw new ArgumentNullException(nameof(movingObject));
 
         _transform = movingObject;
 
@@ -24,10 +25,10 @@ public class Mover : IMovableObject
         _transform.position = new Vector3(startPosition.x, y, startPosition.z);
     }
 
-    public void SetPoint(Vector3 distance, float speed)
+    public void EstablishPoint(Vector3 distance, float speed)
     {
         if (speed <= 0f)
-            throw new System.ArgumentOutOfRangeException();
+            throw new ArgumentOutOfRangeException();
 
         _point = _transform.position + distance;
         _speed = speed;

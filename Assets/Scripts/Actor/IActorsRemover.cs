@@ -1,4 +1,4 @@
 ﻿public interface IActorsRemover
 {
-    public void RemoveAllDisabled();
+    public void RemoveAll();
 }

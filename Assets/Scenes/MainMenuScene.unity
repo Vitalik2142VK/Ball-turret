@@ -8325,7 +8325,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4259316181240313255, guid: ac847b2f568fe3a4fafa021f8b830a62, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -10.012482
+      value: -10.012726
       objectReference: {fileID: 0}
     - target: {fileID: 4259316181240313255, guid: ac847b2f568fe3a4fafa021f8b830a62, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -10322,9 +10322,6 @@ PrefabInstance:
       addedObject: {fileID: 1523948986}
     - targetCorrespondingSourceObject: {fileID: 8870078205319617871, guid: efc5a24321c3db54c93151a25f3e8aaf, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1523948987}
-    - targetCorrespondingSourceObject: {fileID: 8870078205319617871, guid: efc5a24321c3db54c93151a25f3e8aaf, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 1523948985}
   m_SourcePrefab: {fileID: 100100000, guid: efc5a24321c3db54c93151a25f3e8aaf, type: 3}
 --- !u!198 &1523948981 stripped
@@ -10392,18 +10389,7 @@ MonoBehaviour:
   _animator: {fileID: 1523948983}
   _shotParticles: {fileID: 1523948981}
   _shotSound: {fileID: 637164218}
---- !u!114 &1523948987
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1523948984}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 437304a33e49a6e4ab7601787a2b6d01, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  _shooterView: {fileID: 2006262193}
 --- !u!1 &1533330095
 GameObject:
   m_ObjectHideFlags: 0
@@ -13427,7 +13413,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 875551597372626273, guid: 76facf34bf1e98a4d9fb6c0a856e3f7e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 19.996094
+      value: 19.996033
       objectReference: {fileID: 0}
     - target: {fileID: 875551597372626273, guid: 76facf34bf1e98a4d9fb6c0a856e3f7e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -14845,6 +14831,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 061a5c6b6dcbb644ea29c756e2c97288, type: 3}
+--- !u!114 &2006262193 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6219758300010030549, guid: efc5a24321c3db54c93151a25f3e8aaf, type: 3}
+  m_PrefabInstance: {fileID: 1523948980}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9e6cc0b4e921a14f9c5add25b594799, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2028724914
 GameObject:
   m_ObjectHideFlags: 0

@@ -14,7 +14,7 @@ public class ViewableBonusFactory : MonoBehaviour, IActorFactory
         _creators = CreateDictionaryPrefabs(bonusCreators);
     }
 
-    public bool IsCanCreate(string nameTypeActor)
+    public bool CanCreate(string nameTypeActor)
     {
         if (nameTypeActor == null || nameTypeActor.Length == 0)
             throw new ArgumentOutOfRangeException(nameof(nameTypeActor));
@@ -24,7 +24,7 @@ public class ViewableBonusFactory : MonoBehaviour, IActorFactory
 
     public IActor Create(string nameTypeActor)
     {
-        if (IsCanCreate(nameTypeActor) == false)
+        if (CanCreate(nameTypeActor) == false)
             throw new ArgumentOutOfRangeException(nameof(nameTypeActor));
 
         var creator = _creators[nameTypeActor];

@@ -22,7 +22,7 @@ namespace PlayLevel
         private ActorFactoriesRepository _actorFactoriesRepository;
         private IActorHealthModifier _healthModifier;
 
-        public ActorsController ActorsController { get; private set; }
+        public IActorsControllersAccess ControllersAccess { get; private set; }
 
         private void OnValidate()
         {
@@ -60,15 +60,17 @@ namespace PlayLevel
             
             IActorSpawner actorSpawner = CreatActorSpawner();
             ActorsMover actorsMover = new ActorsMover();
-            ActorsRemover removedActorsRepository = new ActorsRemover();
-            EnemiesAttacker enemiesAttacker = new EnemiesAttacker(turret);
-            EnemiesVictory enemiesVictory = new EnemiesVictory(winStatus);
+            ActorsRemover actorsRemover = new ActorsRemover();
             ActorsPreparator actorsPreparator = new ActorsPreparator(actorSpawner, actorsMover, _startMoveAttributes, _defaultMoveAttributes);
+            ActorsController actorsController = new ActorsController(actorsPreparator, actorsRemover);
             actorsPreparator.SetLevel(level);
 
-            _zoneEnemy.Initialize(removedActorsRepository, enemiesAttacker);
+            EnemiesAttacker enemiesAttacker = new EnemiesAttacker(turret);
+            EnemiesController enemiesController = new EnemiesController(actorsPreparator, enemiesAttacker);
 
-            ActorsController = new ActorsController(actorsPreparator, removedActorsRepository, enemiesAttacker, enemiesVictory);
+            _zoneEnemy.Initialize(actorsRemover, enemiesAttacker);
+
+            ControllersAccess = new ActorsControllersAccess(actorsController, enemiesController);
         }
 
         public void AddActorFactory(IActorFactory actorFactory)

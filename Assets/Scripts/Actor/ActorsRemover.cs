@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 public class ActorsRemover : IRemovedActorsRepository
 {
@@ -12,17 +13,20 @@ public class ActorsRemover : IRemovedActorsRepository
     public void Add(IActor actor)
     {
         if (actor == null)
-            throw new System.ArgumentNullException(nameof(actor));
+            throw new ArgumentNullException(nameof(actor));
 
         _removedActors.Add(actor);
     }
 
     public void AddRange(IEnumerable<IActor> actors)
     {
+        if (actors == null)
+            throw new ArgumentNullException(nameof(actors));
+
         _removedActors.AddRange(actors);
     }
 
-    public void RemoveAllDisabled()
+    public void RemoveAll()
     {
         foreach (var actor in _removedActors)
             actor.Destroy();

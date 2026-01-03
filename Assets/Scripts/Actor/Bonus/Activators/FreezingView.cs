@@ -5,6 +5,7 @@ using UnityEngine;
 public class FreezingView : MonoBehaviour, IBonusActicatorView
 {
     [SerializeField, SerializeIterface(typeof(IAnimatorUI))] private GameObject _imageFreeze;
+    [SerializeField] private ActorsFreezerView _freezer;
     [SerializeField] private Sound _soundFreeze;
 
     private IAnimatorUI _animator;
@@ -13,6 +14,9 @@ public class FreezingView : MonoBehaviour, IBonusActicatorView
     {
         if (_imageFreeze == null)
             throw new NullReferenceException(nameof(_imageFreeze));
+
+        if (_freezer == null)
+            throw new NullReferenceException(nameof(_freezer));
 
         if (_soundFreeze == null)
             throw new NullReferenceException(nameof(_soundFreeze));
@@ -26,6 +30,7 @@ public class FreezingView : MonoBehaviour, IBonusActicatorView
 
     public void PlayActivation()
     {
+        _freezer.Freeze();
         _imageFreeze.SetActive(true);
         _animator.Show();
         _soundFreeze.Play();

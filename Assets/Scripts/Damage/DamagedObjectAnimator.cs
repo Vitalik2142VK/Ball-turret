@@ -5,6 +5,7 @@ public class DamagedObjectAnimator : MonoBehaviour, IDamagedObjectAnimator
 {
     private const string GetHit = nameof(GetHit);
     private const string Die = nameof(Die);
+    private const float DefaultSpeedAnimation = 1f;
 
     private Animator _animator;
     private int _hashGetHit;
@@ -25,5 +26,9 @@ public class DamagedObjectAnimator : MonoBehaviour, IDamagedObjectAnimator
 
     public void PlayHit() => _animator.SetTrigger(_hashGetHit);
 
-    public void PlayDead() => _animator.SetTrigger(_hashDie);
+    public void PlayDead()
+    {
+        _animator.speed = DefaultSpeedAnimation;
+        _animator.SetTrigger(_hashDie);
+    }
 }

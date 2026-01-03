@@ -12,6 +12,7 @@ namespace PlayLevel
         [SerializeField] private FreezingBonusActivatorCreator _freezerCreator;
         [SerializeField] private OpenWindowButton _openReservedBonusesButton;
         [SerializeField] private ReservedBonusesWindow _reservedBonusesWindow;
+        [SerializeField] private ActorsFreezerView _freezer;
 
         private IDataForStepSystem _dataForStepSystem;
         private IDynamicEndStep _nextStepPrepareActors;
@@ -51,6 +52,9 @@ namespace PlayLevel
 
             if (_reservedBonusesWindow == null)
                 throw new NullReferenceException(nameof(_reservedBonusesWindow));
+
+            if (_freezer == null)
+                throw new NullReferenceException(nameof(_freezer));
         }
 
         public void Configure(IDataForStepSystem dataForStepSystem)
@@ -129,7 +133,7 @@ namespace PlayLevel
 
         private void CreateActorsFreezeStep()
         {
-            _actorsFreezeStep = new ActorsFreezeStep(_nextStepPrepareActors, _objectsMoveStep);
+            _actorsFreezeStep = new ActorsFreezeStep(_nextStepPrepareActors, _objectsMoveStep, _freezer);
 
             AddNextStepToEndPoint(_actorsFreezeStep, _removeActorsStep);
         }

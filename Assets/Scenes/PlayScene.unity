@@ -5929,6 +5929,56 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fad7e7846876be54e93e73377cf57c54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &513128777
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 513128779}
+  - component: {fileID: 513128778}
+  m_Layer: 0
+  m_Name: Freezer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &513128778
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 513128777}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e5fc5100a36dee4a893b91d05b65523, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _iceShellPool: {fileID: 1203196679}
+  _actorZone: {fileID: 681090245}
+  _layerMask:
+    serializedVersion: 2
+    m_Bits: 512
+--- !u!4 &513128779
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 513128777}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1203196678}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &521243864
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11858,6 +11908,7 @@ MonoBehaviour:
   _freezerCreator: {fileID: 1631347062}
   _openReservedBonusesButton: {fileID: 647794581}
   _reservedBonusesWindow: {fileID: 2096123122}
+  _freezer: {fileID: 513128778}
 --- !u!4 &1081096998
 Transform:
   m_ObjectHideFlags: 0
@@ -12218,7 +12269,7 @@ GameObject:
   - component: {fileID: 1124949978}
   - component: {fileID: 1124949977}
   m_Layer: 0
-  m_Name: TuretKiller
+  m_Name: TurretKiller
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13441,6 +13492,51 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 875551597372626273, guid: 76facf34bf1e98a4d9fb6c0a856e3f7e, type: 3}
   m_PrefabInstance: {fileID: 1529692924}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1203196677
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1203196678}
+  - component: {fileID: 1203196679}
+  m_Layer: 0
+  m_Name: IceShellPool
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1203196678
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1203196677}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 513128779}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1203196679
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1203196677}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5461b3aaa4912ff4e9d5016c423c8cb5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _iceShellPrefab: {fileID: 4194618404937933242, guid: 889f7a584c3bd94428176492404938a7, type: 3}
 --- !u!1 &1203584562
 GameObject:
   m_ObjectHideFlags: 0
@@ -18325,6 +18421,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _imageFreeze: {fileID: 1892085831}
+  _freezer: {fileID: 513128778}
   _soundFreeze: {fileID: 556643514}
 --- !u!1 &1631896424
 GameObject:
@@ -24585,6 +24682,7 @@ SceneRoots:
   - {fileID: 7052186215403248060}
   - {fileID: 1479674612}
   - {fileID: 112581002}
+  - {fileID: 513128779}
   - {fileID: 1261431354}
   - {fileID: 465117282}
   - {fileID: 681090243}

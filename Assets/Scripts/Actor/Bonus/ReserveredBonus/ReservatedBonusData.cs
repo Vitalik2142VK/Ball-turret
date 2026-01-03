@@ -5,7 +5,7 @@
     public ReservatedBonusData(int maxBonusesCount)
     {
         MaxBonusesCount = maxBonusesCount;
-        _currentBonusesCount = 0;
+        _currentBonusesCount = 3;
     }
 
     public int MaxBonusesCount { get; }

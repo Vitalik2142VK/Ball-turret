@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Test_LevelActorsPlanner
   m_EditorClassIdentifier: 
   _waves:
-
-  - {fileID: 11400000, guid: 883e87abfd58d2b499f6efa000800148, type: 2}
   - {fileID: 11400000, guid: 3dab549881045854880c804fc43d0644, type: 2}
+  - {fileID: 11400000, guid: 883e87abfd58d2b499f6efa000800148, type: 2}
   - {fileID: 11400000, guid: 513e0d7063cf50f449c859427a11bd99, type: 2}
+  - {fileID: 11400000, guid: b1e0b151a8b414d4285689102ea19db6, type: 2}

@@ -37,6 +37,7 @@ public class AddCoinsButton : MonoBehaviour
 
         _adsViewer.TimerRewardAdReseted += OnUpdateInteractable;
         _button.onClick.AddListener(OnClick);
+        OnUpdateInteractable();
     }
 
     private void Start()

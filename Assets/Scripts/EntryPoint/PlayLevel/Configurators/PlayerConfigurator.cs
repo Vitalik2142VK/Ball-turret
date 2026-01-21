@@ -2,24 +2,18 @@
 using UnityEngine;
 using Scriptable;
 
-namespace MainMenuSpace
+namespace PlayLevel
 {
     public class PlayerConfigurator : MonoBehaviour
     {
         [SerializeField] private CachedPlayer _cachedUser;
         [SerializeField] private ImprovementTurretAttributes _improvementTurretAttributes;
-        [SerializeField] private AuthPlayer _authPlayer;
-        [SerializeField] private PurchasesHandler _purchasesHandler;
 
         private IPlayerLoader _playerLoader;
         private ISavedPlayerData _savedData;
+        private IPlayerSaver _playerSaver;
         private CoinAdder _coinAdder;
 
-        public IPlayerSaver PlayerSaver { get; private set; }
-
-        public ITurretImprover TurretImprover => _cachedUser.TurretImprover;
-        public IPlayer Player => _cachedUser;
-        public ICoinAdder CoinAdder => _coinAdder;
 
         private void OnValidate()
         {
@@ -28,12 +22,6 @@ namespace MainMenuSpace
 
             if (_improvementTurretAttributes == null)
                 throw new NullReferenceException(nameof(_improvementTurretAttributes));
-
-            if (_authPlayer == null)
-                throw new NullReferenceException(nameof(_authPlayer));
-
-            if (_purchasesHandler == null)
-                throw new NullReferenceException(nameof(_purchasesHandler));
         }
 
         public void OnDisable()
@@ -56,23 +44,11 @@ namespace MainMenuSpace
                 _cachedUser.SetPlayer(player);
             }
 
-            PlayerSaver = new PlayerSaver(_cachedUser, _savedData);
-
-            _authPlayer.Authorize();
-            _purchasesHandler.LoadPurchases(_cachedUser.PurchasesStorage);
+            _playerSaver = new PlayerSaver(_cachedUser, _savedData);
 
             adsViewer.Initialize(_cachedUser.PurchasesStorage);
 
-            _coinAdder = new CoinAdder(PlayerSaver, _cachedUser.Wallet, adsViewer);
-        }
-
-        //todo Remove on realise
-        public void OnRemoveSave()
-        {
-            if (_savedData is SavedPlayerData data == false)
-                return;
-
-            data.RemoveAll();
+            _coinAdder = new CoinAdder(_playerSaver, _cachedUser.Wallet, adsViewer);
         }
     }
 }

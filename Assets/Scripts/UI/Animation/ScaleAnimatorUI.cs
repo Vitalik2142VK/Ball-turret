@@ -15,7 +15,6 @@ public class ScaleAnimatorUI : MonoBehaviour, IAnimatorUI
     private TweenController _controller;
     private Vector2 _defaultSize;
     private Vector2 _startSize;
-    private bool _isBlocksRaycasts;
 
     private void Awake()
     {
@@ -23,15 +22,8 @@ public class ScaleAnimatorUI : MonoBehaviour, IAnimatorUI
         _rectTransform = GetComponent<RectTransform>();
 
         _defaultSize = _rectTransform.localScale;
-        _isBlocksRaycasts = _canvasGroup.blocksRaycasts;
         _controller = new TweenController();
         _startSize = _defaultSize * _startSizeValue;
-    }
-
-    private void Start()
-    {
-        _canvasGroup.alpha = EnableValue;
-        _canvasGroup.blocksRaycasts = _isBlocksRaycasts;
     }
 
     private void OnDestroy()
@@ -52,7 +44,6 @@ public class ScaleAnimatorUI : MonoBehaviour, IAnimatorUI
             .SetUpdate(true);
 
         _controller.PlayAnimation(_animation);
-        _canvasGroup.blocksRaycasts = _isBlocksRaycasts;
     }
 
     public void Hide()
@@ -63,7 +54,8 @@ public class ScaleAnimatorUI : MonoBehaviour, IAnimatorUI
         _animation
             .Append(_canvasGroup.DOFade(0, _duration).From(EnableValue))
             .Join(_rectTransform.DOScale(_startSize, _duration).From(_defaultSize))
-            .SetUpdate(true);
+            .SetUpdate(true)
+            .OnComplete(() => Canvas.ForceUpdateCanvases());
 
         _controller.PlayAnimation(_animation);
         _canvasGroup.blocksRaycasts = false;

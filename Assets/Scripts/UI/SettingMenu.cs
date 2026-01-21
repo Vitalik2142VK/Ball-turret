@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(IAnimatorUI))]
+[RequireComponent(typeof(IAnimatorUI), typeof(CanvasGroup))]
 public class SettingMenu : MonoBehaviour
 {
     [SerializeField] private Slider _volumeSound;
@@ -13,6 +13,7 @@ public class SettingMenu : MonoBehaviour
     private IWindow _previousWindow;
     private IAudioSetting _audioSetting;
     private IAnimatorUI _animator;
+    private CanvasGroup _canvasGroup;
 
     private void OnValidate()
     {
@@ -29,8 +30,10 @@ public class SettingMenu : MonoBehaviour
     private void Awake()
     {
         _animator = GetComponent<IAnimatorUI>();
-
-        gameObject.SetActive(false);
+        _canvasGroup = GetComponent<CanvasGroup>();
+        _canvasGroup.alpha = 0;
+        _canvasGroup.blocksRaycasts = false;
+        _canvasGroup.interactable = false;
     }
 
     private void OnEnable()
@@ -63,7 +66,9 @@ public class SettingMenu : MonoBehaviour
     {
         _previousWindow = previousWindow ?? throw new ArgumentNullException(nameof(previousWindow));
 
-        gameObject.SetActive(true);
+        _canvasGroup.alpha = 1;
+        _canvasGroup.blocksRaycasts = true;
+        _canvasGroup.interactable = true;
         _animator.Show();
     }
 
@@ -85,7 +90,9 @@ public class SettingMenu : MonoBehaviour
     {
         yield return _animator.GetYieldAnimation();
 
-        gameObject.SetActive(false);
+        _canvasGroup.alpha = 0;
+        _canvasGroup.blocksRaycasts = false;
+        _canvasGroup.interactable = false;
         _previousWindow.Enable();
     }
 }

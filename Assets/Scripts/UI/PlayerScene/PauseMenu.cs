@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(ScaleAnimatorUI))]
+[RequireComponent(typeof(ScaleAnimatorUI), typeof(CanvasGroup))]
 public class PauseMenu : MonoBehaviour, IWindow
 {
     [SerializeField] private Pause _pause;
@@ -10,6 +10,7 @@ public class PauseMenu : MonoBehaviour, IWindow
 
     private IChangeSceneStep _changeSceneStep;
     private IAnimatorUI _animator;
+    private CanvasGroup _canvasGroup;
 
     private void OnValidate()
     {
@@ -23,8 +24,10 @@ public class PauseMenu : MonoBehaviour, IWindow
     private void Awake()
     {
         _animator = GetComponent<IAnimatorUI>();
-
-        gameObject.SetActive(false);
+        _canvasGroup = GetComponent<CanvasGroup>();
+        _canvasGroup.alpha = 0;
+        _canvasGroup.blocksRaycasts = false;
+        _canvasGroup.interactable = false;
     }
 
     public void Initialize(IChangeSceneStep changeSceneStep)
@@ -34,7 +37,9 @@ public class PauseMenu : MonoBehaviour, IWindow
         
     public void Enable()
     {
-        gameObject.SetActive(true);
+        _canvasGroup.alpha = 1;
+        _canvasGroup.blocksRaycasts = true;
+        _canvasGroup.interactable = true;
         _pause.Enable();
         _animator.Show();
     }
@@ -48,7 +53,9 @@ public class PauseMenu : MonoBehaviour, IWindow
 
     public void OnOpenSettingMenu()
     {
-        gameObject.SetActive(false);
+        _canvasGroup.alpha = 0;
+        _canvasGroup.blocksRaycasts = false;
+        _canvasGroup.interactable = false;
         _settingMenu.Open(this);
     }
 
@@ -64,7 +71,9 @@ public class PauseMenu : MonoBehaviour, IWindow
     {
         yield return _animator.GetYieldAnimation();
 
-        gameObject.SetActive(false);
+        _canvasGroup.alpha = 0;
+        _canvasGroup.blocksRaycasts = false;
+        _canvasGroup.interactable = false;
         _pause.Disable();
     }
 }

@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(ScaleAnimatorUI), typeof(HiderUI))]
+[RequireComponent(typeof(ScaleAnimatorUI), typeof(HiderUI), typeof(CanvasGroup))]
 public class BonusChoiceMenu : MonoBehaviour, IBonusChoiceMenu
 {
     private const int MaxCountBonusButtons = 3;
@@ -15,6 +15,7 @@ public class BonusChoiceMenu : MonoBehaviour, IBonusChoiceMenu
     private IBonusRandomizer _randomizer;
     private IAnimatorUI _animator;
     private HiderUI _hiderUI;
+    private CanvasGroup _canvasGroup;
 
     public event Action BonusSelected;
 
@@ -40,8 +41,10 @@ public class BonusChoiceMenu : MonoBehaviour, IBonusChoiceMenu
     {
         _animator = GetComponent<IAnimatorUI>();
         _hiderUI = GetComponent<HiderUI>();
-
-        gameObject.SetActive(false);
+        _canvasGroup = GetComponent<CanvasGroup>();
+        _canvasGroup.alpha = 0;
+        _canvasGroup.blocksRaycasts = false;
+        _canvasGroup.interactable = false;
     }
 
     private void OnEnable()
@@ -74,7 +77,9 @@ public class BonusChoiceMenu : MonoBehaviour, IBonusChoiceMenu
     public void Enable()
     {
         _pause.Enable();
-        gameObject.SetActive(true);
+        _canvasGroup.alpha = 1;
+        _canvasGroup.blocksRaycasts = true;
+        _canvasGroup.interactable = true;
         _animator.Show();
         _hiderUI.Hide();
         _confirmationButton.interactable = false;
@@ -133,7 +138,9 @@ public class BonusChoiceMenu : MonoBehaviour, IBonusChoiceMenu
 
         yield return _animator.GetYieldAnimation();
 
-        gameObject.SetActive(false);
+        _canvasGroup.alpha = 0;
+        _canvasGroup.blocksRaycasts = false;
+        _canvasGroup.interactable = false;
         _hiderUI.Show();
         _pause.Disable();
     }

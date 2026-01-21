@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 
@@ -37,6 +38,8 @@ public class UITextLocalizer : MonoBehaviour
     private void OnEnable()
     {
         _localizationData.LanguageChanged += OnChangeLanguage;
+
+        StartCoroutine(DelayedRefresh());
     }
 
     private void Start()
@@ -74,6 +77,14 @@ public class UITextLocalizer : MonoBehaviour
                 _text.text = _englishText;
                 break;
         }
-    } 
+    }
+
+    private IEnumerator DelayedRefresh()
+    {
+        yield return new WaitForEndOfFrame();
+
+        _text.ForceMeshUpdate(true);
+        _text.UpdateVertexData();
+    }
 }
 

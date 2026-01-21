@@ -114,8 +114,6 @@ namespace PlayLevel
                 magazine.AddBullet(bullet);
             }
 
-            magazine.AddBullet(bulletFactory.Create(BulletType.Bomb));
-
             return magazine;
         }
     }

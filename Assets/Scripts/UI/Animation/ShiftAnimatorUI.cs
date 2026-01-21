@@ -29,12 +29,6 @@ public class ShiftAnimatorUI : MonoBehaviour, IAnimatorUI
         _shift = new ShiftUI();
     }
 
-    private void Start()
-    {
-        _canvasGroup.alpha = EnableValue;
-        _canvasGroup.blocksRaycasts = _isBlocksRaycasts;
-    }
-
     private void OnDestroy()
     {
         _controller.KillCurrentAnimation();
@@ -51,7 +45,8 @@ public class ShiftAnimatorUI : MonoBehaviour, IAnimatorUI
         _animation
             .Append(_canvasGroup.DOFade(EnableValue, _duration).From(0))
             .Join(_rectTransform.DOAnchorPos(_defaultPosition, _duration).From(startShift))
-            .SetUpdate(true);
+            .SetUpdate(true)
+            .OnComplete(() => Canvas.ForceUpdateCanvases()); ;
 
         _controller.PlayAnimation(_animation);
         _canvasGroup.blocksRaycasts = _isBlocksRaycasts;

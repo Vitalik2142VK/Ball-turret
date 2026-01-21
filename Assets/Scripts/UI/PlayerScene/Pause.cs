@@ -1,11 +1,22 @@
 ﻿using UnityEngine;
 
+[RequireComponent(typeof(CanvasGroup))]
 public class Pause : MonoBehaviour
 {
     private const float EnableTimeScale = 1f;
     private const float DisableTimeScale = 0f;
 
+    private CanvasGroup _canvasGroup;
     private OpenWindowButton _pauseButton;
+
+    private void Awake()
+    {
+        _canvasGroup = GetComponent<CanvasGroup>();
+
+        _canvasGroup.alpha = 0;
+        _canvasGroup.blocksRaycasts = false;
+        _canvasGroup.interactable = false;
+    }
 
     public void Initialize(OpenWindowButton pauseButton)
     {
@@ -18,12 +29,16 @@ public class Pause : MonoBehaviour
     {
         Time.timeScale = DisableTimeScale;
 
-        gameObject.SetActive(true);
+        _canvasGroup.alpha = 1;
+        _canvasGroup.blocksRaycasts = true;
+        _canvasGroup.interactable = true;
     }
 
     public void Disable()
     {
-        gameObject.SetActive(false);
+        _canvasGroup.alpha = 0;
+        _canvasGroup.blocksRaycasts = false;
+        _canvasGroup.interactable = false;
         _pauseButton.Show();
 
         Time.timeScale = EnableTimeScale;

@@ -14,6 +14,8 @@ namespace RecorderLevel
         private Timer _waitFixTurrget;
         private float _aimDistance = 0.1f;
 
+        public event Action Shoted;
+
         private void OnValidate()
         {
             if (_touchPosition == null)
@@ -32,6 +34,7 @@ namespace RecorderLevel
 
         public void SelectTarget()
         {
+
             if (_turret.IsReadyShoot == false)
                 return;
 
@@ -64,6 +67,8 @@ namespace RecorderLevel
             {
                 _target.ThrowOff();
                 _turret.FixTargetPostion(_touchPosition.position);
+
+                Shoted?.Invoke();
             }
             else
             {

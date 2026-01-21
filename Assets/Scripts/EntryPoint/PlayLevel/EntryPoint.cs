@@ -10,6 +10,7 @@ namespace PlayLevel
         [SerializeField] private SelectedLevel _selectedLevel;
         [SerializeField] private CachedPlayer _player;
         [SerializeField, SerializeIterface(typeof(IPlayerController))] private GameObject _playerController;
+        [SerializeField] private LevelActorsPlanner _testPlaner;
 
         [Header("Configurators")]
         [SerializeField] private TurretConfigurator _turretConfigurator;
@@ -20,6 +21,7 @@ namespace PlayLevel
         [SerializeField] private UIConfigurator _userInterfaceConfigurator;
         [SerializeField] private FinishWindowConfigurator _finishWindowConfigurator;
         [SerializeField] private BonusesWindowHiderConfigurator _bonusesWindowHiderConfigurator;
+        [SerializeField] private PlayerConfigurator _playerConfigurator;
 
         private AdsViewer _adsViewer;
         private CoinAdder _coinsAdder;
@@ -36,6 +38,9 @@ namespace PlayLevel
 
             if (_playerController == null)
                 throw new NullReferenceException(nameof(_playerController));
+
+            if (_testPlaner == null)
+                throw new NullReferenceException(nameof(_testPlaner));
 
             if (_turretConfigurator == null)
                 throw new NullReferenceException(nameof(_turretConfigurator));
@@ -60,6 +65,9 @@ namespace PlayLevel
 
             if (_bonusesWindowHiderConfigurator == null)
                 throw new NullReferenceException(nameof(_bonusesWindowHiderConfigurator));
+
+            if (_playerConfigurator == null)
+                throw new NullReferenceException(nameof(_playerConfigurator));
         }
 
         private void Start()
@@ -79,10 +87,18 @@ namespace PlayLevel
 
         private void Configure()
         {
-            _adsViewer = FindAnyObjectByType<AdsViewer>();
+            if (_player.IsLoaded == false)
+            {
+                LoadPlayer();
+                LoadLevel();
+            }
+            else
+            {
+                _adsViewer = FindAnyObjectByType<AdsViewer>();
 
-            if (_adsViewer == null)
-                throw new NullReferenceException(nameof(_adsViewer));
+                if (_adsViewer == null)
+                    throw new NullReferenceException(nameof(_adsViewer));
+            }
 
             IPlayerController playerController = _playerController.GetComponent<IPlayerController>();
 
@@ -132,6 +148,23 @@ namespace PlayLevel
             {
                 Console.GetException(ex);
             }
+        }
+
+        private void LoadPlayer()
+        {
+            GameObject gameObject = new GameObject();
+            AdsViewer adsViewer = gameObject.AddComponent<AdsViewer>();
+
+            _adsViewer = adsViewer;
+            _playerConfigurator.Configure(_adsViewer);
+        }
+
+        private void LoadLevel()
+        {
+            CoinCountRandomizer coinCountRandomizer = new CoinCountRandomizer();
+            Level testLevel = new Level(_testPlaner, coinCountRandomizer);
+
+            _selectedLevel.SetLevel(testLevel);
         }
     }
 }

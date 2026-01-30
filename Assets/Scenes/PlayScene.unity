@@ -10157,7 +10157,7 @@ Canvas:
   m_GameObject: {fileID: 863853262}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
+  m_RenderMode: 1
   m_Camera: {fileID: 1074582781}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
@@ -10355,7 +10355,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &884420444
 RectTransform:
   m_ObjectHideFlags: 0
@@ -11087,7 +11087,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4055
+    m_Bits: 8151
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 8400000, guid: 3c19c3a71d45fc54fafccb0f3dfa83d3, type: 2}
   m_TargetDisplay: 0
@@ -12090,10 +12090,10 @@ Camera:
     serializedVersion: 2
     m_Bits: 32
   m_RenderingPath: -1
-  m_TargetTexture: {fileID: 0}
+  m_TargetTexture: {fileID: 8400000, guid: cc08dca9217bf3148aebb7b352da3084, type: 2}
   m_TargetDisplay: 0
   m_TargetEye: 3
-  m_HDR: 0
+  m_HDR: 1
   m_AllowMSAA: 1
   m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0

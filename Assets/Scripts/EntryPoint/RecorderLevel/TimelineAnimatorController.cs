@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 
 namespace RecorderLevel
@@ -7,30 +6,43 @@ namespace RecorderLevel
     public class TimelineAnimatorController : MonoBehaviour
     {
         private const string Hello = nameof(Hello);
+        private const string Collect = nameof(Collect);
+        private const string Walk = nameof(Walk);
+        private const string GetUp = nameof(GetUp);
+        private const string PanicRun = nameof(PanicRun);
+        private const string Run = nameof(Run);
 
         private Animator _animator;
         private int _hashHello;
+        private int _hashCollect;
+        private int _hashWalk;
+        private int _hashGetUp;
+        private int _hashPanicRun;
+        private int _hashRun;
 
         private void Awake()
         {
             _animator = GetComponent<Animator>();
             _hashHello = Animator.StringToHash(Hello);
+            _hashCollect = Animator.StringToHash(Collect);
+            _hashWalk = Animator.StringToHash(Walk);
+            _hashGetUp = Animator.StringToHash(GetUp);
+            _hashPanicRun = Animator.StringToHash(PanicRun);
+            _hashRun = Animator.StringToHash(Run);
         }
 
-        public void PlayHello(float timePlay)
-        {
-            WaitForSeconds wait = new WaitForSeconds(timePlay);
+        public void SetSpeedAnimator(float speed) => _animator.speed = speed;
 
-            _animator.SetBool(_hashHello, true);
+        public void PlayWalk(bool isPlay) => _animator.SetBool(_hashWalk, isPlay);
 
-            StartCoroutine(PlayHello(wait));
-        }
+        public void PlayPanicRun(bool isPlay) => _animator.SetBool(_hashPanicRun, isPlay);
 
-        private IEnumerator PlayHello(YieldInstruction yieldInstruction)
-        {
-            yield return yieldInstruction;
+        public void PlayRunning(bool isPlay) => _animator.SetBool(_hashRun, isPlay);
 
-            _animator.SetBool(_hashHello, false);
-        }
+        public void PlayCollect() => _animator.SetTrigger(_hashCollect);
+
+        public void PlayHello() => _animator.SetTrigger(_hashHello);
+
+        public void PlayGetUp() => _animator.SetTrigger(_hashGetUp);
     }
 }

@@ -16,6 +16,7 @@ namespace PlayLevel
 
         [Header("Bullets")]
         [SerializeField] private BulletsCollector _bulletCollector;
+        [SerializeField] private BulletType[] _bullets;
 
         [Header("Attributes")]
         [SerializeField] private GunAttributes _gunAttributes;
@@ -67,6 +68,9 @@ namespace PlayLevel
 
             if (_shooterView == null)
                 throw new NullReferenceException(nameof(_shooterView));
+
+            if (_bullets == null || _bullets.Length == 0)
+                _bullets = new BulletType[] { BulletType.Default };
         }
 
         private void Awake()
@@ -104,13 +108,12 @@ namespace PlayLevel
 
         private IGunMagazine CreateGunMagazine(IBulletFactory bulletFactory)
         {
-            int initialCountBullets = _gunAttributes.InitialCountBulltes;
+            //int initialCountBullets = _gunAttributes.InitialCountBulltes;
             GunMagazine magazine = new GunMagazine(_bulletCollector);
 
-            for (int i = 0; i < initialCountBullets; i++)
+            foreach (BulletType bulletType in _bullets)
             {
-                IBullet bullet = bulletFactory.Create(BulletType.Default);
-
+                IBullet bullet = bulletFactory.Create(bulletType);
                 magazine.AddBullet(bullet);
             }
 

@@ -17780,6 +17780,7 @@ MonoBehaviour:
   _turretView: {fileID: 7052186215403248071}
   _trajectoryRendererGameObject: {fileID: 1814405749}
   _bulletCollector: {fileID: 1261431356}
+  _bullets: 000000000000000000000000
   _gunAttributes: {fileID: 11400000, guid: 6291a783f3ae04644b38485df481048e, type: 2}
   _turretHealthAttributes: {fileID: 11400000, guid: e78ef94c2ea702e4192a478f0e019755, type: 2}
   _fullHealthTurretBonus: {fileID: 1901299422}

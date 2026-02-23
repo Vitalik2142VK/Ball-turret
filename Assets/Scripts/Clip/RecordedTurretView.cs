@@ -40,4 +40,3 @@ public class RecordedTurretView : MonoBehaviour
         _shooterView.PlayShot();
     }
 }
-

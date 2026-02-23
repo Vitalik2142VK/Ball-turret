@@ -2331,6 +2331,52 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &205742279
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 205742281}
+  - component: {fileID: 205742280}
+  m_Layer: 0
+  m_Name: CheatBonusActivatorFreeze
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &205742280
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 205742279}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3e276c7600ae2d428935bee167007b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _bonusCreator: {fileID: 1631347060}
+  _ativateKey: 102
+--- !u!4 &205742281
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 205742279}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &207983331
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5367,6 +5413,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerController: {fileID: 680478345}
   _aiPlayerController: {fileID: 757441780}
+  _keyCode: 32
 --- !u!4 &459364024
 Transform:
   m_ObjectHideFlags: 0
@@ -6853,7 +6900,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &583910658
 RectTransform:
   m_ObjectHideFlags: 0
@@ -12148,7 +12195,7 @@ MonoBehaviour:
   _layerMask:
     serializedVersion: 2
     m_Bits: 512
-  _killKey: 114
+  _killKey: 100
   _isShowRaius: 1
 --- !u!4 &1078977349
 Transform:
@@ -17780,7 +17827,7 @@ MonoBehaviour:
   _turretView: {fileID: 7052186215403248071}
   _trajectoryRendererGameObject: {fileID: 1814405749}
   _bulletCollector: {fileID: 1261431356}
-  _bullets: 000000000000000000000000
+  _bullets: 00000000010000000200000003000000
   _gunAttributes: {fileID: 11400000, guid: 6291a783f3ae04644b38485df481048e, type: 2}
   _turretHealthAttributes: {fileID: 11400000, guid: e78ef94c2ea702e4192a478f0e019755, type: 2}
   _fullHealthTurretBonus: {fileID: 1901299422}
@@ -19740,7 +19787,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1345415277295747122, guid: 3721e2744746e7442b6184a7ea733550, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1542025232658802183, guid: 3721e2744746e7442b6184a7ea733550, type: 3}
       propertyPath: m_Layer
@@ -21375,6 +21422,52 @@ MonoBehaviour:
   _bonusCreator: {fileID: 1595348239}
   _bonusPrefab: {fileID: 4992081084034006478, guid: 988e0673a235aa541b0f7677b59439d5, type: 3}
   _takedSound: {fileID: 1914036979}
+--- !u!1 &1869067827
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1869067829}
+  - component: {fileID: 1869067828}
+  m_Layer: 0
+  m_Name: CheatBonusActivatorRocket
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1869067828
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1869067827}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3e276c7600ae2d428935bee167007b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _bonusCreator: {fileID: 757978850}
+  _ativateKey: 98
+--- !u!4 &1869067829
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1869067827}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1871147143
 GameObject:
   m_ObjectHideFlags: 0
@@ -25233,6 +25326,8 @@ SceneRoots:
   - {fileID: 1586474750}
   - {fileID: 1876901781}
   - {fileID: 1210108847}
+  - {fileID: 205742281}
+  - {fileID: 1869067829}
   - {fileID: 1190238362}
   - {fileID: 869962348}
   - {fileID: 1078977349}

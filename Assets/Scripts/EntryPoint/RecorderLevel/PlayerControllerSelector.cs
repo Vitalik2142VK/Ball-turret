@@ -6,6 +6,7 @@ public class PlayerControllerSelector : MonoBehaviour, IPlayerController
 {
     [SerializeField] private PlayerController _playerController;
     [SerializeField] private AIPlayerController _aiPlayerController;
+    [SerializeField] private KeyCode _keyCode = KeyCode.Space;
 
     private IPlayerController _currentPlayerController;
 
@@ -44,7 +45,7 @@ public class PlayerControllerSelector : MonoBehaviour, IPlayerController
 
     private void SwitchActivity()
     {
-        if (Input.GetKeyUp(KeyCode.Space))
+        if (Input.GetKeyUp(_keyCode))
         {
             if (_currentPlayerController == _playerController)
                 _currentPlayerController = _aiPlayerController;

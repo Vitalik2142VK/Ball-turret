@@ -24,6 +24,9 @@ public class HealthBar : MonoBehaviour, IHealthBarView
 
     public void SetMaxHealth(float health)
     {
+        if (_slider == null)
+            return;
+
         if (health <= 0)
             throw new ArgumentOutOfRangeException(nameof(health)); 
 
@@ -33,6 +36,9 @@ public class HealthBar : MonoBehaviour, IHealthBarView
 
     public void UpdateDataHealth(float currentHealth)
     {
+        if (_slider == null)
+            return;
+
         if (currentHealth > _maxHealth || currentHealth < 0)
             throw new ArgumentOutOfRangeException(nameof(currentHealth));
 

@@ -1,11 +1,11 @@
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class PlayerScreenPointer : MonoBehaviour, IPlayerScreenPointer
 {
     [SerializeField] private CameraAdapter _cameraAdapter;
+    [SerializeField] private CanvasPointerChecker _canvasPointerChecker;
     [SerializeField, Min(10f)] private float _maxDistanceRay = 100f;
     [SerializeField] private LayerMask _layerMask;
 
@@ -21,6 +21,9 @@ public class PlayerScreenPointer : MonoBehaviour, IPlayerScreenPointer
     {
         if (_cameraAdapter == null)
             throw new NullReferenceException(nameof(_cameraAdapter));
+
+        if (_canvasPointerChecker == null)
+            throw new NullReferenceException(nameof(_canvasPointerChecker));
     }
 
     private void Awake()
@@ -50,10 +53,10 @@ public class PlayerScreenPointer : MonoBehaviour, IPlayerScreenPointer
         {
             Vector2 touchPosition = _input.Player.Position.ReadValue<Vector2>();
 
-            if (IsPointerOverUI(touchPosition))
+            if (_canvasPointerChecker.IsPointerOverUI(touchPosition))
                 return;
 
-                IsPress = isPress;
+            IsPress = isPress;
 
             if (TryFindPositionInMap(out Vector3 position, touchPosition))
                 TouchPositionInMap = position;
@@ -84,18 +87,5 @@ public class PlayerScreenPointer : MonoBehaviour, IPlayerScreenPointer
         position = Vector3.zero;
 
         return false;
-    }
-
-    private bool IsPointerOverUI(Vector2 touchPosition)
-    {
-        var eventData = new PointerEventData(_eventSystem)
-        {
-            position = touchPosition
-        };
-
-        var results = new List<RaycastResult>();
-        _eventSystem.RaycastAll(eventData, results);
-
-        return results.Count > 0;
     }
 }

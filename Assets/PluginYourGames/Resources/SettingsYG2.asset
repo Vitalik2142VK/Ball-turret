@@ -275,7 +275,7 @@ MonoBehaviour:
     advIntervalSimulation: 60
     durationAdv: 0.5
     loadAdv: 0
-    testFailAds: 1
+    testFailAds: 0
   Templates:
     logoImageFormat: 0
     backgroundImgFormat: 0

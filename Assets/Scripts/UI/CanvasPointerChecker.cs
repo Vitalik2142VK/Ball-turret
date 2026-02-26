@@ -20,8 +20,6 @@ public class CanvasPointerChecker : MonoBehaviour
 
     public bool IsPointerOverUI(Vector2 touchPosition)
     {
-        Console.GetLog($"TouchPosition == {touchPosition}");
-
         _pointerEventData.Reset();
         _pointerEventData.position = touchPosition;
 
@@ -32,8 +30,6 @@ public class CanvasPointerChecker : MonoBehaviour
             return false;
 
         var gameObject = _raycastResults[0].gameObject;
-
-        Console.GetLog($"GameObject.name == {gameObject} || LayerMask == {LayerMask.LayerToName(gameObject.layer)} || TouchPosition == {_pointerEventData.position}");
 
         return LayerMaskTool.IsInLayerMask(gameObject, _layerMask);
     }

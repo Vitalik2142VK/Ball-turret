@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class TargetPoint : MonoBehaviour, ITargetPoint
 {
-    [SerializeField] private ActorZone _zoneEnemy;
+    [SerializeField] private ZoneShot _zoneShot;
 
     [Header("Debug")]
     [SerializeField] private bool _isDebugOn = false;
@@ -18,8 +18,8 @@ public class TargetPoint : MonoBehaviour, ITargetPoint
 
     private void OnValidate()
     {
-        if (_zoneEnemy == null)
-            throw new System.NullReferenceException(nameof(_zoneEnemy));
+        if (_zoneShot == null)
+            throw new System.NullReferenceException(nameof(_zoneShot));
     }
 
     private void Awake()
@@ -39,7 +39,7 @@ public class TargetPoint : MonoBehaviour, ITargetPoint
 
     public void SetPosition(Vector3 position)
     {
-        IsInsideZoneEnemy = _zoneEnemy.IsPointInside(position);
+        IsInsideZoneEnemy = _zoneShot.IsPointInside(position);
 
         if (IsInsideZoneEnemy)
             _transform.position = new Vector3(position.x, _startPosition.y, position.z);

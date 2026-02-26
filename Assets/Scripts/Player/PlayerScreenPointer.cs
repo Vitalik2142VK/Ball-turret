@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 public class PlayerScreenPointer : MonoBehaviour, IPlayerScreenPointer
 {
@@ -9,7 +10,6 @@ public class PlayerScreenPointer : MonoBehaviour, IPlayerScreenPointer
     [SerializeField, Min(10f)] private float _maxDistanceRay = 100f;
     [SerializeField] private LayerMask _layerMask;
 
-    private PlayerInput _input;
     private EventSystem _eventSystem;
 
     public event Action PressFinished;
@@ -28,30 +28,22 @@ public class PlayerScreenPointer : MonoBehaviour, IPlayerScreenPointer
 
     private void Awake()
     {
-        _input = new PlayerInput();
         _eventSystem = EventSystem.current;
 
         if (_eventSystem == null)
             throw new NullReferenceException(nameof(EventSystem.current));
     }
 
-    private void OnEnable()
-    {
-        _input.Enable();
-    }
-
-    private void OnDisable()
-    {
-        _input.Disable();
-    }
-
     public void UpdateInput()
     {
-        bool isPress = _input.Player.Press.IsPressed();
+        if (Pointer.current == null)
+            return;
+
+        bool isPress = Pointer.current.press.isPressed;
 
         if (isPress)
         {
-            Vector2 touchPosition = _input.Player.Position.ReadValue<Vector2>();
+            Vector2 touchPosition = Pointer.current.position.ReadValue();
 
             if (_canvasPointerChecker.IsPointerOverUI(touchPosition))
                 return;

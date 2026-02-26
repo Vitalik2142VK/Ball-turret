@@ -12,9 +12,12 @@ public class Console : MonoBehaviour
 
     [SerializeField] private ContentSizeFitter _content;
     [SerializeField] private TextMeshProUGUI _textPrefab;
+    [SerializeField, Min(100)] private int _maxLogLements = 1000;
     [SerializeField] private bool _isDontDestroyOnLoad;
 
     [SerializeField] private ScrollerToElement _scrollerToElement;
+
+    private int _currentCountElements = 0;
 
     private void OnValidate()
     {
@@ -83,5 +86,18 @@ public class Console : MonoBehaviour
 
         if (_scrollerToElement != null)
             _scrollerToElement.ScrollToElement(text.GetComponent<RectTransform>());
+
+        if (++_currentCountElements > _maxLogLements)
+            ClearContent();
+    }
+
+    private void ClearContent()
+    {
+        Transform transform = _content.transform;
+
+        for (int i = transform.childCount - 1; i >= 1; i--)
+            Destroy(transform.GetChild(i).gameObject);
+
+        _currentCountElements = 0;
     }
 }

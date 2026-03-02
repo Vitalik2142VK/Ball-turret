@@ -7,4 +7,5 @@ Metrica v1.02
 Payments v1.01
 RedefinePlayerPrefs v1.001
 RewardedAdv v1.011
+StickyAdv v1.0
 Storage v1.021

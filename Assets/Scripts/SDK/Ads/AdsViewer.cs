@@ -66,6 +66,8 @@ public class AdsViewer : MonoBehaviour, IAdsViewer
             throw new ArgumentOutOfRangeException($"Purchase with id '{purchaseId}' not found.");
 
         _disableAdsPurchase = purchase;
+
+        YG2.StickyAdActivity(purchase.IsPurchased == false);
     }
 
     public void ShowFullScreenAd()

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using YG;
 using YG.Utils.Pay;
 
-[RequireComponent(typeof(Button))]
+[RequireComponent(typeof(Button), typeof(ImageLoadYG))]
 public class DisableAdsButton : MonoBehaviour
 {
     private const string DisableAdsPurchseId = PurchasesTypes.DisableAds;
@@ -13,6 +13,7 @@ public class DisableAdsButton : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _currencyPrice;
 
     private Button _button;
+    private ImageLoadYG _imageLoader;
 
     private void OnValidate()
     {
@@ -23,6 +24,7 @@ public class DisableAdsButton : MonoBehaviour
     private void Awake()
     {
         _button = GetComponent<Button>();
+        _imageLoader = GetComponent<ImageLoadYG>();
     }
 
     private void OnEnable()
@@ -47,10 +49,10 @@ public class DisableAdsButton : MonoBehaviour
         if (purchasesStorage.TryGetPurchase(out IPlayerPurchase playerPurchase, DisableAdsPurchseId) == false)
             throw new ArgumentOutOfRangeException($"Purchase with id '{DisableAdsPurchseId}' not found.");
 
-        if (playerPurchase.IsPurchased == false)
-            Enable(playerPurchase);
-        else
+        if (playerPurchase.IsPurchased)
             Destroy(gameObject);
+        else
+            Enable(playerPurchase);
     }
 
     private void Enable(IPlayerPurchase playerPurchase)
@@ -61,6 +63,11 @@ public class DisableAdsButton : MonoBehaviour
             throw new NullReferenceException(nameof(purchase));
 
         _currencyPrice.text = purchase.priceValue;
+
+        string currencyImageURL = purchase.currencyImageURL;
+
+        if (string.IsNullOrEmpty(currencyImageURL) == false)
+            _imageLoader.Load(currencyImageURL);
     }
 
     private void OnPayPurchase()
@@ -72,6 +79,8 @@ public class DisableAdsButton : MonoBehaviour
     {
         if (purchseId != DisableAdsPurchseId)
             return;
+
+        YG2.StickyAdActivity(false);
 
         Destroy(gameObject);
     }

@@ -6,6 +6,7 @@ using YG;
 public class AuthPlayer : MonoBehaviour
 {
     [SerializeField] private AuthPlayerView _authPlayerView;
+    [SerializeField] private AuthWindow _authWindow;
     [SerializeField] private Button _authButton;
 
     private void OnValidate()
@@ -13,19 +14,22 @@ public class AuthPlayer : MonoBehaviour
         if (_authPlayerView == null)
             throw new NullReferenceException(nameof(_authPlayerView));
 
+        if (_authWindow == null)
+            throw new NullReferenceException(nameof(_authWindow));
+
         if (_authButton == null)
             throw new NullReferenceException(nameof(_authButton));
     }
 
     private void OnEnable()
     {
-        _authButton.onClick.AddListener(OnAuthorize);
+        _authButton.onClick.AddListener(OnOpenAuthWindow);
         YG2.onGetSDKData += OnFillData;
     }
 
     private void OnDisable()
     {
-        _authButton.onClick.RemoveListener(OnAuthorize);
+        _authButton.onClick.RemoveListener(OnOpenAuthWindow);
         YG2.onGetSDKData -= OnFillData;
     }
 
@@ -43,6 +47,8 @@ public class AuthPlayer : MonoBehaviour
         _authPlayerView.gameObject.SetActive(false);
     }
 
+    private void OnOpenAuthWindow() => _authWindow.Open();
+
     private void OnFillData()
     {
         if (_authPlayerView.IsAuthorized)
@@ -55,10 +61,5 @@ public class AuthPlayer : MonoBehaviour
         _authPlayerView.gameObject.SetActive(true);
         _authPlayerView.SetDataAuthPlayer(urlIconPlayer, namePlayer);
         _authButton.gameObject.SetActive(false);
-    }
-
-    private void OnAuthorize()
-    {
-        YG2.OpenAuthDialog();
     }
 }

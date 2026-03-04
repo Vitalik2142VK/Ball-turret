@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using YG;
 
 namespace MainMenuSpace
 {
@@ -68,6 +69,8 @@ namespace MainMenuSpace
             _userInterfaseConfigurator.SetAdsViewer(_adsViewer);
             _userInterfaseConfigurator.SetImprovementShop(improvementShop);
             _userInterfaseConfigurator.Configure(player, coinAdder, levelFactory, coinCountRandomizer);
+
+            YG2.GameReadyAPI();
 
             if (player.AchievedLevelIndex == 0)
                 _levelsPlannerConfigurator.LoadLearningLevel();

@@ -13,7 +13,7 @@ namespace PlayLevel
 
         [Header("Configurators")]
         [SerializeField] private TurretConfigurator _turretConfigurator;
-        [SerializeField] private StepSystemConfigurator _stepSystemConfigurator;
+        [SerializeField] private StepControllerConfigurator _stepControllerConfigurator;
         [SerializeField] private ActorsConfigurator _actorsConfigurator;
         [SerializeField] private BonusesConfigurator _bonusPrefabConfigurator;
         [SerializeField] private BulletConfigurator _bulletConfigurator;
@@ -40,8 +40,8 @@ namespace PlayLevel
             if (_turretConfigurator == null)
                 throw new NullReferenceException(nameof(_turretConfigurator));
 
-            if (_stepSystemConfigurator == null)
-                throw new NullReferenceException(nameof(_stepSystemConfigurator));
+            if (_stepControllerConfigurator == null)
+                throw new NullReferenceException(nameof(_stepControllerConfigurator));
 
             if (_actorsConfigurator == null)
                 throw new NullReferenceException(nameof(_actorsConfigurator));
@@ -101,17 +101,17 @@ namespace PlayLevel
             VictoryController victoryController = new VictoryController(enemiesController, shooterView, winStatus);
             DataForStepSystem dataForStepSystem = new DataForStepSystem(turret, _adsViewer, rewardIssuer, playerController, victoryController, actorsControllersAccess, levelStatus);
 
-            _stepSystemConfigurator.Configure(dataForStepSystem);
+            _stepControllerConfigurator.Configure(dataForStepSystem);
             _bonusPrefabConfigurator.Configure(enemiesController);
-            _stepSystemConfigurator.ConfigureBonusActivationStep(_bonusPrefabConfigurator.BonusReservator);
+            _stepControllerConfigurator.ConfigureBonusActivationStep(_bonusPrefabConfigurator.BonusReservator);
 
-            var changeSceneStep = _stepSystemConfigurator.ChangeSceneStep;
+            var changeSceneStep = _stepControllerConfigurator.ChangeSceneStep;
 
             _userInterfaceConfigurator.Configure(changeSceneStep, _selectedLevel);
             _finishWindowConfigurator.Configure(_coinsAdder, rewardIssuer, _adsViewer, winStatus, changeSceneStep, _selectedLevel);
             _bonusesWindowHiderConfigurator.Configure(_turretConfigurator.ShotAction);
 
-            Configs = new Config(_stepSystemConfigurator, _actorsConfigurator, _userInterfaceConfigurator, _finishWindowConfigurator, winStatus);
+            Configs = new Config(_stepControllerConfigurator, _actorsConfigurator, _userInterfaceConfigurator, _finishWindowConfigurator, winStatus);
 
             if (_player.AchievedLevelIndex == 0)
                 SceneManager.LoadScene((int)SceneIndex.LearningScene, LoadSceneMode.Additive);

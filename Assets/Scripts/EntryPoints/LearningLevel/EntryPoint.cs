@@ -14,7 +14,7 @@ namespace LearningLevel
         [SerializeField] private SettingMenu _settingMenu;
         [SerializeField] private LearningFinishWindow _learningFinishWindow;
 
-        private StepSystemConfigurator _stepSystemConfigurator;
+        private StepControllerConfigurator _stepControllerConfigurator;
         private ActorsConfigurator _actorsConfigurator;
         private AudioSetting _audioSetting;
         private OpenWindowButton _pauseButton;
@@ -56,7 +56,7 @@ namespace LearningLevel
             if (_audioSetting == null)
                 throw new NullReferenceException(nameof(_audioSetting));
 
-            _stepSystemConfigurator = playLevelConfigs.StepSystemConfigurator;
+            _stepControllerConfigurator = playLevelConfigs.StepSystemConfigurator;
             _actorsConfigurator = playLevelConfigs.ActorsConfigurator;
             _winStatus = playLevelConfigs.WinStatus;
 
@@ -78,10 +78,10 @@ namespace LearningLevel
             _learningFinishWindow.Initialize(_finishWindow, _winStatus);
             _actorsConfigurator.AddActorFactory(_learningEnemyFactory);
 
-            var changeSceneStep = _stepSystemConfigurator.ChangeSceneStep;
+            var changeSceneStep = _stepControllerConfigurator.ChangeSceneStep;
             LearningStep learningStep = new LearningStep(_learningUI, _selectedLevel);
-            _stepSystemConfigurator.AddLearningStep(learningStep);
-            _stepSystemConfigurator.ChangeFinishWindow(_learningFinishWindow);
+            _stepControllerConfigurator.AddLearningStep(learningStep);
+            _stepControllerConfigurator.ChangeFinishWindow(_learningFinishWindow);
             _pauseButton.SetPauseMenu(_pauseMenu);
             _pauseMenu.Initialize(changeSceneStep);
             _pause.Initialize(_pauseButton);

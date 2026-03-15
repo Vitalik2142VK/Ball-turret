@@ -4170,7 +4170,7 @@ MonoBehaviour:
   _player: {fileID: 11400000, guid: 7657b4ab90a8c5d44a5b96508438ba7e, type: 2}
   _playerController: {fileID: 680478343}
   _turretConfigurator: {fileID: 1563366847}
-  _stepSystemConfigurator: {fileID: 1081096997}
+  _stepControllerConfigurator: {fileID: 1081096997}
   _actorsConfigurator: {fileID: 1226189861}
   _bonusPrefabConfigurator: {fileID: 2007002175}
   _bulletConfigurator: {fileID: 1922608215}
@@ -10026,7 +10026,7 @@ GameObject:
   - component: {fileID: 1050081289}
   - component: {fileID: 1050081290}
   m_Layer: 0
-  m_Name: StepSystem
+  m_Name: StepController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10160,7 +10160,7 @@ GameObject:
   - component: {fileID: 1081096998}
   - component: {fileID: 1081096997}
   m_Layer: 0
-  m_Name: StepSystepConfigurator
+  m_Name: StepControllerConfigurator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10175,10 +10175,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1081096996}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62f53bde772fb204d8188c60cebd5e78, type: 3}
+  m_Script: {fileID: 11500000, guid: 0b9facd3a478022468bf8bf78c28f0fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _stepSystem: {fileID: 1050081290}
+  _stepController: {fileID: 1050081290}
   _comboCounter: {fileID: 1871147145}
   _bulletCollector: {fileID: 1261431356}
   _finishWindow: {fileID: 1232277604}

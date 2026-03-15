@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class StepSystem : MonoBehaviour, IStepSystem
+public class StepController : MonoBehaviour, IStepSystem
 {
     private IStep _step;
 

@@ -3,9 +3,9 @@ using UnityEngine;
 
 namespace PlayLevel
 {
-    public class StepSystemConfigurator : MonoBehaviour
+    public class StepControllerConfigurator : MonoBehaviour
     {
-        [SerializeField] private StepSystem _stepSystem;
+        [SerializeField] private StepController _stepController;
         [SerializeField] private ComboCounter _comboCounter;
         [SerializeField] private BulletsCollector _bulletCollector;
         [SerializeField] private FinishWindow _finishWindow;
@@ -32,8 +32,8 @@ namespace PlayLevel
 
         private void OnValidate()
         {
-            if (_stepSystem == null)
-                throw new NullReferenceException(nameof(_stepSystem));
+            if (_stepController == null)
+                throw new NullReferenceException(nameof(_stepController));
 
             if (_comboCounter == null)
                 throw new NullReferenceException(nameof(_comboCounter));
@@ -71,7 +71,7 @@ namespace PlayLevel
             ConnectSteps();
             CreateActorsFreezeStep();
 
-            _stepSystem.EstablishNextStep(_cyclicalStep);
+            _stepController.EstablishNextStep(_cyclicalStep);
             _freezerCreator.Initialize(_nextStepPrepareActors, _actorsFreezeStep);
         }
 
@@ -116,13 +116,13 @@ namespace PlayLevel
 
         private void CreatePrepareActorsStep(IActorsController actorsController, IEnemiesController enemiesController)
         {
-            _nextStepPrepareActors = new DynamicNextStep(_stepSystem);
+            _nextStepPrepareActors = new DynamicNextStep(_stepController);
             _prepareActorsStep = new PrepareActorsStep(actorsController, enemiesController, _nextStepPrepareActors, _objectsMoveStep);
         }
 
         private void CreateCyclicalStep(IActorsRemover actorsRemover, IEnemiesController enemiesController)
         {
-            DynamicNextStep dynamicNextStep = new DynamicNextStep(_stepSystem);
+            DynamicNextStep dynamicNextStep = new DynamicNextStep(_stepController);
             _cyclicalStep = new CyclicalStep(dynamicNextStep, actorsRemover, enemiesController, _dataForStepSystem.LevelStatus);
             _cyclicalStep.SetStartStep(_prepareActorsStep);
             _cyclicalStep.SetLoopingStep(_playerStep);
@@ -152,7 +152,7 @@ namespace PlayLevel
 
         private void AddNextStepToEndPoint(IEndPointStep endPointStep, IStep nextStep)
         {
-            IEndStep endStep = new NextStep(_stepSystem, nextStep);
+            IEndStep endStep = new NextStep(_stepController, nextStep);
             endPointStep.SetEndStep(endStep);
         }
     }

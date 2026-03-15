@@ -2,16 +2,16 @@ namespace PlayLevel
 {
     public class Config
     {
-        public Config(StepSystemConfigurator stepSystemConfigurator, ActorsConfigurator actorsConfigurator, UIConfigurator uiConfigurator, FinishWindowConfigurator finishWindowConfigurator, IWinStatus winStatus)
+        public Config(StepControllerConfigurator stepControllerConfigurator, ActorsConfigurator actorsConfigurator, UIConfigurator uiConfigurator, FinishWindowConfigurator finishWindowConfigurator, IWinStatus winStatus)
         {
-            StepSystemConfigurator = stepSystemConfigurator;
+            StepSystemConfigurator = stepControllerConfigurator;
             ActorsConfigurator = actorsConfigurator;
             UIConfigurator = uiConfigurator;
             FinishWindowConfigurator = finishWindowConfigurator;
             WinStatus = winStatus;
         }
 
-        public StepSystemConfigurator StepSystemConfigurator { get; }
+        public StepControllerConfigurator StepSystemConfigurator { get; }
         public ActorsConfigurator ActorsConfigurator { get; }
         public UIConfigurator UIConfigurator { get; }
         public FinishWindowConfigurator FinishWindowConfigurator { get; }

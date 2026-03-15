@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using CannonTurret.DamageSystem;
+using UnityEngine;
 
-namespace Scriptable
+namespace CannonTurret.Scriptable.Damage
 {
     [CreateAssetMenu(menuName = "Attributes/Damage attributes", fileName = "DamageAttributes", order = 51)]
     public class DamageAttributes : ScriptableObject, IDamageAttributes

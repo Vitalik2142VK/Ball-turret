@@ -1,4 +1,7 @@
-﻿public static class RewardTypes
+﻿namespace CannonTurret.SDK.Ads
 {
-    public const string AddCoin = (nameof(AddCoin));
+    public static class RewardTypes
+    {
+        public const string AddCoin = nameof(AddCoin);
+    }
 }

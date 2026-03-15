@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using CannonTurret.HealthSystem;
+using UnityEngine;
 
-namespace Scriptable
+namespace CannonTurret.Scriptable.Health
 {
     [CreateAssetMenu(menuName = "Attributes/Armor Attributes", fileName = "ArmorAttributes", order = 51)]
     public class ArmorAttributes : ScriptableObject, IArmorAttributes

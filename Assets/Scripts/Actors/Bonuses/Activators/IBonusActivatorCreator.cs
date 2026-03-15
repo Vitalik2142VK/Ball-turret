@@ -1,4 +1,7 @@
-﻿public interface IBonusActivatorCreator
+﻿namespace CannonTurret.Actors.Bonuses.Activators
 {
-    public IBonusActivator Create();
+    public interface IBonusActivatorCreator
+    {
+        public IBonusActivator Create();
+    }
 }

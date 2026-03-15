@@ -1,13 +1,19 @@
-﻿using System;
+﻿using CannonTurret.Actors;
+using CannonTurret.Actors.Bonuses;
+using CannonTurret.Actors.Bonuses.Activators;
+using CannonTurret.Actors.Bonuses.ReserveredBonuses;
+using CannonTurret.Scriptable.Bonus;
+using CannonTurret.UI.PlayerScene;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace PlayLevel
+namespace CannonTurret.EntryPoints.PlayLevel.Configurators
 {
     public class BonusesConfigurator : MonoBehaviour
     {
-        [SerializeField] private Scriptable.BonusCard[] _reservatedBonusCards;
+        [SerializeField] private BonusCard[] _reservatedBonusCards;
         [SerializeField] private BonusConfigurator[] _bonusConfigurators;
         [SerializeField] private ChoiceBonusActivatorCreator[] _choiceBonusActivatorCreators;
         [SerializeField] private BigBangBonusActivatorCreator _bigBangBonusActivatorCreator;

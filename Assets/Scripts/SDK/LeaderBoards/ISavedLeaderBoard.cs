@@ -1,6 +1,9 @@
-﻿public interface ISavedLeaderBoard
+﻿namespace CannonTurret.SDK.LeaderBoards
 {
-    public int MaxAchievedWave { get; }
+    public interface ISavedLeaderBoard
+    {
+        public int MaxAchievedWave { get; }
 
-    public void SaveNextAchievedWave();
+        public void SaveNextAchievedWave();
+    }
 }

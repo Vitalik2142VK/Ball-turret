@@ -1,7 +1,9 @@
-﻿using System;
+﻿using CannonTurret.Actors.Spawn;
+using CannonTurret.LevelSystem;
+using System;
 using UnityEngine;
 
-namespace Scriptable
+namespace CannonTurret.Scriptable.Level
 {
     [CreateAssetMenu(menuName = "Level/Selected level", fileName = "SelectedLevel", order = 51)]
     public class SelectedLevel : ScriptableObject, ISelectedLevel

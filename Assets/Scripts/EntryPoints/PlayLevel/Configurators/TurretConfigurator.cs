@@ -1,8 +1,18 @@
-﻿using System;
+﻿using CannonTurret.Actors.Bonuses.Activators;
+using System;
 using UnityEngine;
-using Scriptable;
+using CannonTurret.HealthSystem;
+using CannonTurret.PlayerSystem;
+using CannonTurret.Scriptable.Gun;
+using CannonTurret.Scriptable.Health;
+using CannonTurret.Turrets;
+using CannonTurret.Turrets.Bullets;
+using CannonTurret.Turrets.Bullets.Creation;
+using CannonTurret.Turrets.Bullets.Types;
+using CannonTurret.Turrets.Guns;
+using CannonTurret.Turrets.Shooters;
 
-namespace PlayLevel
+namespace CannonTurret.EntryPoints.PlayLevel.Configurators
 {
     public class TurretConfigurator : MonoBehaviour
     {

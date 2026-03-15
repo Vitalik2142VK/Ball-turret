@@ -1,4 +1,7 @@
-﻿public interface IPlayerLoader
+﻿namespace CannonTurret.PlayerSystem
 {
-    public IPlayer Load();
+    public interface IPlayerLoader
+    {
+        public IPlayer Load();
+    }
 }

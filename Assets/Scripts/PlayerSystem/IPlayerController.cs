@@ -1,6 +1,11 @@
-﻿public interface IPlayerController
-{
-    public void Initialize(ITurret turret);
+﻿using CannonTurret.Turrets;
 
-    public void SelectTarget();
+namespace CannonTurret.PlayerSystem
+{
+    public interface IPlayerController
+    {
+        public void Initialize(ITurret turret);
+
+        public void SelectTarget();
+    }
 }

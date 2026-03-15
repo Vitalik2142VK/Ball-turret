@@ -1,75 +1,79 @@
-﻿using System;
+﻿using CannonTurret.SDK.Shops;
+using System;
 using System.Collections.Generic;
 using YG;
 
-public class SavedPlayerData : ISavedPlayerData
+namespace CannonTurret.PlayerSystem
 {
-    private SavesYG _savesYG;
-
-    public SavedPlayerData()
+    public class SavedPlayerData : ISavedPlayerData
     {
-        if (YG2.isSDKEnabled == false)
-            throw new InvalidOperationException("The Yandex SDK is not Enabled");
+        private SavesYG _savesYG;
 
-        _savesYG = YG2.saves;
-        _savesYG.CheckPurchaseAvailability();
-    }
+        public SavedPlayerData()
+        {
+            if (YG2.isSDKEnabled == false)
+                throw new InvalidOperationException("The Yandex SDK is not Enabled");
 
-    public IReadOnlyCollection<IPlayerPurchase> OneTimePurchases => _savesYG.GetOneTimePurchases();
-    public float HealthCoefficient => _savesYG.HealthCoefficient;
-    public float DamageCoefficient => _savesYG.DamageCoefficient;
-    public long CountCoins => _savesYG.CountCoins;
-    public int AchievedLevelIndex => _savesYG.AchievedLevelIndex;
+            _savesYG = YG2.saves;
+            _savesYG.CheckPurchaseAvailability();
+        }
 
-    public void SetHealthCoefficient(float healthCoefficient)
-    {
-        if (healthCoefficient < _savesYG.HealthCoefficient)
-            throw new ArgumentOutOfRangeException(nameof(healthCoefficient));
+        public IReadOnlyCollection<IPlayerPurchase> OneTimePurchases => _savesYG.GetOneTimePurchases();
+        public float HealthCoefficient => _savesYG.HealthCoefficient;
+        public float DamageCoefficient => _savesYG.DamageCoefficient;
+        public long CountCoins => _savesYG.CountCoins;
+        public int AchievedLevelIndex => _savesYG.AchievedLevelIndex;
 
-        _savesYG.HealthCoefficient = healthCoefficient;
-    }
+        public void SetHealthCoefficient(float healthCoefficient)
+        {
+            if (healthCoefficient < _savesYG.HealthCoefficient)
+                throw new ArgumentOutOfRangeException(nameof(healthCoefficient));
 
-    public void SetDamageCoefficient(float damageCoefficient)
-    {
-        if (damageCoefficient < _savesYG.DamageCoefficient)
-            throw new ArgumentOutOfRangeException(nameof(damageCoefficient));
+            _savesYG.HealthCoefficient = healthCoefficient;
+        }
 
-        _savesYG.DamageCoefficient = damageCoefficient;
-    }
+        public void SetDamageCoefficient(float damageCoefficient)
+        {
+            if (damageCoefficient < _savesYG.DamageCoefficient)
+                throw new ArgumentOutOfRangeException(nameof(damageCoefficient));
 
-    public void SetCountCoins(long countCoins)
-    {
-        if (countCoins < 0)
-            throw new ArgumentOutOfRangeException(nameof(countCoins));
+            _savesYG.DamageCoefficient = damageCoefficient;
+        }
 
-        _savesYG.CountCoins = countCoins;
-    }
+        public void SetCountCoins(long countCoins)
+        {
+            if (countCoins < 0)
+                throw new ArgumentOutOfRangeException(nameof(countCoins));
 
-    public void SetAchievedLevelIndex(int achievedLevelIndex)
-    {
-        int nextLevelIndex = 1;
-        nextLevelIndex += _savesYG.AchievedLevelIndex;
+            _savesYG.CountCoins = countCoins;
+        }
 
-        if (achievedLevelIndex > nextLevelIndex || achievedLevelIndex < _savesYG.AchievedLevelIndex)
-            throw new ArgumentOutOfRangeException(nameof(achievedLevelIndex));
+        public void SetAchievedLevelIndex(int achievedLevelIndex)
+        {
+            int nextLevelIndex = 1;
+            nextLevelIndex += _savesYG.AchievedLevelIndex;
 
-        _savesYG.AchievedLevelIndex = achievedLevelIndex;
-    }
+            if (achievedLevelIndex > nextLevelIndex || achievedLevelIndex < _savesYG.AchievedLevelIndex)
+                throw new ArgumentOutOfRangeException(nameof(achievedLevelIndex));
 
-    public void RemoveProgerss()
-    {
-        SavesYG clearSave = new SavesYG();
-        _savesYG.HealthCoefficient = clearSave.HealthCoefficient;
-        _savesYG.DamageCoefficient = clearSave.DamageCoefficient;
-        _savesYG.CountCoins = clearSave.CountCoins;
-        _savesYG.AchievedLevelIndex = clearSave.AchievedLevelIndex;
+            _savesYG.AchievedLevelIndex = achievedLevelIndex;
+        }
 
-        YG2.SaveProgress();
-    }
+        public void RemoveProgerss()
+        {
+            SavesYG clearSave = new SavesYG();
+            _savesYG.HealthCoefficient = clearSave.HealthCoefficient;
+            _savesYG.DamageCoefficient = clearSave.DamageCoefficient;
+            _savesYG.CountCoins = clearSave.CountCoins;
+            _savesYG.AchievedLevelIndex = clearSave.AchievedLevelIndex;
 
-    public void RemoveAll()
-    {
-        YG2.saves = new SavesYG();
-        YG2.SaveProgress();
+            YG2.SaveProgress();
+        }
+
+        public void RemoveAll()
+        {
+            YG2.saves = new SavesYG();
+            YG2.SaveProgress();
+        }
     }
 }

@@ -1,4 +1,7 @@
-﻿public static class PurchasesTypes
+﻿namespace CannonTurret.SDK.Shops
 {
-    public const string DisableAds = "disable_ads";
+    public static class PurchasesTypes
+    {
+        public const string DisableAds = "disable_ads";
+    }
 }

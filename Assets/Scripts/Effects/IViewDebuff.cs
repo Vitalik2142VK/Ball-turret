@@ -1,6 +1,9 @@
-﻿public interface IViewDebuff
+﻿namespace CannonTurret.Effects
 {
-    public DebuffType DebuffType { get; }
+    public interface IViewDebuff
+    {
+        public DebuffType DebuffType { get; }
 
-    public void SetActive(bool isActive);
+        public void SetActive(bool isActive);
+    }
 }

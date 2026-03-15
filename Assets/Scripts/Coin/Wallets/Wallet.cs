@@ -1,53 +1,55 @@
 ﻿using System;
-using static UnityEngine.InputSystem.LowLevel.InputStateHistory;
 
-public class Wallet : IWallet
+namespace CannonTurret.Coin.Wallets
 {
-    private IWalletView _walletView;
-
-    public Wallet(long countCoinsPlayer)
+    public class Wallet : IWallet
     {
-        if (countCoinsPlayer < 0)
-            throw new ArgumentOutOfRangeException(nameof(countCoinsPlayer));
+        private IWalletView _walletView;
 
-        CountCoins = countCoinsPlayer;
-    }
-
-    public long CountCoins { get; private set; }
-
-    public void SetView(IWalletView walletView)
-    {
-        _walletView = walletView ?? throw new ArgumentNullException(nameof(walletView));
-        _walletView.UpdateValueCoins(CountCoins);
-    }
-
-    public void AddCoins(int countCoins)
-    {
-        if (countCoins < 0)
-            throw new ArgumentOutOfRangeException(nameof(countCoins));
-
-        if (countCoins == 0)
-            return;
-
-        CountCoins += countCoins;
-
-        _walletView.UpdateValueCoins(CountCoins);
-    }
-
-    public bool TryPay(long countCoins)
-    {
-        if (countCoins <= 0)
-            throw new ArgumentOutOfRangeException(nameof(countCoins));
-
-        if (countCoins <= CountCoins)
+        public Wallet(long countCoinsPlayer)
         {
-            CountCoins -= countCoins;
+            if (countCoinsPlayer < 0)
+                throw new ArgumentOutOfRangeException(nameof(countCoinsPlayer));
 
-            _walletView.UpdateValueCoins(CountCoins);
-
-            return true;
+            CountCoins = countCoinsPlayer;
         }
 
-        return false;
+        public long CountCoins { get; private set; }
+
+        public void SetView(IWalletView walletView)
+        {
+            _walletView = walletView ?? throw new ArgumentNullException(nameof(walletView));
+            _walletView.UpdateValueCoins(CountCoins);
+        }
+
+        public void AddCoins(int countCoins)
+        {
+            if (countCoins < 0)
+                throw new ArgumentOutOfRangeException(nameof(countCoins));
+
+            if (countCoins == 0)
+                return;
+
+            CountCoins += countCoins;
+
+            _walletView.UpdateValueCoins(CountCoins);
+        }
+
+        public bool TryPay(long countCoins)
+        {
+            if (countCoins <= 0)
+                throw new ArgumentOutOfRangeException(nameof(countCoins));
+
+            if (countCoins <= CountCoins)
+            {
+                CountCoins -= countCoins;
+
+                _walletView.UpdateValueCoins(CountCoins);
+
+                return true;
+            }
+
+            return false;
+        }
     }
 }

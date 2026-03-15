@@ -1,103 +1,108 @@
+using CannonTurret.UI;
 using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-//todo Remove on realise
-public class Console : MonoBehaviour
+namespace CannonTurret.Utils
 {
-    private const string EndText = "\n...|||...\n\n";
 
-    private static Console s_Console;
-
-    [SerializeField] private ContentSizeFitter _content;
-    [SerializeField] private TextMeshProUGUI _textPrefab;
-    [SerializeField, Min(100)] private int _maxLogLements = 1000;
-    [SerializeField] private bool _isDontDestroyOnLoad;
-
-    [SerializeField] private ScrollerToElement _scrollerToElement;
-
-    private int _currentCountElements = 0;
-
-    private void OnValidate()
+    //todo Remove on realise
+    public class Console : MonoBehaviour
     {
-        if (_content == null)
-            _content = transform.GetComponentInChildren<ContentSizeFitter>();
+        private const string EndText = "\n...|||...\n\n";
 
-        if (_content == null)
-            throw new NullReferenceException(nameof(_content));
+        private static Console s_Console;
 
-        if (_textPrefab == null)
-            _textPrefab = transform.GetComponentInChildren<TextMeshProUGUI>();
+        [SerializeField] private ContentSizeFitter _content;
+        [SerializeField] private TextMeshProUGUI _textPrefab;
+        [SerializeField, Min(100)] private int _maxLogLements = 1000;
+        [SerializeField] private bool _isDontDestroyOnLoad;
 
-        if (_textPrefab == null)
-            throw new NullReferenceException(nameof(_textPrefab));
-    }
+        [SerializeField] private ScrollerToElement _scrollerToElement;
 
-    private void OnEnable()
-    {
-        if (s_Console == null)
-            s_Console = this;
-    }
+        private int _currentCountElements = 0;
 
-    private void Awake()
-    {
-        if (_isDontDestroyOnLoad)
+        private void OnValidate()
         {
-            CreateSingleton();
-            DontDestroyOnLoad(gameObject);
+            if (_content == null)
+                _content = transform.GetComponentInChildren<ContentSizeFitter>();
+
+            if (_content == null)
+                throw new NullReferenceException(nameof(_content));
+
+            if (_textPrefab == null)
+                _textPrefab = transform.GetComponentInChildren<TextMeshProUGUI>();
+
+            if (_textPrefab == null)
+                throw new NullReferenceException(nameof(_textPrefab));
         }
 
-    }
+        private void OnEnable()
+        {
+            if (s_Console == null)
+                s_Console = this;
+        }
 
-    private void OnDisable()
-    {
-        s_Console = null;
-    }
+        private void Awake()
+        {
+            if (_isDontDestroyOnLoad)
+            {
+                CreateSingleton();
+                DontDestroyOnLoad(gameObject);
+            }
 
-    public static void GetLog(string message)
-    {
-        if (s_Console == null)
-            CreateSingleton();
+        }
 
-        s_Console.AddLog(message);
-    }
+        private void OnDisable()
+        {
+            s_Console = null;
+        }
 
-    public static void GetException(Exception ex)
-    {
-        string exceptionMessage = $"Exception: {ex.Message}\nStack:{ex.StackTrace}";
+        public static void GetLog(string message)
+        {
+            if (s_Console == null)
+                CreateSingleton();
 
-        GetLog(exceptionMessage);
-    }
+            s_Console.AddLog(message);
+        }
 
-    private static void CreateSingleton()
-    {
-        if (s_Console == null)
-            s_Console = FindAnyObjectByType<Console>();
+        public static void GetException(Exception ex)
+        {
+            string exceptionMessage = $"Exception: {ex.Message}\nStack:{ex.StackTrace}";
 
-        if (s_Console == null)
-            throw new InvalidOperationException($"The GameObject '{nameof(Console)}' was not found");
-    }
+            GetLog(exceptionMessage);
+        }
 
-    private void AddLog(string message)
-    {
-        var text = Instantiate(_textPrefab, _content.transform);
-        text.text = $"{message}{EndText}";
+        private static void CreateSingleton()
+        {
+            if (s_Console == null)
+                s_Console = FindAnyObjectByType<Console>();
 
-        if (_scrollerToElement != null)
-            _scrollerToElement.ScrollToElement(text.GetComponent<RectTransform>());
+            if (s_Console == null)
+                throw new InvalidOperationException($"The GameObject '{nameof(Console)}' was not found");
+        }
 
-        if (++_currentCountElements > _maxLogLements)
-            ClearContent();
-    }
+        private void AddLog(string message)
+        {
+            var text = Instantiate(_textPrefab, _content.transform);
+            text.text = $"{message}{EndText}";
 
-    private void ClearContent()
-    {
-        Transform transform = _content.transform;
+            if (_scrollerToElement != null)
+                _scrollerToElement.ScrollToElement(text.GetComponent<RectTransform>());
 
-        for (int i = transform.childCount - 1; i >= 1; i--)
-            Destroy(transform.GetChild(i).gameObject);
+            if (++_currentCountElements > _maxLogLements)
+                ClearContent();
+        }
 
-        _currentCountElements = 0;
+        private void ClearContent()
+        {
+            Transform transform = _content.transform;
+
+            for (int i = transform.childCount - 1; i >= 1; i--)
+                Destroy(transform.GetChild(i).gameObject);
+
+            _currentCountElements = 0;
+        }
     }
 }

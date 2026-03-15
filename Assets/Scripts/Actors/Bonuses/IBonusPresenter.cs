@@ -1,8 +1,11 @@
-﻿public interface IBonusPresenter
+﻿namespace CannonTurret.Actors.Bonuses
 {
-    public void PrepareDeleted(IRemovedActorsCollector removedCollector);
+    public interface IBonusPresenter
+    {
+        public void PrepareDeleted(IRemovedActorsCollector removedCollector);
 
-    public void HandleBonusGatherer(IBonusGatherer bonusGathering);
+        public void HandleBonusGatherer(IBonusGatherer bonusGathering);
 
-    public void Destroy();
+        public void Destroy();
+    }
 }

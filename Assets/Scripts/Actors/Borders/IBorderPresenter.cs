@@ -1,12 +1,17 @@
-﻿public interface IBorderPresenter
+﻿using CannonTurret.DamageSystem;
+
+namespace CannonTurret.Actors.Borders
 {
-    public void PrepareDeleted(IRemovedActorsCollector removedCollector);
+    public interface IBorderPresenter
+    {
+        public void PrepareDeleted(IRemovedActorsCollector removedCollector);
 
-    public void TakeDamage(IDamageAttributes damage);
+        public void TakeDamage(IDamageAttributes damage);
 
-    public void IgnoreArmor(IDamageAttributes damage);
+        public void IgnoreArmor(IDamageAttributes damage);
 
-    public void FinishDeath();
+        public void FinishDeath();
 
-    public void Destroy();
+        public void Destroy();
+    }
 }

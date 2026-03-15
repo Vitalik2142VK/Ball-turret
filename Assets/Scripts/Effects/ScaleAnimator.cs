@@ -1,59 +1,63 @@
+using CannonTurret.UI.Animations;
 using DG.Tweening;
 using UnityEngine;
 
-public class ScaleAnimator : MonoBehaviour
+namespace CannonTurret.Effects
 {
-    [SerializeField, Range(0.1f, 2f)] private float _duration = 0.3f;
-    [SerializeField, Range(0.05f, 1.5f)] private float _startSizeValue = 0.5f;
-
-    private Transform _transform;
-    private Tween _animation;
-    private TweenController _controller;
-    private Vector3 _defaultSize;
-    private Vector3 _startSize;
-
-    private void Awake()
+    public class ScaleAnimator : MonoBehaviour
     {
-        Initicalize();
-    }
+        [SerializeField, Range(0.1f, 2f)] private float _duration = 0.3f;
+        [SerializeField, Range(0.05f, 1.5f)] private float _startSizeValue = 0.5f;
 
-    private void OnDestroy()
-    {
-        _controller.KillCurrentAnimation();
-    }
+        private Transform _transform;
+        private Tween _animation;
+        private TweenController _controller;
+        private Vector3 _defaultSize;
+        private Vector3 _startSize;
 
-    public void Initicalize()
-    {
-        if (_transform != null) 
-            return;
+        private void Awake()
+        {
+            Initicalize();
+        }
 
-        _transform = transform;
-        _controller = new TweenController();
+        private void OnDestroy()
+        {
+            _controller.KillCurrentAnimation();
+        }
 
-        UpdateScale();
-    }
+        public void Initicalize()
+        {
+            if (_transform != null)
+                return;
 
-    public YieldInstruction GetYieldAnimation() => _controller.GetYieldAnimation();
+            _transform = transform;
+            _controller = new TweenController();
 
-    public void Show()
-    {
-        _controller.KillCurrentAnimation();
+            UpdateScale();
+        }
 
-        _animation = _transform.DOScale(_defaultSize, _duration).From(_startSize);
-        _controller.PlayAnimation(_animation);
-    }
+        public YieldInstruction GetYieldAnimation() => _controller.GetYieldAnimation();
 
-    public void Hide()
-    {
-        _controller.KillCurrentAnimation();
+        public void Show()
+        {
+            _controller.KillCurrentAnimation();
 
-        _animation = _transform.DOScale(_startSize, _duration).From(_defaultSize);
-        _controller.PlayAnimation(_animation);
-    }
+            _animation = _transform.DOScale(_defaultSize, _duration).From(_startSize);
+            _controller.PlayAnimation(_animation);
+        }
 
-    public void UpdateScale()
-    {
-        _defaultSize = _transform.localScale;
-        _startSize = _defaultSize * _startSizeValue;
+        public void Hide()
+        {
+            _controller.KillCurrentAnimation();
+
+            _animation = _transform.DOScale(_startSize, _duration).From(_defaultSize);
+            _controller.PlayAnimation(_animation);
+        }
+
+        public void UpdateScale()
+        {
+            _defaultSize = _transform.localScale;
+            _startSize = _defaultSize * _startSizeValue;
+        }
     }
 }

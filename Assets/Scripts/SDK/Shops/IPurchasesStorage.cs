@@ -1,4 +1,7 @@
-﻿public interface IPurchasesStorage
+﻿namespace CannonTurret.SDK.Shops
 {
-    public bool TryGetPurchase(out IPlayerPurchase purchase, string id);
+    public interface IPurchasesStorage
+    {
+        public bool TryGetPurchase(out IPlayerPurchase purchase, string id);
+    }
 }

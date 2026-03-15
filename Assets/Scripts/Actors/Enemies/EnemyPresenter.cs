@@ -1,52 +1,57 @@
-﻿using System;
+﻿using CannonTurret.DamageSystem;
+using CannonTurret.Effects;
+using System;
 
-public class EnemyPresenter : IEnemyPresenter
+namespace CannonTurret.Actors.Enemies
 {
-    private IEnemy _model;
-    private IEnemyView _view;
-
-    public void Initialize(IEnemy model, IEnemyView view)
+    public class EnemyPresenter : IEnemyPresenter
     {
-        _model = model ?? throw new ArgumentNullException(nameof(model));
-        _view = view ?? throw new ArgumentNullException(nameof(view));
-    }
+        private IEnemy _model;
+        private IEnemyView _view;
 
-    public void AddDebuff(IDebuff debaff) => _model.AddDebuff(debaff);
+        public void Initialize(IEnemy model, IEnemyView view)
+        {
+            _model = model ?? throw new ArgumentNullException(nameof(model));
+            _view = view ?? throw new ArgumentNullException(nameof(view));
+        }
+
+        public void AddDebuff(IDebuff debaff) => _model.AddDebuff(debaff);
 
 
-    public void PrepareDeleted(IRemovedActorsCollector removedCollector)
-    {
-        removedCollector.Add(_model);
-    }
+        public void PrepareDeleted(IRemovedActorsCollector removedCollector)
+        {
+            removedCollector.Add(_model);
+        }
 
-    public void PrepareAttacked(IAttackingEnemiesCollector attackingCollector)
-    {
-        attackingCollector.Add(_model);
-    }
+        public void PrepareAttacked(IAttackingEnemiesCollector attackingCollector)
+        {
+            attackingCollector.Add(_model);
+        }
 
-    public void TakeDamage(IDamageAttributes damage)
-    {
-        _model.TakeDamage(damage);
+        public void TakeDamage(IDamageAttributes damage)
+        {
+            _model.TakeDamage(damage);
 
-        if (_model.IsEnable)
-            _view.PlayDamage();
-        else
-            _view.PlayDead();
-    }
+            if (_model.IsEnable)
+                _view.PlayDamage();
+            else
+                _view.PlayDead();
+        }
 
-    public void Move()
-    {
-        var isMovement = _model.IsFinished == false;
-        _view.PlayMovement(isMovement);
-    }
+        public void Move()
+        {
+            var isMovement = _model.IsFinished == false;
+            _view.PlayMovement(isMovement);
+        }
 
-    public void Win() => _view.PlayVictory();
+        public void Win() => _view.PlayVictory();
 
-    public void Destroy()
-    {
-        if (_view.IsActive)
-            _view.PlayDead();
-        else
-            _view.Destroy();
+        public void Destroy()
+        {
+            if (_view.IsActive)
+                _view.PlayDead();
+            else
+                _view.Destroy();
+        }
     }
 }

@@ -1,10 +1,13 @@
-﻿public interface IWallet
+﻿namespace CannonTurret.Coin.Wallets
 {
-    public long CountCoins { get; }
+    public interface IWallet
+    {
+        public long CountCoins { get; }
 
-    public void SetView(IWalletView walletView);
+        public void SetView(IWalletView walletView);
 
-    public void AddCoins(int countCoins);
+        public void AddCoins(int countCoins);
 
-    public bool TryPay(long countCoins);
+        public bool TryPay(long countCoins);
+    }
 }

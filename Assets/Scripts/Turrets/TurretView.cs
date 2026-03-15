@@ -1,83 +1,88 @@
+using CannonTurret.AudioSystem;
+using CannonTurret.Turrets.Shooters;
 using System;
 using UnityEngine;
 
-public class TurretView : MonoBehaviour, ITurretView
+namespace CannonTurret.Turrets
 {
-    private const string Shot = nameof(Shot);
-    private const string GetHit = nameof(GetHit);
-
-    [SerializeField] private ShooterView _shooterView;
-
-    [Header("Sound")]
-    [SerializeField] private Sound _shotSound;
-    [SerializeField] private Sound _takeDamageSound;
-    [SerializeField] private Sound _destroySound;
-
-    [Header("Particles")]
-    [SerializeField] private ParticleSystem _explosionDestroyParticles;
-    [SerializeField] private ParticleSystem _shotParticles;
-
-    [Header("Animation")]
-    [SerializeField] private Animator _animator;
-
-    [Header("Optional")]
-    [SerializeField] private DestroyedTurretView _destroyedTurretView;
-
-    private int _hashShot;
-    private int _hashGetHit;
-
-    private void OnValidate()
+    public class TurretView : MonoBehaviour, ITurretView
     {
-        if (_shooterView == null)
-            throw new NullReferenceException(nameof(_shooterView));
+        private const string Shot = nameof(Shot);
+        private const string GetHit = nameof(GetHit);
 
-        if (_shotSound == null)
-            throw new NullReferenceException(nameof(_shotSound));
+        [SerializeField] private ShooterView _shooterView;
 
-        if (_takeDamageSound == null)
-            throw new NullReferenceException(nameof(_takeDamageSound));
+        [Header("Sound")]
+        [SerializeField] private Sound _shotSound;
+        [SerializeField] private Sound _takeDamageSound;
+        [SerializeField] private Sound _destroySound;
 
-        if (_destroySound == null)
-            throw new NullReferenceException(nameof(_destroySound));
+        [Header("Particles")]
+        [SerializeField] private ParticleSystem _explosionDestroyParticles;
+        [SerializeField] private ParticleSystem _shotParticles;
 
-        if (_explosionDestroyParticles == null)
-            throw new NullReferenceException(nameof(_explosionDestroyParticles));
+        [Header("Animation")]
+        [SerializeField] private Animator _animator;
 
-        if (_shotParticles == null)
-            throw new NullReferenceException(nameof(_shotParticles));
+        [Header("Optional")]
+        [SerializeField] private DestroyedTurretView _destroyedTurretView;
 
-        if (_animator == null)
-            throw new NullReferenceException(nameof(_animator));
-    }
+        private int _hashShot;
+        private int _hashGetHit;
 
-    private void Awake()
-    {
-        _hashShot = Animator.StringToHash(Shot);
-        _hashGetHit = Animator.StringToHash(GetHit);
-    }
+        private void OnValidate()
+        {
+            if (_shooterView == null)
+                throw new NullReferenceException(nameof(_shooterView));
 
-    public void PlayDestroy()
-    {
-        _destroySound.Play();
-        _explosionDestroyParticles.Play();
-        _shooterView.PlayRunAway();
+            if (_shotSound == null)
+                throw new NullReferenceException(nameof(_shotSound));
 
-        if (_destroyedTurretView != null)
-            _destroyedTurretView.Enable();
-    }
+            if (_takeDamageSound == null)
+                throw new NullReferenceException(nameof(_takeDamageSound));
 
-    public void PlayTakeDamage()
-    {
-        _animator.SetTrigger(_hashGetHit);
-        _takeDamageSound.Play();
-        _shooterView.PlayTakeDamage();
-    }
+            if (_destroySound == null)
+                throw new NullReferenceException(nameof(_destroySound));
 
-    public void PlayShoot()
-    {
-        _animator.SetTrigger(_hashShot);
-        _shotParticles.Play();
-        _shotSound.Play();
-        _shooterView.PlayShot();
+            if (_explosionDestroyParticles == null)
+                throw new NullReferenceException(nameof(_explosionDestroyParticles));
+
+            if (_shotParticles == null)
+                throw new NullReferenceException(nameof(_shotParticles));
+
+            if (_animator == null)
+                throw new NullReferenceException(nameof(_animator));
+        }
+
+        private void Awake()
+        {
+            _hashShot = Animator.StringToHash(Shot);
+            _hashGetHit = Animator.StringToHash(GetHit);
+        }
+
+        public void PlayDestroy()
+        {
+            _destroySound.Play();
+            _explosionDestroyParticles.Play();
+            _shooterView.PlayRunAway();
+
+            if (_destroyedTurretView != null)
+                _destroyedTurretView.Enable();
+        }
+
+        public void PlayTakeDamage()
+        {
+            _animator.SetTrigger(_hashGetHit);
+            _takeDamageSound.Play();
+            _shooterView.PlayTakeDamage();
+        }
+
+        public void PlayShoot()
+        {
+            _animator.SetTrigger(_hashShot);
+            _shotParticles.Play();
+            _shotSound.Play();
+            _shooterView.PlayShot();
+        }
     }
 }

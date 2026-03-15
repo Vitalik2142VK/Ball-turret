@@ -1,103 +1,109 @@
-﻿using System;
+﻿using CannonTurret.Actors.Bonuses;
+using CannonTurret.Scriptable.Player;
+using CannonTurret.UI.Animations;
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(ChoiceButton), typeof(ScaleButtonAnimator), typeof(Button))]
-public class BonusChoiceButton : MonoBehaviour, IChoiceButton
+namespace CannonTurret.UI.PlayerScene
 {
-    [SerializeField] private Scriptable.LocalizationData _localizationData;
-    [SerializeField] private Image _icon;
-    [SerializeField] private TextMeshProUGUI _description;
-    [SerializeField] private Button _infoButton;
-
-    private IChoiceButton _choiceButton;
-    private IBonus _bonus;
-    private IButtonAnimator _animator;
-    private Button _button;
-    private int _index;
-
-    public event Action<int> Clicked;
-
-    public IBonus Bonus => _bonus;
-
-    private void OnValidate()
+    [RequireComponent(typeof(ChoiceButton), typeof(ScaleButtonAnimator), typeof(Button))]
+    public class BonusChoiceButton : MonoBehaviour, IChoiceButton
     {
-        if (_localizationData == null)
-            throw new NullReferenceException(nameof(_localizationData));
+        [SerializeField] private LocalizationData _localizationData;
+        [SerializeField] private Image _icon;
+        [SerializeField] private TextMeshProUGUI _description;
+        [SerializeField] private Button _infoButton;
 
-        if (_icon == null)
-            throw new NullReferenceException(nameof(_icon));
+        private IChoiceButton _choiceButton;
+        private IBonus _bonus;
+        private IButtonAnimator _animator;
+        private Button _button;
+        private int _index;
 
-        if (_description == null)
-            throw new NullReferenceException(nameof(_description));
+        public event Action<int> Clicked;
 
-        if (_infoButton == null)
-            throw new NullReferenceException(nameof(_infoButton));
-    }
+        public IBonus Bonus => _bonus;
 
-    private void Awake()
-    {
-        _animator = GetComponent<IButtonAnimator>();
-        _choiceButton = GetComponent<ChoiceButton>();
-        _button = GetComponent<Button>();
-    }
+        private void OnValidate()
+        {
+            if (_localizationData == null)
+                throw new NullReferenceException(nameof(_localizationData));
 
-    private void OnEnable()
-    {
-        _infoButton.onClick.AddListener(OnChangeImageDiscripcion);
-        _button.onClick.AddListener(OnClick);
-        SetActiveDiscription(false);
-    }
+            if (_icon == null)
+                throw new NullReferenceException(nameof(_icon));
 
-    private void OnDisable()
-    {
-        _infoButton.onClick.AddListener(OnChangeImageDiscripcion);
-        _button.onClick.AddListener(OnClick);
-    }
+            if (_description == null)
+                throw new NullReferenceException(nameof(_description));
 
-    public void Initialize(int index)
-    {
-        if (index < 0)
-            throw new ArgumentOutOfRangeException(nameof(index));
+            if (_infoButton == null)
+                throw new NullReferenceException(nameof(_infoButton));
+        }
 
-        _index = index;
-    }
+        private void Awake()
+        {
+            _animator = GetComponent<IButtonAnimator>();
+            _choiceButton = GetComponent<ChoiceButton>();
+            _button = GetComponent<Button>();
+        }
 
-    public void Disable() => _choiceButton.Disable();
+        private void OnEnable()
+        {
+            _infoButton.onClick.AddListener(OnChangeImageDiscripcion);
+            _button.onClick.AddListener(OnClick);
+            SetActiveDiscription(false);
+        }
 
-    public void SetBonus(IBonus bonus)
-    {
-        _bonus = bonus ?? throw new ArgumentNullException(nameof(_bonus));
-        IBonusCard bonusCard = _bonus.BonusCard;
+        private void OnDisable()
+        {
+            _infoButton.onClick.AddListener(OnChangeImageDiscripcion);
+            _button.onClick.AddListener(OnClick);
+        }
 
-        _icon.sprite = bonusCard.Icon;
-        _description.text = bonusCard.GetDescription(_localizationData.Language);
-    }
+        public void Initialize(int index)
+        {
+            if (index < 0)
+                throw new ArgumentOutOfRangeException(nameof(index));
 
-    public void Enable()
-    {
-        _animator.PressOut();
-        _choiceButton.Enable();
-    }
+            _index = index;
+        }
 
-    private void OnClick()
-    {
-        _animator.Press();
+        public void Disable() => _choiceButton.Disable();
 
-        Clicked?.Invoke(_index);
-    }
+        public void SetBonus(IBonus bonus)
+        {
+            _bonus = bonus ?? throw new ArgumentNullException(nameof(_bonus));
+            IBonusCard bonusCard = _bonus.BonusCard;
 
-    private void OnChangeImageDiscripcion()
-    {
-        bool isActiveImage = _icon.gameObject.activeSelf;
+            _icon.sprite = bonusCard.Icon;
+            _description.text = bonusCard.GetDescription(_localizationData.Language);
+        }
 
-        SetActiveDiscription(isActiveImage);
-    }
+        public void Enable()
+        {
+            _animator.PressOut();
+            _choiceButton.Enable();
+        }
 
-    private void SetActiveDiscription(bool isActive)
-    {
-        _description.gameObject.SetActive(isActive);
-        _icon.gameObject.SetActive(isActive == false);
+        private void OnClick()
+        {
+            _animator.Press();
+
+            Clicked?.Invoke(_index);
+        }
+
+        private void OnChangeImageDiscripcion()
+        {
+            bool isActiveImage = _icon.gameObject.activeSelf;
+
+            SetActiveDiscription(isActiveImage);
+        }
+
+        private void SetActiveDiscription(bool isActive)
+        {
+            _description.gameObject.SetActive(isActive);
+            _icon.gameObject.SetActive(isActive == false);
+        }
     }
 }

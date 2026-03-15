@@ -1,52 +1,57 @@
-﻿using System;
+﻿using CannonTurret.HealthSystem;
+using CannonTurret.Scriptable.Health;
+using System;
 using UnityEngine;
 
-public class ArmoredEnemyCreator : MonoBehaviour, IEnemyCreator
+namespace CannonTurret.Actors.Enemies.Armored
 {
-    [SerializeField] private EnemyCreator _enemyCreator;
-    [SerializeField] private Scriptable.ArmorAttributes _armorAttributes;
-
-    private void OnValidate()
+    public class ArmoredEnemyCreator : MonoBehaviour, IEnemyCreator
     {
-        if (_enemyCreator == null)
-        {
-            _enemyCreator = GetComponentInChildren<EnemyCreator>();
+        [SerializeField] private EnemyCreator _enemyCreator;
+        [SerializeField] private ArmorAttributes _armorAttributes;
 
+        private void OnValidate()
+        {
             if (_enemyCreator == null)
             {
-                GameObject gameObject = new GameObject();
-                _enemyCreator = gameObject.AddComponent<EnemyCreator>();
-                gameObject.transform.parent = transform;
+                _enemyCreator = GetComponentInChildren<EnemyCreator>();
+
+                if (_enemyCreator == null)
+                {
+                    GameObject gameObject = new GameObject();
+                    _enemyCreator = gameObject.AddComponent<EnemyCreator>();
+                    gameObject.transform.parent = transform;
+                }
             }
+
+            if (_armorAttributes == null)
+                throw new ArgumentNullException(nameof(_armorAttributes));
         }
 
-        if (_armorAttributes == null)
-            throw new ArgumentNullException(nameof(_armorAttributes));
-    }
+        public string Name => _enemyCreator.Name;
 
-    public string Name => _enemyCreator.Name;
+        private void Awake()
+        {
+            _armorAttributes.CalculateArmor();
+        }
 
-    private void Awake()
-    {
-        _armorAttributes.CalculateArmor();
-    }
+        public IEnemy Create(IActorHealthModifier healthModifier)
+        {
+            if (healthModifier == null)
+                throw new ArgumentNullException(nameof(healthModifier));
 
-    public IEnemy Create(IActorHealthModifier healthModifier)
-    {
-        if (healthModifier == null)
-            throw new ArgumentNullException(nameof(healthModifier));
+            IEnemy enemy = _enemyCreator.Create(healthModifier);
+            Armor armor = new Armor(enemy, _armorAttributes);
+            EnemyView createdEnemyView = _enemyCreator.ConsumeCreatedEnemyView();
+            ArmoredEnemy model = new ArmoredEnemy(enemy, armor);
 
-        IEnemy enemy = _enemyCreator.Create(healthModifier);
-        Armor armor = new Armor(enemy, _armorAttributes);
-        EnemyView createdEnemyView = _enemyCreator.ConsumeCreatedEnemyView();
-        ArmoredEnemy model = new ArmoredEnemy(enemy, armor);
+            if (createdEnemyView.TryGetComponent(out ArmoredEnemyView view) == false)
+                throw new InvalidOperationException($"Object {nameof(createdEnemyView)} do not have a component <{nameof(ArmoredEnemyView)}>");
 
-        if (createdEnemyView.TryGetComponent(out ArmoredEnemyView view) == false)
-            throw new InvalidOperationException($"Object {nameof(createdEnemyView)} do not have a component <{nameof(ArmoredEnemyView)}>");
+            ArmoredEnemyPresenter presenter = new ArmoredEnemyPresenter(model, view);
+            view.Initialize(presenter);
 
-        ArmoredEnemyPresenter presenter = new ArmoredEnemyPresenter(model, view);
-        view.Initialize(presenter);
-
-        return model;
+            return model;
+        }
     }
 }

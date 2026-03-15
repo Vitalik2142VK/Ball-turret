@@ -1,12 +1,20 @@
-using PlayLevel;
+using CannonTurret.Actors.Enemies;
+using CannonTurret.AudioSystem;
+using CannonTurret.EntryPoints.PlayLevel.Configurators;
+using CannonTurret.LevelSystem;
+using CannonTurret.Scriptable.Level;
+using CannonTurret.StepSystem.Steps;
+using CannonTurret.UI;
+using CannonTurret.UI.LearningLevel;
+using CannonTurret.UI.PlayerScene;
 using System;
 using UnityEngine;
 
-namespace LearningLevel
+namespace CannonTurret.EntryPoints.LearningLevel
 {
     public class EntryPoint : MonoBehaviour
     {
-        [SerializeField] private Scriptable.SelectedLevel _selectedLevel;
+        [SerializeField] private SelectedLevel _selectedLevel;
         [SerializeField] private LearningUI _learningUI;
         [SerializeField] private EnemyFactory _learningEnemyFactory;
         [SerializeField] private PauseMenu _pauseMenu;

@@ -1,9 +1,10 @@
-﻿using System;
+﻿using CannonTurret.Turrets.Bullets.Physics;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace Scriptable
+namespace CannonTurret.Scriptable.Bullet
 {
     [CreateAssetMenu(menuName = "Trajectory bullet", fileName = "TrajectoryBullet", order = 51)]
     public class TrajectoryBullet : ScriptableObject

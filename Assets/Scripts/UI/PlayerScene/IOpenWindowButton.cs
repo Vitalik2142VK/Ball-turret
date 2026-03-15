@@ -1,6 +1,9 @@
-﻿public interface IOpenWindowButton : IActivableUI
+﻿namespace CannonTurret.UI.PlayerScene
 {
-    public void Show();
+    public interface IOpenWindowButton : IActivableUI
+    {
+        public void Show();
 
-    public void Hide();
+        public void Hide();
+    }
 }

@@ -1,5 +1,8 @@
-﻿public interface IRewardData
+﻿namespace CannonTurret.Coin.Rewards
 {
-    public int Reward {  get; }
-    public int MaxReward { get; }
+    public interface IRewardData
+    {
+        public int Reward { get; }
+        public int MaxReward { get; }
+    }
 }

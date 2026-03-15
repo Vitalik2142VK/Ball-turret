@@ -1,8 +1,11 @@
-﻿public interface IButtonAnimator
+﻿namespace CannonTurret.UI.Animations
 {
-    public bool IsPressed { get; }
+    public interface IButtonAnimator
+    {
+        public bool IsPressed { get; }
 
-    public void Press();
+        public void Press();
 
-    public void PressOut();
+        public void PressOut();
+    }
 }

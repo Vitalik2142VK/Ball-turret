@@ -1,4 +1,7 @@
-﻿public interface IBonusView : IActorView 
+﻿namespace CannonTurret.Actors.Bonuses
 {
-    public void PlayTaking();
+    public interface IBonusView : IActorView
+    {
+        public void PlayTaking();
+    }
 }

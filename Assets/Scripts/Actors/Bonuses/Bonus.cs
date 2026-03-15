@@ -1,20 +1,24 @@
-﻿using System;
+﻿using CannonTurret.Actors.Bonuses.Activators;
+using System;
 
-public class Bonus : IBonus
+namespace CannonTurret.Actors.Bonuses
 {
-    private IBonusActivator _activator;
-
-    public Bonus(IBonusCard bonusCard, IBonusActivator bonusActivator)
+    public class Bonus : IBonus
     {
-        _activator ??= bonusActivator ?? throw new ArgumentNullException(nameof(bonusActivator));
+        private IBonusActivator _activator;
 
-        BonusCard = bonusCard ?? throw new ArgumentNullException(nameof(bonusCard));
-    }
+        public Bonus(IBonusCard bonusCard, IBonusActivator bonusActivator)
+        {
+            _activator ??= bonusActivator ?? throw new ArgumentNullException(nameof(bonusActivator));
 
-    public IBonusCard BonusCard { get; }
+            BonusCard = bonusCard ?? throw new ArgumentNullException(nameof(bonusCard));
+        }
 
-    public void Activate()
-    {
-        _activator.Activate();
+        public IBonusCard BonusCard { get; }
+
+        public void Activate()
+        {
+            _activator.Activate();
+        }
     }
 }

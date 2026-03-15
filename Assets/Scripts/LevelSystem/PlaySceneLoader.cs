@@ -1,30 +1,35 @@
+using CannonTurret.Scriptable.Level;
+using CannonTurret.UI;
 using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class PlaySceneLoader : MonoBehaviour, ISceneLoader
+namespace CannonTurret.LevelSystem
 {
-    [SerializeField] private Scriptable.SelectedLevel _selectedLevel;
-
-    private void OnValidate()
+    public class PlaySceneLoader : MonoBehaviour, ISceneLoader
     {
-        if (_selectedLevel == null)
-            throw new NullReferenceException(nameof(_selectedLevel));
-    }
+        [SerializeField] private SelectedLevel _selectedLevel;
 
-    public void SetSelectedLevel(ILevel level)
-    {
-        if (level == null)
-            throw new ArgumentNullException(nameof(level));
+        private void OnValidate()
+        {
+            if (_selectedLevel == null)
+                throw new NullReferenceException(nameof(_selectedLevel));
+        }
 
-        _selectedLevel.SetLevel(level);
-    }
+        public void SetSelectedLevel(ILevel level)
+        {
+            if (level == null)
+                throw new ArgumentNullException(nameof(level));
 
-    public void Load()
-    {
-        if (_selectedLevel.HasLevel == false)
-            throw new InvalidOperationException("The download level is not specified");
+            _selectedLevel.SetLevel(level);
+        }
 
-        SceneManager.LoadScene((int)SceneIndex.PlayScene);
+        public void Load()
+        {
+            if (_selectedLevel.HasLevel == false)
+                throw new InvalidOperationException("The download level is not specified");
+
+            SceneManager.LoadScene((int)SceneIndex.PlayScene);
+        }
     }
 }

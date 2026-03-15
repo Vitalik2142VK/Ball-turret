@@ -1,4 +1,7 @@
-﻿public interface IHealthAttributes
+﻿namespace CannonTurret.HealthSystem
 {
-    public float MaxHealth { get; }
+    public interface IHealthAttributes
+    {
+        public float MaxHealth { get; }
+    }
 }

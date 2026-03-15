@@ -1,12 +1,15 @@
 using System;
 using UnityEngine;
 
-public interface IPlayerScreenPointer
+namespace CannonTurret.PlayerSystem
 {
-    public event Action PressFinished;
+    public interface IPlayerScreenPointer
+    {
+        public event Action PressFinished;
 
-    public Vector3 TouchPositionInMap { get; }
-    public bool IsPress { get; }
+        public Vector3 TouchPositionInMap { get; }
+        public bool IsPress { get; }
 
-    public void UpdateInput();
+        public void UpdateInput();
+    }
 }

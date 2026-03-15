@@ -1,8 +1,11 @@
-﻿public interface IRewardIssuer : IRewardData
+﻿namespace CannonTurret.Coin.Rewards
 {
-    public void PayReward();
+    public interface IRewardIssuer : IRewardData
+    {
+        public void PayReward();
 
-    public void PayMaxReward();
+        public void PayMaxReward();
 
-    public void CalculateRevard();
+        public void CalculateRevard();
+    }
 }

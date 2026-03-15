@@ -1,23 +1,27 @@
-﻿using System;
+﻿using CannonTurret.AudioSystem;
+using System;
 using UnityEngine;
 
-public class FullHealthTurretView : MonoBehaviour, IBonusActicatorView
+namespace CannonTurret.Actors.Bonuses.Activators
 {
-    [SerializeField] private ParticleSystem _fullTurretParticle;
-    [SerializeField] private Sound _turretRepairSound;
-
-    private void OnValidate()
+    public class FullHealthTurretView : MonoBehaviour, IBonusActicatorView
     {
-        if (_fullTurretParticle == null)
-            throw new NullReferenceException(nameof(_fullTurretParticle));
+        [SerializeField] private ParticleSystem _fullTurretParticle;
+        [SerializeField] private Sound _turretRepairSound;
 
-        if (_turretRepairSound == null)
-            throw new NullReferenceException(nameof(_turretRepairSound));
-    }
+        private void OnValidate()
+        {
+            if (_fullTurretParticle == null)
+                throw new NullReferenceException(nameof(_fullTurretParticle));
 
-    public void PlayActivation()
-    {
-        _fullTurretParticle.Play();
-        _turretRepairSound.Play();
+            if (_turretRepairSound == null)
+                throw new NullReferenceException(nameof(_turretRepairSound));
+        }
+
+        public void PlayActivation()
+        {
+            _fullTurretParticle.Play();
+            _turretRepairSound.Play();
+        }
     }
 }

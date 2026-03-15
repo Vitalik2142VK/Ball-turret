@@ -1,1 +1,4 @@
-﻿public interface IRemovedActorsRepository : IActorsRemover, IRemovedActorsCollector { }
+﻿namespace CannonTurret.Actors
+{
+    public interface IRemovedActorsRepository : IActorsRemover, IRemovedActorsCollector { }
+}

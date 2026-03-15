@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Scriptable
+namespace CannonTurret.Scriptable.Player
 {
     [CreateAssetMenu(menuName = "Player/Initial prices", fileName = "InitialPrices", order = 51)]
     public class InitialPrices : ScriptableObject

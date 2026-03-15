@@ -1,34 +1,38 @@
-﻿using System;
+﻿using CannonTurret.Actors.Spawn;
+using System;
 using UnityEngine;
 
-public class WaveSelector : MonoBehaviour
+namespace CannonTurret.LevelSystem
 {
-    [SerializeField] private WaveRepository[] _waveRepositories;
-
-    private void OnValidate()
+    public class WaveSelector : MonoBehaviour
     {
-        if (_waveRepositories == null || _waveRepositories.Length == 0)
-            throw new InvalidOperationException(nameof(_waveRepositories));
+        [SerializeField] private WaveRepository[] _waveRepositories;
 
-        foreach (var waveRepository in _waveRepositories)
-            if (waveRepository == null)
-                throw new NullReferenceException($"{_waveRepositories} has null elements");
-    }
+        private void OnValidate()
+        {
+            if (_waveRepositories == null || _waveRepositories.Length == 0)
+                throw new InvalidOperationException(nameof(_waveRepositories));
 
-    public void Initialize(System.Random random)
-    {
-        foreach (var waveRepository in _waveRepositories)
-            waveRepository.Initialize(random);
-    }
+            foreach (var waveRepository in _waveRepositories)
+                if (waveRepository == null)
+                    throw new NullReferenceException($"{_waveRepositories} has null elements");
+        }
 
-    public IWaveActorsPlanner GetWaveActorsPlanner(WaveMask waveMask)
-    {
-        IWaveActorsPlanner waveActors;
+        public void Initialize(System.Random random)
+        {
+            foreach (var waveRepository in _waveRepositories)
+                waveRepository.Initialize(random);
+        }
 
-        foreach (var waveRepository in _waveRepositories)
-            if (waveRepository.TryGetWaveActorsPlanner(out waveActors, waveMask))
-                return waveActors;
+        public IWaveActorsPlanner GetWaveActorsPlanner(WaveMask waveMask)
+        {
+            IWaveActorsPlanner waveActors;
 
-        throw new InvalidOperationException("There is no suitable repository in with this wave number");
+            foreach (var waveRepository in _waveRepositories)
+                if (waveRepository.TryGetWaveActorsPlanner(out waveActors, waveMask))
+                    return waveActors;
+
+            throw new InvalidOperationException("There is no suitable repository in with this wave number");
+        }
     }
 }

@@ -1,8 +1,10 @@
-﻿using System;
+﻿using CannonTurret.Actors;
+using CannonTurret.Actors.Spawn;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Scriptable
+namespace CannonTurret.Scriptable.Level
 {
     [Serializable]
     public struct LineActorPlaner

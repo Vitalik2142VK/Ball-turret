@@ -1,4 +1,7 @@
-﻿public interface IPlayerSaver
+﻿namespace CannonTurret.PlayerSystem
 {
-    public void Save();
+    public interface IPlayerSaver
+    {
+        public void Save();
+    }
 }

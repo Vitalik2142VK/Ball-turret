@@ -1,7 +1,17 @@
-﻿using System;
+﻿using CannonTurret.Actors;
+using CannonTurret.Actors.Bonuses.Activators;
+using CannonTurret.Actors.Bonuses.ReserveredBonuses;
+using CannonTurret.Actors.Enemies;
+using CannonTurret.Effects.Freezing;
+using CannonTurret.StepSystem;
+using CannonTurret.StepSystem.Steps;
+using CannonTurret.Turrets.Bullets;
+using CannonTurret.UI;
+using CannonTurret.UI.PlayerScene;
+using System;
 using UnityEngine;
 
-namespace PlayLevel
+namespace CannonTurret.EntryPoints.PlayLevel.Configurators
 {
     public class StepControllerConfigurator : MonoBehaviour
     {

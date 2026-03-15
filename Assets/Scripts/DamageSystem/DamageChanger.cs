@@ -1,34 +1,37 @@
 ﻿using System;
 
-public class DamageChanger : IDamageChanger
+namespace CannonTurret.DamageSystem
 {
-    private const float MinDamageСoefficient = 0.1f;
-
-    private float _damage;
-
-    public DamageChanger(IDamageAttributes attributes)
+    public class DamageChanger : IDamageChanger
     {
-        if (attributes == null)
-            throw new ArgumentNullException(nameof(attributes));
+        private const float MinDamageСoefficient = 0.1f;
 
-        _damage = attributes.Damage;
-    }
+        private float _damage;
 
-    public float Damage => _damage;
+        public DamageChanger(IDamageAttributes attributes)
+        {
+            if (attributes == null)
+                throw new ArgumentNullException(nameof(attributes));
 
-    public void Change(IDamageImproverAttributes damageImproverAttributes)
-    {
-        if (damageImproverAttributes == null)
-            throw new ArgumentNullException(nameof(damageImproverAttributes));
+            _damage = attributes.Damage;
+        }
 
-        _damage *= damageImproverAttributes.DamageСoefficient;
-    }
+        public float Damage => _damage;
 
-    public void Change(float damageСoefficient)
-    {
-        if (damageСoefficient < MinDamageСoefficient)
-            throw new ArgumentOutOfRangeException(nameof(damageСoefficient));
+        public void Change(IDamageImproverAttributes damageImproverAttributes)
+        {
+            if (damageImproverAttributes == null)
+                throw new ArgumentNullException(nameof(damageImproverAttributes));
 
-        _damage *= damageСoefficient;
+            _damage *= damageImproverAttributes.DamageСoefficient;
+        }
+
+        public void Change(float damageСoefficient)
+        {
+            if (damageСoefficient < MinDamageСoefficient)
+                throw new ArgumentOutOfRangeException(nameof(damageСoefficient));
+
+            _damage *= damageСoefficient;
+        }
     }
 }

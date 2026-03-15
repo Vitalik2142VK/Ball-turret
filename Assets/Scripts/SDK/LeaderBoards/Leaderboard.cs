@@ -1,4 +1,7 @@
-﻿public class Leaderboard
+﻿namespace CannonTurret.SDK.LeaderBoards
 {
-    public const string Name = "MaxWave";
+    public class Leaderboard
+    {
+        public const string Name = "MaxWave";
+    }
 }

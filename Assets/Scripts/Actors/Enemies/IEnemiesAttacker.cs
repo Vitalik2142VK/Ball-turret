@@ -1,4 +1,7 @@
-﻿public interface IEnemiesAttacker
+﻿namespace CannonTurret.Actors.Enemies
 {
-    public void AttackAll();
+    public interface IEnemiesAttacker
+    {
+        public void AttackAll();
+    }
 }

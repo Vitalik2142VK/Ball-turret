@@ -1,45 +1,49 @@
+using CannonTurret.Turrets;
 using System;
 using UnityEngine;
 
-[RequireComponent(typeof(PlayerScreenPointer))]
-public class PlayerController : MonoBehaviour, IPlayerController
+namespace CannonTurret.PlayerSystem
 {
-    private ITurret _turret;
-    private IPlayerScreenPointer _screenPointer;
-
-    private void Awake()
+    [RequireComponent(typeof(PlayerScreenPointer))]
+    public class PlayerController : MonoBehaviour, IPlayerController
     {
-        _screenPointer = GetComponent<PlayerScreenPointer>();
-    }
+        private ITurret _turret;
+        private IPlayerScreenPointer _screenPointer;
 
-    private void OnEnable()
-    {
-        _screenPointer.PressFinished += OnFinishPress;
-    }
+        private void Awake()
+        {
+            _screenPointer = GetComponent<PlayerScreenPointer>();
+        }
 
-    private void OnDisable()
-    {
-        _screenPointer.PressFinished -= OnFinishPress;
-    }
+        private void OnEnable()
+        {
+            _screenPointer.PressFinished += OnFinishPress;
+        }
 
-    public void Initialize(ITurret turret)
-    {
-        _turret = turret ?? throw new ArgumentNullException(nameof(turret));
-    }
+        private void OnDisable()
+        {
+            _screenPointer.PressFinished -= OnFinishPress;
+        }
 
-    public void SelectTarget()
-    {
-        _screenPointer.UpdateInput();
+        public void Initialize(ITurret turret)
+        {
+            _turret = turret ?? throw new ArgumentNullException(nameof(turret));
+        }
 
-        if (_screenPointer.IsPress && _turret.IsReadyShoot)
-            _turret.SetTouchPoint(_screenPointer.TouchPositionInMap);
-    }
+        public void SelectTarget()
+        {
+            _screenPointer.UpdateInput();
 
-    private void OnFinishPress()
-    {
-        if (_turret.IsReadyShoot == false)
-            return;
+            if (_screenPointer.IsPress && _turret.IsReadyShoot)
+                _turret.SetTouchPoint(_screenPointer.TouchPositionInMap);
+        }
 
-        _turret.FixTargetPostion(_screenPointer.TouchPositionInMap);
+        private void OnFinishPress()
+        {
+            if (_turret.IsReadyShoot == false)
+                return;
+
+            _turret.FixTargetPostion(_screenPointer.TouchPositionInMap);
+        }
     }
 }

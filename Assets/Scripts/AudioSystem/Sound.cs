@@ -1,35 +1,38 @@
 ﻿using UnityEngine;
 
-[RequireComponent(typeof(AudioSource))]
-public class Sound : MonoBehaviour, ISound
+namespace CannonTurret.AudioSystem
 {
-    [SerializeField, Range(0, 0.3f)] private float _rangePitch = 0f;
-    [SerializeField, Min(0)] private float _duration = 0f;
-
-    private AudioSource _audioSource;
-    private float _pitch;
-
-    private void Awake()
+    [RequireComponent(typeof(AudioSource))]
+    public class Sound : MonoBehaviour, ISound
     {
-        _audioSource = GetComponent<AudioSource>();
-        _pitch = _audioSource.pitch;
-    }
+        [SerializeField, Range(0, 0.3f)] private float _rangePitch = 0f;
+        [SerializeField, Min(0)] private float _duration = 0f;
 
-    public void Stop() => _audioSource.Stop();
+        private AudioSource _audioSource;
+        private float _pitch;
 
-    public void Play()
-    {
-        if (_rangePitch != 0)
-            _audioSource.pitch = _pitch + GetRandomPitch();
+        private void Awake()
+        {
+            _audioSource = GetComponent<AudioSource>();
+            _pitch = _audioSource.pitch;
+        }
 
-        if (_duration != 0)
-            Invoke(nameof(Stop), _duration);
+        public void Stop() => _audioSource.Stop();
 
-        _audioSource.Play();
-    }
+        public void Play()
+        {
+            if (_rangePitch != 0)
+                _audioSource.pitch = _pitch + GetRandomPitch();
 
-    private float GetRandomPitch()
-    {
-        return Random.Range(-_rangePitch, _rangePitch);
+            if (_duration != 0)
+                Invoke(nameof(Stop), _duration);
+
+            _audioSource.Play();
+        }
+
+        private float GetRandomPitch()
+        {
+            return Random.Range(-_rangePitch, _rangePitch);
+        }
     }
 }

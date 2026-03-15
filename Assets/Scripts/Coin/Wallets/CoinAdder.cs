@@ -1,50 +1,55 @@
+using CannonTurret.PlayerSystem;
+using CannonTurret.SDK.Ads;
 using System;
 
-public class CoinAdder : ICoinAdder
+namespace CannonTurret.Coin.Wallets
 {
-    private IPlayerSaver _playerSaver;
-    private IWallet _wallet;
-    private IAdsViewer _adsViewer;
-
-    public CoinAdder(IPlayerSaver playerSaver, IWallet wallet, IAdsViewer adsViewer)
+    public class CoinAdder : ICoinAdder
     {
-        _playerSaver = playerSaver ?? throw new ArgumentNullException(nameof(playerSaver));
-        _wallet = wallet ?? throw new ArgumentNullException(nameof(wallet));
-        _adsViewer = adsViewer ?? throw new ArgumentNullException(nameof(adsViewer));
-        CoinsCountAdsView = 0;
+        private IPlayerSaver _playerSaver;
+        private IWallet _wallet;
+        private IAdsViewer _adsViewer;
 
-        _adsViewer.RewardAdShowed += OnAddCoins;
-    }
+        public CoinAdder(IPlayerSaver playerSaver, IWallet wallet, IAdsViewer adsViewer)
+        {
+            _playerSaver = playerSaver ?? throw new ArgumentNullException(nameof(playerSaver));
+            _wallet = wallet ?? throw new ArgumentNullException(nameof(wallet));
+            _adsViewer = adsViewer ?? throw new ArgumentNullException(nameof(adsViewer));
+            CoinsCountAdsView = 0;
 
-    public int CoinsCountAdsView { get; private set; }
+            _adsViewer.RewardAdShowed += OnAddCoins;
+        }
 
-    public void SetCoinsAdsView(int coinsCount)
-    {
-        if (coinsCount < 0)
-            throw new ArgumentOutOfRangeException(nameof(coinsCount));
+        public int CoinsCountAdsView { get; private set; }
 
-        CoinsCountAdsView = coinsCount;
-    }
+        public void SetCoinsAdsView(int coinsCount)
+        {
+            if (coinsCount < 0)
+                throw new ArgumentOutOfRangeException(nameof(coinsCount));
 
-    public void AddCoins(int coinsCount)
-    {
-        if (coinsCount < 0)
-            throw new ArgumentOutOfRangeException(nameof(coinsCount));
+            CoinsCountAdsView = coinsCount;
+        }
 
-        _wallet.AddCoins(coinsCount);
-        _playerSaver.Save();
-    }
+        public void AddCoins(int coinsCount)
+        {
+            if (coinsCount < 0)
+                throw new ArgumentOutOfRangeException(nameof(coinsCount));
 
-    public void Disable()
-    {
-        _adsViewer.RewardAdShowed -= OnAddCoins;
-    }
+            _wallet.AddCoins(coinsCount);
+            _playerSaver.Save();
+        }
 
-    private void OnAddCoins(string rewardId)
-    {
-        if (rewardId != RewardTypes.AddCoin)
-            return;
+        public void Disable()
+        {
+            _adsViewer.RewardAdShowed -= OnAddCoins;
+        }
 
-        AddCoins(CoinsCountAdsView);
+        private void OnAddCoins(string rewardId)
+        {
+            if (rewardId != RewardTypes.AddCoin)
+                return;
+
+            AddCoins(CoinsCountAdsView);
+        }
     }
 }

@@ -1,4 +1,7 @@
-﻿public interface IHealthImprover : IHealthAttributes
+﻿namespace CannonTurret.HealthSystem
 {
-    public void Improve(float healthCoefficient);
+    public interface IHealthImprover : IHealthAttributes
+    {
+        public void Improve(float healthCoefficient);
+    }
 }

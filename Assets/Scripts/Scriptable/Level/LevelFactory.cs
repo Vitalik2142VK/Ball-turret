@@ -1,7 +1,8 @@
-﻿using System;
+﻿using CannonTurret.LevelSystem;
+using System;
 using UnityEngine;
 
-namespace Scriptable
+namespace CannonTurret.Scriptable.Level
 {
     [CreateAssetMenu(menuName = "Level/Level Factory", fileName = "LevelFactory", order = 51)]
     public class LevelFactory : ScriptableObject, ILevelFactory
@@ -39,12 +40,12 @@ namespace Scriptable
             var levelActorsPlanner = _actorsPlannerStore.GetLevelActorsPlanner(indexLevel);
             float actorsHealthCoefficient = CalculateActorsHealthCoefficient(indexLevel);
 
-            return new Level(levelActorsPlanner, _coinCountRandomizer, actorsHealthCoefficient, indexLevel);
+            return new LevelSystem.Level(levelActorsPlanner, _coinCountRandomizer, actorsHealthCoefficient, indexLevel);
         }
 
         private float CalculateActorsHealthCoefficient(int indexLevel)
         {
-            return DefaultCoefficient + (_actorsHealthCoefficientByLevel * indexLevel);
+            return DefaultCoefficient + _actorsHealthCoefficientByLevel * indexLevel;
         }
     }
 }

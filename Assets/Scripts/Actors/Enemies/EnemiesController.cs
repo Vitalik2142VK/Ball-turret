@@ -1,27 +1,30 @@
 ﻿using System;
 
-public class EnemiesController : IEnemiesController
+namespace CannonTurret.Actors.Enemies
 {
-    private IAdvancedActorsPreparator _actorsPreparator;
-    private IEnemiesAttacker _enemyAttacker;
-
-    public EnemiesController(IAdvancedActorsPreparator actorsPreparator, IEnemiesAttacker enemyAttacker)
+    public class EnemiesController : IEnemiesController
     {
-        _actorsPreparator = actorsPreparator ?? throw new ArgumentNullException(nameof(actorsPreparator));
-        _enemyAttacker = enemyAttacker ?? throw new ArgumentNullException(nameof(enemyAttacker));
-    }
+        private IAdvancedActorsPreparator _actorsPreparator;
+        private IEnemiesAttacker _enemyAttacker;
 
-    public bool AreNoEnemies => _actorsPreparator.EnemiesCount == 0;
+        public EnemiesController(IAdvancedActorsPreparator actorsPreparator, IEnemiesAttacker enemyAttacker)
+        {
+            _actorsPreparator = actorsPreparator ?? throw new ArgumentNullException(nameof(actorsPreparator));
+            _enemyAttacker = enemyAttacker ?? throw new ArgumentNullException(nameof(enemyAttacker));
+        }
 
-    public void AttackAll() => _enemyAttacker.AttackAll();
-        
-    public void Count() => _actorsPreparator.CountRemainingEnemies();
+        public bool AreNoEnemies => _actorsPreparator.EnemiesCount == 0;
 
-    public void WinAll()
-    {
-        var enemies = _actorsPreparator.GetEnemies();
-        
-        foreach (var enemy in enemies)
-            enemy.Win();
+        public void AttackAll() => _enemyAttacker.AttackAll();
+
+        public void Count() => _actorsPreparator.CountRemainingEnemies();
+
+        public void WinAll()
+        {
+            var enemies = _actorsPreparator.GetEnemies();
+
+            foreach (var enemy in enemies)
+                enemy.Win();
+        }
     }
 }

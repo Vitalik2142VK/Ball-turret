@@ -1,54 +1,57 @@
 using UnityEngine;
 
-public class TargetPoint : MonoBehaviour, ITargetPoint
+namespace CannonTurret.PlayerSystem
 {
-    [SerializeField] private ZoneShot _zoneShot;
-
-    [Header("Debug")]
-    [SerializeField] private bool _isDebugOn = false;
-    [SerializeField] private Color _color = Color.red;
-    [SerializeField, Min(0.1f)] private float _radusSphere = 1f;
-
-    private Transform _transform;
-    private Vector3 _startPosition;
-
-    public bool IsInsideZoneEnemy { get; private set; } = true;
-
-    public Vector3 Position => _transform.position;
-
-    private void OnValidate()
+    public class TargetPoint : MonoBehaviour, ITargetPoint
     {
-        if (_zoneShot == null)
-            throw new System.NullReferenceException(nameof(_zoneShot));
-    }
+        [SerializeField] private ZoneShot _zoneShot;
 
-    private void Awake()
-    {
-        _transform = transform;
-        _startPosition = _transform.position;
-    }
+        [Header("Debug")]
+        [SerializeField] private bool _isDebugOn = false;
+        [SerializeField] private Color _color = Color.red;
+        [SerializeField, Min(0.1f)] private float _radusSphere = 1f;
 
-    private void OnDrawGizmos()
-    {
-        if (_isDebugOn)
+        private Transform _transform;
+        private Vector3 _startPosition;
+
+        public bool IsInsideZoneEnemy { get; private set; } = true;
+
+        public Vector3 Position => _transform.position;
+
+        private void OnValidate()
         {
-            Gizmos.color = _color;
-            Gizmos.DrawWireSphere(transform.position, _radusSphere);
+            if (_zoneShot == null)
+                throw new System.NullReferenceException(nameof(_zoneShot));
         }
-    }
 
-    public void SetPosition(Vector3 position)
-    {
-        IsInsideZoneEnemy = _zoneShot.IsPointInside(position);
+        private void Awake()
+        {
+            _transform = transform;
+            _startPosition = _transform.position;
+        }
 
-        if (IsInsideZoneEnemy)
-            _transform.position = new Vector3(position.x, _startPosition.y, position.z);
-        else
-            _transform.position = _startPosition;
-    }
+        private void OnDrawGizmos()
+        {
+            if (_isDebugOn)
+            {
+                Gizmos.color = _color;
+                Gizmos.DrawWireSphere(transform.position, _radusSphere);
+            }
+        }
 
-    public void SaveLastPosition()
-    {
-        _startPosition = _transform.position;
+        public void SetPosition(Vector3 position)
+        {
+            IsInsideZoneEnemy = _zoneShot.IsPointInside(position);
+
+            if (IsInsideZoneEnemy)
+                _transform.position = new Vector3(position.x, _startPosition.y, position.z);
+            else
+                _transform.position = _startPosition;
+        }
+
+        public void SaveLastPosition()
+        {
+            _startPosition = _transform.position;
+        }
     }
 }

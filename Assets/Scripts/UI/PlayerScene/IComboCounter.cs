@@ -1,4 +1,7 @@
-﻿public interface IComboCounter
+﻿namespace CannonTurret.UI.PlayerScene
 {
-    public void Count();
+    public interface IComboCounter
+    {
+        public void Count();
+    }
 }

@@ -1,15 +1,18 @@
 ﻿using System;
 using UnityEngine;
 
-public interface IIceShell
+namespace CannonTurret.Effects.Freezing
 {
-    public event Action Disabled;
+    public interface IIceShell
+    {
+        public event Action Disabled;
 
-    public void SetScale(Vector3 scale);
+        public void SetScale(Vector3 scale);
 
-    public void SetPosition(Vector3 position);
+        public void SetPosition(Vector3 position);
 
-    public void Enable();
+        public void Enable();
 
-    public void Disable();
+        public void Disable();
+    }
 }

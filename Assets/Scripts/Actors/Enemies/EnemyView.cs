@@ -1,119 +1,126 @@
-﻿using System;
+﻿using CannonTurret.Actors.Debuffs;
+using CannonTurret.DamageSystem;
+using CannonTurret.Effects;
+using CannonTurret.HealthSystem;
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(CapsuleCollider), typeof(Rigidbody), typeof(EnemyAnimator))]
-public class EnemyView : MonoBehaviour, IEnemyView
+namespace CannonTurret.Actors.Enemies
 {
-    [SerializeField, SerializeIterface(typeof(IDebuffHandler))] private GameObject _debuffReceiverGameObject;
-    [SerializeField] private SkinnedMeshRenderer _meshRenderer;
-    [SerializeField] private ActorParticleController _particleController;
-    [SerializeField] private Image _shadow;
-
-    [field: SerializeField] public HealthBar HealthBar { get; private set; }
-
-    private IEnemyPresenter _presenter;
-    private IEnemyAnimator _enemyAnimator;
-    private IActorAudioController _audioController;
-    private Collider _collider;
-
-    public string Name => name;
-
-    public IDebuffHandler DebuffReceiver { get; private set; }
-    public bool IsActive { get; private set; }
-
-    private void OnValidate()
+    [RequireComponent(typeof(CapsuleCollider), typeof(Rigidbody), typeof(EnemyAnimator))]
+    public class EnemyView : MonoBehaviour, IEnemyView
     {
-        if (_debuffReceiverGameObject == null)
-            throw new NullReferenceException(nameof(_debuffReceiverGameObject));
+        [SerializeField, SerializeIterface(typeof(IDebuffHandler))] private GameObject _debuffReceiverGameObject;
+        [SerializeField] private SkinnedMeshRenderer _meshRenderer;
+        [SerializeField] private ActorParticleController _particleController;
+        [SerializeField] private Image _shadow;
 
-        if (_meshRenderer == null)
-            throw new NullReferenceException(nameof(_meshRenderer));
+        [field: SerializeField] public HealthBar HealthBar { get; private set; }
 
-        if (_particleController == null)
-            throw new NullReferenceException(nameof(_particleController));
+        private IEnemyPresenter _presenter;
+        private IEnemyAnimator _enemyAnimator;
+        private IActorAudioController _audioController;
+        private Collider _collider;
 
-        if (HealthBar == null)
-            throw new NullReferenceException(nameof(HealthBar));
-    }
+        public string Name => name;
 
-    private void Awake()
-    {
-        DebuffReceiver = _debuffReceiverGameObject.GetComponent<IDebuffHandler>();
-        _collider = GetComponent<CapsuleCollider>();
-        _enemyAnimator = GetComponent<IEnemyAnimator>();
+        public IDebuffHandler DebuffReceiver { get; private set; }
+        public bool IsActive { get; private set; }
 
-        Rigidbody rigidbody = GetComponent<Rigidbody>();
-        rigidbody.isKinematic = true;
-        rigidbody.useGravity = false;
-    }
+        private void OnValidate()
+        {
+            if (_debuffReceiverGameObject == null)
+                throw new NullReferenceException(nameof(_debuffReceiverGameObject));
 
-    private void OnEnable()
-    {
-        SetEnable(true);
-    }
+            if (_meshRenderer == null)
+                throw new NullReferenceException(nameof(_meshRenderer));
 
-    public void Initialize(IEnemyPresenter presenter, IActorAudioController audioController)
-    {
-        _presenter = presenter ?? throw new ArgumentNullException(nameof(presenter));
-        _audioController = audioController ?? throw new ArgumentNullException(nameof(audioController));
-    }
+            if (_particleController == null)
+                throw new NullReferenceException(nameof(_particleController));
 
-    public void PrepareDeleted(IRemovedActorsCollector removedCollector) => _presenter.PrepareDeleted(removedCollector);
+            if (HealthBar == null)
+                throw new NullReferenceException(nameof(HealthBar));
+        }
 
-    public void PrepareAttacked(IAttackingEnemiesCollector attackingCollector) => _presenter.PrepareAttacked(attackingCollector);
+        private void Awake()
+        {
+            DebuffReceiver = _debuffReceiverGameObject.GetComponent<IDebuffHandler>();
+            _collider = GetComponent<CapsuleCollider>();
+            _enemyAnimator = GetComponent<IEnemyAnimator>();
 
-    public void AddDebuff(IDebuff debaff) => _presenter.AddDebuff(debaff);
+            Rigidbody rigidbody = GetComponent<Rigidbody>();
+            rigidbody.isKinematic = true;
+            rigidbody.useGravity = false;
+        }
 
-    public void TakeDamage(IDamageAttributes damage) => _presenter.TakeDamage(damage);
+        private void OnEnable()
+        {
+            SetEnable(true);
+        }
 
-    public void PlayMovement(bool isMovinng) => _enemyAnimator.PlayMovement(isMovinng);
+        public void Initialize(IEnemyPresenter presenter, IActorAudioController audioController)
+        {
+            _presenter = presenter ?? throw new ArgumentNullException(nameof(presenter));
+            _audioController = audioController ?? throw new ArgumentNullException(nameof(audioController));
+        }
 
-    public void PlayVictory() => _enemyAnimator.PlayVictory();
+        public void PrepareDeleted(IRemovedActorsCollector removedCollector) => _presenter.PrepareDeleted(removedCollector);
 
-    public void PlayDamage()
-    {
-        _enemyAnimator.PlayHit();
-        _particleController.PlayHit();
-        _audioController.PlayHit();
-    }
+        public void PrepareAttacked(IAttackingEnemiesCollector attackingCollector) => _presenter.PrepareAttacked(attackingCollector);
 
-    public void PlayDead()
-    {
-        if (IsActive)
-            StartCoroutine(StartDeadProcess());
-    }
+        public void AddDebuff(IDebuff debaff) => _presenter.AddDebuff(debaff);
 
-    public void Destroy()
-    {
-        Destroy(gameObject);
-    }
+        public void TakeDamage(IDamageAttributes damage) => _presenter.TakeDamage(damage);
 
-    private void SetEnable(bool isEnable)
-    {
-        IsActive = isEnable;
-        _collider.enabled = isEnable;
-        _meshRenderer.enabled = isEnable;
-        _shadow.gameObject.SetActive(isEnable);
-    }
+        public void PlayMovement(bool isMovinng) => _enemyAnimator.PlayMovement(isMovinng);
 
-    private IEnumerator StartDeadProcess()
-    {
-        IsActive = false;
-        HealthBar.SetActive(IsActive);
-        _collider.enabled = IsActive;
-        _enemyAnimator.PlayDead();
+        public void PlayVictory() => _enemyAnimator.PlayVictory();
 
-        yield return new WaitForSeconds(_enemyAnimator.TimeCompletionDeath);
+        public void PlayDamage()
+        {
+            _enemyAnimator.PlayHit();
+            _particleController.PlayHit();
+            _audioController.PlayHit();
+        }
 
-        SetEnable(IsActive);
+        public void PlayDead()
+        {
+            if (IsActive)
+                StartCoroutine(StartDeadProcess());
+        }
 
-        _audioController.PlayDead();
-        _particleController.PlayDead();
+        public void Destroy()
+        {
+            Destroy(gameObject);
+        }
 
-        yield return new WaitForSeconds(_particleController.TimeLiveDeadParticle);
+        private void SetEnable(bool isEnable)
+        {
+            IsActive = isEnable;
+            _collider.enabled = isEnable;
+            _meshRenderer.enabled = isEnable;
+            _shadow.gameObject.SetActive(isEnable);
+        }
 
-        _presenter.Destroy();
+        private IEnumerator StartDeadProcess()
+        {
+            IsActive = false;
+            HealthBar.SetActive(IsActive);
+            _collider.enabled = IsActive;
+            _enemyAnimator.PlayDead();
+
+            yield return new WaitForSeconds(_enemyAnimator.TimeCompletionDeath);
+
+            SetEnable(IsActive);
+
+            _audioController.PlayDead();
+            _particleController.PlayDead();
+
+            yield return new WaitForSeconds(_particleController.TimeLiveDeadParticle);
+
+            _presenter.Destroy();
+        }
     }
 }

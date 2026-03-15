@@ -1,22 +1,27 @@
-﻿using System;
+﻿using CannonTurret.StepSystem;
+using CannonTurret.StepSystem.Steps;
+using System;
 
-public class FreezingBonusActivator : IBonusActivator
+namespace CannonTurret.Actors.Bonuses.Activators
 {
-    private IDynamicEndStep _nextStepPrepareActors;
-    private IBonusActicatorView _view;
-    private IStep _freezeStep;
-
-    public FreezingBonusActivator(IDynamicEndStep nextStepPrepareActors, IBonusActicatorView view, IStep freezeStep)
+    public class FreezingBonusActivator : IBonusActivator
     {
-        _nextStepPrepareActors = nextStepPrepareActors ?? throw new NullReferenceException(nameof(nextStepPrepareActors));
-        _view = view ?? throw new NullReferenceException(nameof(view));
-        _freezeStep = freezeStep ?? throw new NullReferenceException(nameof(freezeStep));
+        private IDynamicEndStep _nextStepPrepareActors;
+        private IBonusActicatorView _view;
+        private IStep _freezeStep;
 
-    }
+        public FreezingBonusActivator(IDynamicEndStep nextStepPrepareActors, IBonusActicatorView view, IStep freezeStep)
+        {
+            _nextStepPrepareActors = nextStepPrepareActors ?? throw new NullReferenceException(nameof(nextStepPrepareActors));
+            _view = view ?? throw new NullReferenceException(nameof(view));
+            _freezeStep = freezeStep ?? throw new NullReferenceException(nameof(freezeStep));
 
-    public void Activate()
-    {
-        _nextStepPrepareActors.SetNextStep(_freezeStep);
-        _view.PlayActivation();
+        }
+
+        public void Activate()
+        {
+            _nextStepPrepareActors.SetNextStep(_freezeStep);
+            _view.PlayActivation();
+        }
     }
 }

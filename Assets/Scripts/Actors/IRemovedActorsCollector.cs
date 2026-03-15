@@ -1,8 +1,11 @@
 ﻿using System.Collections.Generic;
 
-public interface IRemovedActorsCollector
+namespace CannonTurret.Actors
 {
-    public void Add(IActor actor);
+    public interface IRemovedActorsCollector
+    {
+        public void Add(IActor actor);
 
-    public void AddRange(IEnumerable<IActor> actors);
+        public void AddRange(IEnumerable<IActor> actors);
+    }
 }

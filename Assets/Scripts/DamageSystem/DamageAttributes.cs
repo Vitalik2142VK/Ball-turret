@@ -1,9 +1,12 @@
-﻿public class DamageAttributes : IDamageAttributes
+﻿namespace CannonTurret.DamageSystem
 {
-    public DamageAttributes(float damage)
+    public class DamageAttributes : IDamageAttributes
     {
-        Damage = damage;
-    }
+        public DamageAttributes(float damage)
+        {
+            Damage = damage;
+        }
 
-    public float Damage { get; private set; }
+        public float Damage { get; private set; }
+    }
 }

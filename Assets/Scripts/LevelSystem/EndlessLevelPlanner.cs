@@ -1,43 +1,48 @@
-﻿using System;
+﻿using CannonTurret.Actors.Spawn;
+using CannonTurret.Utils;
+using System;
 using UnityEngine;
 
-public class EndlessLevelPlanner : MonoBehaviour, ILevelActorsPlanner
+namespace CannonTurret.LevelSystem
 {
-    [SerializeField] private StartingWaveSelector _startingWaveSelector;
-    [SerializeField] private WaveSelector _hardWaveSelector;
-
-    [SerializeField, Min(20)] private int _standartWavesLimit = 20;
-
-    private int _waveMaskCount;
-
-    private void OnValidate()
+    public class EndlessLevelPlanner : MonoBehaviour, ILevelActorsPlanner
     {
-        if (_startingWaveSelector == null)
-            throw new NullReferenceException(nameof(_startingWaveSelector));
+        [SerializeField] private StartingWaveSelector _startingWaveSelector;
+        [SerializeField] private WaveSelector _hardWaveSelector;
 
-        if (_hardWaveSelector == null)
-            throw new NullReferenceException(nameof(_hardWaveSelector));
-    }
+        [SerializeField, Min(20)] private int _standartWavesLimit = 20;
 
-    public int WavesCount => int.MaxValue;
+        private int _waveMaskCount;
 
-    public void Initialize()
-    {
-        _waveMaskCount = EnumHelper.GetActiveValuesCount<WaveMask>();
-        System.Random random = new System.Random();
+        private void OnValidate()
+        {
+            if (_startingWaveSelector == null)
+                throw new NullReferenceException(nameof(_startingWaveSelector));
 
-        _startingWaveSelector.Initialize(random);
-        _hardWaveSelector.Initialize(random);
-    }
+            if (_hardWaveSelector == null)
+                throw new NullReferenceException(nameof(_hardWaveSelector));
+        }
 
-    public IWaveActorsPlanner GetWaveActorsPlanner(int waveNumber)
-    {
-        int modifiedWaveNumber = waveNumber % _waveMaskCount;
-        WaveMask waveMask = (WaveMask)(1 << modifiedWaveNumber);
+        public int WavesCount => int.MaxValue;
 
-        if (waveNumber > _standartWavesLimit)
-            return _hardWaveSelector.GetWaveActorsPlanner(waveMask);
-        else
-            return _startingWaveSelector.GetWaveActorsPlanner(waveMask, waveNumber);
+        public void Initialize()
+        {
+            _waveMaskCount = EnumHelper.GetActiveValuesCount<WaveMask>();
+            System.Random random = new System.Random();
+
+            _startingWaveSelector.Initialize(random);
+            _hardWaveSelector.Initialize(random);
+        }
+
+        public IWaveActorsPlanner GetWaveActorsPlanner(int waveNumber)
+        {
+            int modifiedWaveNumber = waveNumber % _waveMaskCount;
+            WaveMask waveMask = (WaveMask)(1 << modifiedWaveNumber);
+
+            if (waveNumber > _standartWavesLimit)
+                return _hardWaveSelector.GetWaveActorsPlanner(waveMask);
+            else
+                return _startingWaveSelector.GetWaveActorsPlanner(waveMask, waveNumber);
+        }
     }
 }

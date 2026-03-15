@@ -1,4 +1,7 @@
-﻿public interface IBonusActicatorView
+﻿namespace CannonTurret.Actors.Bonuses.Activators
 {
-    public void PlayActivation();
+    public interface IBonusActicatorView
+    {
+        public void PlayActivation();
+    }
 }

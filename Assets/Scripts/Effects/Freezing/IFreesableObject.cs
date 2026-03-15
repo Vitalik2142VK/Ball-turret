@@ -1,6 +1,9 @@
-﻿public interface IFreesableObject
+﻿namespace CannonTurret.Effects.Freezing
 {
-    public bool HasIceShell { get; }
+    public interface IFreesableObject
+    {
+        public bool HasIceShell { get; }
 
-    public void Freeze(IIceShell iceShell);
+        public void Freeze(IIceShell iceShell);
+    }
 }

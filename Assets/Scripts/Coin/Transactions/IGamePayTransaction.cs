@@ -1,9 +1,14 @@
-﻿public interface IGamePayTransaction
+﻿using CannonTurret.Coin.Wallets;
+
+namespace CannonTurret.Coin.Transactions
 {
-    public int Price { get; }
-    public bool IsLocked { get; }
+    public interface IGamePayTransaction
+    {
+        public int Price { get; }
+        public bool IsLocked { get; }
 
-    public bool TrySpend(IWallet wallet);
+        public bool TrySpend(IWallet wallet);
 
-    public int GetMissingAmount();
+        public int GetMissingAmount();
+    }
 }

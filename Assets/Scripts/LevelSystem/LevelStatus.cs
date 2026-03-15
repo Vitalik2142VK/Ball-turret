@@ -1,16 +1,20 @@
+using CannonTurret.Turrets;
 using System;
 
-public class LevelStatus : ILevelStatus
+namespace CannonTurret.LevelSystem
 {
-    private ITurret _turret;
-    private ISelectedLevel _selectedLevel;
-
-    public LevelStatus(ITurret turret, ISelectedLevel selectedLevel)
+    public class LevelStatus : ILevelStatus
     {
-        _turret = turret ?? throw new ArgumentNullException(nameof(turret));
-        _selectedLevel = selectedLevel ?? throw new ArgumentNullException(nameof(selectedLevel));
-    }
+        private ITurret _turret;
+        private ISelectedLevel _selectedLevel;
 
-    public bool IsComplete => _selectedLevel.IsFinished;
-    public bool IsLose => _turret.IsDestroyed;
+        public LevelStatus(ITurret turret, ISelectedLevel selectedLevel)
+        {
+            _turret = turret ?? throw new ArgumentNullException(nameof(turret));
+            _selectedLevel = selectedLevel ?? throw new ArgumentNullException(nameof(selectedLevel));
+        }
+
+        public bool IsComplete => _selectedLevel.IsFinished;
+        public bool IsLose => _turret.IsDestroyed;
+    }
 }

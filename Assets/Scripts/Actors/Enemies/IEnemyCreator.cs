@@ -1,6 +1,11 @@
-﻿public interface IEnemyCreator
-{
-    public string Name { get; }
+﻿using CannonTurret.HealthSystem;
 
-    public IEnemy Create(IActorHealthModifier healthModifier);
+namespace CannonTurret.Actors.Enemies
+{
+    public interface IEnemyCreator
+    {
+        public string Name { get; }
+
+        public IEnemy Create(IActorHealthModifier healthModifier);
+    }
 }

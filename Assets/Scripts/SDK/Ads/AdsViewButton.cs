@@ -2,39 +2,42 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(Button))]
-public class AdsViewButton : MonoBehaviour
+namespace CannonTurret.SDK.Ads
 {
-    private IAdsViewer _adsViewer;
-    private Button _button;
-    private string _rewardId;
-
-    private void Awake()
+    [RequireComponent(typeof(Button))]
+    public class AdsViewButton : MonoBehaviour
     {
-        _button = GetComponent<Button>();
-    }
+        private IAdsViewer _adsViewer;
+        private Button _button;
+        private string _rewardId;
 
-    private void OnEnable()
-    {
-        _button.onClick.AddListener(OnShowAdsView);
-    }
+        private void Awake()
+        {
+            _button = GetComponent<Button>();
+        }
 
-    private void OnDisable()
-    {
-        _button.onClick.RemoveListener(OnShowAdsView);
-    }
+        private void OnEnable()
+        {
+            _button.onClick.AddListener(OnShowAdsView);
+        }
 
-    public void Initialize(IAdsViewer adsViewer, string rewardId)
-    {
-        _adsViewer = adsViewer ?? throw new ArgumentNullException(nameof(adsViewer));
-        _rewardId = rewardId ?? throw new ArgumentNullException(nameof(rewardId));
-    }
+        private void OnDisable()
+        {
+            _button.onClick.RemoveListener(OnShowAdsView);
+        }
 
-    private void OnShowAdsView()
-    {
-        if (_rewardId == null)
-            throw new InvalidOperationException($"{nameof(_rewardId)} cannot be null");
+        public void Initialize(IAdsViewer adsViewer, string rewardId)
+        {
+            _adsViewer = adsViewer ?? throw new ArgumentNullException(nameof(adsViewer));
+            _rewardId = rewardId ?? throw new ArgumentNullException(nameof(rewardId));
+        }
 
-        _adsViewer.ShowRewardAd(_rewardId);
+        private void OnShowAdsView()
+        {
+            if (_rewardId == null)
+                throw new InvalidOperationException($"{nameof(_rewardId)} cannot be null");
+
+            _adsViewer.ShowRewardAd(_rewardId);
+        }
     }
 }

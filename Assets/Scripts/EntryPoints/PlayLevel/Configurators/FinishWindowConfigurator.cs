@@ -1,7 +1,14 @@
-﻿using System;
+﻿using CannonTurret.Coin.Rewards;
+using CannonTurret.Coin.Wallets;
+using CannonTurret.LevelSystem;
+using CannonTurret.Scriptable.Level;
+using CannonTurret.SDK.Ads;
+using CannonTurret.StepSystem;
+using CannonTurret.UI.PlayerScene;
+using System;
 using UnityEngine;
 
-namespace PlayLevel
+namespace CannonTurret.EntryPoints.PlayLevel.Configurators
 {
     public class FinishWindowConfigurator : MonoBehaviour
     {
@@ -10,7 +17,7 @@ namespace PlayLevel
         [SerializeField] private NextLevelButton _nextLevelButton;
         [SerializeField] private ChangeSceneButton _mainMenuButton;
         [SerializeField] private RestartLevelButton _restartButton;
-        [SerializeField] private Scriptable.LevelFactory _levelFactory;
+        [SerializeField] private LevelFactory _levelFactory;
 
         public FinishWindow FinishWindow => _finishWindow;
 

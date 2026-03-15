@@ -1,6 +1,8 @@
-﻿using UnityEngine;
+﻿using CannonTurret.DamageSystem;
+using CannonTurret.HealthSystem;
+using UnityEngine;
 
-namespace Scriptable
+namespace CannonTurret.Scriptable.Enemy
 {
     [CreateAssetMenu(menuName = "Attributes/Enemy attributes", fileName = "EnemyAttributes", order = 51)]
     public class EnemyAttributes : ScriptableObject, IDamageAttributes, IHealthAttributes

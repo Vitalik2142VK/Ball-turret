@@ -1,18 +1,22 @@
-﻿using System;
+﻿using CannonTurret.StepSystem.Steps;
+using System;
 
-public class NextStep : IEndStep
+namespace CannonTurret.StepSystem
 {
-    private IStepSystem _stepSystem;
-    private IStep _nextStep;
-
-    public NextStep(IStepSystem stepSystem, IStep nextStep)
+    public class NextStep : IEndStep
     {
-        _stepSystem = stepSystem ?? throw new ArgumentNullException(nameof(stepSystem));
-        _nextStep = nextStep ?? throw new ArgumentNullException(nameof(nextStep));
-    }
+        private IStepController _stepController;
+        private IStep _nextStep;
 
-    public void End()
-    {
-        _stepSystem.EstablishNextStep(_nextStep);
+        public NextStep(IStepController stepController, IStep nextStep)
+        {
+            _stepController = stepController ?? throw new ArgumentNullException(nameof(stepController));
+            _nextStep = nextStep ?? throw new ArgumentNullException(nameof(nextStep));
+        }
+
+        public void End()
+        {
+            _stepController.EstablishNextStep(_nextStep);
+        }
     }
 }

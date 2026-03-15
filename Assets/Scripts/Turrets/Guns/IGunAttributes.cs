@@ -1,5 +1,8 @@
-﻿public interface IGunAttributes
+﻿namespace CannonTurret.Turrets.Guns
 {
-    public float TimeBetweenShots { get; }
-    public int InitialCountBulltes { get; }
+    public interface IGunAttributes
+    {
+        public float TimeBetweenShots { get; }
+        public int InitialCountBulltes { get; }
+    }
 }

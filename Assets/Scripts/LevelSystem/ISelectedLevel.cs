@@ -1,6 +1,9 @@
-﻿public interface ISelectedLevel : ILevel
+﻿namespace CannonTurret.LevelSystem
 {
-    public bool IsFinished { get; }
+    public interface ISelectedLevel : ILevel
+    {
+        public bool IsFinished { get; }
 
-    public void SetViewWavesCounter(IViewWavesCounter viewWavesCounter);
+        public void SetViewWavesCounter(IViewWavesCounter viewWavesCounter);
+    }
 }

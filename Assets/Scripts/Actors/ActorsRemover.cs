@@ -1,36 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
 
-public class ActorsRemover : IRemovedActorsRepository
+namespace CannonTurret.Actors
 {
-    private List<IActor> _removedActors;
-
-    public ActorsRemover()
+    public class ActorsRemover : IRemovedActorsRepository
     {
-        _removedActors = new List<IActor>();
-    }
+        private List<IActor> _removedActors;
 
-    public void Add(IActor actor)
-    {
-        if (actor == null)
-            throw new ArgumentNullException(nameof(actor));
+        public ActorsRemover()
+        {
+            _removedActors = new List<IActor>();
+        }
 
-        _removedActors.Add(actor);
-    }
+        public void Add(IActor actor)
+        {
+            if (actor == null)
+                throw new ArgumentNullException(nameof(actor));
 
-    public void AddRange(IEnumerable<IActor> actors)
-    {
-        if (actors == null)
-            throw new ArgumentNullException(nameof(actors));
+            _removedActors.Add(actor);
+        }
 
-        _removedActors.AddRange(actors);
-    }
+        public void AddRange(IEnumerable<IActor> actors)
+        {
+            if (actors == null)
+                throw new ArgumentNullException(nameof(actors));
 
-    public void RemoveAll()
-    {
-        foreach (var actor in _removedActors)
-            actor.Destroy();
+            _removedActors.AddRange(actors);
+        }
 
-        _removedActors.Clear();
+        public void RemoveAll()
+        {
+            foreach (var actor in _removedActors)
+                actor.Destroy();
+
+            _removedActors.Clear();
+        }
     }
 }

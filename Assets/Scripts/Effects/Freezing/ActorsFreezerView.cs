@@ -1,50 +1,54 @@
-﻿using System;
+﻿using CannonTurret.Actors;
+using System;
 using UnityEngine;
 
-public class ActorsFreezerView : MonoBehaviour, IActorsFreezerView
+namespace CannonTurret.Effects.Freezing
 {
-    [SerializeField] private IceShellPool _iceShellPool;
-    [SerializeField] private ActorZone _actorZone;
-    [SerializeField] private LayerMask _layerMask;
-
-    private BoxCollider _box;
-    private float _halfValue = 0.5f;
-
-    private void OnValidate()
+    public class ActorsFreezerView : MonoBehaviour, IActorsFreezerView
     {
-        if (_iceShellPool == null)
-            throw new NullReferenceException(nameof(_iceShellPool));
+        [SerializeField] private IceShellPool _iceShellPool;
+        [SerializeField] private ActorZone _actorZone;
+        [SerializeField] private LayerMask _layerMask;
 
-        if (_actorZone == null)
-            throw new NullReferenceException(nameof(_actorZone));
-    }
+        private BoxCollider _box;
+        private float _halfValue = 0.5f;
 
-    private void Awake()
-    {
-        _box = _actorZone.GetComponent<BoxCollider>();
-    }
+        private void OnValidate()
+        {
+            if (_iceShellPool == null)
+                throw new NullReferenceException(nameof(_iceShellPool));
 
-    public void Defrost() => _iceShellPool.DisableAll();
+            if (_actorZone == null)
+                throw new NullReferenceException(nameof(_actorZone));
+        }
 
-    public void Freeze()
-    {
-        Vector3 center = _box.center;
-        Vector3 halfExtents = Vector3.Scale(_box.size * _halfValue, _box.transform.lossyScale);
-        Quaternion orientation = _box.transform.rotation;
+        private void Awake()
+        {
+            _box = _actorZone.GetComponent<BoxCollider>();
+        }
 
-        var colliders = Physics.OverlapBox(center, halfExtents, orientation, _layerMask);
+        public void Defrost() => _iceShellPool.DisableAll();
 
-        foreach (var collider in colliders)
-            if (collider.TryGetComponent(out IFreesableObject freesableObject))
-                AppointIceShell(freesableObject);
-    }
+        public void Freeze()
+        {
+            Vector3 center = _box.center;
+            Vector3 halfExtents = Vector3.Scale(_box.size * _halfValue, _box.transform.lossyScale);
+            Quaternion orientation = _box.transform.rotation;
 
-    private void AppointIceShell(IFreesableObject freesableObject)
-    {
-        if (freesableObject.HasIceShell)
-            return;
+            var colliders = Physics.OverlapBox(center, halfExtents, orientation, _layerMask);
 
-        var iceShell = _iceShellPool.Get();
-        freesableObject.Freeze(iceShell);
+            foreach (var collider in colliders)
+                if (collider.TryGetComponent(out IFreesableObject freesableObject))
+                    AppointIceShell(freesableObject);
+        }
+
+        private void AppointIceShell(IFreesableObject freesableObject)
+        {
+            if (freesableObject.HasIceShell)
+                return;
+
+            var iceShell = _iceShellPool.Get();
+            freesableObject.Freeze(iceShell);
+        }
     }
 }

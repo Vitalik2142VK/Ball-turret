@@ -1,23 +1,27 @@
-﻿using System;
+﻿using CannonTurret.LevelSystem;
+using System;
 
-public class PlayVictoryStep : IStep, IEndPointStep
+namespace CannonTurret.StepSystem.Steps
 {
-    private IEndStep _endStep;
-    private IVictoryController _victoryController;
-
-    public PlayVictoryStep(IVictoryController victoryController)
+    public class PlayVictoryStep : IStep, IEndPointStep
     {
-        _victoryController = victoryController ?? throw new ArgumentNullException(nameof(victoryController));
-    }
+        private IEndStep _endStep;
+        private IVictoryController _victoryController;
 
-    public void Action()
-    {
-        _victoryController.PlayVictory();
-        _endStep.End();
-    }
+        public PlayVictoryStep(IVictoryController victoryController)
+        {
+            _victoryController = victoryController ?? throw new ArgumentNullException(nameof(victoryController));
+        }
 
-    public void SetEndStep(IEndStep endStep)
-    {
-        _endStep = endStep ?? throw new ArgumentNullException(nameof(endStep));
+        public void Action()
+        {
+            _victoryController.PlayVictory();
+            _endStep.End();
+        }
+
+        public void SetEndStep(IEndStep endStep)
+        {
+            _endStep = endStep ?? throw new ArgumentNullException(nameof(endStep));
+        }
     }
 }

@@ -1,4 +1,7 @@
-﻿public interface IExplosionView
+﻿namespace CannonTurret.Effects
 {
-    public void Play();
+    public interface IExplosionView
+    {
+        public void Play();
+    }
 }

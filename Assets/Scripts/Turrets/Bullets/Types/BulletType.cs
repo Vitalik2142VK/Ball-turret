@@ -1,7 +1,10 @@
-﻿public enum BulletType
+﻿namespace CannonTurret.Turrets.Bullets.Types
 {
-    Default,
-    Fire,
-    Poison,
-    Bomb
+    public enum BulletType
+    {
+        Default,
+        Fire,
+        Poison,
+        Bomb
+    }
 }

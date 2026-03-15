@@ -1,11 +1,14 @@
-﻿public interface ILearningStage : IWindow
+﻿namespace CannonTurret.UI.LearningLevel
 {
-    public int NumberStages { get; }
-    public int CurrentStage { get; }
-    public int WaveNumber { get; }
-    public bool IsActive { get; }
+    public interface ILearningStage : IWindow
+    {
+        public int NumberStages { get; }
+        public int CurrentStage { get; }
+        public int WaveNumber { get; }
+        public bool IsActive { get; }
 
-    public void Initialize();
+        public void Initialize();
 
-    public void HandleСlick();
+        public void HandleСlick();
+    }
 }

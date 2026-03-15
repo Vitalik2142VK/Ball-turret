@@ -1,8 +1,11 @@
-﻿public interface ICoinCountRandomizer
+﻿namespace CannonTurret.LevelSystem
 {
-    public int CountCoinsForRewardAd { get; }
+    public interface ICoinCountRandomizer
+    {
+        public int CountCoinsForRewardAd { get; }
 
-    public int GetCountCoinsForWin(int indexLevel);
+        public int GetCountCoinsForWin(int indexLevel);
 
-    public int GetCountCoinsForWave(int indexLevel);
+        public int GetCountCoinsForWave(int indexLevel);
+    }
 }

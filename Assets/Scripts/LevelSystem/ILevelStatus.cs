@@ -1,6 +1,9 @@
-public interface ILevelStatus
+namespace CannonTurret.LevelSystem
 {
-    public bool IsComplete { get; }
+    public interface ILevelStatus
+    {
+        public bool IsComplete { get; }
 
-    public bool IsLose { get; }
+        public bool IsLose { get; }
+    }
 }

@@ -1,8 +1,13 @@
-﻿using System;
+﻿using CannonTurret.Coin.Wallets;
+using System;
 using UnityEngine;
-using Scriptable;
+using CannonTurret.PlayerSystem;
+using CannonTurret.Scriptable.Player;
+using CannonTurret.SDK.Ads;
+using CannonTurret.SDK.Auth;
+using CannonTurret.SDK.Shops;
 
-namespace MainMenuSpace
+namespace CannonTurret.EntryPoints.MainMenu.Configurators
 {
     public class PlayerConfigurator : MonoBehaviour
     {

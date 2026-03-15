@@ -1,42 +1,46 @@
-﻿using System;
+﻿using CannonTurret.Actors.MoveSystem;
+using System;
 using UnityEngine;
 
-public class CollisionBonus : IViewableBonus
+namespace CannonTurret.Actors.Bonuses
 {
-    private IBonus _bonus;
-    private IBonusPresenter _presenter;
-    private IMovableObject _mover;
-
-    public CollisionBonus(IBonus bonus, IBonusPresenter presenter, IMovableObject mover)
+    public class CollisionBonus : IViewableBonus
     {
-        _bonus = bonus ?? throw new ArgumentNullException(nameof(bonus));
-        _presenter = presenter ?? throw new ArgumentNullException(nameof(presenter));
-        _mover = mover ?? throw new ArgumentNullException(nameof(mover));
+        private IBonus _bonus;
+        private IBonusPresenter _presenter;
+        private IMovableObject _mover;
 
-        IsEnable = true;
-    }
-    public IBonusCard BonusCard => _bonus.BonusCard;
-    public bool IsFinished => _mover.IsFinished;
+        public CollisionBonus(IBonus bonus, IBonusPresenter presenter, IMovableObject mover)
+        {
+            _bonus = bonus ?? throw new ArgumentNullException(nameof(bonus));
+            _presenter = presenter ?? throw new ArgumentNullException(nameof(presenter));
+            _mover = mover ?? throw new ArgumentNullException(nameof(mover));
 
-    public bool IsEnable { get; private set; }
+            IsEnable = true;
+        }
+        public IBonusCard BonusCard => _bonus.BonusCard;
+        public bool IsFinished => _mover.IsFinished;
 
-    public void Activate() => _bonus.Activate();
+        public bool IsEnable { get; private set; }
 
-    public void SetStartPosition(Vector3 startPosition) => _mover.SetStartPosition(startPosition);
+        public void Activate() => _bonus.Activate();
 
-    public void EstablishPoint(Vector3 distance, float speed) => _mover.EstablishPoint(distance, speed);
+        public void SetStartPosition(Vector3 startPosition) => _mover.SetStartPosition(startPosition);
 
-    public void Move() => _mover.Move();
+        public void EstablishPoint(Vector3 distance, float speed) => _mover.EstablishPoint(distance, speed);
 
-    public void HandleBonusGatherer(IBonusGatherer bonusGatherer)
-    {
-        bonusGatherer.Gather(_bonus);
-        IsEnable = false;
-    }
+        public void Move() => _mover.Move();
 
-    public void Destroy() 
-    { 
-        _presenter.Destroy();
-        IsEnable = false;
+        public void HandleBonusGatherer(IBonusGatherer bonusGatherer)
+        {
+            bonusGatherer.Gather(_bonus);
+            IsEnable = false;
+        }
+
+        public void Destroy()
+        {
+            _presenter.Destroy();
+            IsEnable = false;
+        }
     }
 }

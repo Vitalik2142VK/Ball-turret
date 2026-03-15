@@ -1,8 +1,11 @@
-﻿public interface ILevelFactory
+﻿namespace CannonTurret.LevelSystem
 {
-    public const float MinActorsHealthCoefficientByLevel = 0.3f;
+    public interface ILevelFactory
+    {
+        public const float MinActorsHealthCoefficientByLevel = 0.3f;
 
-    public int LevelsCount { get; }
+        public int LevelsCount { get; }
 
-    public ILevel Create(int indexLevel);
+        public ILevel Create(int indexLevel);
+    }
 }

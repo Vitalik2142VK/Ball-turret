@@ -1,14 +1,19 @@
-﻿public interface IEnemyView : IActorView, IDamagedObject, IDebuffReceiver
+﻿using CannonTurret.DamageSystem;
+
+namespace CannonTurret.Actors.Enemies
 {
-    public bool IsActive { get; }
+    public interface IEnemyView : IActorView, IDamagedObject, IDebuffReceiver
+    {
+        public bool IsActive { get; }
 
-    public void PrepareAttacked(IAttackingEnemiesCollector attackingCollector);
+        public void PrepareAttacked(IAttackingEnemiesCollector attackingCollector);
 
-    public void PlayDamage();
+        public void PlayDamage();
 
-    public void PlayMovement(bool isMovinng);
+        public void PlayMovement(bool isMovinng);
 
-    public void PlayVictory();
+        public void PlayVictory();
 
-    public void PlayDead();
+        public void PlayDead();
+    }
 }

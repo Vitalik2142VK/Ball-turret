@@ -1,6 +1,9 @@
-﻿public interface IBonus
+﻿namespace CannonTurret.Actors.Bonuses
 {
-    public IBonusCard BonusCard { get; }
+    public interface IBonus
+    {
+        public IBonusCard BonusCard { get; }
 
-    public void Activate();
+        public void Activate();
+    }
 }

@@ -3,49 +3,52 @@ using System.Collections.Generic;
 using UnityEngine;
 using YG;
 
-[RequireComponent(typeof(ConsumePurchasesYG))]
-public class PurchasesHandler : MonoBehaviour
+namespace CannonTurret.SDK.Shops
 {
-    private Dictionary<string, IPurchaseActivator> _purchaseActivator;
-
-    private void OnEnable()
+    [RequireComponent(typeof(ConsumePurchasesYG))]
+    public class PurchasesHandler : MonoBehaviour
     {
-        YG2.onPurchaseSuccess += OnActivatePurchase;
-    }
+        private Dictionary<string, IPurchaseActivator> _purchaseActivator;
 
-    private void OnDisable()
-    {
-        YG2.onPurchaseSuccess -= OnActivatePurchase;
-    }
-
-    public void LoadPurchases(IPurchasesStorage purchasesStorage)
-    {
-        if (purchasesStorage == null)
-            throw new ArgumentNullException(nameof(purchasesStorage));
-
-        var purchases = YG2.purchases;
-        _purchaseActivator = new Dictionary<string, IPurchaseActivator>(purchases.Length);
-
-        foreach (var purchase in purchases)
+        private void OnEnable()
         {
-            var purchaseId = purchase.id;
+            YG2.onPurchaseSuccess += OnActivatePurchase;
+        }
 
-            if (purchasesStorage.TryGetPurchase(out IPlayerPurchase playerPurchase, purchaseId))
+        private void OnDisable()
+        {
+            YG2.onPurchaseSuccess -= OnActivatePurchase;
+        }
+
+        public void LoadPurchases(IPurchasesStorage purchasesStorage)
+        {
+            if (purchasesStorage == null)
+                throw new ArgumentNullException(nameof(purchasesStorage));
+
+            var purchases = YG2.purchases;
+            _purchaseActivator = new Dictionary<string, IPurchaseActivator>(purchases.Length);
+
+            foreach (var purchase in purchases)
             {
-                IPurchaseActivator activator = new OneTimePurchaseActivator(playerPurchase);
-                _purchaseActivator.Add(purchaseId, activator);
+                var purchaseId = purchase.id;
 
-                if (purchase.consumed == false)
-                    activator.Activate(purchaseId);
+                if (purchasesStorage.TryGetPurchase(out IPlayerPurchase playerPurchase, purchaseId))
+                {
+                    IPurchaseActivator activator = new OneTimePurchaseActivator(playerPurchase);
+                    _purchaseActivator.Add(purchaseId, activator);
+
+                    if (purchase.consumed == false)
+                        activator.Activate(purchaseId);
+                }
             }
-        }       
-    }
+        }
 
-    private void OnActivatePurchase(string purchaseId)
-    {
-        if (_purchaseActivator.ContainsKey(purchaseId) == false)
-            throw new ArgumentOutOfRangeException(nameof(purchaseId));
+        private void OnActivatePurchase(string purchaseId)
+        {
+            if (_purchaseActivator.ContainsKey(purchaseId) == false)
+                throw new ArgumentOutOfRangeException(nameof(purchaseId));
 
-        _purchaseActivator[purchaseId].Activate(purchaseId);
+            _purchaseActivator[purchaseId].Activate(purchaseId);
+        }
     }
 }

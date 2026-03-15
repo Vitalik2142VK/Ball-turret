@@ -1,4 +1,7 @@
-﻿public interface IVictoryController
+﻿namespace CannonTurret.LevelSystem
 {
-    public void PlayVictory();
+    public interface IVictoryController
+    {
+        public void PlayVictory();
+    }
 }

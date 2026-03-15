@@ -1,101 +1,106 @@
-﻿using System;
+﻿using CannonTurret.DamageSystem;
+using CannonTurret.HealthSystem;
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(Collider), typeof(Rigidbody), typeof(DamagedObjectAnimator))]
-public class BorderView : MonoBehaviour, IBorderView
+namespace CannonTurret.Actors.Borders
 {
-    [SerializeField] private ActorParticleController _particleController;
-    [SerializeField] private Image _shadow;
-
-    [field: SerializeField] public HealthBar HealthBar { get; private set; }
-
-    private IBorderPresenter _presenter;
-    private IDamagedObjectAnimator _borderAnimator;
-    private IActorAudioController _audioController;
-    private Collider _collider;
-
-    public string Name => name;
-
-    public bool IsActive { get; private set; }
-
-    private void OnValidate()
+    [RequireComponent(typeof(Collider), typeof(Rigidbody), typeof(DamagedObjectAnimator))]
+    public class BorderView : MonoBehaviour, IBorderView
     {
-        if (_particleController == null)
-            throw new NullReferenceException(nameof(_particleController));
+        [SerializeField] private ActorParticleController _particleController;
+        [SerializeField] private Image _shadow;
 
-        if (_shadow == null)
-            throw new NullReferenceException(nameof(_shadow));
+        [field: SerializeField] public HealthBar HealthBar { get; private set; }
 
-        if (HealthBar == null)
-            throw new NullReferenceException(nameof(HealthBar));
-    }
+        private IBorderPresenter _presenter;
+        private IDamagedObjectAnimator _borderAnimator;
+        private IActorAudioController _audioController;
+        private Collider _collider;
 
-    private void Awake()
-    {
-        _borderAnimator = GetComponent<IDamagedObjectAnimator>();
-        _collider = GetComponent<Collider>();
+        public string Name => name;
 
-        Rigidbody rigidbody = GetComponent<Rigidbody>();
-        rigidbody.isKinematic = true;
-        rigidbody.useGravity = false;
-    }
+        public bool IsActive { get; private set; }
 
-    private void OnEnable()
-    {
-        IsActive = true;
-        _collider.enabled = true;
-    }
+        private void OnValidate()
+        {
+            if (_particleController == null)
+                throw new NullReferenceException(nameof(_particleController));
 
-    public void Initialize(IBorderPresenter presenter, IActorAudioController audioController)
-    {
-        _presenter = presenter ?? throw new ArgumentNullException(nameof(presenter));
-        _audioController = audioController ?? throw new ArgumentNullException(nameof(audioController));
-    }
+            if (_shadow == null)
+                throw new NullReferenceException(nameof(_shadow));
 
-    public void PrepareDeleted(IRemovedActorsCollector removedCollector) => _presenter.PrepareDeleted(removedCollector);
+            if (HealthBar == null)
+                throw new NullReferenceException(nameof(HealthBar));
+        }
 
-    public void TakeDamage(IDamageAttributes damage) => _presenter.TakeDamage(damage);
+        private void Awake()
+        {
+            _borderAnimator = GetComponent<IDamagedObjectAnimator>();
+            _collider = GetComponent<Collider>();
 
-    public void IgnoreArmor(IDamageAttributes damage) => _presenter.IgnoreArmor(damage);
+            Rigidbody rigidbody = GetComponent<Rigidbody>();
+            rigidbody.isKinematic = true;
+            rigidbody.useGravity = false;
+        }
 
-    public void PlayDamage()
-    {
-        _borderAnimator.PlayHit();
-        _particleController.PlayHit();
-        _audioController.PlayHit();
-    }
+        private void OnEnable()
+        {
+            IsActive = true;
+            _collider.enabled = true;
+        }
 
-    public void PlayDead()
-    {
-        if (IsActive)
-            StartCoroutine(StartDeadProcess());
-    }
+        public void Initialize(IBorderPresenter presenter, IActorAudioController audioController)
+        {
+            _presenter = presenter ?? throw new ArgumentNullException(nameof(presenter));
+            _audioController = audioController ?? throw new ArgumentNullException(nameof(audioController));
+        }
 
-    public void Destroy()
-    {
-        Destroy(gameObject);
-    }
+        public void PrepareDeleted(IRemovedActorsCollector removedCollector) => _presenter.PrepareDeleted(removedCollector);
 
-    private IEnumerator StartDeadProcess()
-    {
-        IsActive = false;
-        HealthBar.SetActive(IsActive);
-        _collider.enabled = IsActive;
-        _borderAnimator.PlayDead();
-        _particleController.PlayDead();
-        _audioController.PlayDead();
+        public void TakeDamage(IDamageAttributes damage) => _presenter.TakeDamage(damage);
 
-        float timeWait;
+        public void IgnoreArmor(IDamageAttributes damage) => _presenter.IgnoreArmor(damage);
 
-        if (_borderAnimator.TimeCompletionDeath >= _particleController.TimeLiveDeadParticle)
-            timeWait = _borderAnimator.TimeCompletionDeath;
-        else
-            timeWait = _particleController.TimeLiveDeadParticle;
+        public void PlayDamage()
+        {
+            _borderAnimator.PlayHit();
+            _particleController.PlayHit();
+            _audioController.PlayHit();
+        }
 
-        yield return new WaitForSeconds(timeWait);
+        public void PlayDead()
+        {
+            if (IsActive)
+                StartCoroutine(StartDeadProcess());
+        }
 
-        _presenter.FinishDeath();
+        public void Destroy()
+        {
+            Destroy(gameObject);
+        }
+
+        private IEnumerator StartDeadProcess()
+        {
+            IsActive = false;
+            HealthBar.SetActive(IsActive);
+            _collider.enabled = IsActive;
+            _borderAnimator.PlayDead();
+            _particleController.PlayDead();
+            _audioController.PlayDead();
+
+            float timeWait;
+
+            if (_borderAnimator.TimeCompletionDeath >= _particleController.TimeLiveDeadParticle)
+                timeWait = _borderAnimator.TimeCompletionDeath;
+            else
+                timeWait = _particleController.TimeLiveDeadParticle;
+
+            yield return new WaitForSeconds(timeWait);
+
+            _presenter.FinishDeath();
+        }
     }
 }

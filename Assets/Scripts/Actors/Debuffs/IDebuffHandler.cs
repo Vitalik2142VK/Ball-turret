@@ -1,6 +1,9 @@
-﻿public interface IDebuffHandler : IDebuffable
+﻿namespace CannonTurret.Actors.Debuffs
 {
-    public void RemoveCompletedDebuffs();
+    public interface IDebuffHandler : IDebuffable
+    {
+        public void RemoveCompletedDebuffs();
 
-    public void Clean();
+        public void Clean();
+    }
 }

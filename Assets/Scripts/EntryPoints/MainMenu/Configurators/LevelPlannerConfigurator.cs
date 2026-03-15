@@ -1,8 +1,10 @@
-﻿using Scriptable;
+﻿using CannonTurret.LevelSystem;
+using CannonTurret.PlayerSystem;
+using CannonTurret.Scriptable.Level;
 using System;
 using UnityEngine;
 
-namespace MainMenuSpace
+namespace CannonTurret.EntryPoints.MainMenu.Configurators
 {
     public class LevelPlannerConfigurator : MonoBehaviour
     {

@@ -1,8 +1,9 @@
-﻿using System;
+﻿using CannonTurret.Actors.Spawn;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Scriptable
+namespace CannonTurret.Scriptable.Level
 {
     [CreateAssetMenu(menuName = "Level/Wave Actors Planner", fileName = "WavePlanner", order = 51)]
     public class WaveActorsPlanner : ScriptableObject, IWaveActorsPlanner

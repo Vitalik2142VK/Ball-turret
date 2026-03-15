@@ -1,50 +1,54 @@
-﻿using System;
+﻿using CannonTurret.DamageSystem;
+using System;
 
-public class BorderPresenter : IBorderPresenter
+namespace CannonTurret.Actors.Borders
 {
-    private IBorder _model;
-    private IBorderView _view;
-
-    public void Initialize(IBorder model, IBorderView view)
+    public class BorderPresenter : IBorderPresenter
     {
-        _model = model ?? throw new ArgumentNullException(nameof(model));
-        _view = view ?? throw new ArgumentNullException(nameof(view));
-    }
+        private IBorder _model;
+        private IBorderView _view;
 
-    public void FinishDeath() => _model.Destroy();
+        public void Initialize(IBorder model, IBorderView view)
+        {
+            _model = model ?? throw new ArgumentNullException(nameof(model));
+            _view = view ?? throw new ArgumentNullException(nameof(view));
+        }
 
-    public void PrepareDeleted(IRemovedActorsCollector removedCollector)
-    {
-        removedCollector.Add(_model);
-    }
+        public void FinishDeath() => _model.Destroy();
 
-    public void TakeDamage(IDamageAttributes damage)
-    {
-        _model.TakeDamage(damage);
+        public void PrepareDeleted(IRemovedActorsCollector removedCollector)
+        {
+            removedCollector.Add(_model);
+        }
 
-        ChoosePlayView();
-    }
+        public void TakeDamage(IDamageAttributes damage)
+        {
+            _model.TakeDamage(damage);
 
-    public void IgnoreArmor(IDamageAttributes damage)
-    {
-        _model.IgnoreArmor(damage);
+            ChoosePlayView();
+        }
 
-        ChoosePlayView();
-    }
+        public void IgnoreArmor(IDamageAttributes damage)
+        {
+            _model.IgnoreArmor(damage);
 
-    public void Destroy()
-    {
-        if (_view.IsActive)
-            _view.PlayDead();
-        else
-            _view.Destroy();
-    }
+            ChoosePlayView();
+        }
 
-    private void ChoosePlayView()
-    {
-        if (_model.IsEnable)
-            _view.PlayDamage();
-        else
-            _view.PlayDead();
+        public void Destroy()
+        {
+            if (_view.IsActive)
+                _view.PlayDead();
+            else
+                _view.Destroy();
+        }
+
+        private void ChoosePlayView()
+        {
+            if (_model.IsEnable)
+                _view.PlayDamage();
+            else
+                _view.PlayDead();
+        }
     }
 }

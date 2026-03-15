@@ -3,110 +3,113 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(ScrollerToElement))]
-public class SelectLevelScroll : MonoBehaviour
+namespace CannonTurret.UI.MainMenu
 {
-    [SerializeField] private ContentSizeFitter _content;
-    [SerializeField] private SelectLevelButton _selectLevelButtonPrefab;
-
-    private List<SelectLevelButton> _selectLevelButtons;
-    private ScrollerToElement _scrollerToElement;
-
-    public int SelectedLevelIndex { get; private set; }
-
-    private void OnValidate()
+    [RequireComponent(typeof(ScrollerToElement))]
+    public class SelectLevelScroll : MonoBehaviour
     {
-        if (_content == null)
-        {
-            _content = GetComponentInChildren<ContentSizeFitter>();
+        [SerializeField] private ContentSizeFitter _content;
+        [SerializeField] private SelectLevelButton _selectLevelButtonPrefab;
 
+        private List<SelectLevelButton> _selectLevelButtons;
+        private ScrollerToElement _scrollerToElement;
+
+        public int SelectedLevelIndex { get; private set; }
+
+        private void OnValidate()
+        {
             if (_content == null)
-                throw new NullReferenceException(nameof(_content));
-        }
-
-        if (_selectLevelButtonPrefab == null)
-            throw new NullReferenceException(nameof(_selectLevelButtonPrefab));
-    }
-
-    private void Awake()
-    {
-        _scrollerToElement = GetComponent<ScrollerToElement>();
-    }
-
-    private void OnEnable()
-    {
-        foreach (var button in _selectLevelButtons)
-            button.Clicked += OnSelectButton;
-    }
-
-    private void OnDisable()
-    {
-        foreach (var button in _selectLevelButtons)
-            button.Clicked -= OnSelectButton;
-    }
-
-    public void Initialize(int countLevelPlanners, int achievedLevelIndex)
-    {
-        if (countLevelPlanners <= 0)
-            throw new ArgumentOutOfRangeException(nameof(countLevelPlanners));
-
-        if (achievedLevelIndex < 0 || achievedLevelIndex > countLevelPlanners)
-            throw new ArgumentOutOfRangeException(nameof(achievedLevelIndex));
-
-        _selectLevelButtons = new List<SelectLevelButton>(countLevelPlanners);
-
-        for (int i = 0; i < countLevelPlanners; i++)
-        {
-            var button = Instantiate(_selectLevelButtonPrefab);
-            button.SetIndex(i);
-            button.SetBlock(achievedLevelIndex < i);
-            button.transform.SetParent(_content.transform);
-            button.transform.localScale = _selectLevelButtonPrefab.transform.localScale;
-
-            _selectLevelButtons.Add(button);
-        }
-    }
-
-    public void SelectButton(int levelIndex)
-    {
-        if (levelIndex < 0 || levelIndex > _selectLevelButtons.Count)
-            throw new ArgumentOutOfRangeException(nameof(levelIndex));
-
-        if (levelIndex == _selectLevelButtons.Count)
-            levelIndex = 0;
-
-        foreach (var button in _selectLevelButtons)
-        {
-            if (button.Index == levelIndex)
             {
-                button.Select();
+                _content = GetComponentInChildren<ContentSizeFitter>();
 
-                ScrollToButton(button);
+                if (_content == null)
+                    throw new NullReferenceException(nameof(_content));
+            }
 
-                return;
+            if (_selectLevelButtonPrefab == null)
+                throw new NullReferenceException(nameof(_selectLevelButtonPrefab));
+        }
+
+        private void Awake()
+        {
+            _scrollerToElement = GetComponent<ScrollerToElement>();
+        }
+
+        private void OnEnable()
+        {
+            foreach (var button in _selectLevelButtons)
+                button.Clicked += OnSelectButton;
+        }
+
+        private void OnDisable()
+        {
+            foreach (var button in _selectLevelButtons)
+                button.Clicked -= OnSelectButton;
+        }
+
+        public void Initialize(int countLevelPlanners, int achievedLevelIndex)
+        {
+            if (countLevelPlanners <= 0)
+                throw new ArgumentOutOfRangeException(nameof(countLevelPlanners));
+
+            if (achievedLevelIndex < 0 || achievedLevelIndex > countLevelPlanners)
+                throw new ArgumentOutOfRangeException(nameof(achievedLevelIndex));
+
+            _selectLevelButtons = new List<SelectLevelButton>(countLevelPlanners);
+
+            for (int i = 0; i < countLevelPlanners; i++)
+            {
+                var button = Instantiate(_selectLevelButtonPrefab);
+                button.SetIndex(i);
+                button.SetBlock(achievedLevelIndex < i);
+                button.transform.SetParent(_content.transform);
+                button.transform.localScale = _selectLevelButtonPrefab.transform.localScale;
+
+                _selectLevelButtons.Add(button);
             }
         }
-    }
 
-    private void OnSelectButton(int buttonIndex)
-    {
-        foreach (var button in _selectLevelButtons)
+        public void SelectButton(int levelIndex)
         {
-            if (button.IsBocked)
-                continue;
+            if (levelIndex < 0 || levelIndex > _selectLevelButtons.Count)
+                throw new ArgumentOutOfRangeException(nameof(levelIndex));
 
-            if (button.Index != buttonIndex)
-                button.CancelSelection();
-            else
-                SelectedLevelIndex = button.Index;
+            if (levelIndex == _selectLevelButtons.Count)
+                levelIndex = 0;
+
+            foreach (var button in _selectLevelButtons)
+            {
+                if (button.Index == levelIndex)
+                {
+                    button.Select();
+
+                    ScrollToButton(button);
+
+                    return;
+                }
+            }
         }
-    }
 
-    private void ScrollToButton(SelectLevelButton button)
-    {
-        if (button.TryGetComponent(out RectTransform rectTransform) == false)
-            throw new InvalidOperationException($"{nameof(button)} does not contain the '{nameof(RectTransform)}' component");
+        private void OnSelectButton(int buttonIndex)
+        {
+            foreach (var button in _selectLevelButtons)
+            {
+                if (button.IsBocked)
+                    continue;
 
-        _scrollerToElement.ScrollToElement(rectTransform);
+                if (button.Index != buttonIndex)
+                    button.CancelSelection();
+                else
+                    SelectedLevelIndex = button.Index;
+            }
+        }
+
+        private void ScrollToButton(SelectLevelButton button)
+        {
+            if (button.TryGetComponent(out RectTransform rectTransform) == false)
+                throw new InvalidOperationException($"{nameof(button)} does not contain the '{nameof(RectTransform)}' component");
+
+            _scrollerToElement.ScrollToElement(rectTransform);
+        }
     }
 }

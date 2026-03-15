@@ -1,6 +1,9 @@
 ﻿using System.Collections.Generic;
 
-public interface IBonusStorage
+namespace CannonTurret.Actors.Bonuses
 {
-    public bool TryGetBonuses(out IReadOnlyCollection<IBonus> bonuses);
+    public interface IBonusStorage
+    {
+        public bool TryGetBonuses(out IReadOnlyCollection<IBonus> bonuses);
+    }
 }

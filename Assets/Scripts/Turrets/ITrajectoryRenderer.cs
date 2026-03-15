@@ -1,12 +1,15 @@
 ﻿using UnityEngine;
 
-public interface ITrajectoryRenderer
+namespace CannonTurret.Turrets
 {
-    public void Enable();
+    public interface ITrajectoryRenderer
+    {
+        public void Enable();
 
-    public void Disable();
+        public void Disable();
 
-    public void ShowTrajectory(Vector3 origin, Vector3 direction);
+        public void ShowTrajectory(Vector3 origin, Vector3 direction);
 
-    public void Clear();
+        public void Clear();
+    }
 }

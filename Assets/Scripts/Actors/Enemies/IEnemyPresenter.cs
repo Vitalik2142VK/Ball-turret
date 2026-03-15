@@ -1,16 +1,22 @@
-﻿public interface IEnemyPresenter
+﻿using CannonTurret.DamageSystem;
+using CannonTurret.Effects;
+
+namespace CannonTurret.Actors.Enemies
 {
-    public void PrepareDeleted(IRemovedActorsCollector removedCollector);
+    public interface IEnemyPresenter
+    {
+        public void PrepareDeleted(IRemovedActorsCollector removedCollector);
 
-    public void PrepareAttacked(IAttackingEnemiesCollector attackingCollector);
+        public void PrepareAttacked(IAttackingEnemiesCollector attackingCollector);
 
-    public void AddDebuff(IDebuff debaff);
+        public void AddDebuff(IDebuff debaff);
 
-    public void TakeDamage(IDamageAttributes damage);
+        public void TakeDamage(IDamageAttributes damage);
 
-    public void Move();
+        public void Move();
 
-    public void Win();
+        public void Win();
 
-    public void Destroy();
+        public void Destroy();
+    }
 }

@@ -1,45 +1,49 @@
-﻿using UnityEngine;
+﻿using CannonTurret.CameraControl;
+using UnityEngine;
 
-[RequireComponent(typeof(Animator))]
-public class ClickerAnimator : MonoBehaviour
+namespace CannonTurret.UI.Animations
 {
-    private const string IsVertival = nameof(IsVertival);
-
-    private ICameraAdapter _cameraAdapter;
-    private Animator _animator;
-    private int _hashIsVertival;
-
-    private void Awake()
+    [RequireComponent(typeof(Animator))]
+    public class ClickerAnimator : MonoBehaviour
     {
-        _animator = GetComponent<Animator>();
+        private const string IsVertival = nameof(IsVertival);
 
-        Camera camera = Camera.main;
+        private ICameraAdapter _cameraAdapter;
+        private Animator _animator;
+        private int _hashIsVertival;
 
-        if (camera.TryGetComponent(out ICameraAdapter cameraAdapter) == false)
-            throw new System.InvalidOperationException($"The main camera does not contain the component: <{nameof(ICameraAdapter)}>");
+        private void Awake()
+        {
+            _animator = GetComponent<Animator>();
 
-        _cameraAdapter = cameraAdapter;
-        _hashIsVertival = Animator.StringToHash(IsVertival);
-    }
+            Camera camera = Camera.main;
 
-    private void OnEnable()
-    {
-        _cameraAdapter.OrientationChanged += OnChangeAnimation;
-    }
+            if (camera.TryGetComponent(out ICameraAdapter cameraAdapter) == false)
+                throw new System.InvalidOperationException($"The main camera does not contain the component: <{nameof(ICameraAdapter)}>");
+
+            _cameraAdapter = cameraAdapter;
+            _hashIsVertival = Animator.StringToHash(IsVertival);
+        }
+
+        private void OnEnable()
+        {
+            _cameraAdapter.OrientationChanged += OnChangeAnimation;
+        }
 
 
-    private void Start()
-    {
-        OnChangeAnimation();
-    }
+        private void Start()
+        {
+            OnChangeAnimation();
+        }
 
-    private void OnDisable()
-    {
-        _cameraAdapter.OrientationChanged -= OnChangeAnimation;
-    }
+        private void OnDisable()
+        {
+            _cameraAdapter.OrientationChanged -= OnChangeAnimation;
+        }
 
-    private void OnChangeAnimation()
-    {
-        _animator.SetBool(_hashIsVertival, _cameraAdapter.IsPortraitOrientation);
+        private void OnChangeAnimation()
+        {
+            _animator.SetBool(_hashIsVertival, _cameraAdapter.IsPortraitOrientation);
+        }
     }
 }

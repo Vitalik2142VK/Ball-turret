@@ -1,106 +1,109 @@
-using Scriptable;
+using CannonTurret.Scriptable.Audio;
 using UnityEngine;
 using UnityEngine.Audio;
 
-public class AudioSetting : MonoBehaviour, IAudioSetting
+namespace CannonTurret.AudioSystem
 {
-    [SerializeField] private AudioData _audioData;
-    [SerializeField] private AudioMixerGroup _audioMixerGroup;
-    [SerializeField] private Sound _soundEffectExample;
-
-    public float MusicVolumeCoefficient { get; private set; }
-    public float EffectsVolumeCoefficient { get; private set; }
-
-    public bool IsEnableSound => _audioData.IsEnableSound;
-
-    private void OnValidate()
+    public class AudioSetting : MonoBehaviour, IAudioSetting
     {
-        if (_audioData == null)
-            throw new System.NullReferenceException(nameof(_audioData));
+        [SerializeField] private AudioData _audioData;
+        [SerializeField] private AudioMixerGroup _audioMixerGroup;
+        [SerializeField] private Sound _soundEffectExample;
 
-        if (_audioMixerGroup == null)
-            throw new System.NullReferenceException(nameof(_audioMixerGroup));
+        public float MusicVolumeCoefficient { get; private set; }
+        public float EffectsVolumeCoefficient { get; private set; }
 
-        if (_soundEffectExample == null)
-            throw new System.NullReferenceException(nameof(_soundEffectExample));
-    }
+        public bool IsEnableSound => _audioData.IsEnableSound;
 
-    private void Awake()
-    {
-        _audioData.Load();
+        private void OnValidate()
+        {
+            if (_audioData == null)
+                throw new System.NullReferenceException(nameof(_audioData));
 
-        ChangeMasterValue(_audioData.IsEnableSound);
+            if (_audioMixerGroup == null)
+                throw new System.NullReferenceException(nameof(_audioMixerGroup));
 
-        _audioMixerGroup.audioMixer.SetFloat(AudioData.MusicVolumeGroupName, _audioData.MusicVolume);
-        _audioMixerGroup.audioMixer.SetFloat(AudioData.EffectsVolumeGroupName, _audioData.EffectsVolume);
+            if (_soundEffectExample == null)
+                throw new System.NullReferenceException(nameof(_soundEffectExample));
+        }
 
-        MusicVolumeCoefficient = CalsulateVolumeCoefficient(_audioData.MusicVolume);
-        EffectsVolumeCoefficient = CalsulateVolumeCoefficient(_audioData.EffectsVolume);
-    }
+        private void Awake()
+        {
+            _audioData.Load();
 
-    public void ChangeVolumeMusic(float value)
-    {
-        float volume = CalsulateVolume(value);
-        MusicVolumeCoefficient = volume;
+            ChangeMasterValue(_audioData.IsEnableSound);
 
-        _audioMixerGroup.audioMixer.SetFloat(AudioData.MusicVolumeGroupName, volume);
-        _audioData.SetMusicVolume(volume);
-    }
+            _audioMixerGroup.audioMixer.SetFloat(AudioData.MusicVolumeGroupName, _audioData.MusicVolume);
+            _audioMixerGroup.audioMixer.SetFloat(AudioData.EffectsVolumeGroupName, _audioData.EffectsVolume);
 
-    public void ChangeVolumeEffects(float valueCoefficient)
-    {
-        float volume = CalsulateVolume(valueCoefficient);
-        EffectsVolumeCoefficient = volume;
+            MusicVolumeCoefficient = CalsulateVolumeCoefficient(_audioData.MusicVolume);
+            EffectsVolumeCoefficient = CalsulateVolumeCoefficient(_audioData.EffectsVolume);
+        }
 
-        _audioMixerGroup.audioMixer.SetFloat(AudioData.EffectsVolumeGroupName, volume);
-        _audioData.SetEffectsVolume(volume);
-        _soundEffectExample.Play();
-    }
+        public void ChangeVolumeMusic(float value)
+        {
+            float volume = CalsulateVolume(value);
+            MusicVolumeCoefficient = volume;
 
-    public void ChangeEnableSound(bool valueCoefficient)
-    {
-        ChangeMasterValue(valueCoefficient);
+            _audioMixerGroup.audioMixer.SetFloat(AudioData.MusicVolumeGroupName, volume);
+            _audioData.SetMusicVolume(volume);
+        }
 
-        _audioData.SetEnableSound(valueCoefficient);
-    }
+        public void ChangeVolumeEffects(float valueCoefficient)
+        {
+            float volume = CalsulateVolume(valueCoefficient);
+            EffectsVolumeCoefficient = volume;
 
-    public void AcceptChanges()
-    {
-        _audioData.Save();
-    }
+            _audioMixerGroup.audioMixer.SetFloat(AudioData.EffectsVolumeGroupName, volume);
+            _audioData.SetEffectsVolume(volume);
+            _soundEffectExample.Play();
+        }
 
-    private float CalsulateVolume(float valueCoefficient)
-    {
-        valueCoefficient = Mathf.Clamp01(valueCoefficient);
-        float volume = Mathf.Lerp(_audioData.MinVolume, _audioData.MaxVolume, valueCoefficient);
+        public void ChangeEnableSound(bool valueCoefficient)
+        {
+            ChangeMasterValue(valueCoefficient);
 
-        if (volume <= _audioData.MinVolume)
-            volume = AudioData.ValueOffVolume;
+            _audioData.SetEnableSound(valueCoefficient);
+        }
 
-        return volume;
-    }
+        public void AcceptChanges()
+        {
+            _audioData.Save();
+        }
 
-    private float CalsulateVolumeCoefficient(float value)
-    {
-        float volumeCoefficient;
+        private float CalsulateVolume(float valueCoefficient)
+        {
+            valueCoefficient = Mathf.Clamp01(valueCoefficient);
+            float volume = Mathf.Lerp(_audioData.MinVolume, _audioData.MaxVolume, valueCoefficient);
 
-        if (value <= _audioData.MinVolume)
-            volumeCoefficient = 0f;
-        else
-            volumeCoefficient = Mathf.InverseLerp(_audioData.MinVolume, _audioData.MaxVolume, value);
+            if (volume <= _audioData.MinVolume)
+                volume = AudioData.ValueOffVolume;
 
-        return volumeCoefficient;
-    }
+            return volume;
+        }
 
-    private void ChangeMasterValue(bool isEnable)
-    {
-        float volume;
+        private float CalsulateVolumeCoefficient(float value)
+        {
+            float volumeCoefficient;
 
-        if (isEnable)
-            volume = AudioData.MaxVolueMaster;
-        else
-            volume = AudioData.ValueOffVolume;
+            if (value <= _audioData.MinVolume)
+                volumeCoefficient = 0f;
+            else
+                volumeCoefficient = Mathf.InverseLerp(_audioData.MinVolume, _audioData.MaxVolume, value);
 
-        _audioMixerGroup.audioMixer.SetFloat(AudioData.MasterVolumeGroupName, volume);
+            return volumeCoefficient;
+        }
+
+        private void ChangeMasterValue(bool isEnable)
+        {
+            float volume;
+
+            if (isEnable)
+                volume = AudioData.MaxVolueMaster;
+            else
+                volume = AudioData.ValueOffVolume;
+
+            _audioMixerGroup.audioMixer.SetFloat(AudioData.MasterVolumeGroupName, volume);
+        }
     }
 }

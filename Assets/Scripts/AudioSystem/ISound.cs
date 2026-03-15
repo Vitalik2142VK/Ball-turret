@@ -1,6 +1,9 @@
-﻿public interface ISound
+﻿namespace CannonTurret.AudioSystem
 {
-    public void Play();
+    public interface ISound
+    {
+        public void Play();
 
-    public void Stop();
+        public void Stop();
+    }
 }

@@ -1,142 +1,147 @@
-﻿using System;
+﻿using CannonTurret.Actors.Bonuses.ReserveredBonuses;
+using CannonTurret.UI.Animations;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(IAnimatorUI), typeof(HiderUI))]
-public class ReservedBonusesWindow : MonoBehaviour, IReservedBonusesWindow
+namespace CannonTurret.UI.PlayerScene
 {
-    [SerializeField] private ReservedBonusButton _reservedBonusButtonPrefab;
-    [SerializeField] private ContentSizeFitter _content;
-    [SerializeField] private Button _closeButton;
-    [SerializeField] private OpenWindowButton _openButton;
-
-    private IAnimatorUI _animator;
-    private IBonusReservator _bonusReservator;
-    private List<ReservedBonusButton> _reservedBonusButtons;
-    private HiderUI _hiderUI;
-
-    public bool IsActive => gameObject.activeSelf;
-
-    private void OnValidate()
+    [RequireComponent(typeof(IAnimatorUI), typeof(HiderUI))]
+    public class ReservedBonusesWindow : MonoBehaviour, IReservedBonusesWindow
     {
-        if (_reservedBonusButtonPrefab == null)
-            throw new NullReferenceException(nameof(_reservedBonusButtonPrefab));
+        [SerializeField] private ReservedBonusButton _reservedBonusButtonPrefab;
+        [SerializeField] private ContentSizeFitter _content;
+        [SerializeField] private Button _closeButton;
+        [SerializeField] private OpenWindowButton _openButton;
 
-        if (_content == null)
-            throw new NullReferenceException(nameof(_content));
+        private IAnimatorUI _animator;
+        private IBonusReservator _bonusReservator;
+        private List<ReservedBonusButton> _reservedBonusButtons;
+        private HiderUI _hiderUI;
 
-        if (_closeButton == null)
-            throw new NullReferenceException(nameof(_closeButton));
+        public bool IsActive => gameObject.activeSelf;
 
-        if (_openButton == null)
-            throw new NullReferenceException(nameof(_openButton));
-    }
-
-    private void Awake()
-    {
-        _animator = GetComponent<IAnimatorUI>();
-        _hiderUI = GetComponent<HiderUI>();
-        gameObject.SetActive(false);
-        _openButton.gameObject.SetActive(false);
-    }
-
-    private void OnEnable()
-    {
-        _closeButton.onClick.AddListener(OnClose);
-
-        if (_reservedBonusButtons != null)
-            foreach (var button in _reservedBonusButtons)
-            {
-                button.Enable();
-                button.Clicked += OnSelectButton;
-                button.BonusActivated += OnClose;
-            }
-    }
-
-    private void OnDisable()
-    {
-        _closeButton.onClick.RemoveListener(OnClose);
-
-        if (_reservedBonusButtons != null)
-            foreach (var button in _reservedBonusButtons)
-            {
-                button.Clicked -= OnSelectButton;
-                button.BonusActivated -= OnClose;
-            }
-    }
-
-    public void Initialize(IBonusReservator bonusReservator)
-    {
-        _bonusReservator = bonusReservator ?? throw new ArgumentNullException(nameof(bonusReservator));
-
-        _reservedBonusButtons = new List<ReservedBonusButton>();
-        int index = 0;
-
-        foreach (var reservatedBonus in bonusReservator.Bonuses)
+        private void OnValidate()
         {
-            var button = Instantiate(_reservedBonusButtonPrefab);
-            var reservedBonusView = button.GetComponent<IReservedBonusView>();
+            if (_reservedBonusButtonPrefab == null)
+                throw new NullReferenceException(nameof(_reservedBonusButtonPrefab));
 
-            reservatedBonus.Initialize(reservedBonusView);
-            button.transform.SetParent(_content.transform);
-            button.Initialize(_bonusReservator, reservatedBonus.BonusCard, index++);
-            button.transform.localScale = _reservedBonusButtonPrefab.transform.localScale;
+            if (_content == null)
+                throw new NullReferenceException(nameof(_content));
 
-            _reservedBonusButtons.Add(button);
+            if (_closeButton == null)
+                throw new NullReferenceException(nameof(_closeButton));
+
+            if (_openButton == null)
+                throw new NullReferenceException(nameof(_openButton));
         }
 
-        if (_reservedBonusButtons.Count <= 0)
-            throw new InvalidOperationException($"IEnumerable '{nameof(bonusReservator)}' is empty");
-    }
+        private void Awake()
+        {
+            _animator = GetComponent<IAnimatorUI>();
+            _hiderUI = GetComponent<HiderUI>();
+            gameObject.SetActive(false);
+            _openButton.gameObject.SetActive(false);
+        }
 
-    public void Enable()
-    {
-        gameObject.SetActive(true);
-        _animator.Show();
-        _hiderUI.Hide();
-    }
+        private void OnEnable()
+        {
+            _closeButton.onClick.AddListener(OnClose);
 
-    public void Hide()
-    {
-        if (gameObject.activeSelf == false)
-            return;
+            if (_reservedBonusButtons != null)
+                foreach (var button in _reservedBonusButtons)
+                {
+                    button.Enable();
+                    button.Clicked += OnSelectButton;
+                    button.BonusActivated += OnClose;
+                }
+        }
 
-        _animator.Hide();
+        private void OnDisable()
+        {
+            _closeButton.onClick.RemoveListener(OnClose);
 
-        StartCoroutine(WaitDisable());
-    }
+            if (_reservedBonusButtons != null)
+                foreach (var button in _reservedBonusButtons)
+                {
+                    button.Clicked -= OnSelectButton;
+                    button.BonusActivated -= OnClose;
+                }
+        }
 
-    private void OnClose()
-    {
-        _animator.Hide();
-        _hiderUI.Show();
+        public void Initialize(IBonusReservator bonusReservator)
+        {
+            _bonusReservator = bonusReservator ?? throw new ArgumentNullException(nameof(bonusReservator));
 
-        StartCoroutine(WaitClosure());
-    }
+            _reservedBonusButtons = new List<ReservedBonusButton>();
+            int index = 0;
 
-    private void OnSelectButton(int buttonIndex)
-    {
-        foreach (var button in _reservedBonusButtons)
-            if (button.Index != buttonIndex)
-                button.Enable();
-    }
+            foreach (var reservatedBonus in bonusReservator.Bonuses)
+            {
+                var button = Instantiate(_reservedBonusButtonPrefab);
+                var reservedBonusView = button.GetComponent<IReservedBonusView>();
 
-    private IEnumerator WaitDisable()
-    {
-        yield return _animator.GetYieldAnimation();
+                reservatedBonus.Initialize(reservedBonusView);
+                button.transform.SetParent(_content.transform);
+                button.Initialize(_bonusReservator, reservatedBonus.BonusCard, index++);
+                button.transform.localScale = _reservedBonusButtonPrefab.transform.localScale;
 
-        gameObject.SetActive(false);
-    }
+                _reservedBonusButtons.Add(button);
+            }
 
-    private IEnumerator WaitClosure()
-    {
-        yield return _animator.GetYieldAnimation();
+            if (_reservedBonusButtons.Count <= 0)
+                throw new InvalidOperationException($"IEnumerable '{nameof(bonusReservator)}' is empty");
+        }
 
-        gameObject.SetActive(false);
+        public void Enable()
+        {
+            gameObject.SetActive(true);
+            _animator.Show();
+            _hiderUI.Hide();
+        }
 
-        if (_bonusReservator.IsBonusActivated == false && _bonusReservator.HasBonuses)
-            _openButton.Show();
+        public void Hide()
+        {
+            if (gameObject.activeSelf == false)
+                return;
+
+            _animator.Hide();
+
+            StartCoroutine(WaitDisable());
+        }
+
+        private void OnClose()
+        {
+            _animator.Hide();
+            _hiderUI.Show();
+
+            StartCoroutine(WaitClosure());
+        }
+
+        private void OnSelectButton(int buttonIndex)
+        {
+            foreach (var button in _reservedBonusButtons)
+                if (button.Index != buttonIndex)
+                    button.Enable();
+        }
+
+        private IEnumerator WaitDisable()
+        {
+            yield return _animator.GetYieldAnimation();
+
+            gameObject.SetActive(false);
+        }
+
+        private IEnumerator WaitClosure()
+        {
+            yield return _animator.GetYieldAnimation();
+
+            gameObject.SetActive(false);
+
+            if (_bonusReservator.IsBonusActivated == false && _bonusReservator.HasBonuses)
+                _openButton.Show();
+        }
     }
 }

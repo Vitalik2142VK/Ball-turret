@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using CannonTurret.Turrets.Bullets.Physics;
+using UnityEngine;
 
-namespace Scriptable
+namespace CannonTurret.Scriptable.Bullet
 {
     [CreateAssetMenu(menuName = "Attributes/Advanced bullet physics attributes", fileName = "AdvancedBulletPhysicsAttributes", order = 51)]
     public class AdvancedBulletPhysicsAttributes : ScriptableObject, IBulletPhysicsAttributes

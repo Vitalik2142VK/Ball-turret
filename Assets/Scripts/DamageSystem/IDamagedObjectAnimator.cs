@@ -1,8 +1,11 @@
-﻿public interface IDamagedObjectAnimator
+﻿namespace CannonTurret.DamageSystem
 {
-    public float TimeCompletionDeath { get; }
+    public interface IDamagedObjectAnimator
+    {
+        public float TimeCompletionDeath { get; }
 
-    public void PlayHit();
+        public void PlayHit();
 
-    public void PlayDead();
+        public void PlayDead();
+    }
 }

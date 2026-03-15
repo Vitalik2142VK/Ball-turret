@@ -1,48 +1,53 @@
-﻿using System;
+﻿using CannonTurret.AudioSystem;
+using CannonTurret.DamageSystem;
+using System;
 using UnityEngine;
 
-public class Exploder : MonoBehaviour, IExploder
+namespace CannonTurret.Effects
 {
-    [SerializeField, Min(1f)] private float _explosionRadius;
-    [SerializeField] private LayerMask _layerMask;
-
-    [Header("Debug")]
-    [SerializeField] private bool _isDebugOn = false; 
-
-    private IDamage _damage;
-    private ISound _sound;
-    private IExplosionView _explosionView;
-
-    public void Initialize(IDamageAttributes attributes, ISound sound, IExplosionView explosionView)
+    public class Exploder : MonoBehaviour, IExploder
     {
-        if (attributes == null)
-            throw new ArgumentNullException(nameof(attributes));
+        [SerializeField, Min(1f)] private float _explosionRadius;
+        [SerializeField] private LayerMask _layerMask;
 
-        _sound = sound ?? throw new ArgumentNullException(nameof(sound));
-        _explosionView = explosionView ?? throw new ArgumentNullException(nameof(explosionView));
-        _damage = new Damage(attributes);
-    }
+        [Header("Debug")]
+        [SerializeField] private bool _isDebugOn = false;
 
-    public void Explode(Vector3 pointContact)
-    {
-        _sound.Play();
-        _explosionView.Play();
+        private IDamage _damage;
+        private ISound _sound;
+        private IExplosionView _explosionView;
 
-        Collider[] colliders = Physics.OverlapSphere(pointContact, _explosionRadius, _layerMask, QueryTriggerInteraction.Ignore);
-
-        foreach (var collider in colliders)
+        public void Initialize(IDamageAttributes attributes, ISound sound, IExplosionView explosionView)
         {
-            if (collider.TryGetComponent(out IDamagedObject damagedObject))
-                _damage.Apply(damagedObject);
+            if (attributes == null)
+                throw new ArgumentNullException(nameof(attributes));
+
+            _sound = sound ?? throw new ArgumentNullException(nameof(sound));
+            _explosionView = explosionView ?? throw new ArgumentNullException(nameof(explosionView));
+            _damage = new Damage(attributes);
         }
-    }
 
-    private void OnDrawGizmos()
-    {
-        if (_isDebugOn == false)
-            return;
+        public void Explode(Vector3 pointContact)
+        {
+            _sound.Play();
+            _explosionView.Play();
 
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, _explosionRadius);
+            Collider[] colliders = Physics.OverlapSphere(pointContact, _explosionRadius, _layerMask, QueryTriggerInteraction.Ignore);
+
+            foreach (var collider in colliders)
+            {
+                if (collider.TryGetComponent(out IDamagedObject damagedObject))
+                    _damage.Apply(damagedObject);
+            }
+        }
+
+        private void OnDrawGizmos()
+        {
+            if (_isDebugOn == false)
+                return;
+
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(transform.position, _explosionRadius);
+        }
     }
 }

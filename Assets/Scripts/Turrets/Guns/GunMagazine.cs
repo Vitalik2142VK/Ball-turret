@@ -1,22 +1,27 @@
-﻿public class GunMagazine : IGunMagazine
+﻿using CannonTurret.Turrets.Bullets;
+
+namespace CannonTurret.Turrets.Guns
 {
-    private IBulletRepository _bulletRepository;
-
-    public GunMagazine(IBulletRepository bulletRepository)
+    public class GunMagazine : IGunMagazine
     {
-        _bulletRepository = bulletRepository ?? throw new System.ArgumentNullException(nameof(bulletRepository));
-    }
+        private IBulletRepository _bulletRepository;
 
-    public bool HasFreeBullets => _bulletRepository.HasFreeBullets;
-    public bool IsFull => _bulletRepository.AreBulletsReturned;
+        public GunMagazine(IBulletRepository bulletRepository)
+        {
+            _bulletRepository = bulletRepository ?? throw new System.ArgumentNullException(nameof(bulletRepository));
+        }
 
-    public void AddBullet(IBullet bullet)
-    {
-        _bulletRepository.Add(bullet);
-    }
+        public bool HasFreeBullets => _bulletRepository.HasFreeBullets;
+        public bool IsFull => _bulletRepository.AreBulletsReturned;
 
-    public IBullet GetBullet() 
-    {
-        return _bulletRepository.Get();
+        public void AddBullet(IBullet bullet)
+        {
+            _bulletRepository.Add(bullet);
+        }
+
+        public IBullet GetBullet()
+        {
+            return _bulletRepository.Get();
+        }
     }
 }

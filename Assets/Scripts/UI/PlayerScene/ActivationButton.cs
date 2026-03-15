@@ -1,54 +1,58 @@
-﻿using System;
+﻿using CannonTurret.UI.Animations;
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(Button), typeof(IAnimatorUI))]
-public class ActivationButton : MonoBehaviour
+namespace CannonTurret.UI.PlayerScene
 {
-    private IAnimatorUI _animator;
-    private Button _button;
-
-    public event Action Clicked;
-
-    private void Awake()
+    [RequireComponent(typeof(Button), typeof(IAnimatorUI))]
+    public class ActivationButton : MonoBehaviour
     {
-        _animator = GetComponent<IAnimatorUI>();
-        _button = GetComponent<Button>();
-    }
+        private IAnimatorUI _animator;
+        private Button _button;
 
-    private void OnEnable()
-    {
-        _button.onClick.AddListener(OnClicked);
-    }
+        public event Action Clicked;
 
-    private void OnDisable()
-    {
-        _button.onClick.RemoveListener(OnClicked);
-    }
+        private void Awake()
+        {
+            _animator = GetComponent<IAnimatorUI>();
+            _button = GetComponent<Button>();
+        }
 
-    public void Show()
-    {
-        gameObject.SetActive(true);
-        _animator.Show();
-    }
+        private void OnEnable()
+        {
+            _button.onClick.AddListener(OnClicked);
+        }
 
-    public void Hide() 
-    {
-        _animator.Hide();
+        private void OnDisable()
+        {
+            _button.onClick.RemoveListener(OnClicked);
+        }
 
-        StartCoroutine(WaitClosure());
-    }
+        public void Show()
+        {
+            gameObject.SetActive(true);
+            _animator.Show();
+        }
 
-    private void OnClicked()
-    {
-        Clicked?.Invoke();
-    }
+        public void Hide()
+        {
+            _animator.Hide();
 
-    private IEnumerator WaitClosure()
-    {
-        yield return _animator.GetYieldAnimation();
+            StartCoroutine(WaitClosure());
+        }
 
-        gameObject.SetActive(false);
+        private void OnClicked()
+        {
+            Clicked?.Invoke();
+        }
+
+        private IEnumerator WaitClosure()
+        {
+            yield return _animator.GetYieldAnimation();
+
+            gameObject.SetActive(false);
+        }
     }
 }

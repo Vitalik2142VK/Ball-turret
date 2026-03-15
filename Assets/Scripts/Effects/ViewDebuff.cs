@@ -1,24 +1,27 @@
 ﻿using UnityEngine;
 
-[RequireComponent(typeof(ParticleSystem))]
-public class ViewDebuff : MonoBehaviour, IViewDebuff
+namespace CannonTurret.Effects
 {
-    [SerializeField] private DebuffType _debuffType;
-
-    private ParticleSystem _particleSystem;
-
-    public DebuffType DebuffType => _debuffType;
-
-    private void Awake()
+    [RequireComponent(typeof(ParticleSystem))]
+    public class ViewDebuff : MonoBehaviour, IViewDebuff
     {
-        _particleSystem = GetComponent<ParticleSystem>();
-    }
+        [SerializeField] private DebuffType _debuffType;
 
-    public void SetActive(bool isActive)
-    {
-        if (isActive)
-            _particleSystem.Play();
-        else
-            _particleSystem.Stop();
+        private ParticleSystem _particleSystem;
+
+        public DebuffType DebuffType => _debuffType;
+
+        private void Awake()
+        {
+            _particleSystem = GetComponent<ParticleSystem>();
+        }
+
+        public void SetActive(bool isActive)
+        {
+            if (isActive)
+                _particleSystem.Play();
+            else
+                _particleSystem.Stop();
+        }
     }
 }

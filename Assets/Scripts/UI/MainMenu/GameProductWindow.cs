@@ -1,149 +1,157 @@
+using CannonTurret.Coin.Products;
+using CannonTurret.Coin.Transactions;
+using CannonTurret.Coin.Wallets;
+using CannonTurret.SDK.Ads;
+using CannonTurret.UI.Animations;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(PulsingScaleAnimation))]
-public class GameProductWindow : MonoBehaviour
+namespace CannonTurret.UI.MainMenu
 {
-    [SerializeField] private GameProductData _data;
-    [SerializeField] private AddCoinsButton _addCoinsButton;
-    [SerializeField] private Button _updateButton;
-    [SerializeField] private Image _maxLevel;
-
-    private IGamePayTransaction _transaction;
-    private IImprovementProduct _product;
-    private IPurchaseRewardService _rewardService;
-    private PulsingScaleAnimation _animation;
-
-    public event Action<IGamePayTransaction> Selected;
-
-    public bool IsReserved { get; private set; }
-
-    private void OnValidate()
+    [RequireComponent(typeof(PulsingScaleAnimation))]
+    public class GameProductWindow : MonoBehaviour
     {
-        if (_data == null)
-            throw new NullReferenceException(nameof(_data));
+        [SerializeField] private GameProductData _data;
+        [SerializeField] private AddCoinsButton _addCoinsButton;
+        [SerializeField] private Button _updateButton;
+        [SerializeField] private Image _maxLevel;
 
-        if (_updateButton == null)
-            throw new NullReferenceException(nameof(_updateButton));
+        private IGamePayTransaction _transaction;
+        private IImprovementProduct _product;
+        private IPurchaseRewardService _rewardService;
+        private PulsingScaleAnimation _animation;
 
-        if (_addCoinsButton == null)
-            throw new NullReferenceException(nameof(_addCoinsButton));
+        public event Action<IGamePayTransaction> Selected;
 
-        if (_maxLevel == null)
-            throw new NullReferenceException(nameof(_maxLevel));
-    }
+        public bool IsReserved { get; private set; }
 
-    private void Awake()
-    {
-        _animation = GetComponent<PulsingScaleAnimation>();
+        private void OnValidate()
+        {
+            if (_data == null)
+                throw new NullReferenceException(nameof(_data));
 
-        _maxLevel.gameObject.SetActive(false);
-    }
+            if (_updateButton == null)
+                throw new NullReferenceException(nameof(_updateButton));
 
-    private void OnEnable()
-    {
-        _addCoinsButton.Clicked += OnEstablishRewardAd;
-        _updateButton.onClick.AddListener(OnSendTransaction);
-        IsReserved = false;
-    }
+            if (_addCoinsButton == null)
+                throw new NullReferenceException(nameof(_addCoinsButton));
 
-    private void OnDisable()
-    {
-        _addCoinsButton.Clicked -= OnEstablishRewardAd;
-        _updateButton.onClick.RemoveListener(OnSendTransaction);
-    }
+            if (_maxLevel == null)
+                throw new NullReferenceException(nameof(_maxLevel));
+        }
 
-    public void Initialize(IGamePayTransaction transaction, IImprovementProduct product, IPurchaseRewardService rewardService)
-    {
-        _transaction = transaction ?? throw new ArgumentNullException(nameof(transaction));
-        _product = product ?? throw new ArgumentNullException(nameof(product));
-        _rewardService = rewardService ?? throw new ArgumentNullException(nameof(rewardService));
-    }
+        private void Awake()
+        {
+            _animation = GetComponent<PulsingScaleAnimation>();
 
-    public void UpdateData()
-    {
-        ApplyToTransactionState();
-        ApplyToProductState();
-        UpdateViewData();
-    }
+            _maxLevel.gameObject.SetActive(false);
+        }
 
-    public void HandleReservation(bool hasAdsViewedEnd)
-    {
-        if (IsReserved == false)
-            return;
+        private void OnEnable()
+        {
+            _addCoinsButton.Clicked += OnEstablishRewardAd;
+            _updateButton.onClick.AddListener(OnSendTransaction);
+            IsReserved = false;
+        }
 
-        IsReserved = false;
+        private void OnDisable()
+        {
+            _addCoinsButton.Clicked -= OnEstablishRewardAd;
+            _updateButton.onClick.RemoveListener(OnSendTransaction);
+        }
 
-        if (hasAdsViewedEnd)
-            OnSendTransaction();
-    }
+        public void Initialize(IGamePayTransaction transaction, IImprovementProduct product, IPurchaseRewardService rewardService)
+        {
+            _transaction = transaction ?? throw new ArgumentNullException(nameof(transaction));
+            _product = product ?? throw new ArgumentNullException(nameof(product));
+            _rewardService = rewardService ?? throw new ArgumentNullException(nameof(rewardService));
+        }
 
-    private void OnEstablishRewardAd()
-    {
-        int missingAmount = _transaction.GetMissingAmount();
-        _rewardService.AssignReward(missingAmount);
-        IsReserved = true;
+        public void UpdateData()
+        {
+            ApplyToTransactionState();
+            ApplyToProductState();
+            UpdateViewData();
+        }
 
-        ActivateAddCoinsButton(false);
-    }
+        public void HandleReservation(bool hasAdsViewedEnd)
+        {
+            if (IsReserved == false)
+                return;
 
-    private void OnSendTransaction()
-    {
-        _animation.Play();
+            IsReserved = false;
 
-        Selected?.Invoke(_transaction);
-    }
+            if (hasAdsViewedEnd)
+                OnSendTransaction();
+        }
 
-    private void ApplyToTransactionState()
-    {
-        if (_transaction.IsLocked)
+        private void OnEstablishRewardAd()
         {
             int missingAmount = _transaction.GetMissingAmount();
-            bool isViewingAdsAvailable = _rewardService.CanProvideReward(_transaction.Price, missingAmount) && _addCoinsButton.IsEnbale;
+            _rewardService.AssignReward(missingAmount);
+            IsReserved = true;
 
-            if (isViewingAdsAvailable)
+            ActivateAddCoinsButton(false);
+        }
+
+        private void OnSendTransaction()
+        {
+            _animation.Play();
+
+            Selected?.Invoke(_transaction);
+        }
+
+        private void ApplyToTransactionState()
+        {
+            if (_transaction.IsLocked)
             {
-                _rewardService.AssignReward(missingAmount);
-                _addCoinsButton.UpdateData();
+                int missingAmount = _transaction.GetMissingAmount();
+                bool isViewingAdsAvailable = _rewardService.CanProvideReward(_transaction.Price, missingAmount) && _addCoinsButton.IsEnbale;
+
+                if (isViewingAdsAvailable)
+                {
+                    _rewardService.AssignReward(missingAmount);
+                    _addCoinsButton.UpdateData();
+                }
+                else
+                {
+                    _updateButton.interactable = false;
+                }
+
+                ActivateAddCoinsButton(isViewingAdsAvailable);
             }
             else
             {
-                _updateButton.interactable = false;
+                ActivateAddCoinsButton(false);
             }
-
-            ActivateAddCoinsButton(isViewingAdsAvailable);
         }
-        else
+
+        private void ApplyToProductState()
         {
-            ActivateAddCoinsButton(false);
+            if (_product.CanImprove)
+                return;
+
+            _data.SetActive(false);
+            _maxLevel.gameObject.SetActive(true);
+            _updateButton.interactable = false;
         }
-    }
 
-    private void ApplyToProductState()
-    {
-        if (_product.CanImprove)
-            return;
+        private void UpdateViewData()
+        {
+            var currentValue = _product.CurrentValue;
+            var improveValue = _product.ImproveValue + currentValue;
+            var price = _transaction.Price;
 
-        _data.SetActive(false);
-        _maxLevel.gameObject.SetActive(true);
-        _updateButton.interactable = false;
-    }
+            _data.SetCurrentValue(currentValue.ToString());
+            _data.SetImproveValue(improveValue.ToString());
+            _data.SetPrice(price.ToString());
+        }
 
-    private void UpdateViewData()
-    {
-        var currentValue = _product.CurrentValue;
-        var improveValue = _product.ImproveValue + currentValue;
-        var price = _transaction.Price;
-
-        _data.SetCurrentValue(currentValue.ToString());
-        _data.SetImproveValue(improveValue.ToString());
-        _data.SetPrice(price.ToString());
-    }
-
-    private void ActivateAddCoinsButton(bool IsActive)
-    {
-        _addCoinsButton.SetActive(IsActive);
-        _updateButton.gameObject.SetActive(IsActive == false);
+        private void ActivateAddCoinsButton(bool IsActive)
+        {
+            _addCoinsButton.SetActive(IsActive);
+            _updateButton.gameObject.SetActive(IsActive == false);
+        }
     }
 }

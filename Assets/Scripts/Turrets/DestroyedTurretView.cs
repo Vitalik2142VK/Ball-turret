@@ -1,39 +1,43 @@
+using CannonTurret.Turrets.Shooters;
 using System;
 using UnityEngine;
 
-public class DestroyedTurretView : MonoBehaviour
+namespace CannonTurret.Turrets
 {
-    [SerializeField] private SkinnedMeshRenderer _turretMeshRenderer;
-    [SerializeField] private Tower _tower;
-    [SerializeField] private ParticleSystem _destroyParticles;
-    [SerializeField] private ShooterLose _shooterLose;
-
-    private void OnValidate()
+    public class DestroyedTurretView : MonoBehaviour
     {
-        if (_turretMeshRenderer == null)
-            throw new NullReferenceException(nameof(_turretMeshRenderer));
+        [SerializeField] private SkinnedMeshRenderer _turretMeshRenderer;
+        [SerializeField] private Tower _tower;
+        [SerializeField] private ParticleSystem _destroyParticles;
+        [SerializeField] private ShooterLose _shooterLose;
 
-        if (_tower == null)
-            throw new NullReferenceException(nameof(_tower));
+        private void OnValidate()
+        {
+            if (_turretMeshRenderer == null)
+                throw new NullReferenceException(nameof(_turretMeshRenderer));
 
-        if (_destroyParticles == null)
-            throw new NullReferenceException(nameof(_destroyParticles));
+            if (_tower == null)
+                throw new NullReferenceException(nameof(_tower));
 
-        if (_shooterLose == null)
-            throw new NullReferenceException(nameof(_shooterLose));
-    }
+            if (_destroyParticles == null)
+                throw new NullReferenceException(nameof(_destroyParticles));
 
-    private void Start()
-    {
-        gameObject.SetActive(false);
-    }
+            if (_shooterLose == null)
+                throw new NullReferenceException(nameof(_shooterLose));
+        }
 
-    public void Enable()
-    {
-        _turretMeshRenderer.enabled = false;
-        gameObject.SetActive(true);
-        transform.rotation = _tower.transform.rotation;
-        _destroyParticles.Play();
-        _shooterLose.RunAway();
+        private void Start()
+        {
+            gameObject.SetActive(false);
+        }
+
+        public void Enable()
+        {
+            _turretMeshRenderer.enabled = false;
+            gameObject.SetActive(true);
+            transform.rotation = _tower.transform.rotation;
+            _destroyParticles.Play();
+            _shooterLose.RunAway();
+        }
     }
 }

@@ -1,8 +1,11 @@
 ﻿using System;
 
-public interface IRocketView
+namespace CannonTurret.Effects
 {
-    public event Action RocketFinished;
+    public interface IRocketView
+    {
+        public event Action RocketFinished;
 
-    public void Play();
+        public void Play();
+    }
 }

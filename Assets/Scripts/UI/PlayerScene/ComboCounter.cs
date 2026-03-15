@@ -1,69 +1,73 @@
-﻿using System;
+﻿using CannonTurret.UI.Animations;
+using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
 
-[RequireComponent(typeof(PulsingScaleAnimation))]
-public class ComboCounter : MonoBehaviour, IComboCounter, IComboCounterResetter
+namespace CannonTurret.UI.PlayerScene
 {
-    [SerializeField] private TextMeshProUGUI _comboCounterTitle;
-    [SerializeField] private TextMeshProUGUI _comboCounter;
-    [SerializeField] private Gradient _colorCombo;
-    [SerializeField, Min(0.5f)] private float _timeRemove = 1f;
-    [SerializeField, Min(9)] private int _maxCombo = 30;
-    [SerializeField, Min(3)] private int _minCombo = 3;
-
-    private PulsingScaleAnimation _pulsingScaleAnimation;
-    private WaitForSeconds _wait;
-    private int _currentCombo;
-
-    private void OnValidate()
+    [RequireComponent(typeof(PulsingScaleAnimation))]
+    public class ComboCounter : MonoBehaviour, IComboCounter, IComboCounterResetter
     {
-        if (_comboCounterTitle == null)
-            throw new NullReferenceException(nameof(_comboCounterTitle));
+        [SerializeField] private TextMeshProUGUI _comboCounterTitle;
+        [SerializeField] private TextMeshProUGUI _comboCounter;
+        [SerializeField] private Gradient _colorCombo;
+        [SerializeField, Min(0.5f)] private float _timeRemove = 1f;
+        [SerializeField, Min(9)] private int _maxCombo = 30;
+        [SerializeField, Min(3)] private int _minCombo = 3;
 
-        if (_comboCounter == null)
-            throw new NullReferenceException(nameof(_comboCounter));
-    }
+        private PulsingScaleAnimation _pulsingScaleAnimation;
+        private WaitForSeconds _wait;
+        private int _currentCombo;
 
-    private void Awake()
-    {
-        _pulsingScaleAnimation = GetComponent<PulsingScaleAnimation>();
-        _wait = new WaitForSeconds(_timeRemove);
-        _currentCombo = 0;
+        private void OnValidate()
+        {
+            if (_comboCounterTitle == null)
+                throw new NullReferenceException(nameof(_comboCounterTitle));
 
-        gameObject.SetActive(false);
-    }
+            if (_comboCounter == null)
+                throw new NullReferenceException(nameof(_comboCounter));
+        }
 
-    public void Count()
-    {
-        _currentCombo++;
+        private void Awake()
+        {
+            _pulsingScaleAnimation = GetComponent<PulsingScaleAnimation>();
+            _wait = new WaitForSeconds(_timeRemove);
+            _currentCombo = 0;
 
-        if (_currentCombo < _minCombo)
-            return;
+            gameObject.SetActive(false);
+        }
 
-        gameObject.SetActive(true);
+        public void Count()
+        {
+            _currentCombo++;
 
-        float colorValue = Mathf.Clamp01((float)_currentCombo / _maxCombo);
-        Color color = _colorCombo.Evaluate(colorValue);
-        _comboCounter.text = _currentCombo.ToString();
-        _comboCounterTitle.color = color;
-        _comboCounter.color = color;
-        _pulsingScaleAnimation.Play();
-    }
+            if (_currentCombo < _minCombo)
+                return;
 
-    public void ResetCombo()
-    {
-        _currentCombo = 0;
+            gameObject.SetActive(true);
 
-        if (gameObject.activeSelf)
-            StartCoroutine(WaitTimer());
-    }
+            float colorValue = Mathf.Clamp01((float)_currentCombo / _maxCombo);
+            Color color = _colorCombo.Evaluate(colorValue);
+            _comboCounter.text = _currentCombo.ToString();
+            _comboCounterTitle.color = color;
+            _comboCounter.color = color;
+            _pulsingScaleAnimation.Play();
+        }
 
-    private IEnumerator WaitTimer()
-    {
-        yield return _wait;
+        public void ResetCombo()
+        {
+            _currentCombo = 0;
 
-        gameObject.SetActive(false);
+            if (gameObject.activeSelf)
+                StartCoroutine(WaitTimer());
+        }
+
+        private IEnumerator WaitTimer()
+        {
+            yield return _wait;
+
+            gameObject.SetActive(false);
+        }
     }
 }

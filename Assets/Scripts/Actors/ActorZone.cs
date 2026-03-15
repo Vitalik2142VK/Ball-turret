@@ -1,31 +1,35 @@
+using CannonTurret.Actors.Enemies;
 using System;
 using UnityEngine;
 
-[RequireComponent(typeof(BoxCollider))]
-public class ActorZone : MonoBehaviour
+namespace CannonTurret.Actors
 {
-    private IAttackingEnemiesCollector _attackingEnemies;
-    private IRemovedActorsCollector _removedActors;
-
-    private void OnTriggerExit(Collider other)
+    [RequireComponent(typeof(BoxCollider))]
+    public class ActorZone : MonoBehaviour
     {
-        CheckExitActor(other);
-    }
+        private IAttackingEnemiesCollector _attackingEnemies;
+        private IRemovedActorsCollector _removedActors;
 
-    public void Initialize(IRemovedActorsCollector removedActorsCollector, IAttackingEnemiesCollector attackingEnemiesCollector)
-    {
-        _attackingEnemies = attackingEnemiesCollector ?? throw new ArgumentNullException(nameof(attackingEnemiesCollector));
-        _removedActors = removedActorsCollector ?? throw new ArgumentNullException(nameof(removedActorsCollector));
-    }
+        private void OnTriggerExit(Collider other)
+        {
+            CheckExitActor(other);
+        }
 
-    private void CheckExitActor(Collider other)
-    {
-        if (other.gameObject.TryGetComponent(out IActorView actorView) == false)
-            return;
+        public void Initialize(IRemovedActorsCollector removedActorsCollector, IAttackingEnemiesCollector attackingEnemiesCollector)
+        {
+            _attackingEnemies = attackingEnemiesCollector ?? throw new ArgumentNullException(nameof(attackingEnemiesCollector));
+            _removedActors = removedActorsCollector ?? throw new ArgumentNullException(nameof(removedActorsCollector));
+        }
 
-        if (actorView is IEnemyView enemyView)
-            enemyView.PrepareAttacked(_attackingEnemies);
+        private void CheckExitActor(Collider other)
+        {
+            if (other.gameObject.TryGetComponent(out IActorView actorView) == false)
+                return;
 
-        actorView.PrepareDeleted(_removedActors);
+            if (actorView is IEnemyView enemyView)
+                enemyView.PrepareAttacked(_attackingEnemies);
+
+            actorView.PrepareDeleted(_removedActors);
+        }
     }
 }

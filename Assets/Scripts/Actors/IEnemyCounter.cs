@@ -1,6 +1,9 @@
-public interface IEnemyCounter
+namespace CannonTurret.Actors
 {
-    public bool AreNoEnemies { get; }
+    public interface IEnemyCounter
+    {
+        public bool AreNoEnemies { get; }
 
-    public void Count();
+        public void Count();
+    }
 }

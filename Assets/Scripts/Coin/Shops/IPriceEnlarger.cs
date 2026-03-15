@@ -1,6 +1,9 @@
-﻿public interface IPriceEnlarger
+﻿namespace CannonTurret.Coin.Shops
 {
-    public int Price { get; }
+    public interface IPriceEnlarger
+    {
+        public int Price { get; }
 
-    public void IncreaseByLevel(int levelImprovement);
+        public void IncreaseByLevel(int levelImprovement);
+    }
 }

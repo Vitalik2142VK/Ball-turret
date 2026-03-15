@@ -1,8 +1,11 @@
+using CannonTurret.EntryPoints.MainMenu.Configurators;
+using CannonTurret.LevelSystem;
+using CannonTurret.SDK.Ads;
 using System;
 using UnityEngine;
 using YG;
 
-namespace MainMenuSpace
+namespace CannonTurret.EntryPoints.MainMenu
 {
     public class EntryPoint : MonoBehaviour
     {

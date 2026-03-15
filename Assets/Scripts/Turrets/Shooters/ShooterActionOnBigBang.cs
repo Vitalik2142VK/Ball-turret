@@ -1,33 +1,37 @@
-﻿using System;
+﻿using CannonTurret.Effects;
+using System;
 using UnityEngine;
 
-[RequireComponent(typeof(ShooterView))]
-public class ShooterActionOnBigBang : MonoBehaviour
+namespace CannonTurret.Turrets.Shooters
 {
-    [SerializeField] private RocketView _rocketView;
-
-    private ShooterView _shooterView;
-
-    private void OnValidate()
+    [RequireComponent(typeof(ShooterView))]
+    public class ShooterActionOnBigBang : MonoBehaviour
     {
-        if (_rocketView == null)
-            throw new NullReferenceException(nameof(_rocketView));
-    }
+        [SerializeField] private RocketView _rocketView;
 
-    private void Awake()
-    {
-        _shooterView = GetComponent<ShooterView>();
-    }
+        private ShooterView _shooterView;
 
-    private void OnEnable()
-    {
-        _rocketView.RocketFinished += OnPlayTakeCover;
-    }
+        private void OnValidate()
+        {
+            if (_rocketView == null)
+                throw new NullReferenceException(nameof(_rocketView));
+        }
 
-    private void OnDisable()
-    {
-        _rocketView.RocketFinished -= OnPlayTakeCover;
-    }
+        private void Awake()
+        {
+            _shooterView = GetComponent<ShooterView>();
+        }
 
-    private void OnPlayTakeCover() => _shooterView.PlayTakeCover();
+        private void OnEnable()
+        {
+            _rocketView.RocketFinished += OnPlayTakeCover;
+        }
+
+        private void OnDisable()
+        {
+            _rocketView.RocketFinished -= OnPlayTakeCover;
+        }
+
+        private void OnPlayTakeCover() => _shooterView.PlayTakeCover();
+    }
 }

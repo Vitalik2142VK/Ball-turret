@@ -1,4 +1,7 @@
-﻿public interface IIceShellPool
+﻿namespace CannonTurret.Effects.Freezing
 {
-    public void Put(IIceShell shell);
+    public interface IIceShellPool
+    {
+        public void Put(IIceShell shell);
+    }
 }

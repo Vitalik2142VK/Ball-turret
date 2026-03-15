@@ -1,36 +1,40 @@
-﻿using System.Collections.Generic;
+﻿using CannonTurret.Utils;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-[RequireComponent(typeof(EventSystem))]
-public class CanvasPointerChecker : MonoBehaviour
+namespace CannonTurret.UI
 {
-    [SerializeField] private LayerMask _layerMask;
-
-    private EventSystem _eventSystem;
-    private PointerEventData _pointerEventData;
-    private List<RaycastResult> _raycastResults;
-
-    private void Awake()
+    [RequireComponent(typeof(EventSystem))]
+    public class CanvasPointerChecker : MonoBehaviour
     {
-        _eventSystem = GetComponent<EventSystem>();
-        _pointerEventData = new PointerEventData(_eventSystem);
-        _raycastResults = new List<RaycastResult>();
-    }
+        [SerializeField] private LayerMask _layerMask;
 
-    public bool IsPointerOverUI(Vector2 touchPosition)
-    {
-        _pointerEventData.Reset();
-        _pointerEventData.position = touchPosition;
+        private EventSystem _eventSystem;
+        private PointerEventData _pointerEventData;
+        private List<RaycastResult> _raycastResults;
 
-        _raycastResults.Clear();
-        _eventSystem.RaycastAll(_pointerEventData, _raycastResults);
+        private void Awake()
+        {
+            _eventSystem = GetComponent<EventSystem>();
+            _pointerEventData = new PointerEventData(_eventSystem);
+            _raycastResults = new List<RaycastResult>();
+        }
 
-        if (_raycastResults.Count == 0)
-            return false;
+        public bool IsPointerOverUI(Vector2 touchPosition)
+        {
+            _pointerEventData.Reset();
+            _pointerEventData.position = touchPosition;
 
-        var gameObject = _raycastResults[0].gameObject;
+            _raycastResults.Clear();
+            _eventSystem.RaycastAll(_pointerEventData, _raycastResults);
 
-        return LayerMaskTool.IsInLayerMask(gameObject, _layerMask);
+            if (_raycastResults.Count == 0)
+                return false;
+
+            var gameObject = _raycastResults[0].gameObject;
+
+            return LayerMaskTool.IsInLayerMask(gameObject, _layerMask);
+        }
     }
 }

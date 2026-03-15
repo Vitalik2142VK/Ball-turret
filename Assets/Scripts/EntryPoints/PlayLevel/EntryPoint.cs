@@ -1,9 +1,17 @@
-using Scriptable;
+using CannonTurret.Coin.Rewards;
+using CannonTurret.Coin.Wallets;
+using CannonTurret.EntryPoints.PlayLevel.Configurators;
+using CannonTurret.LevelSystem;
+using CannonTurret.PlayerSystem;
+using CannonTurret.Scriptable.Level;
+using CannonTurret.Scriptable.Player;
+using CannonTurret.SDK.Ads;
+using CannonTurret.StepSystem;
 using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace PlayLevel
+namespace CannonTurret.EntryPoints.PlayLevel
 {
     public partial class EntryPoint : MonoBehaviour
     {

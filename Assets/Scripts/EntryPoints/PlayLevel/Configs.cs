@@ -1,4 +1,7 @@
-namespace PlayLevel
+using CannonTurret.EntryPoints.PlayLevel.Configurators;
+using CannonTurret.LevelSystem;
+
+namespace CannonTurret.EntryPoints.PlayLevel
 {
     public class Config
     {

@@ -1,9 +1,12 @@
 ﻿using UnityEngine;
 
-public static class LayerMaskTool
+namespace CannonTurret.Utils
 {
-    public static bool IsInLayerMask(GameObject gameObject, LayerMask layerMask)
+    public static class LayerMaskTool
     {
-        return (1 << gameObject.layer & layerMask) != 0;
+        public static bool IsInLayerMask(GameObject gameObject, LayerMask layerMask)
+        {
+            return (1 << gameObject.layer & layerMask) != 0;
+        }
     }
 }

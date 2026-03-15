@@ -1,53 +1,59 @@
-﻿using System;
+﻿using CannonTurret.Actors.Bonuses.Activators;
+using CannonTurret.Actors.MoveSystem;
+using CannonTurret.AudioSystem;
+using System;
 using UnityEngine;
 
-public class CollisionBonusCreator : MonoBehaviour, IViewableBonusCreator
+namespace CannonTurret.Actors.Bonuses
 {
-    [SerializeField, SerializeIterface(typeof(IBonusCreator))] private GameObject _bonusCreator;
-    [SerializeField] private BonusView _bonusPrefab;
-    [SerializeField] private Sound _takedSound;
-
-    private IBonusCreator _creator;
-
-    public string Name => _creator.Name;
-
-    private void OnValidate()
+    public class CollisionBonusCreator : MonoBehaviour, IViewableBonusCreator
     {
-        if (_bonusCreator == null)
-            throw new NullReferenceException(nameof(_bonusCreator));
+        [SerializeField, SerializeIterface(typeof(IBonusCreator))] private GameObject _bonusCreator;
+        [SerializeField] private BonusView _bonusPrefab;
+        [SerializeField] private Sound _takedSound;
 
-        if (_bonusPrefab == null)
-            throw new NullReferenceException(nameof(_bonusPrefab));
+        private IBonusCreator _creator;
 
-        if (_takedSound == null)
-            throw new NullReferenceException(nameof(_takedSound));
-    }
+        public string Name => _creator.Name;
 
-    private void Awake()
-    {
-        _creator = _bonusCreator.GetComponent<IBonusCreator>();
-    }
+        private void OnValidate()
+        {
+            if (_bonusCreator == null)
+                throw new NullReferenceException(nameof(_bonusCreator));
 
-    public void Initialize(IBonusActivator bonusActivator) => _creator.Initialize(bonusActivator);
+            if (_bonusPrefab == null)
+                throw new NullReferenceException(nameof(_bonusPrefab));
 
-    public IBonus Create() 
-    {
-        _creator ??= _bonusCreator.GetComponent<IBonusCreator>();
+            if (_takedSound == null)
+                throw new NullReferenceException(nameof(_takedSound));
+        }
 
-        return _creator.Create();
-    }
+        private void Awake()
+        {
+            _creator = _bonusCreator.GetComponent<IBonusCreator>();
+        }
 
-    public IViewableBonus Create(IBonus bonus)
-    {
-        bonus ??= Create();
+        public void Initialize(IBonusActivator bonusActivator) => _creator.Initialize(bonusActivator);
 
-        BonusView view = Instantiate(_bonusPrefab, Vector3.zero, _bonusPrefab.transform.rotation);
-        Mover mover = new Mover(view.transform);
-        BonusPresenter presenter = new BonusPresenter();
-        CollisionBonus model = new CollisionBonus(bonus, presenter, mover);
-        view.Initialize(presenter, bonus.BonusCard, _takedSound);
-        presenter.Initialize(model, view);
+        public IBonus Create()
+        {
+            _creator ??= _bonusCreator.GetComponent<IBonusCreator>();
 
-        return model;
+            return _creator.Create();
+        }
+
+        public IViewableBonus Create(IBonus bonus)
+        {
+            bonus ??= Create();
+
+            BonusView view = Instantiate(_bonusPrefab, Vector3.zero, _bonusPrefab.transform.rotation);
+            Mover mover = new Mover(view.transform);
+            BonusPresenter presenter = new BonusPresenter();
+            CollisionBonus model = new CollisionBonus(bonus, presenter, mover);
+            view.Initialize(presenter, bonus.BonusCard, _takedSound);
+            presenter.Initialize(model, view);
+
+            return model;
+        }
     }
 }

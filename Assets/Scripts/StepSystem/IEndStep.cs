@@ -1,4 +1,7 @@
-﻿public interface IEndStep
+﻿namespace CannonTurret.StepSystem
 {
-    public void End();
+    public interface IEndStep
+    {
+        public void End();
+    }
 }

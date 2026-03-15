@@ -1,4 +1,7 @@
-﻿public interface IBonusGatherer : IBonusStorage
+﻿namespace CannonTurret.Actors.Bonuses
 {
-    public void Gather(IBonus bonus);
+    public interface IBonusGatherer : IBonusStorage
+    {
+        public void Gather(IBonus bonus);
+    }
 }

@@ -1,19 +1,22 @@
 ﻿using YG;
 
-public class PlayerPurchase : IPlayerPurchase
+namespace CannonTurret.SDK.Shops
 {
-    private OneTimePurchase _purchase;
-
-    public PlayerPurchase(OneTimePurchase purchase)
+    public class PlayerPurchase : IPlayerPurchase
     {
-        _purchase = purchase;
-    }
+        private OneTimePurchase _purchase;
 
-    public string Id => _purchase.Id;
-    public bool IsPurchased => _purchase.IsPurchased;
+        public PlayerPurchase(OneTimePurchase purchase)
+        {
+            _purchase = purchase;
+        }
 
-    public void Update()
-    {
-        _purchase = YG2.saves.GetOneTimePurchase(_purchase.Id);
+        public string Id => _purchase.Id;
+        public bool IsPurchased => _purchase.IsPurchased;
+
+        public void Update()
+        {
+            _purchase = YG2.saves.GetOneTimePurchase(_purchase.Id);
+        }
     }
 }

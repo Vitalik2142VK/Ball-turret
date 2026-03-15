@@ -1,14 +1,18 @@
+using CannonTurret.LevelSystem;
 using UnityEngine;
 
-public class GameStarter : MonoBehaviour
+namespace CannonTurret.EntryPoints
 {
-    private MainMenuLoader _mainMenuLoader;
-
-    private void Start()
+    public class GameStarter : MonoBehaviour
     {
-        if (_mainMenuLoader == null)
-            _mainMenuLoader = new MainMenuLoader();
+        private MainMenuLoader _mainMenuLoader;
 
-        _mainMenuLoader.Load();
+        private void Start()
+        {
+            if (_mainMenuLoader == null)
+                _mainMenuLoader = new MainMenuLoader();
+
+            _mainMenuLoader.Load();
+        }
     }
 }

@@ -1,21 +1,25 @@
-﻿using System;
+﻿using CannonTurret.AudioSystem;
+using System;
 using UnityEngine;
 
-public class ActorAudioController : MonoBehaviour, IActorAudioController
+namespace CannonTurret.Actors
 {
-    [SerializeField] private Sound _deadSound;
-    [SerializeField] private Sound _hitSound;
-
-    private void OnValidate()
+    public class ActorAudioController : MonoBehaviour, IActorAudioController
     {
-        if (_deadSound == null)
-            throw new NullReferenceException(nameof(_deadSound));
+        [SerializeField] private Sound _deadSound;
+        [SerializeField] private Sound _hitSound;
 
-        if (_hitSound == null)
-            throw new NullReferenceException(nameof(_hitSound));
+        private void OnValidate()
+        {
+            if (_deadSound == null)
+                throw new NullReferenceException(nameof(_deadSound));
+
+            if (_hitSound == null)
+                throw new NullReferenceException(nameof(_hitSound));
+        }
+
+        public void PlayHit() => _hitSound.Play();
+
+        public void PlayDead() => _deadSound.Play();
     }
-
-    public void PlayHit() => _hitSound.Play();
-
-    public void PlayDead() => _deadSound.Play();
 }

@@ -1,6 +1,7 @@
+using CannonTurret.Turrets.Guns;
 using UnityEngine;
 
-namespace Scriptable
+namespace CannonTurret.Scriptable.Gun
 {
     [CreateAssetMenu(menuName = "Attributes/Gun attributes", fileName = "GunAttributes", order = 51)]
     public class GunAttributes : ScriptableObject, IGunAttributes

@@ -1,4 +1,7 @@
-﻿public interface IWalletView
+﻿namespace CannonTurret.Coin.Wallets
 {
-    public void UpdateValueCoins(long coins);
+    public interface IWalletView
+    {
+        public void UpdateValueCoins(long coins);
+    }
 }

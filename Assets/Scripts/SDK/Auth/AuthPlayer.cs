@@ -1,65 +1,69 @@
-﻿using System;
+﻿using CannonTurret.UI.MainMenu;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using YG;
 
-public class AuthPlayer : MonoBehaviour
+namespace CannonTurret.SDK.Auth
 {
-    [SerializeField] private AuthPlayerView _authPlayerView;
-    [SerializeField] private AuthWindow _authWindow;
-    [SerializeField] private Button _authButton;
-
-    private void OnValidate()
+    public class AuthPlayer : MonoBehaviour
     {
-        if (_authPlayerView == null)
-            throw new NullReferenceException(nameof(_authPlayerView));
+        [SerializeField] private AuthPlayerView _authPlayerView;
+        [SerializeField] private AuthWindow _authWindow;
+        [SerializeField] private Button _authButton;
 
-        if (_authWindow == null)
-            throw new NullReferenceException(nameof(_authWindow));
+        private void OnValidate()
+        {
+            if (_authPlayerView == null)
+                throw new NullReferenceException(nameof(_authPlayerView));
 
-        if (_authButton == null)
-            throw new NullReferenceException(nameof(_authButton));
-    }
+            if (_authWindow == null)
+                throw new NullReferenceException(nameof(_authWindow));
 
-    private void OnEnable()
-    {
-        _authButton.onClick.AddListener(OnOpenAuthWindow);
-        YG2.onGetSDKData += OnFillData;
-    }
+            if (_authButton == null)
+                throw new NullReferenceException(nameof(_authButton));
+        }
 
-    private void OnDisable()
-    {
-        _authButton.onClick.RemoveListener(OnOpenAuthWindow);
-        YG2.onGetSDKData -= OnFillData;
-    }
+        private void OnEnable()
+        {
+            _authButton.onClick.AddListener(OnOpenAuthWindow);
+            YG2.onGetSDKData += OnFillData;
+        }
 
-    public void Authorize()
-    {
-        if (YG2.player.auth)
-            OnFillData();
-        else
-            ShowAuthButton();
-    }
+        private void OnDisable()
+        {
+            _authButton.onClick.RemoveListener(OnOpenAuthWindow);
+            YG2.onGetSDKData -= OnFillData;
+        }
 
-    private void ShowAuthButton()
-    {
-        _authButton.gameObject.SetActive(true);
-        _authPlayerView.gameObject.SetActive(false);
-    }
+        public void Authorize()
+        {
+            if (YG2.player.auth)
+                OnFillData();
+            else
+                ShowAuthButton();
+        }
 
-    private void OnOpenAuthWindow() => _authWindow.Open();
+        private void ShowAuthButton()
+        {
+            _authButton.gameObject.SetActive(true);
+            _authPlayerView.gameObject.SetActive(false);
+        }
 
-    private void OnFillData()
-    {
-        if (_authPlayerView.IsAuthorized)
-            return;
+        private void OnOpenAuthWindow() => _authWindow.Open();
 
-        var playerData = YG2.player;
-        var namePlayer = playerData.name;
-        var urlIconPlayer = playerData.photo;
+        private void OnFillData()
+        {
+            if (_authPlayerView.IsAuthorized)
+                return;
 
-        _authPlayerView.gameObject.SetActive(true);
-        _authPlayerView.SetDataAuthPlayer(urlIconPlayer, namePlayer);
-        _authButton.gameObject.SetActive(false);
+            var playerData = YG2.player;
+            var namePlayer = playerData.name;
+            var urlIconPlayer = playerData.photo;
+
+            _authPlayerView.gameObject.SetActive(true);
+            _authPlayerView.SetDataAuthPlayer(urlIconPlayer, namePlayer);
+            _authButton.gameObject.SetActive(false);
+        }
     }
 }

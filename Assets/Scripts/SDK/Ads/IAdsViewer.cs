@@ -1,15 +1,18 @@
 ﻿using System;
 
-public interface IAdsViewer
+namespace CannonTurret.SDK.Ads
 {
-    public event Action<string> RewardAdShowed;
-    public event Action<bool> ShowCompleted;
-    public event Action TimerRewardAdReseted;
+    public interface IAdsViewer
+    {
+        public event Action<string> RewardAdShowed;
+        public event Action<bool> ShowCompleted;
+        public event Action TimerRewardAdReseted;
 
-    public bool CanShowRewardAd { get; }
-    public bool IsAdsDisable { get; }
+        public bool CanShowRewardAd { get; }
+        public bool IsAdsDisable { get; }
 
-    public void ShowRewardAd(string rewardId);
+        public void ShowRewardAd(string rewardId);
 
-    public void ShowFullScreenAd();
+        public void ShowFullScreenAd();
+    }
 }

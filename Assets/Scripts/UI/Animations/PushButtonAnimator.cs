@@ -2,31 +2,34 @@
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(Button), typeof(ScaleButtonAnimator))]
-public class PushButtonAnimator : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
+namespace CannonTurret.UI.Animations
 {
-    private IButtonAnimator _animator;
-    private Button _button;
-
-    private void Awake()
+    [RequireComponent(typeof(Button), typeof(ScaleButtonAnimator))]
+    public class PushButtonAnimator : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
-        _animator = GetComponent<IButtonAnimator>();
-        _button = GetComponent<Button>();
-    }
+        private IButtonAnimator _animator;
+        private Button _button;
 
-    public void OnPointerDown(PointerEventData _)
-    {
-        if (_button.interactable == false)
-            return;
+        private void Awake()
+        {
+            _animator = GetComponent<IButtonAnimator>();
+            _button = GetComponent<Button>();
+        }
 
-        _animator.Press();
-    }
+        public void OnPointerDown(PointerEventData _)
+        {
+            if (_button.interactable == false)
+                return;
 
-    public void OnPointerUp(PointerEventData _)
-    {
-        if (_button.interactable == false)
-            return;
+            _animator.Press();
+        }
 
-        _animator.PressOut();
+        public void OnPointerUp(PointerEventData _)
+        {
+            if (_button.interactable == false)
+                return;
+
+            _animator.PressOut();
+        }
     }
 }

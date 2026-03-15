@@ -1,13 +1,17 @@
+using CannonTurret.Actors.Enemies;
 using System;
 
-public class ActorsControllersAccess : IActorsControllersAccess
+namespace CannonTurret.Actors
 {
-    public ActorsControllersAccess(IActorsController actorsController, IEnemiesController enemiesController)
+    public class ActorsControllersAccess : IActorsControllersAccess
     {
-        ActorsController = actorsController ?? throw new ArgumentNullException(nameof(actorsController));
-        EnemiesController = enemiesController ?? throw new ArgumentNullException(nameof(enemiesController));
-    }
+        public ActorsControllersAccess(IActorsController actorsController, IEnemiesController enemiesController)
+        {
+            ActorsController = actorsController ?? throw new ArgumentNullException(nameof(actorsController));
+            EnemiesController = enemiesController ?? throw new ArgumentNullException(nameof(enemiesController));
+        }
 
-    public IActorsController ActorsController { get; }
-    public IEnemiesController EnemiesController { get; }
+        public IActorsController ActorsController { get; }
+        public IEnemiesController EnemiesController { get; }
+    }
 }

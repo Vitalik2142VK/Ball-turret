@@ -1,4 +1,9 @@
-﻿public interface IArmor
+﻿using CannonTurret.DamageSystem;
+
+namespace CannonTurret.HealthSystem
 {
-    public void ReduceDamage(IDamageAttributes attributes);
+    public interface IArmor
+    {
+        public void ReduceDamage(IDamageAttributes attributes);
+    }
 }

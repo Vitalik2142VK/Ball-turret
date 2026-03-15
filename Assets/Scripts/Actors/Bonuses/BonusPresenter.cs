@@ -1,29 +1,32 @@
 ﻿using System;
 
-public class BonusPresenter : IBonusPresenter
+namespace CannonTurret.Actors.Bonuses
 {
-    private IViewableBonus _model;
-    private IBonusView _view;
-
-    public void Initialize(IViewableBonus model, IBonusView view)
+    public class BonusPresenter : IBonusPresenter
     {
-        _model = model ?? throw new ArgumentNullException(nameof(model));
-        _view = view ?? throw new ArgumentNullException(nameof(view));
-    }
+        private IViewableBonus _model;
+        private IBonusView _view;
 
-    public void Destroy() => _view.Destroy();
+        public void Initialize(IViewableBonus model, IBonusView view)
+        {
+            _model = model ?? throw new ArgumentNullException(nameof(model));
+            _view = view ?? throw new ArgumentNullException(nameof(view));
+        }
 
-    public void HandleBonusGatherer(IBonusGatherer bonusGathering)
-    {
-        _model.HandleBonusGatherer(bonusGathering);
-        _view.PlayTaking();
+        public void Destroy() => _view.Destroy();
 
-        if (_model.IsEnable == false)
-            Destroy();
-    }
+        public void HandleBonusGatherer(IBonusGatherer bonusGathering)
+        {
+            _model.HandleBonusGatherer(bonusGathering);
+            _view.PlayTaking();
 
-    public void PrepareDeleted(IRemovedActorsCollector removedCollector)
-    {
-        removedCollector.Add(_model);
+            if (_model.IsEnable == false)
+                Destroy();
+        }
+
+        public void PrepareDeleted(IRemovedActorsCollector removedCollector)
+        {
+            removedCollector.Add(_model);
+        }
     }
 }

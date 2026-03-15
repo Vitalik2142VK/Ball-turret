@@ -1,9 +1,12 @@
-﻿public interface IDebuff
+﻿namespace CannonTurret.Effects
 {
-    public DebuffType DebuffType { get; }
-    public bool IsExecutionCompleted { get; }
+    public interface IDebuff
+    {
+        public DebuffType DebuffType { get; }
+        public bool IsExecutionCompleted { get; }
 
-    public void Activate();
+        public void Activate();
 
-    public void Strengthen(float gainFactor);
+        public void Strengthen(float gainFactor);
+    }
 }

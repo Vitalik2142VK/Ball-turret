@@ -1,4 +1,7 @@
-﻿public interface IDamageChanger : IDamageAttributes
+﻿namespace CannonTurret.DamageSystem
 {
-    public void Change(IDamageImproverAttributes damageImproverAttributes);
+    public interface IDamageChanger : IDamageAttributes
+    {
+        public void Change(IDamageImproverAttributes damageImproverAttributes);
+    }
 }

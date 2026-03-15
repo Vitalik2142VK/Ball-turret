@@ -1,4 +1,10 @@
-﻿public interface IActor : IMovableObject, IDestroyedObject
+﻿using CannonTurret.Actors.MoveSystem;
+using CannonTurret.HealthSystem;
+
+namespace CannonTurret.Actors
 {
-    public bool IsEnable { get; }
+    public interface IActor : IMovableObject, IDestroyedObject
+    {
+        public bool IsEnable { get; }
+    }
 }

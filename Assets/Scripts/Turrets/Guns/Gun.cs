@@ -1,81 +1,85 @@
-﻿using System;
+﻿using CannonTurret.Turrets.Bullets;
+using System;
 using System.Collections;
 using UnityEngine;
 
-public class Gun : MonoBehaviour, IGun, IGunLoader
+namespace CannonTurret.Turrets.Guns
 {
-    private const float MinWaitingBetweenShots = 0.1f;
-    private const float MaxWaitingBetweenShots = 2.0f;
-
-    [SerializeField] private Muzzle _muzzle;
-
-    private IGunMagazine _magazine;
-    private WaitForSeconds _waitBetweenShots;
-    private WaitForFixedUpdate _waitFixedUpdate;
-
-    public event Action Reloaded;
-    public event Action ShotExecuted;
-
-    public bool IsRecharged { get; private set; }
-
-    private void OnValidate()
+    public class Gun : MonoBehaviour, IGun, IGunLoader
     {
-        if (_muzzle == null)
-            throw new NullReferenceException(nameof(_muzzle));
-    }
+        private const float MinWaitingBetweenShots = 0.1f;
+        private const float MaxWaitingBetweenShots = 2.0f;
 
-    public void Initialize(IGunMagazine magazine, float waitingBetweenShots)
-    {
-        _magazine = magazine ?? throw new ArgumentNullException(nameof(magazine));
+        [SerializeField] private Muzzle _muzzle;
 
-        if (waitingBetweenShots < MinWaitingBetweenShots || waitingBetweenShots > MaxWaitingBetweenShots)
-            throw new ArgumentOutOfRangeException(nameof(waitingBetweenShots));
+        private IGunMagazine _magazine;
+        private WaitForSeconds _waitBetweenShots;
+        private WaitForFixedUpdate _waitFixedUpdate;
 
-        _waitBetweenShots = new WaitForSeconds(waitingBetweenShots);
-        _waitFixedUpdate = new WaitForFixedUpdate();
+        public event Action Reloaded;
+        public event Action ShotExecuted;
 
-        IsRecharged = true;
-    }
+        public bool IsRecharged { get; private set; }
 
-    public void Shoot(Vector3 direction)
-    {
-        StartCoroutine(ShootBurst(direction));
-    }
-
-    public void AddBullet(IBullet bullet)
-    {
-        if (bullet == null)
-            throw new ArgumentNullException(nameof(bullet));
-
-        _magazine.AddBullet(bullet);
-    }
-
-    private IEnumerator ShootBurst(Vector3 direction)
-    {
-        Vector3 startPoint = _muzzle.BulletSpawnPoint;
-
-        IsRecharged = false;
-
-        while (_magazine.HasFreeBullets)
+        private void OnValidate()
         {
-            IBullet bullet = _magazine.GetBullet();
-            bullet.Move(startPoint, direction);
-
-            ShotExecuted?.Invoke();
-
-            yield return _waitBetweenShots;
+            if (_muzzle == null)
+                throw new NullReferenceException(nameof(_muzzle));
         }
 
-        yield return StartCoroutine(CheckFullMagazine());
-    }
+        public void Initialize(IGunMagazine magazine, float waitingBetweenShots)
+        {
+            _magazine = magazine ?? throw new ArgumentNullException(nameof(magazine));
 
-    private IEnumerator CheckFullMagazine()
-    {
-        while (_magazine.IsFull == false)
-            yield return _waitFixedUpdate;
+            if (waitingBetweenShots < MinWaitingBetweenShots || waitingBetweenShots > MaxWaitingBetweenShots)
+                throw new ArgumentOutOfRangeException(nameof(waitingBetweenShots));
 
-        IsRecharged = true;
+            _waitBetweenShots = new WaitForSeconds(waitingBetweenShots);
+            _waitFixedUpdate = new WaitForFixedUpdate();
 
-        Reloaded?.Invoke();
+            IsRecharged = true;
+        }
+
+        public void Shoot(Vector3 direction)
+        {
+            StartCoroutine(ShootBurst(direction));
+        }
+
+        public void AddBullet(IBullet bullet)
+        {
+            if (bullet == null)
+                throw new ArgumentNullException(nameof(bullet));
+
+            _magazine.AddBullet(bullet);
+        }
+
+        private IEnumerator ShootBurst(Vector3 direction)
+        {
+            Vector3 startPoint = _muzzle.BulletSpawnPoint;
+
+            IsRecharged = false;
+
+            while (_magazine.HasFreeBullets)
+            {
+                IBullet bullet = _magazine.GetBullet();
+                bullet.Move(startPoint, direction);
+
+                ShotExecuted?.Invoke();
+
+                yield return _waitBetweenShots;
+            }
+
+            yield return StartCoroutine(CheckFullMagazine());
+        }
+
+        private IEnumerator CheckFullMagazine()
+        {
+            while (_magazine.IsFull == false)
+                yield return _waitFixedUpdate;
+
+            IsRecharged = true;
+
+            Reloaded?.Invoke();
+        }
     }
 }

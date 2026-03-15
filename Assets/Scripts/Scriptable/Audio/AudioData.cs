@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Scriptable
+namespace CannonTurret.Scriptable.Audio
 {
     [CreateAssetMenu(menuName = "Data/Audio", fileName = "AudioData", order = 51)]
     public class AudioData : ScriptableObject

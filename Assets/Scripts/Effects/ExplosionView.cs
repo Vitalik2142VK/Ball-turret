@@ -1,15 +1,17 @@
-﻿using Scriptable;
-using UnityEngine;
+﻿using UnityEngine;
 
-[RequireComponent(typeof(ParticleSystem))]
-public class ExplosionView : MonoBehaviour, IExplosionView
+namespace CannonTurret.Effects
 {
-    private ParticleSystem _explosionParticle;
-
-    private void Awake()
+    [RequireComponent(typeof(ParticleSystem))]
+    public class ExplosionView : MonoBehaviour, IExplosionView
     {
-        _explosionParticle = GetComponent<ParticleSystem>();
-    }
+        private ParticleSystem _explosionParticle;
 
-    public void Play() => _explosionParticle.Play();
+        private void Awake()
+        {
+            _explosionParticle = GetComponent<ParticleSystem>();
+        }
+
+        public void Play() => _explosionParticle.Play();
+    }
 }

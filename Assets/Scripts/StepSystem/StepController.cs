@@ -1,17 +1,21 @@
+using CannonTurret.StepSystem.Steps;
 using UnityEngine;
 
-public class StepController : MonoBehaviour, IStepSystem
+namespace CannonTurret.StepSystem
 {
-    private IStep _step;
-
-    private void Update()
+    public class StepController : MonoBehaviour, IStepController
     {
-        if (Time.timeScale != 0f)
-            _step.Action();
-    }
+        private IStep _step;
 
-    public void EstablishNextStep(IStep step)
-    {
-        _step = step ?? throw new System.ArgumentNullException(nameof(step));
+        private void Update()
+        {
+            if (Time.timeScale != 0f)
+                _step.Action();
+        }
+
+        public void EstablishNextStep(IStep step)
+        {
+            _step = step ?? throw new System.ArgumentNullException(nameof(step));
+        }
     }
 }

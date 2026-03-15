@@ -1,11 +1,14 @@
 ﻿using System;
 using UnityEngine;
 
-public interface ICameraAdapter
+namespace CannonTurret.CameraControl
 {
-    public event Action OrientationChanged;
-    public event Action RatioChanged;
+    public interface ICameraAdapter
+    {
+        public event Action OrientationChanged;
+        public event Action RatioChanged;
 
-    public Vector3 Rotation { get; }
-    public bool IsPortraitOrientation { get; }
+        public Vector3 Rotation { get; }
+        public bool IsPortraitOrientation { get; }
+    }
 }

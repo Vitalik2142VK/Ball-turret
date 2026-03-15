@@ -1,47 +1,51 @@
-﻿using System;
+﻿using CannonTurret.Utils;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class IceShellPool : MonoBehaviour, IIceShellPool
+namespace CannonTurret.Effects.Freezing
 {
-    [SerializeField] private IceShell _iceShellPrefab;
-
-    private ObjectsPool<IceShell> _pool;
-    private HashSet<IceShell> _activeIceShells;
-
-    private void Awake()
+    public class IceShellPool : MonoBehaviour, IIceShellPool
     {
-        _pool = new ObjectsPool<IceShell>(transform, _iceShellPrefab);
-        _activeIceShells = new HashSet<IceShell>();
-    }
+        [SerializeField] private IceShell _iceShellPrefab;
 
-    public IIceShell Get()
-    {
-        var iceShell = _pool.GetGameObject();
-        iceShell.Initialize(this);
-        _activeIceShells.Add(iceShell);
+        private ObjectsPool<IceShell> _pool;
+        private HashSet<IceShell> _activeIceShells;
 
-        return iceShell;
-    }
+        private void Awake()
+        {
+            _pool = new ObjectsPool<IceShell>(transform, _iceShellPrefab);
+            _activeIceShells = new HashSet<IceShell>();
+        }
 
-    public void Put(IIceShell shell)
-    {
-        if (shell == null)
-            throw new ArgumentNullException(nameof(shell));
+        public IIceShell Get()
+        {
+            var iceShell = _pool.GetGameObject();
+            iceShell.Initialize(this);
+            _activeIceShells.Add(iceShell);
 
-        if (shell is IceShell iceShell == false)
-            throw new ArgumentException(nameof(shell));
+            return iceShell;
+        }
 
-        if (_activeIceShells.Contains(iceShell) == false)
-            throw new ArgumentException($"{nameof(_activeIceShells)} does not contain {nameof(shell)}");
+        public void Put(IIceShell shell)
+        {
+            if (shell == null)
+                throw new ArgumentNullException(nameof(shell));
 
-        _activeIceShells.Remove(iceShell);
-        _pool.PutGameObject(iceShell);
-    }
+            if (shell is IceShell iceShell == false)
+                throw new ArgumentException(nameof(shell));
 
-    public void DisableAll()
-    {
-        foreach (var iceShell in _activeIceShells)
-            iceShell.Disable();
+            if (_activeIceShells.Contains(iceShell) == false)
+                throw new ArgumentException($"{nameof(_activeIceShells)} does not contain {nameof(shell)}");
+
+            _activeIceShells.Remove(iceShell);
+            _pool.PutGameObject(iceShell);
+        }
+
+        public void DisableAll()
+        {
+            foreach (var iceShell in _activeIceShells)
+                iceShell.Disable();
+        }
     }
 }

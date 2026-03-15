@@ -1,4 +1,10 @@
-﻿public interface IChangeSceneStep : IStep
+﻿using CannonTurret.StepSystem.Steps;
+using CannonTurret.UI;
+
+namespace CannonTurret.StepSystem
 {
-    public void SetSceneLoader(ISceneLoader sceneLoader);
+    public interface IChangeSceneStep : IStep
+    {
+        public void SetSceneLoader(ISceneLoader sceneLoader);
+    }
 }

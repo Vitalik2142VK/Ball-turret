@@ -1,41 +1,45 @@
+using CannonTurret.Scriptable.Player;
 using UnityEngine;
 
-public class TextLocalizer : MonoBehaviour
+namespace CannonTurret.SDK.Localizations
 {
-    [SerializeField] private Scriptable.LocalizationData _localizationData;
-    [SerializeField, TextArea] private string _englishText;
-    [SerializeField, TextArea] private string _russianText;
-    [SerializeField, TextArea] private string _turkishText;
-
-    public string Text => GetText();
-
-    private void OnValidate()
+    public class TextLocalizer : MonoBehaviour
     {
-        if (_englishText == null || _englishText.Length == 0)
-            _englishText = "Text";
+        [SerializeField] private LocalizationData _localizationData;
+        [SerializeField, TextArea] private string _englishText;
+        [SerializeField, TextArea] private string _russianText;
+        [SerializeField, TextArea] private string _turkishText;
 
-        if (_russianText == null || _russianText.Length == 0)
-            _russianText = "Текст";
+        public string Text => GetText();
 
-        if (_turkishText == null || _turkishText.Length == 0)
-            _turkishText = "Metin";
-    }
-
-    private string GetText()
-    {
-        switch (_localizationData.Language)
+        private void OnValidate()
         {
-            case Language.EN:
-                return _englishText;
+            if (_englishText == null || _englishText.Length == 0)
+                _englishText = "Text";
 
-            case Language.RU:
-                return _russianText;
+            if (_russianText == null || _russianText.Length == 0)
+                _russianText = "Текст";
 
-            case Language.TR:
-                return _turkishText;
+            if (_turkishText == null || _turkishText.Length == 0)
+                _turkishText = "Metin";
+        }
 
-            default:
-                return _englishText;
+        private string GetText()
+        {
+            switch (_localizationData.Language)
+            {
+                case Language.EN:
+                    return _englishText;
+
+                case Language.RU:
+                    return _russianText;
+
+                case Language.TR:
+                    return _turkishText;
+
+                default:
+                    return _englishText;
+            }
         }
     }
 }

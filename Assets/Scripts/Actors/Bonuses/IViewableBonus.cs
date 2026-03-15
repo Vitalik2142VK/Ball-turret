@@ -1,4 +1,7 @@
-﻿public interface IViewableBonus : IBonus, IActor 
+﻿namespace CannonTurret.Actors.Bonuses
 {
-    public void HandleBonusGatherer(IBonusGatherer bonusGatherer);
+    public interface IViewableBonus : IBonus, IActor
+    {
+        public void HandleBonusGatherer(IBonusGatherer bonusGatherer);
+    }
 }

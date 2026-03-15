@@ -1,69 +1,75 @@
-﻿using System;
+﻿using CannonTurret.Actors.MoveSystem;
+using CannonTurret.DamageSystem;
+using CannonTurret.HealthSystem;
+using System;
 using UnityEngine;
 
-public class Border : IBorder
+namespace CannonTurret.Actors.Borders
 {
-    private IBorderPresenter _presenter;
-    private IMovableObject _mover;
-    private IArmor _armor;
-    private IHealth _health;
-
-    public Border(IBorderPresenter presenter, IMovableObject mover, IArmor armor, IHealth health)
+    public class Border : IBorder
     {
-        _presenter = presenter ?? throw new ArgumentNullException(nameof(presenter));
-        _mover = mover ?? throw new ArgumentNullException(nameof(mover));
-        _armor = armor ?? throw new ArgumentNullException(nameof(armor));
-        _health = health ?? throw new ArgumentNullException(nameof(health));
+        private IBorderPresenter _presenter;
+        private IMovableObject _mover;
+        private IArmor _armor;
+        private IHealth _health;
 
-        Enable();
-    }
+        public Border(IBorderPresenter presenter, IMovableObject mover, IArmor armor, IHealth health)
+        {
+            _presenter = presenter ?? throw new ArgumentNullException(nameof(presenter));
+            _mover = mover ?? throw new ArgumentNullException(nameof(mover));
+            _armor = armor ?? throw new ArgumentNullException(nameof(armor));
+            _health = health ?? throw new ArgumentNullException(nameof(health));
 
-    public bool IsEnable { get; private set; }
+            Enable();
+        }
 
-    public bool IsFinished => _mover.IsFinished;
+        public bool IsEnable { get; private set; }
 
-    public void SetStartPosition(Vector3 startPosition) => _mover.SetStartPosition(startPosition);
+        public bool IsFinished => _mover.IsFinished;
 
-    public void EstablishPoint(Vector3 distance, float speed) => _mover.EstablishPoint(distance, speed);
+        public void SetStartPosition(Vector3 startPosition) => _mover.SetStartPosition(startPosition);
 
-    public void Move() => _mover.Move();
+        public void EstablishPoint(Vector3 distance, float speed) => _mover.EstablishPoint(distance, speed);
 
-    public void TakeDamage(IDamageAttributes damage)
-    {
-        if (damage == null)
-            throw new ArgumentNullException(nameof(damage));
+        public void Move() => _mover.Move();
 
-        _armor.ReduceDamage(damage);
+        public void TakeDamage(IDamageAttributes damage)
+        {
+            if (damage == null)
+                throw new ArgumentNullException(nameof(damage));
 
-        CheckAlive();
-    }
+            _armor.ReduceDamage(damage);
 
-    public void IgnoreArmor(IDamageAttributes damage)
-    {
-        if (damage == null)
-            throw new ArgumentNullException(nameof(damage));
+            CheckAlive();
+        }
 
-        _health.TakeDamage(damage);
+        public void IgnoreArmor(IDamageAttributes damage)
+        {
+            if (damage == null)
+                throw new ArgumentNullException(nameof(damage));
 
-        CheckAlive();
-    }
+            _health.TakeDamage(damage);
 
-    public void Destroy()
-    {
-        _presenter.Destroy();
-        IsEnable = false;
-    }
+            CheckAlive();
+        }
 
-    private void Enable()
-    {
-        IsEnable = true;
-
-        _health.Restore();
-    }
-
-    private void CheckAlive()
-    {
-        if (_health.IsAlive == false)
+        public void Destroy()
+        {
+            _presenter.Destroy();
             IsEnable = false;
+        }
+
+        private void Enable()
+        {
+            IsEnable = true;
+
+            _health.Restore();
+        }
+
+        private void CheckAlive()
+        {
+            if (_health.IsAlive == false)
+                IsEnable = false;
+        }
     }
 }

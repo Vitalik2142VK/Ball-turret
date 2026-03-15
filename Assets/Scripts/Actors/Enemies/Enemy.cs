@@ -1,69 +1,77 @@
-﻿using System;
+﻿using CannonTurret.Actors.Debuffs;
+using CannonTurret.Actors.MoveSystem;
+using CannonTurret.DamageSystem;
+using CannonTurret.Effects;
+using CannonTurret.HealthSystem;
+using System;
 using UnityEngine;
 
-public class Enemy : IEnemy
+namespace CannonTurret.Actors.Enemies
 {
-    private IEnemyPresenter _presenter;
-    private IDebuffHandler _debuffReceiver;
-    private IMovableObject _mover;
-    private IDamage _damage;
-    private IHealth _health;
-
-    public Enemy(IEnemyPresenter presenter, IDebuffHandler debuffReceiver, IMovableObject mover, IDamage damage, IHealth health)
+    public class Enemy : IEnemy
     {
-        _presenter = presenter ?? throw new ArgumentNullException(nameof(presenter));
-        _debuffReceiver = debuffReceiver ?? throw new ArgumentNullException(nameof(debuffReceiver));
-        _mover = mover ?? throw new ArgumentNullException(nameof(mover));
-        _damage = damage ?? throw new ArgumentNullException(nameof(damage));
-        _health = health ?? throw new ArgumentNullException(nameof(health));
+        private IEnemyPresenter _presenter;
+        private IDebuffHandler _debuffReceiver;
+        private IMovableObject _mover;
+        private IDamage _damage;
+        private IHealth _health;
 
-        Enable();
-    }
+        public Enemy(IEnemyPresenter presenter, IDebuffHandler debuffReceiver, IMovableObject mover, IDamage damage, IHealth health)
+        {
+            _presenter = presenter ?? throw new ArgumentNullException(nameof(presenter));
+            _debuffReceiver = debuffReceiver ?? throw new ArgumentNullException(nameof(debuffReceiver));
+            _mover = mover ?? throw new ArgumentNullException(nameof(mover));
+            _damage = damage ?? throw new ArgumentNullException(nameof(damage));
+            _health = health ?? throw new ArgumentNullException(nameof(health));
 
-    public bool IsFinished => _mover.IsFinished;
+            Enable();
+        }
 
-    public bool IsEnable { get; private set; }
+        public bool IsFinished => _mover.IsFinished;
 
-    public void AddDebuff(IDebuff debaff) => _debuffReceiver.AddDebuff(debaff);
+        public bool IsEnable { get; private set; }
 
-    public void ApplyDamage(IDamagedObject damagedObject) => _damage.Apply(damagedObject);
+        public void AddDebuff(IDebuff debaff) => _debuffReceiver.AddDebuff(debaff);
 
-    public void SetStartPosition(Vector3 startPosition) => _mover.SetStartPosition(startPosition);
+        public void ApplyDamage(IDamagedObject damagedObject) => _damage.Apply(damagedObject);
 
-    public void EstablishPoint(Vector3 distance, float speed) => _mover.EstablishPoint(distance, speed);
+        public void SetStartPosition(Vector3 startPosition) => _mover.SetStartPosition(startPosition);
 
-    public void Win() => _presenter.Win();
+        public void EstablishPoint(Vector3 distance, float speed) => _mover.EstablishPoint(distance, speed);
 
-    public void Move() 
-    {
-        _mover.Move();
-        _presenter.Move();
-    }
+        public void Win() => _presenter.Win();
 
-    public void ActivateDebuffs()
-    {
-        _debuffReceiver.ActivateDebuffs();
-        _debuffReceiver.RemoveCompletedDebuffs();
-    }
+        public void Move()
+        {
+            _mover.Move();
+            _presenter.Move();
+        }
 
-    public void TakeDamage(IDamageAttributes damage)
-    {
-        _health.TakeDamage(damage);
+        public void ActivateDebuffs()
+        {
+            _debuffReceiver.ActivateDebuffs();
+            _debuffReceiver.RemoveCompletedDebuffs();
+        }
 
-        if (_health.IsAlive == false)
+        public void TakeDamage(IDamageAttributes damage)
+        {
+            _health.TakeDamage(damage);
+
+            if (_health.IsAlive == false)
+                IsEnable = false;
+        }
+
+        public void Destroy()
+        {
             IsEnable = false;
-    }
+            _debuffReceiver.Clean();
+            _presenter.Destroy();
+        }
 
-    public void Destroy()
-    {
-        IsEnable = false;
-        _debuffReceiver.Clean();
-        _presenter.Destroy();
-    }
-
-    private void Enable()
-    {
-        IsEnable = true;
-        _health.Restore();
+        private void Enable()
+        {
+            IsEnable = true;
+            _health.Restore();
+        }
     }
 }

@@ -1,9 +1,14 @@
-﻿using Scriptable;
+﻿using CannonTurret.Coin.Products;
+using CannonTurret.Coin.Shops;
+using CannonTurret.Coin.Transactions;
+using CannonTurret.Coin.Wallets;
+using CannonTurret.PlayerSystem;
+using CannonTurret.Scriptable.Player;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MainMenuSpace
+namespace CannonTurret.EntryPoints.MainMenu.Configurators
 {
     public class ShopConfigurator : MonoBehaviour
     {

@@ -1,15 +1,19 @@
+using CannonTurret.Turrets;
 using System;
 
-public class WinStatus : IWinStatus
+namespace CannonTurret.LevelSystem
 {
-    private ITurret _turret;
-    private ISelectedLevel _selectedLevel;
-
-    public WinStatus(ITurret turret, ISelectedLevel selectedLevel)
+    public class WinStatus : IWinStatus
     {
-        _turret = turret ?? throw new ArgumentNullException(nameof(turret));
-        _selectedLevel = selectedLevel ?? throw new ArgumentNullException(nameof(selectedLevel));
-    }
+        private ITurret _turret;
+        private ISelectedLevel _selectedLevel;
 
-    public bool IsWin => _turret.IsDestroyed == false && _selectedLevel.IsFinished;
+        public WinStatus(ITurret turret, ISelectedLevel selectedLevel)
+        {
+            _turret = turret ?? throw new ArgumentNullException(nameof(turret));
+            _selectedLevel = selectedLevel ?? throw new ArgumentNullException(nameof(selectedLevel));
+        }
+
+        public bool IsWin => _turret.IsDestroyed == false && _selectedLevel.IsFinished;
+    }
 }

@@ -1,6 +1,9 @@
-﻿public interface IActorsFreezerView
+﻿namespace CannonTurret.Effects.Freezing
 {
-    public void Freeze();
+    public interface IActorsFreezerView
+    {
+        public void Freeze();
 
-    public void Defrost();
+        public void Defrost();
+    }
 }

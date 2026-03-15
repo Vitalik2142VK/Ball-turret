@@ -1,52 +1,57 @@
+using CannonTurret.LevelSystem;
+using CannonTurret.UI.PlayerScene;
 using System;
 using UnityEngine;
 
-public class LearningFinishWindow : MonoBehaviour, IWindow
+namespace CannonTurret.UI.LearningLevel
 {
-    private FinishWindow _finishWindow;
-    private ChangeSceneButton[] _changeSceneButtons;
-    private NextLevelButton _nextLevelButton;
-    private RestartLevelButton _restartLevelButton;
-    private IWinStatus _winStatus;
-
-    public void Initialize(FinishWindow finishWindow, IWinStatus winStatus)
+    public class LearningFinishWindow : MonoBehaviour, IWindow
     {
-        if (finishWindow == null)
-            throw new ArgumentNullException(nameof(finishWindow));
+        private FinishWindow _finishWindow;
+        private ChangeSceneButton[] _changeSceneButtons;
+        private NextLevelButton _nextLevelButton;
+        private RestartLevelButton _restartLevelButton;
+        private IWinStatus _winStatus;
 
-        _finishWindow = finishWindow;
-        _winStatus = winStatus ?? throw new ArgumentNullException(nameof(winStatus));
-
-        _changeSceneButtons = _finishWindow.GetComponentsInChildren<ChangeSceneButton>();
-
-        if (_changeSceneButtons == null || _changeSceneButtons.Length == 0)
-            throw new InvalidOperationException($"{nameof(_finishWindow)} does not contain {nameof(ChangeSceneButton)}");
-
-        foreach (var button in _changeSceneButtons)
+        public void Initialize(FinishWindow finishWindow, IWinStatus winStatus)
         {
-            if (button.TryGetComponent(out NextLevelButton nextLevelButton))
-                _nextLevelButton = nextLevelButton;
-            else if (button.TryGetComponent(out RestartLevelButton restartLevelButton))
-                _restartLevelButton = restartLevelButton;
+            if (finishWindow == null)
+                throw new ArgumentNullException(nameof(finishWindow));
+
+            _finishWindow = finishWindow;
+            _winStatus = winStatus ?? throw new ArgumentNullException(nameof(winStatus));
+
+            _changeSceneButtons = _finishWindow.GetComponentsInChildren<ChangeSceneButton>();
+
+            if (_changeSceneButtons == null || _changeSceneButtons.Length == 0)
+                throw new InvalidOperationException($"{nameof(_finishWindow)} does not contain {nameof(ChangeSceneButton)}");
+
+            foreach (var button in _changeSceneButtons)
+            {
+                if (button.TryGetComponent(out NextLevelButton nextLevelButton))
+                    _nextLevelButton = nextLevelButton;
+                else if (button.TryGetComponent(out RestartLevelButton restartLevelButton))
+                    _restartLevelButton = restartLevelButton;
+            }
+
+            if (_nextLevelButton == null)
+                throw new InvalidOperationException($"{nameof(_finishWindow)} does not contain {nameof(NextLevelButton)}");
+
+            if (_restartLevelButton == null)
+                throw new InvalidOperationException($"{nameof(_finishWindow)} does not contain {nameof(RestartLevelButton)}");
         }
 
-        if (_nextLevelButton == null)
-            throw new InvalidOperationException($"{nameof(_finishWindow)} does not contain {nameof(NextLevelButton)}");
+        public void Enable()
+        {
+            _finishWindow.Enable();
 
-        if (_restartLevelButton == null)
-            throw new InvalidOperationException($"{nameof(_finishWindow)} does not contain {nameof(RestartLevelButton)}");
-    }
+            bool isWin = _winStatus.IsWin;
 
-    public void Enable()
-    {
-        _finishWindow.Enable();
+            foreach (var button in _changeSceneButtons)
+                button.gameObject.SetActive(isWin);
 
-        bool isWin = _winStatus.IsWin;
-
-        foreach (var button in _changeSceneButtons)
-            button.gameObject.SetActive(isWin);
-
-        _restartLevelButton.gameObject.SetActive(isWin == false);
-        _nextLevelButton.gameObject.SetActive(false);
+            _restartLevelButton.gameObject.SetActive(isWin == false);
+            _nextLevelButton.gameObject.SetActive(false);
+        }
     }
 }

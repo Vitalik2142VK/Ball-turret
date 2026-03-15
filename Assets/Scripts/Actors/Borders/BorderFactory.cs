@@ -1,54 +1,59 @@
-﻿using System;
+﻿using CannonTurret.Actors.Spawn;
+using CannonTurret.HealthSystem;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BorderFactory : MonoBehaviour, IActorFactory
+namespace CannonTurret.Actors.Borders
 {
-    [SerializeField] private BorderCreator[] _borderCreators;
-
-    private IActorHealthModifier _healthModifier;
-    private Dictionary<string, BorderCreator> _creators;
-
-    private void OnValidate()
+    public class BorderFactory : MonoBehaviour, IActorFactory
     {
-        if (_borderCreators == null || _borderCreators.Length == 0)
-            throw new InvalidOperationException(nameof(_borderCreators));
-    }
+        [SerializeField] private BorderCreator[] _borderCreators;
 
-    private void Awake()
-    {
-        _creators = CreateDictionaryCreator();
-    }
+        private IActorHealthModifier _healthModifier;
+        private Dictionary<string, BorderCreator> _creators;
 
-    public void Initialize(IActorHealthModifier healthModifier)
-    {
-        _healthModifier = healthModifier ?? throw new ArgumentNullException(nameof(healthModifier));
-    }
+        private void OnValidate()
+        {
+            if (_borderCreators == null || _borderCreators.Length == 0)
+                throw new InvalidOperationException(nameof(_borderCreators));
+        }
 
-    public bool CanCreate(string nameTypeActor)
-    {
-        if (nameTypeActor == null || nameTypeActor.Length == 0)
-            throw new ArgumentOutOfRangeException(nameof(nameTypeActor));
+        private void Awake()
+        {
+            _creators = CreateDictionaryCreator();
+        }
 
-        return _creators.ContainsKey(nameTypeActor);
-    }
+        public void Initialize(IActorHealthModifier healthModifier)
+        {
+            _healthModifier = healthModifier ?? throw new ArgumentNullException(nameof(healthModifier));
+        }
 
-    public IActor Create(string nameTypeActor)
-    {
-        if (CanCreate(nameTypeActor) == false)
-            throw new ArgumentOutOfRangeException(nameof(nameTypeActor));
+        public bool CanCreate(string nameTypeActor)
+        {
+            if (nameTypeActor == null || nameTypeActor.Length == 0)
+                throw new ArgumentOutOfRangeException(nameof(nameTypeActor));
 
-        return _creators[nameTypeActor].Create(_healthModifier);
-    }
+            return _creators.ContainsKey(nameTypeActor);
+        }
 
-    private Dictionary<string, BorderCreator> CreateDictionaryCreator()
-    {
-        int lenght = _borderCreators.Length;
-        Dictionary<string, BorderCreator> creators = new Dictionary<string, BorderCreator>(lenght);
+        public IActor Create(string nameTypeActor)
+        {
+            if (CanCreate(nameTypeActor) == false)
+                throw new ArgumentOutOfRangeException(nameof(nameTypeActor));
 
-        foreach (var creator in _borderCreators)
-            creators.Add(creator.Name, creator);
+            return _creators[nameTypeActor].Create(_healthModifier);
+        }
 
-        return creators;
+        private Dictionary<string, BorderCreator> CreateDictionaryCreator()
+        {
+            int lenght = _borderCreators.Length;
+            Dictionary<string, BorderCreator> creators = new Dictionary<string, BorderCreator>(lenght);
+
+            foreach (var creator in _borderCreators)
+                creators.Add(creator.Name, creator);
+
+            return creators;
+        }
     }
 }

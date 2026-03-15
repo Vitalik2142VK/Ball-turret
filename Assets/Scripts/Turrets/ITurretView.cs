@@ -1,8 +1,11 @@
-public interface ITurretView
+namespace CannonTurret.Turrets
 {
-    public void PlayShoot();
+    public interface ITurretView
+    {
+        public void PlayShoot();
 
-    public void PlayTakeDamage();
+        public void PlayTakeDamage();
 
-    public void PlayDestroy();
+        public void PlayDestroy();
+    }
 }

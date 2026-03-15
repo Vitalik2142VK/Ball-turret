@@ -1,35 +1,41 @@
+using CannonTurret.Actors.Enemies;
+using CannonTurret.Turrets.Bullets.Physics;
+using CannonTurret.UI.PlayerScene;
 using System;
 using UnityEngine;
 
-[RequireComponent(typeof(BulletPhysics))]
-public class BulletCountingCombo : MonoBehaviour
+namespace CannonTurret.Turrets.Bullets
 {
-    private IBulletPhysics _bulletPhysics;
-    private IComboCounter _comboCounter;
-
-    private void Awake()
+    [RequireComponent(typeof(BulletPhysics))]
+    public class BulletCountingCombo : MonoBehaviour
     {
-        _bulletPhysics = GetComponent<IBulletPhysics>();
-    }
+        private IBulletPhysics _bulletPhysics;
+        private IComboCounter _comboCounter;
 
-    private void OnEnable()
-    {
-        _bulletPhysics.EnteredCollision += OnCount;
-    }
+        private void Awake()
+        {
+            _bulletPhysics = GetComponent<IBulletPhysics>();
+        }
 
-    private void OnDisable()
-    {
-        _bulletPhysics.EnteredCollision -= OnCount;
-    }
+        private void OnEnable()
+        {
+            _bulletPhysics.EnteredCollision += OnCount;
+        }
 
-    public void Initialize(IComboCounter comboCounter)
-    {
-        _comboCounter = comboCounter ?? throw new ArgumentNullException(nameof(comboCounter));
-    }
+        private void OnDisable()
+        {
+            _bulletPhysics.EnteredCollision -= OnCount;
+        }
 
-    private void OnCount(Collider collider)
-    {
-        if (collider.TryGetComponent(out IEnemyView _))
-            _comboCounter.Count();
+        public void Initialize(IComboCounter comboCounter)
+        {
+            _comboCounter = comboCounter ?? throw new ArgumentNullException(nameof(comboCounter));
+        }
+
+        private void OnCount(Collider collider)
+        {
+            if (collider.TryGetComponent(out IEnemyView _))
+                _comboCounter.Count();
+        }
     }
 }

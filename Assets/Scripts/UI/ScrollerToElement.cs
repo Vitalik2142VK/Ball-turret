@@ -1,39 +1,42 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(ScrollRect))]
-public class ScrollerToElement : MonoBehaviour
+namespace CannonTurret.UI
 {
-    [SerializeField] private float _offset;
-
-    private ScrollRect _scrollRect;
-
-    private void Awake()
+    [RequireComponent(typeof(ScrollRect))]
+    public class ScrollerToElement : MonoBehaviour
     {
-        _scrollRect = GetComponent<ScrollRect>();
-    }
+        [SerializeField] private float _offset;
 
-    public void ScrollToElement(RectTransform target)
-    {
-        Canvas.ForceUpdateCanvases();
+        private ScrollRect _scrollRect;
 
-        Vector2 viewportLocalPos = _scrollRect.viewport.InverseTransformPoint(_scrollRect.viewport.position);
-        Vector2 targetLocalPos = _scrollRect.viewport.InverseTransformPoint(target.position);
+        private void Awake()
+        {
+            _scrollRect = GetComponent<ScrollRect>();
+        }
 
-        float deltaY = Mathf.Abs(targetLocalPos.y - viewportLocalPos.y);
+        public void ScrollToElement(RectTransform target)
+        {
+            Canvas.ForceUpdateCanvases();
 
-        Vector2 newPos = _scrollRect.content.anchoredPosition + new Vector2(0f, deltaY);
+            Vector2 viewportLocalPos = _scrollRect.viewport.InverseTransformPoint(_scrollRect.viewport.position);
+            Vector2 targetLocalPos = _scrollRect.viewport.InverseTransformPoint(target.position);
 
-        float contentHeight = _scrollRect.content.rect.height;
-        float viewportHeight = _scrollRect.viewport.rect.height;
-        float maxY = contentHeight - viewportHeight;
+            float deltaY = Mathf.Abs(targetLocalPos.y - viewportLocalPos.y);
 
-        float newPosY = Mathf.Clamp(newPos.y, 0f, maxY);
+            Vector2 newPos = _scrollRect.content.anchoredPosition + new Vector2(0f, deltaY);
 
-        if (newPosY != maxY)
-            newPosY += _offset;
+            float contentHeight = _scrollRect.content.rect.height;
+            float viewportHeight = _scrollRect.viewport.rect.height;
+            float maxY = contentHeight - viewportHeight;
 
-        newPos.y = newPosY;
-        _scrollRect.content.anchoredPosition = newPos;
+            float newPosY = Mathf.Clamp(newPos.y, 0f, maxY);
+
+            if (newPosY != maxY)
+                newPosY += _offset;
+
+            newPos.y = newPosY;
+            _scrollRect.content.anchoredPosition = newPos;
+        }
     }
 }

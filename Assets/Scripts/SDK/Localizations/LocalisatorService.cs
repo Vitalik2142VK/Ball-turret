@@ -1,68 +1,72 @@
-﻿using System;
+﻿using CannonTurret.Scriptable.Player;
+using System;
 using UnityEngine;
 using YG;
 
-public class LocalisatorService : MonoBehaviour, ILocalisatorService
+namespace CannonTurret.SDK.Localizations
 {
-    private const string EnglishLanguage = "en";
-    private const string RussianLanguage = "ru";
-    private const string TurkishLanguage = "tr";
-
-    [SerializeField] private Scriptable.LocalizationData _date;
-
-    public Language Language { get; private set; }
-
-    private void OnValidate()
+    public class LocalisatorService : MonoBehaviour, ILocalisatorService
     {
-        if (_date == null)
-            throw new NullReferenceException(nameof(_date));
-    }
+        private const string EnglishLanguage = "en";
+        private const string RussianLanguage = "ru";
+        private const string TurkishLanguage = "tr";
 
-    private void Awake()
-    {
-        if (_date.IsLanguageEstablished == false)
-            _date.EstablishLanguage(this);
-    }
+        [SerializeField] private LocalizationData _date;
 
-    private void OnEnable()
-    {
-        YG2.onGetSDKData += OnGetLocalization;
-    }
+        public Language Language { get; private set; }
 
-    private void Start()
-    {
-        if (YG2.isSDKEnabled)
-            OnGetLocalization();
-    }
-
-    private void OnDisable()
-    {
-        YG2.onGetSDKData -= OnGetLocalization;
-    }
-
-    private void OnGetLocalization()
-    {
-        var language = YG2.envir.language;
-
-        switch (language)
+        private void OnValidate()
         {
-            case EnglishLanguage:
-                Language = Language.EN;
-                break;
-
-            case RussianLanguage:
-                Language = Language.RU;
-                break;
-
-            case TurkishLanguage:
-                Language = Language.TR;
-                break;
-
-            default:
-                Language = Language.EN;
-                break;
+            if (_date == null)
+                throw new NullReferenceException(nameof(_date));
         }
 
-        _date.EstablishLanguage(this);
+        private void Awake()
+        {
+            if (_date.IsLanguageEstablished == false)
+                _date.EstablishLanguage(this);
+        }
+
+        private void OnEnable()
+        {
+            YG2.onGetSDKData += OnGetLocalization;
+        }
+
+        private void Start()
+        {
+            if (YG2.isSDKEnabled)
+                OnGetLocalization();
+        }
+
+        private void OnDisable()
+        {
+            YG2.onGetSDKData -= OnGetLocalization;
+        }
+
+        private void OnGetLocalization()
+        {
+            var language = YG2.envir.language;
+
+            switch (language)
+            {
+                case EnglishLanguage:
+                    Language = Language.EN;
+                    break;
+
+                case RussianLanguage:
+                    Language = Language.RU;
+                    break;
+
+                case TurkishLanguage:
+                    Language = Language.TR;
+                    break;
+
+                default:
+                    Language = Language.EN;
+                    break;
+            }
+
+            _date.EstablishLanguage(this);
+        }
     }
 }

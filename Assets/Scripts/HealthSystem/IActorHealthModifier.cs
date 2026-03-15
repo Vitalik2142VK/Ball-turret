@@ -1,4 +1,7 @@
-﻿public interface IActorHealthModifier
+﻿namespace CannonTurret.HealthSystem
 {
-    public float HealthCoefficient { get; }
+    public interface IActorHealthModifier
+    {
+        public float HealthCoefficient { get; }
+    }
 }

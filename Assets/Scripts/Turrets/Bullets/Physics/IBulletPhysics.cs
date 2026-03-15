@@ -1,13 +1,16 @@
 ﻿using System;
 using UnityEngine;
 
-public interface IBulletPhysics
+namespace CannonTurret.Turrets.Bullets.Physics
 {
-    public event Action<Collider> EnteredCollision;
+    public interface IBulletPhysics
+    {
+        public event Action<Collider> EnteredCollision;
 
-    public void Activate();
+        public void Activate();
 
-    public void MoveToDirection(Vector3 direction);
+        public void MoveToDirection(Vector3 direction);
 
-    public void RecordPoint(float deltaTime);
+        public void RecordPoint(float deltaTime);
+    }
 }

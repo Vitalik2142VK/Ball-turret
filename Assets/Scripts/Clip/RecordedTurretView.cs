@@ -1,43 +1,47 @@
+using CannonTurret.AudioSystem;
+using CannonTurret.Turrets.Shooters;
 using System;
 using UnityEngine;
 
-public class RecordedTurretView : MonoBehaviour
+namespace CannonTurret.Clip
 {
-    private const string Shot = nameof(Shot);
-
-    [SerializeField] private Animator _animator;
-    [SerializeField] private ParticleSystem _shotParticles;
-    [SerializeField] private Sound _shotSound;
-    [SerializeField] private ShooterView _shooterView;
-
-    private int _hashShot;
-
-    private void OnValidate()
+    public class RecordedTurretView : MonoBehaviour
     {
-        if (_animator == null)
-            throw new NullReferenceException(nameof(_animator));
+        private const string Shot = nameof(Shot);
 
-        if (_shotParticles == null)
-            throw new NullReferenceException(nameof(_shotParticles));
+        [SerializeField] private Animator _animator;
+        [SerializeField] private ParticleSystem _shotParticles;
+        [SerializeField] private Sound _shotSound;
+        [SerializeField] private ShooterView _shooterView;
 
-        if (_shotSound == null)
-            throw new NullReferenceException(nameof(_shotSound));
+        private int _hashShot;
 
-        if (_shooterView == null)
-            throw new NullReferenceException(nameof(_shooterView));
-    }
+        private void OnValidate()
+        {
+            if (_animator == null)
+                throw new NullReferenceException(nameof(_animator));
 
-    private void Awake()
-    {
-        _hashShot = Animator.StringToHash(Shot);
-    }
+            if (_shotParticles == null)
+                throw new NullReferenceException(nameof(_shotParticles));
 
-    public void PlayShoot()
-    {
-        _animator.SetTrigger(_hashShot);
-        _shotParticles.Play();
-        _shotSound.Play();
-        _shooterView.PlayShot();
+            if (_shotSound == null)
+                throw new NullReferenceException(nameof(_shotSound));
+
+            if (_shooterView == null)
+                throw new NullReferenceException(nameof(_shooterView));
+        }
+
+        private void Awake()
+        {
+            _hashShot = Animator.StringToHash(Shot);
+        }
+
+        public void PlayShoot()
+        {
+            _animator.SetTrigger(_hashShot);
+            _shotParticles.Play();
+            _shotSound.Play();
+            _shooterView.PlayShot();
+        }
     }
 }
-

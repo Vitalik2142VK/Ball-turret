@@ -1,9 +1,18 @@
-﻿using System;
+﻿using CannonTurret.Actors;
+using CannonTurret.Actors.Bonuses;
+using CannonTurret.Actors.Borders;
+using CannonTurret.Actors.Enemies;
+using CannonTurret.Actors.MoveSystem;
+using CannonTurret.Actors.Spawn;
+using CannonTurret.DamageSystem;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-using Scriptable;
+using CannonTurret.HealthSystem;
+using CannonTurret.LevelSystem;
+using CannonTurret.Scriptable.Move;
 
-namespace PlayLevel
+namespace CannonTurret.EntryPoints.PlayLevel.Configurators
 {
     public class ActorsConfigurator : MonoBehaviour
     {

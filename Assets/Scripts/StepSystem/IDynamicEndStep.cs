@@ -1,4 +1,9 @@
-﻿public interface IDynamicEndStep : IEndStep
+﻿using CannonTurret.StepSystem.Steps;
+
+namespace CannonTurret.StepSystem
 {
-    public void SetNextStep(IStep step);
+    public interface IDynamicEndStep : IEndStep
+    {
+        public void SetNextStep(IStep step);
+    }
 }

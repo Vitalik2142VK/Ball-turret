@@ -1,6 +1,7 @@
+using CannonTurret.Actors.MoveSystem;
 using UnityEngine;
 
-namespace Scriptable
+namespace CannonTurret.Scriptable.Move
 {
     [CreateAssetMenu(menuName = "Attributes/Move attributes", fileName = "MoveAttributes", order = 51)]
     public class MoveAttributes : ScriptableObject, IMoveAttributes

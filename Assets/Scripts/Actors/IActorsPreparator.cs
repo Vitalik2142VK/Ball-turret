@@ -1,4 +1,7 @@
-﻿public interface IActorsPreparator
+﻿namespace CannonTurret.Actors
 {
-    public void Prepare();
+    public interface IActorsPreparator
+    {
+        public void Prepare();
+    }
 }

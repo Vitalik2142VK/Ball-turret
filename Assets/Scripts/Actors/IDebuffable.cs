@@ -1,4 +1,7 @@
-﻿public interface IDebuffable : IDebuffReceiver
+﻿namespace CannonTurret.Actors
 {
-    public void ActivateDebuffs();
+    public interface IDebuffable : IDebuffReceiver
+    {
+        public void ActivateDebuffs();
+    }
 }

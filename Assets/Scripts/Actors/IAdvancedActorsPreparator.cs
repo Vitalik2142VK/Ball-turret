@@ -1,18 +1,24 @@
-﻿using System.Collections.Generic;
+﻿using CannonTurret.Actors.Enemies;
+using CannonTurret.Actors.MoveSystem;
+using CannonTurret.LevelSystem;
+using System.Collections.Generic;
 
-public interface IAdvancedActorsPreparator : IActorsPreparator
+namespace CannonTurret.Actors
 {
-    public IActorsMover ActorsMover { get; }
-    public int EnemiesCount { get; }
-    public bool AreWavesOver { get; }
+    public interface IAdvancedActorsPreparator : IActorsPreparator
+    {
+        public IActorsMover ActorsMover { get; }
+        public int EnemiesCount { get; }
+        public bool AreWavesOver { get; }
 
-    public IEnumerable<IActor> PopActors();
+        public IEnumerable<IActor> PopActors();
 
-    public void CountRemainingEnemies();
+        public void CountRemainingEnemies();
 
-    public void ActivateDebuffablies();
+        public void ActivateDebuffablies();
 
-    public void SetLevel(ILevel level);
+        public void SetLevel(ILevel level);
 
-    public IEnumerable<IEnemy> GetEnemies();
+        public IEnumerable<IEnemy> GetEnemies();
+    }
 }

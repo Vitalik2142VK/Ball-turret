@@ -1,4 +1,7 @@
-﻿public interface IDisableActorsRemover
+﻿namespace CannonTurret.Actors
 {
-    public void RemoveAllDisabled();
+    public interface IDisableActorsRemover
+    {
+        public void RemoveAllDisabled();
+    }
 }

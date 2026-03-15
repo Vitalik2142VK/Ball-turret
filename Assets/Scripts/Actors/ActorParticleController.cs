@@ -1,28 +1,31 @@
 ﻿using System;
 using UnityEngine;
 
-public class ActorParticleController : MonoBehaviour
+namespace CannonTurret.Actors
 {
-    [SerializeField] private ParticleSystem _hit;
-    [SerializeField] private ParticleSystem _dead;
-
-    public float TimeLiveDeadParticle { get; private set; }
-
-    private void OnValidate()
+    public class ActorParticleController : MonoBehaviour
     {
-        if (_hit == null)
-            throw new NullReferenceException(nameof(_hit));
+        [SerializeField] private ParticleSystem _hit;
+        [SerializeField] private ParticleSystem _dead;
 
-        if (_dead == null)
-            throw new NullReferenceException(nameof(_dead));
-    }
+        public float TimeLiveDeadParticle { get; private set; }
 
-    public void PlayHit() => _hit.Play();
+        private void OnValidate()
+        {
+            if (_hit == null)
+                throw new NullReferenceException(nameof(_hit));
 
-    public void PlayDead()
-    {
-        _dead.Play();
-        var main = _dead.main;
-        TimeLiveDeadParticle = main.duration + main.startLifetime.constantMax;
+            if (_dead == null)
+                throw new NullReferenceException(nameof(_dead));
+        }
+
+        public void PlayHit() => _hit.Play();
+
+        public void PlayDead()
+        {
+            _dead.Play();
+            var main = _dead.main;
+            TimeLiveDeadParticle = main.duration + main.startLifetime.constantMax;
+        }
     }
 }

@@ -1,6 +1,9 @@
-﻿public interface IChoiceButton
+﻿namespace CannonTurret.UI
 {
-    public void Enable();
+    public interface IChoiceButton
+    {
+        public void Enable();
 
-    public void Disable();
+        public void Disable();
+    }
 }

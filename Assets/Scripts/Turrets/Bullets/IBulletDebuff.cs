@@ -1,4 +1,9 @@
-﻿public interface IBulletDebuff
+﻿using CannonTurret.Actors;
+
+namespace CannonTurret.Turrets.Bullets
 {
-    public void ApplyDebuff(IDebuffReceiver debuffReceiver);
+    public interface IBulletDebuff
+    {
+        public void ApplyDebuff(IDebuffReceiver debuffReceiver);
+    }
 }

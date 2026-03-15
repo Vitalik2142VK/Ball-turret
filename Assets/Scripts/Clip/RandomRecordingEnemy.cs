@@ -1,42 +1,45 @@
 using System;
 using UnityEngine;
 
-public class RandomRecordingEnemy : MonoBehaviour
+namespace CannonTurret.Clip
 {
-    [SerializeField] private RecordedEnemyView[] _enemies;
-
-    private RecordedEnemyView _currentEnemy;
-
-    private void OnValidate()
+    public class RandomRecordingEnemy : MonoBehaviour
     {
-        if (_enemies == null || _enemies.Length == 0)
-            throw new InvalidOperationException(nameof(_enemies));
+        [SerializeField] private RecordedEnemyView[] _enemies;
 
-        foreach (var enemy in _enemies)
-            if (enemy == null)
-                throw new NullReferenceException($"{_enemies} contains null objects");
-    }
+        private RecordedEnemyView _currentEnemy;
 
-    private void Awake()
-    {
-        foreach (var enemy in _enemies)
-            enemy.SetActive(false);
-    }
+        private void OnValidate()
+        {
+            if (_enemies == null || _enemies.Length == 0)
+                throw new InvalidOperationException(nameof(_enemies));
 
-    private void OnEnable()
-    {
-        int randomIndex = UnityEngine.Random.Range(0, _enemies.Length);
-        _currentEnemy = _enemies[randomIndex];
-        _currentEnemy.SetActive(true);
-    }
+            foreach (var enemy in _enemies)
+                if (enemy == null)
+                    throw new NullReferenceException($"{_enemies} contains null objects");
+        }
 
-    private void OnDisable()
-    {
-        _currentEnemy.SetActive(false);
-    }
+        private void Awake()
+        {
+            foreach (var enemy in _enemies)
+                enemy.SetActive(false);
+        }
 
-    public void PlayDead()
-    {
-        _currentEnemy.PlayDead();
+        private void OnEnable()
+        {
+            int randomIndex = UnityEngine.Random.Range(0, _enemies.Length);
+            _currentEnemy = _enemies[randomIndex];
+            _currentEnemy.SetActive(true);
+        }
+
+        private void OnDisable()
+        {
+            _currentEnemy.SetActive(false);
+        }
+
+        public void PlayDead()
+        {
+            _currentEnemy.PlayDead();
+        }
     }
 }

@@ -1,29 +1,33 @@
-﻿using System;
+﻿using CannonTurret.Actors.Bonuses;
+using System;
 using System.Collections.Generic;
 
-public class BonusGathererBullet : IBonusGatherer
+namespace CannonTurret.Turrets.Bullets
 {
-    private List<IBonus> _selectedBonuses;
-
-    public void Gather(IBonus bonus)
+    public class BonusGathererBullet : IBonusGatherer
     {
-        if (bonus == null)
-            throw new ArgumentNullException(nameof(bonus));
+        private List<IBonus> _selectedBonuses;
 
-        _selectedBonuses ??= new List<IBonus>();
-        _selectedBonuses.Add(bonus);
-    }
+        public void Gather(IBonus bonus)
+        {
+            if (bonus == null)
+                throw new ArgumentNullException(nameof(bonus));
 
-    public bool TryGetBonuses(out IReadOnlyCollection<IBonus> bonuses)
-    {
-        bonuses = null;
+            _selectedBonuses ??= new List<IBonus>();
+            _selectedBonuses.Add(bonus);
+        }
 
-        if (_selectedBonuses == null || _selectedBonuses.Count == 0)
-            return false;
+        public bool TryGetBonuses(out IReadOnlyCollection<IBonus> bonuses)
+        {
+            bonuses = null;
 
-        bonuses = _selectedBonuses;
-        _selectedBonuses = null;
+            if (_selectedBonuses == null || _selectedBonuses.Count == 0)
+                return false;
 
-        return true;
+            bonuses = _selectedBonuses;
+            _selectedBonuses = null;
+
+            return true;
+        }
     }
 }

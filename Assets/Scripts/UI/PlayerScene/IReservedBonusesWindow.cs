@@ -1,4 +1,7 @@
-﻿public interface IReservedBonusesWindow : IWindow, IActivableUI
+﻿namespace CannonTurret.UI.PlayerScene
 {
-    public void Hide();
+    public interface IReservedBonusesWindow : IWindow, IActivableUI
+    {
+        public void Hide();
+    }
 }

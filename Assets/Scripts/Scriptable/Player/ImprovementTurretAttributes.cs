@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using CannonTurret.PlayerSystem;
+using UnityEngine;
 
-namespace Scriptable
+namespace CannonTurret.Scriptable.Player
 {
     [CreateAssetMenu(menuName = "Attributes/Improvement turret", fileName = "ImprovementTurretAttributes", order = 51)]
     public class ImprovementTurretAttributes : ScriptableObject, IImprovementTurretAttributes

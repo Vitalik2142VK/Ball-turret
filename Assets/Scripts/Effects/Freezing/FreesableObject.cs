@@ -1,51 +1,54 @@
 ﻿using UnityEngine;
 
-[RequireComponent(typeof(Animator))]
-public class FreesableObject : MonoBehaviour, IFreesableObject
+namespace CannonTurret.Effects.Freezing
 {
-    private IIceShell _iceShell;
-    private Animator _animator;
-    private float _speedAnimation;
-
-    private void Awake()
+    [RequireComponent(typeof(Animator))]
+    public class FreesableObject : MonoBehaviour, IFreesableObject
     {
-        _animator = GetComponent<Animator>();
-    }
+        private IIceShell _iceShell;
+        private Animator _animator;
+        private float _speedAnimation;
 
-    private void OnDisable()
-    {
-        if (HasIceShell)
+        private void Awake()
         {
-            _iceShell.Disable();
-
-            OnRemoveIceShell();
+            _animator = GetComponent<Animator>();
         }
-    }
 
-    public bool HasIceShell => _iceShell != null;
+        private void OnDisable()
+        {
+            if (HasIceShell)
+            {
+                _iceShell.Disable();
 
-    public void Freeze(IIceShell iceShell)
-    {
-        if (HasIceShell)
-            return;
+                OnRemoveIceShell();
+            }
+        }
 
-        _iceShell = iceShell ?? throw new System.ArgumentNullException(nameof(iceShell));
-        _iceShell.SetScale(transform.lossyScale);
-        _iceShell.SetPosition(transform.position);
-        _iceShell.Enable();
-        _iceShell.Disabled += OnRemoveIceShell;
+        public bool HasIceShell => _iceShell != null;
 
-        _speedAnimation = _animator.speed;
-        _animator.speed = 0;
-    }
+        public void Freeze(IIceShell iceShell)
+        {
+            if (HasIceShell)
+                return;
 
-    public void OnRemoveIceShell()
-    {
-        if (HasIceShell == false)
-            return;
+            _iceShell = iceShell ?? throw new System.ArgumentNullException(nameof(iceShell));
+            _iceShell.SetScale(transform.lossyScale);
+            _iceShell.SetPosition(transform.position);
+            _iceShell.Enable();
+            _iceShell.Disabled += OnRemoveIceShell;
 
-        _animator.speed = _speedAnimation;
-        _iceShell.Disabled -= OnRemoveIceShell;
-        _iceShell = null;
+            _speedAnimation = _animator.speed;
+            _animator.speed = 0;
+        }
+
+        private void OnRemoveIceShell()
+        {
+            if (HasIceShell == false)
+                return;
+
+            _animator.speed = _speedAnimation;
+            _iceShell.Disabled -= OnRemoveIceShell;
+            _iceShell = null;
+        }
     }
 }

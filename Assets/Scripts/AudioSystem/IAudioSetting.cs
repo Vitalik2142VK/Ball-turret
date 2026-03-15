@@ -1,14 +1,17 @@
-﻿public interface IAudioSetting
+﻿namespace CannonTurret.AudioSystem
 {
-    public float MusicVolumeCoefficient { get; }
-    public float EffectsVolumeCoefficient { get; }
-    public bool IsEnableSound {  get; }
+    public interface IAudioSetting
+    {
+        public float MusicVolumeCoefficient { get; }
+        public float EffectsVolumeCoefficient { get; }
+        public bool IsEnableSound { get; }
 
-    public void ChangeVolumeEffects(float valueCoefficient);
+        public void ChangeVolumeEffects(float valueCoefficient);
 
-    public void ChangeVolumeMusic(float valueCoefficient);
+        public void ChangeVolumeMusic(float valueCoefficient);
 
-    public void ChangeEnableSound(bool isEnable);
+        public void ChangeEnableSound(bool isEnable);
 
-    public void AcceptChanges();
+        public void AcceptChanges();
+    }
 }

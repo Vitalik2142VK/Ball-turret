@@ -1,28 +1,31 @@
 ﻿using System;
 using YG;
 
-public class OneTimePurchaseActivator : IPurchaseActivator
+namespace CannonTurret.SDK.Shops
 {
-    private IPlayerPurchase _purchase;
-
-    public OneTimePurchaseActivator(IPlayerPurchase purchase)
+    public class OneTimePurchaseActivator : IPurchaseActivator
     {
-        _purchase = purchase ?? throw new ArgumentNullException(nameof(purchase));
-    }
+        private IPlayerPurchase _purchase;
 
-    public string PurchaseId => _purchase.Id;
+        public OneTimePurchaseActivator(IPlayerPurchase purchase)
+        {
+            _purchase = purchase ?? throw new ArgumentNullException(nameof(purchase));
+        }
 
-    public void Activate(string purchaseId)
-    {
-        if (purchaseId == null)
-            throw new ArgumentNullException(nameof(purchaseId));
+        public string PurchaseId => _purchase.Id;
 
-        if (purchaseId != _purchase.Id)
-            throw new ArgumentException($"The purchase ID - '{purchaseId}' does not match the activator ID - '{_purchase.Id}'");
+        public void Activate(string purchaseId)
+        {
+            if (purchaseId == null)
+                throw new ArgumentNullException(nameof(purchaseId));
 
-        YG2.saves.ActivatePurchase(_purchase.Id);
-        YG2.SaveProgress();
+            if (purchaseId != _purchase.Id)
+                throw new ArgumentException($"The purchase ID - '{purchaseId}' does not match the activator ID - '{_purchase.Id}'");
 
-        _purchase.Update();
+            YG2.saves.ActivatePurchase(_purchase.Id);
+            YG2.SaveProgress();
+
+            _purchase.Update();
+        }
     }
 }

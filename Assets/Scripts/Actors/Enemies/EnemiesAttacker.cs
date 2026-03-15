@@ -1,30 +1,34 @@
-﻿using System;
+﻿using CannonTurret.DamageSystem;
+using System;
 using System.Collections.Generic;
 
-public class EnemiesAttacker : IEnemiesAttacker, IAttackingEnemiesCollector
+namespace CannonTurret.Actors.Enemies
 {
-    private List<IEnemy> _attackingEnemies;
-    private IDamagedObject _damagedObject;
-
-    public EnemiesAttacker(IDamagedObject damagedObject)
+    public class EnemiesAttacker : IEnemiesAttacker, IAttackingEnemiesCollector
     {
-        _damagedObject = damagedObject ?? throw new ArgumentNullException(nameof(damagedObject));
-        _attackingEnemies = new List<IEnemy>();
-    }
+        private List<IEnemy> _attackingEnemies;
+        private IDamagedObject _damagedObject;
 
-    public void Add(IEnemy enemy)
-    {
-        if (enemy == null)
-            throw new ArgumentNullException(nameof(enemy));
+        public EnemiesAttacker(IDamagedObject damagedObject)
+        {
+            _damagedObject = damagedObject ?? throw new ArgumentNullException(nameof(damagedObject));
+            _attackingEnemies = new List<IEnemy>();
+        }
 
-        _attackingEnemies.Add(enemy);
-    }
+        public void Add(IEnemy enemy)
+        {
+            if (enemy == null)
+                throw new ArgumentNullException(nameof(enemy));
 
-    public void AttackAll()
-    {
-        foreach (var enemy in _attackingEnemies)
-            enemy.ApplyDamage(_damagedObject);
+            _attackingEnemies.Add(enemy);
+        }
 
-        _attackingEnemies.Clear();
+        public void AttackAll()
+        {
+            foreach (var enemy in _attackingEnemies)
+                enemy.ApplyDamage(_damagedObject);
+
+            _attackingEnemies.Clear();
+        }
     }
 }

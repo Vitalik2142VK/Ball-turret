@@ -1,8 +1,11 @@
-﻿public interface ILearningUI
+﻿namespace CannonTurret.UI.LearningLevel
 {
-    public int WaveNumberStage { get; }
-    public bool IsProcess { get; }
-    public bool IsFinished { get; }
+    public interface ILearningUI
+    {
+        public int WaveNumberStage { get; }
+        public bool IsProcess { get; }
+        public bool IsFinished { get; }
 
-    public void ShowLearning(int waveNumber);
+        public void ShowLearning(int waveNumber);
+    }
 }

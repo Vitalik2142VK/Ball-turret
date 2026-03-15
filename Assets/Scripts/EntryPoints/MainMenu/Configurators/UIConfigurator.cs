@@ -1,7 +1,17 @@
-﻿using System;
+﻿using CannonTurret.AudioSystem;
+using CannonTurret.Coin.Products;
+using CannonTurret.Coin.Shops;
+using CannonTurret.Coin.Transactions;
+using CannonTurret.Coin.Wallets;
+using CannonTurret.LevelSystem;
+using CannonTurret.PlayerSystem;
+using CannonTurret.SDK.Ads;
+using CannonTurret.UI;
+using CannonTurret.UI.MainMenu;
+using System;
 using UnityEngine;
 
-namespace MainMenuSpace
+namespace CannonTurret.EntryPoints.MainMenu.Configurators
 {
     public class UIConfigurator : MonoBehaviour
     {

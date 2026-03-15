@@ -1,4 +1,7 @@
-﻿public interface ILocalisatorService
+﻿namespace CannonTurret.SDK.Localizations
 {
-    public Language Language { get; }
+    public interface ILocalisatorService
+    {
+        public Language Language { get; }
+    }
 }

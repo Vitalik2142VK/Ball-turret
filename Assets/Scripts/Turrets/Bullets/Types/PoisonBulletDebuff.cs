@@ -1,29 +1,35 @@
-﻿using System;
+﻿using CannonTurret.Actors;
+using CannonTurret.DamageSystem;
+using CannonTurret.Effects;
+using System;
 using UnityEngine;
 
-public class PoisonBulletDebuff : MonoBehaviour, IBulletDebuff
+namespace CannonTurret.Turrets.Bullets.Types
 {
-    private const float PoisonDamageCoefficient = 0.5f;
-
-    private IDamageAttributes _damageAttributes;
-
-    public void Initialize(IDamageAttributes attributes)
+    public class PoisonBulletDebuff : MonoBehaviour, IBulletDebuff
     {
-        if (attributes == null)
-            throw new ArgumentNullException(nameof(attributes));
+        private const float PoisonDamageCoefficient = 0.5f;
 
-        _damageAttributes = new DamageAttributes(attributes.Damage * PoisonDamageCoefficient);
-    }
+        private IDamageAttributes _damageAttributes;
 
-    public void ApplyDebuff(IDebuffReceiver debuffsReceiver)
-    {
-        if (debuffsReceiver == null)
-            throw new ArgumentNullException(nameof(debuffsReceiver));
-
-        if (debuffsReceiver is IDamagedObject damagedObject)
+        public void Initialize(IDamageAttributes attributes)
         {
-            PoisonDebuff poisonDebuff = new PoisonDebuff(damagedObject, _damageAttributes);
-            debuffsReceiver.AddDebuff(poisonDebuff);
+            if (attributes == null)
+                throw new ArgumentNullException(nameof(attributes));
+
+            _damageAttributes = new DamageAttributes(attributes.Damage * PoisonDamageCoefficient);
+        }
+
+        public void ApplyDebuff(IDebuffReceiver debuffsReceiver)
+        {
+            if (debuffsReceiver == null)
+                throw new ArgumentNullException(nameof(debuffsReceiver));
+
+            if (debuffsReceiver is IDamagedObject damagedObject)
+            {
+                PoisonDebuff poisonDebuff = new PoisonDebuff(damagedObject, _damageAttributes);
+                debuffsReceiver.AddDebuff(poisonDebuff);
+            }
         }
     }
 }

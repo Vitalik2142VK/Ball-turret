@@ -1,23 +1,27 @@
-﻿using System;
+﻿using CannonTurret.UI.PlayerScene;
+using System;
 
-public class ResetComboStep : IStep, IEndPointStep
+namespace CannonTurret.StepSystem.Steps
 {
-    private IEndStep _endStep;
-    private IComboCounterResetter _resetter;
-
-    public ResetComboStep(IComboCounterResetter resetter)
+    public class ResetComboStep : IStep, IEndPointStep
     {
-        _resetter = resetter ?? throw new ArgumentNullException(nameof(resetter));
-    }
+        private IEndStep _endStep;
+        private IComboCounterResetter _resetter;
 
-    public void Action()
-    {
-        _resetter.ResetCombo();
-        _endStep.End();
-    }
+        public ResetComboStep(IComboCounterResetter resetter)
+        {
+            _resetter = resetter ?? throw new ArgumentNullException(nameof(resetter));
+        }
 
-    public void SetEndStep(IEndStep endStep)
-    {
-        _endStep = endStep ?? throw new ArgumentNullException(nameof(endStep));
+        public void Action()
+        {
+            _resetter.ResetCombo();
+            _endStep.End();
+        }
+
+        public void SetEndStep(IEndStep endStep)
+        {
+            _endStep = endStep ?? throw new ArgumentNullException(nameof(endStep));
+        }
     }
 }

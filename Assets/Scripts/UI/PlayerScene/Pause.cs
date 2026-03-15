@@ -1,31 +1,34 @@
 ﻿using UnityEngine;
 
-public class Pause : MonoBehaviour
+namespace CannonTurret.UI.PlayerScene
 {
-    private const float EnableTimeScale = 1f;
-    private const float DisableTimeScale = 0f;
-
-    private OpenWindowButton _pauseButton;
-
-    public void Initialize(OpenWindowButton pauseButton)
+    public class Pause : MonoBehaviour
     {
-        _pauseButton = pauseButton != null ? pauseButton : throw new System.ArgumentNullException(nameof(pauseButton));
+        private const float EnableTimeScale = 1f;
+        private const float DisableTimeScale = 0f;
 
-        Disable();
-    }
+        private OpenWindowButton _pauseButton;
 
-    public void Enable()
-    {
-        Time.timeScale = DisableTimeScale;
+        public void Initialize(OpenWindowButton pauseButton)
+        {
+            _pauseButton = pauseButton != null ? pauseButton : throw new System.ArgumentNullException(nameof(pauseButton));
 
-        gameObject.SetActive(true);
-    }
+            Disable();
+        }
 
-    public void Disable()
-    {
-        gameObject.SetActive(false);
-        _pauseButton.Show();
+        public void Enable()
+        {
+            Time.timeScale = DisableTimeScale;
 
-        Time.timeScale = EnableTimeScale;
+            gameObject.SetActive(true);
+        }
+
+        public void Disable()
+        {
+            gameObject.SetActive(false);
+            _pauseButton.Show();
+
+            Time.timeScale = EnableTimeScale;
+        }
     }
 }

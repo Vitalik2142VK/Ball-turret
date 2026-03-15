@@ -1,14 +1,21 @@
+using CannonTurret.AudioSystem;
+using CannonTurret.DamageSystem;
+using CannonTurret.PlayerSystem;
+using CannonTurret.Turrets.Bullets;
+using CannonTurret.Turrets.Bullets.Creation;
+using CannonTurret.Turrets.Bullets.Types;
+using CannonTurret.UI.PlayerScene;
 using System;
 using UnityEngine;
 
-namespace PlayLevel
+namespace CannonTurret.EntryPoints.PlayLevel.Configurators
 {
     public class BulletConfigurator : MonoBehaviour
     {
         [SerializeField] private BulletFactory _bulletFactory;
         [SerializeField] private ComboCounter _comboCounter;
         [SerializeField] private Sound _hitBulletSound;
-        [SerializeField] private Scriptable.DamageAttributes _damageBulletAttributes;
+        [SerializeField] private Scriptable.Damage.DamageAttributes _damageBulletAttributes;
 
         [Header("Exploding bullet prefab")]
         [SerializeField] private BulletsCollector _bulletsCollector;

@@ -1,4 +1,7 @@
-﻿public interface IDamage
+﻿namespace CannonTurret.DamageSystem
 {
-   public void Apply(IDamagedObject health);
+    public interface IDamage
+    {
+        public void Apply(IDamagedObject health);
+    }
 }

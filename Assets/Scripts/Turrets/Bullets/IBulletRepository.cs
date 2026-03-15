@@ -1,12 +1,15 @@
-﻿public interface IBulletRepository
+﻿namespace CannonTurret.Turrets.Bullets
 {
-    public bool HasFreeBullets {  get; }
+    public interface IBulletRepository
+    {
+        public bool HasFreeBullets { get; }
 
-    public bool AreBulletsReturned { get; }
+        public bool AreBulletsReturned { get; }
 
-    public void Add(IBullet bullet);
+        public void Add(IBullet bullet);
 
-    public IBullet Get();
+        public IBullet Get();
 
-    public void Put(IBullet bullet);
+        public void Put(IBullet bullet);
+    }
 }

@@ -1,69 +1,76 @@
-﻿using System;
+﻿using CannonTurret.Actors;
+using CannonTurret.Actors.Bonuses;
+using CannonTurret.Scriptable.Damage;
+using CannonTurret.Turrets.Bullets.Physics;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Bullet), typeof(FireBulletDebuff))]
-public class FireBullet : MonoBehaviour, IBullet, IInitializer
+namespace CannonTurret.Turrets.Bullets.Types
 {
-    [SerializeField, SerializeIterface(typeof(IBulletPhysics))] private GameObject _bulletPhysicsGameObject;
-    [SerializeField] private Scriptable.DamageImproverAttributes _damageImproverAttributes;
-
-    private IBullet _bullet;
-    private IBulletDebuff _bulletDebaff;
-    private IBulletPhysics _bulletPhysics;
-
-    public BulletType BulletType => _bullet.BulletType;
-
-    private void OnValidate()
+    [RequireComponent(typeof(Bullet), typeof(FireBulletDebuff))]
+    public class FireBullet : MonoBehaviour, IBullet, IInitializer
     {
-        if (_damageImproverAttributes == null)
-            throw new NullReferenceException(nameof(_damageImproverAttributes));
+        [SerializeField, SerializeIterface(typeof(IBulletPhysics))] private GameObject _bulletPhysicsGameObject;
+        [SerializeField] private DamageImproverAttributes _damageImproverAttributes;
 
-        if (_bulletPhysicsGameObject == null)
-            if (TryGetComponent(out IBulletPhysics _))
-                _bulletPhysicsGameObject = gameObject;
-            else
+        private IBullet _bullet;
+        private IBulletDebuff _bulletDebaff;
+        private IBulletPhysics _bulletPhysics;
+
+        public BulletType BulletType => _bullet.BulletType;
+
+        private void OnValidate()
+        {
+            if (_damageImproverAttributes == null)
                 throw new NullReferenceException(nameof(_damageImproverAttributes));
-    }
 
-    private void Awake()
-    {
-        _bulletPhysics = _bulletPhysicsGameObject.GetComponent<IBulletPhysics>();
-    }
+            if (_bulletPhysicsGameObject == null)
+                if (TryGetComponent(out IBulletPhysics _))
+                    _bulletPhysicsGameObject = gameObject;
+                else
+                    throw new NullReferenceException(nameof(_damageImproverAttributes));
+        }
 
-    private void OnEnable()
-    {
-        _bulletPhysics.EnteredCollision += OnApplyDebaff;
-    }
+        private void Awake()
+        {
+            _bulletPhysics = _bulletPhysicsGameObject.GetComponent<IBulletPhysics>();
+        }
 
-    private void OnDisable()
-    {
-        _bulletPhysics.EnteredCollision -= OnApplyDebaff;
-    }
+        private void OnEnable()
+        {
+            _bulletPhysics.EnteredCollision += OnApplyDebaff;
+        }
 
-    public void Initialize()
-    {
-        Bullet bullet = GetComponent<Bullet>();
-        FireBulletDebuff bulletDebaff = GetComponent<FireBulletDebuff>();
+        private void OnDisable()
+        {
+            _bulletPhysics.EnteredCollision -= OnApplyDebaff;
+        }
 
-        bullet.ChangeDamage(_damageImproverAttributes);
-        bulletDebaff.Initialize(bullet.DamageAttributes);
+        public void Initialize()
+        {
+            Bullet bullet = GetComponent<Bullet>();
+            FireBulletDebuff bulletDebaff = GetComponent<FireBulletDebuff>();
 
-        _bullet = bullet;
-        _bulletDebaff = bulletDebaff;
-    }
+            bullet.ChangeDamage(_damageImproverAttributes);
+            bulletDebaff.Initialize(bullet.DamageAttributes);
 
-    public void Move(Vector3 startPoint, Vector3 direction) => _bullet.Move(startPoint, direction);
+            _bullet = bullet;
+            _bulletDebaff = bulletDebaff;
+        }
 
-    public void SetActive(bool isActive) => _bullet.SetActive(isActive);
+        public void Move(Vector3 startPoint, Vector3 direction) => _bullet.Move(startPoint, direction);
 
-    public void Gather(IBonus bonus) => _bullet.Gather(bonus);
+        public void SetActive(bool isActive) => _bullet.SetActive(isActive);
 
-    public bool TryGetBonuses(out IReadOnlyCollection<IBonus> bonuses) => _bullet.TryGetBonuses(out bonuses);
+        public void Gather(IBonus bonus) => _bullet.Gather(bonus);
 
-    private void OnApplyDebaff(Collider collider)
-    {
-        if (collider.TryGetComponent(out IDebuffReceiver debuffReceiver))
-            _bulletDebaff.ApplyDebuff(debuffReceiver);
+        public bool TryGetBonuses(out IReadOnlyCollection<IBonus> bonuses) => _bullet.TryGetBonuses(out bonuses);
+
+        private void OnApplyDebaff(Collider collider)
+        {
+            if (collider.TryGetComponent(out IDebuffReceiver debuffReceiver))
+                _bulletDebaff.ApplyDebuff(debuffReceiver);
+        }
     }
 }

@@ -1,5 +1,8 @@
-﻿public enum DebuffType
+﻿namespace CannonTurret.Effects
 {
-    Fire,
-    Poison
+    public enum DebuffType
+    {
+        Fire,
+        Poison
+    }
 }

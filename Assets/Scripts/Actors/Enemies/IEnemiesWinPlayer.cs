@@ -1,4 +1,7 @@
-﻿public interface IEnemiesWinPlayer
+﻿namespace CannonTurret.Actors.Enemies
 {
-    public void WinAll();
+    public interface IEnemiesWinPlayer
+    {
+        public void WinAll();
+    }
 }

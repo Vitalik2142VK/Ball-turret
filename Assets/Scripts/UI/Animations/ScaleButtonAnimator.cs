@@ -1,64 +1,67 @@
 ﻿using DG.Tweening;
 using UnityEngine;
 
-[RequireComponent(typeof(RectTransform))]
-public class ScaleButtonAnimator : MonoBehaviour, IButtonAnimator
+namespace CannonTurret.UI.Animations
 {
-    [SerializeField, Range(-0.95f, 0.95f)] private float _clickSizeValue = -0.1f;
-    [SerializeField, Range(0.05f, 0.3f)] private float _duration = 0.1f;
-
-    private Tween _animation;
-    private RectTransform _rectTransform;
-    private Vector2 _defaultSize;
-    private Vector2 _clickSize;
-
-    public bool IsPressed { get; private set; }
-
-    private void Awake()
+    [RequireComponent(typeof(RectTransform))]
+    public class ScaleButtonAnimator : MonoBehaviour, IButtonAnimator
     {
-        _rectTransform = GetComponent<RectTransform>();
+        [SerializeField, Range(-0.95f, 0.95f)] private float _clickSizeValue = -0.1f;
+        [SerializeField, Range(0.05f, 0.3f)] private float _duration = 0.1f;
 
-        _defaultSize = _rectTransform.localScale;
-        _clickSize = new Vector2(_defaultSize.x + _clickSizeValue, _defaultSize.y + _clickSizeValue);
+        private Tween _animation;
+        private RectTransform _rectTransform;
+        private Vector2 _defaultSize;
+        private Vector2 _clickSize;
 
-        IsPressed = true;
-    }
+        public bool IsPressed { get; private set; }
 
-    private void OnDestroy()
-    {
-        KillCurrentAnimation();
-    }
+        private void Awake()
+        {
+            _rectTransform = GetComponent<RectTransform>();
 
-    public void Press()
-    {
-        KillCurrentAnimation();
+            _defaultSize = _rectTransform.localScale;
+            _clickSize = new Vector2(_defaultSize.x + _clickSizeValue, _defaultSize.y + _clickSizeValue);
 
-        _animation = _rectTransform.DOScale(_clickSize, _duration).From(_defaultSize)
-            .SetUpdate(true)
-            .Play();
+            IsPressed = true;
+        }
 
-        IsPressed = true;
-    }
+        private void OnDestroy()
+        {
+            KillCurrentAnimation();
+        }
 
-    public void PressOut()
-    {
-        Vector2 currentScale = _rectTransform.localScale;
+        public void Press()
+        {
+            KillCurrentAnimation();
 
-        if (currentScale == _defaultSize)
-            return;
+            _animation = _rectTransform.DOScale(_clickSize, _duration).From(_defaultSize)
+                .SetUpdate(true)
+                .Play();
 
-        KillCurrentAnimation();
+            IsPressed = true;
+        }
 
-        _animation = _rectTransform.DOScale(_defaultSize, _duration).From(_clickSize)
-            .SetUpdate(true)
-            .Play();
+        public void PressOut()
+        {
+            Vector2 currentScale = _rectTransform.localScale;
 
-        IsPressed = false;
-    }
+            if (currentScale == _defaultSize)
+                return;
 
-    private void KillCurrentAnimation()
-    {
-        if (_animation != null && _animation.active)
-            _animation.Kill();
+            KillCurrentAnimation();
+
+            _animation = _rectTransform.DOScale(_defaultSize, _duration).From(_clickSize)
+                .SetUpdate(true)
+                .Play();
+
+            IsPressed = false;
+        }
+
+        private void KillCurrentAnimation()
+        {
+            if (_animation != null && _animation.active)
+                _animation.Kill();
+        }
     }
 }

@@ -1,11 +1,14 @@
 ﻿using UnityEngine;
 
-public interface ITargetPoint
+namespace CannonTurret.PlayerSystem
 {
-    public bool IsInsideZoneEnemy { get; }
-    public Vector3 Position { get; }
+    public interface ITargetPoint
+    {
+        public bool IsInsideZoneEnemy { get; }
+        public Vector3 Position { get; }
 
-    public void SetPosition(Vector3 position);
+        public void SetPosition(Vector3 position);
 
-    public void SaveLastPosition();
+        public void SaveLastPosition();
+    }
 }

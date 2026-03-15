@@ -1,28 +1,32 @@
-﻿using System;
+﻿using CannonTurret.HealthSystem;
+using System;
 using UnityEngine;
 
-public class FullHealthTurretActivatorCreator : MonoBehaviour, IBonusActivatorCreator
+namespace CannonTurret.Actors.Bonuses.Activators
 {
-    [SerializeField] private FullHealthTurretView _fullHealthTurretView;
-
-    private IHealth _turretHealth;
-
-    private void OnValidate()
+    public class FullHealthTurretActivatorCreator : MonoBehaviour, IBonusActivatorCreator
     {
-        if (_fullHealthTurretView == null)
-            throw new NullReferenceException(nameof(_fullHealthTurretView));
-    }
+        [SerializeField] private FullHealthTurretView _fullHealthTurretView;
 
-    public void SetHealthTurret(IHealth turretHealth)
-    {
-        _turretHealth = turretHealth ?? throw new ArgumentNullException(nameof(turretHealth));
-    }
+        private IHealth _turretHealth;
 
-    public IBonusActivator Create()
-    {
-        if (_turretHealth == null)
-            throw new NullReferenceException(nameof(_turretHealth));
+        private void OnValidate()
+        {
+            if (_fullHealthTurretView == null)
+                throw new NullReferenceException(nameof(_fullHealthTurretView));
+        }
 
-        return new FullHealthTurretBonusActivator(_turretHealth, _fullHealthTurretView);
+        public void SetHealthTurret(IHealth turretHealth)
+        {
+            _turretHealth = turretHealth ?? throw new ArgumentNullException(nameof(turretHealth));
+        }
+
+        public IBonusActivator Create()
+        {
+            if (_turretHealth == null)
+                throw new NullReferenceException(nameof(_turretHealth));
+
+            return new FullHealthTurretBonusActivator(_turretHealth, _fullHealthTurretView);
+        }
     }
 }

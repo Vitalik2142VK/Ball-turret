@@ -1,27 +1,32 @@
-﻿using System;
+﻿using CannonTurret.Actors.Bonuses.Activators;
+using CannonTurret.Scriptable.Bonus;
+using System;
 using UnityEngine;
 
-public class BonusCreator : MonoBehaviour, IBonusCreator
+namespace CannonTurret.Actors.Bonuses
 {
-    [SerializeField] private Scriptable.BonusCard _bonusCard;
-
-    private IBonusActivator _bonusActivator;
-
-    public string Name => _bonusCard.Name;
-
-    private void OnValidate()
+    public class BonusCreator : MonoBehaviour, IBonusCreator
     {
-        if (_bonusCard == null)
-            throw new NullReferenceException(nameof(_bonusCard));
-    }
+        [SerializeField] private BonusCard _bonusCard;
 
-    public void Initialize(IBonusActivator bonusActivator)
-    {
-        _bonusActivator = bonusActivator ?? throw new ArgumentNullException(nameof(bonusActivator));
-    }
+        private IBonusActivator _bonusActivator;
 
-    public IBonus Create()
-    {
-        return new Bonus(_bonusCard, _bonusActivator);
+        public string Name => _bonusCard.Name;
+
+        private void OnValidate()
+        {
+            if (_bonusCard == null)
+                throw new NullReferenceException(nameof(_bonusCard));
+        }
+
+        public void Initialize(IBonusActivator bonusActivator)
+        {
+            _bonusActivator = bonusActivator ?? throw new ArgumentNullException(nameof(bonusActivator));
+        }
+
+        public IBonus Create()
+        {
+            return new Bonus(_bonusCard, _bonusActivator);
+        }
     }
 }

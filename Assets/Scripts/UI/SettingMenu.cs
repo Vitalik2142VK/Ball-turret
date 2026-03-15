@@ -1,91 +1,96 @@
+using CannonTurret.AudioSystem;
+using CannonTurret.UI.Animations;
 using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(IAnimatorUI))]
-public class SettingMenu : MonoBehaviour
+namespace CannonTurret.UI
 {
-    [SerializeField] private Slider _volumeSound;
-    [SerializeField] private Slider _volumeMusic;
-    [SerializeField] private Toggle _isEnableSound;
-
-    private IWindow _previousWindow;
-    private IAudioSetting _audioSetting;
-    private IAnimatorUI _animator;
-
-    private void OnValidate()
+    [RequireComponent(typeof(IAnimatorUI))]
+    public class SettingMenu : MonoBehaviour
     {
-        if (_volumeSound == null)
-            throw new NullReferenceException(nameof(_volumeSound));
+        [SerializeField] private Slider _volumeSound;
+        [SerializeField] private Slider _volumeMusic;
+        [SerializeField] private Toggle _isEnableSound;
 
-        if (_volumeMusic == null)
-            throw new NullReferenceException(nameof(_volumeMusic));
+        private IWindow _previousWindow;
+        private IAudioSetting _audioSetting;
+        private IAnimatorUI _animator;
 
-        if (_isEnableSound == null)
-            throw new NullReferenceException(nameof(_isEnableSound));
-    }
+        private void OnValidate()
+        {
+            if (_volumeSound == null)
+                throw new NullReferenceException(nameof(_volumeSound));
 
-    private void Awake()
-    {
-        _animator = GetComponent<IAnimatorUI>();
+            if (_volumeMusic == null)
+                throw new NullReferenceException(nameof(_volumeMusic));
 
-        gameObject.SetActive(false);
-    }
+            if (_isEnableSound == null)
+                throw new NullReferenceException(nameof(_isEnableSound));
+        }
 
-    private void OnEnable()
-    {
-        _volumeSound.onValueChanged.AddListener(OnChangeVolumeEffects);
-        _volumeMusic.onValueChanged.AddListener(OnChangeVolumeMusic);
-        _isEnableSound.onValueChanged.AddListener(OnEnableSound);
-    }
+        private void Awake()
+        {
+            _animator = GetComponent<IAnimatorUI>();
 
-    private void Start()
-    {
-        _volumeSound.value = _audioSetting.EffectsVolumeCoefficient;
-        _volumeMusic.value = _audioSetting.MusicVolumeCoefficient;
-        _isEnableSound.isOn = _audioSetting.IsEnableSound;
-    }
+            gameObject.SetActive(false);
+        }
 
-    private void OnDisable()
-    {
-        _volumeSound.onValueChanged.RemoveListener(OnChangeVolumeEffects);
-        _volumeMusic.onValueChanged.RemoveListener(OnChangeVolumeMusic);
-        _isEnableSound.onValueChanged.RemoveListener(OnEnableSound);
-    }
+        private void OnEnable()
+        {
+            _volumeSound.onValueChanged.AddListener(OnChangeVolumeEffects);
+            _volumeMusic.onValueChanged.AddListener(OnChangeVolumeMusic);
+            _isEnableSound.onValueChanged.AddListener(OnEnableSound);
+        }
 
-    public void Initialize(IAudioSetting audioSetting)
-    {
-        _audioSetting = audioSetting ?? throw new ArgumentNullException(nameof(audioSetting));
-    }
+        private void Start()
+        {
+            _volumeSound.value = _audioSetting.EffectsVolumeCoefficient;
+            _volumeMusic.value = _audioSetting.MusicVolumeCoefficient;
+            _isEnableSound.isOn = _audioSetting.IsEnableSound;
+        }
 
-    public void Open(IWindow previousWindow)
-    {
-        _previousWindow = previousWindow ?? throw new ArgumentNullException(nameof(previousWindow));
+        private void OnDisable()
+        {
+            _volumeSound.onValueChanged.RemoveListener(OnChangeVolumeEffects);
+            _volumeMusic.onValueChanged.RemoveListener(OnChangeVolumeMusic);
+            _isEnableSound.onValueChanged.RemoveListener(OnEnableSound);
+        }
 
-        gameObject.SetActive(true);
-        _animator.Show();
-    }
+        public void Initialize(IAudioSetting audioSetting)
+        {
+            _audioSetting = audioSetting ?? throw new ArgumentNullException(nameof(audioSetting));
+        }
 
-    public void OnClose()
-    {
-        _audioSetting.AcceptChanges();
-        _animator.Hide();
+        public void Open(IWindow previousWindow)
+        {
+            _previousWindow = previousWindow ?? throw new ArgumentNullException(nameof(previousWindow));
 
-        StartCoroutine(WaitClosure());
-    }
+            gameObject.SetActive(true);
+            _animator.Show();
+        }
 
-    private void OnChangeVolumeEffects(float value) => _audioSetting.ChangeVolumeEffects(value);
+        public void OnClose()
+        {
+            _audioSetting.AcceptChanges();
+            _animator.Hide();
 
-    private void OnChangeVolumeMusic(float value) => _audioSetting.ChangeVolumeMusic(value);
+            StartCoroutine(WaitClosure());
+        }
 
-    private void OnEnableSound(bool isEnable) => _audioSetting.ChangeEnableSound(isEnable);
+        private void OnChangeVolumeEffects(float value) => _audioSetting.ChangeVolumeEffects(value);
 
-    private IEnumerator WaitClosure()
-    {
-        yield return _animator.GetYieldAnimation();
+        private void OnChangeVolumeMusic(float value) => _audioSetting.ChangeVolumeMusic(value);
 
-        gameObject.SetActive(false);
-        _previousWindow.Enable();
+        private void OnEnableSound(bool isEnable) => _audioSetting.ChangeEnableSound(isEnable);
+
+        private IEnumerator WaitClosure()
+        {
+            yield return _animator.GetYieldAnimation();
+
+            gameObject.SetActive(false);
+            _previousWindow.Enable();
+        }
     }
 }

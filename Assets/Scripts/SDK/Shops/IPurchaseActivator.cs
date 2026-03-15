@@ -1,4 +1,7 @@
-﻿public interface IPurchaseActivator
+﻿namespace CannonTurret.SDK.Shops
 {
-    public void Activate(string purchaseId);
+    public interface IPurchaseActivator
+    {
+        public void Activate(string purchaseId);
+    }
 }

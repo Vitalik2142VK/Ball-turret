@@ -1,4 +1,7 @@
-﻿public interface IInitializer
+﻿namespace CannonTurret.Turrets.Bullets
 {
-    public void Initialize();
+    public interface IInitializer
+    {
+        public void Initialize();
+    }
 }

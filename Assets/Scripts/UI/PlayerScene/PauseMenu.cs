@@ -1,70 +1,76 @@
+using CannonTurret.LevelSystem;
+using CannonTurret.StepSystem;
+using CannonTurret.UI.Animations;
 using System;
 using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(ScaleAnimatorUI))]
-public class PauseMenu : MonoBehaviour, IWindow
+namespace CannonTurret.UI.PlayerScene
 {
-    [SerializeField] private Pause _pause;
-    [SerializeField] private SettingMenu _settingMenu;
-
-    private IChangeSceneStep _changeSceneStep;
-    private IAnimatorUI _animator;
-
-    private void OnValidate()
+    [RequireComponent(typeof(ScaleAnimatorUI))]
+    public class PauseMenu : MonoBehaviour, IWindow
     {
-        if (_pause == null)
-            throw new NullReferenceException(nameof(_pause));
+        [SerializeField] private Pause _pause;
+        [SerializeField] private SettingMenu _settingMenu;
 
-        if (_settingMenu == null)
-            throw new NullReferenceException(nameof(_settingMenu));
-    }
-    
-    private void Awake()
-    {
-        _animator = GetComponent<IAnimatorUI>();
+        private IChangeSceneStep _changeSceneStep;
+        private IAnimatorUI _animator;
 
-        gameObject.SetActive(false);
-    }
+        private void OnValidate()
+        {
+            if (_pause == null)
+                throw new NullReferenceException(nameof(_pause));
 
-    public void Initialize(IChangeSceneStep changeSceneStep)
-    {
-        _changeSceneStep = changeSceneStep ?? throw new ArgumentNullException(nameof(changeSceneStep)); 
-    }
-        
-    public void Enable()
-    {
-        gameObject.SetActive(true);
-        _pause.Enable();
-        _animator.Show();
-    }
+            if (_settingMenu == null)
+                throw new NullReferenceException(nameof(_settingMenu));
+        }
 
-    public void OnPlay()
-    {
-        _animator.Hide();
+        private void Awake()
+        {
+            _animator = GetComponent<IAnimatorUI>();
 
-        StartCoroutine(WaitClosure());
-    }
+            gameObject.SetActive(false);
+        }
 
-    public void OnOpenSettingMenu()
-    {
-        gameObject.SetActive(false);
-        _settingMenu.Open(this);
-    }
+        public void Initialize(IChangeSceneStep changeSceneStep)
+        {
+            _changeSceneStep = changeSceneStep ?? throw new ArgumentNullException(nameof(changeSceneStep));
+        }
 
-    public void OnExit()
-    {
-        MainMenuLoader mainMenuLoader = new MainMenuLoader();
+        public void Enable()
+        {
+            gameObject.SetActive(true);
+            _pause.Enable();
+            _animator.Show();
+        }
 
-        _changeSceneStep.SetSceneLoader(mainMenuLoader);
-        _changeSceneStep.Action();
-    }
+        public void OnPlay()
+        {
+            _animator.Hide();
 
-    private IEnumerator WaitClosure()
-    {
-        yield return _animator.GetYieldAnimation();
+            StartCoroutine(WaitClosure());
+        }
 
-        gameObject.SetActive(false);
-        _pause.Disable();
+        public void OnOpenSettingMenu()
+        {
+            gameObject.SetActive(false);
+            _settingMenu.Open(this);
+        }
+
+        public void OnExit()
+        {
+            MainMenuLoader mainMenuLoader = new MainMenuLoader();
+
+            _changeSceneStep.SetSceneLoader(mainMenuLoader);
+            _changeSceneStep.Action();
+        }
+
+        private IEnumerator WaitClosure()
+        {
+            yield return _animator.GetYieldAnimation();
+
+            gameObject.SetActive(false);
+            _pause.Disable();
+        }
     }
 }

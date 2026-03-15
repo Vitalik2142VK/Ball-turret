@@ -1,4 +1,7 @@
-﻿public interface IDestroyedObject
+﻿namespace CannonTurret.HealthSystem
 {
-    public void Destroy();
+    public interface IDestroyedObject
+    {
+        public void Destroy();
+    }
 }

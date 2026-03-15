@@ -1,6 +1,9 @@
 ﻿using System.Collections.Generic;
 
-public interface IBonusRandomizer
+namespace CannonTurret.Actors.Bonuses
 {
-    public IEnumerable<IBonus> GetBonuses(int countBonuses);
+    public interface IBonusRandomizer
+    {
+        public IEnumerable<IBonus> GetBonuses(int countBonuses);
+    }
 }

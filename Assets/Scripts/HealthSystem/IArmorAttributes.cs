@@ -1,4 +1,7 @@
-﻿public interface IArmorAttributes
+﻿namespace CannonTurret.HealthSystem
 {
-    public float DamageReductionCoefficient { get; }
+    public interface IArmorAttributes
+    {
+        public float DamageReductionCoefficient { get; }
+    }
 }

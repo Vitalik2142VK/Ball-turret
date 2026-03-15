@@ -4,60 +4,63 @@ using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
 
-[RequireComponent(typeof(PlayableDirector))]
-public class RecordedClip : MonoBehaviour
+namespace CannonTurret.Clip
 {
-    [SerializeField] private TimelineAsset[] _timelineAssets;
-    [SerializeField, Min(1f)] private float _waitTime;
-
-    private PlayableDirector _playableDirector;
-    private WaitForSeconds _wait;
-
-    private void OnValidate()
+    [RequireComponent(typeof(PlayableDirector))]
+    public class RecordedClip : MonoBehaviour
     {
-        if (_timelineAssets == null || _timelineAssets.Length == 0)
-            throw new InvalidOperationException(nameof(_timelineAssets));
+        [SerializeField] private TimelineAsset[] _timelineAssets;
+        [SerializeField, Min(1f)] private float _waitTime;
 
-        foreach (var timelineAsset in _timelineAssets)
-            if (timelineAsset == null)
-                throw new NullReferenceException($"{_timelineAssets} contains null objects");
-    }
+        private PlayableDirector _playableDirector;
+        private WaitForSeconds _wait;
 
-    private void Awake()
-    {
-        _playableDirector = GetComponent<PlayableDirector>();
+        private void OnValidate()
+        {
+            if (_timelineAssets == null || _timelineAssets.Length == 0)
+                throw new InvalidOperationException(nameof(_timelineAssets));
 
-        _wait = new WaitForSeconds(_waitTime);
-    }
+            foreach (var timelineAsset in _timelineAssets)
+                if (timelineAsset == null)
+                    throw new NullReferenceException($"{_timelineAssets} contains null objects");
+        }
 
-    private void OnEnable()
-    {
-        _playableDirector.stopped += OnSelectRandomTimeline;
-    }
+        private void Awake()
+        {
+            _playableDirector = GetComponent<PlayableDirector>();
 
-    private void Start()
-    {
-        _playableDirector.Stop();
-    }
+            _wait = new WaitForSeconds(_waitTime);
+        }
 
-    private void OnDisable()
-    {
-        _playableDirector.stopped -= OnSelectRandomTimeline;
-    }
+        private void OnEnable()
+        {
+            _playableDirector.stopped += OnSelectRandomTimeline;
+        }
 
-    private void OnSelectRandomTimeline(PlayableDirector playableDirector)
-    {
-        int randomIndex = UnityEngine.Random.Range(0, _timelineAssets.Length);
-        playableDirector.playableAsset = _timelineAssets[randomIndex];
+        private void Start()
+        {
+            _playableDirector.Stop();
+        }
 
-        if (gameObject.activeSelf)
-            StartCoroutine(WaitSpawn());
-    }
+        private void OnDisable()
+        {
+            _playableDirector.stopped -= OnSelectRandomTimeline;
+        }
 
-    private IEnumerator WaitSpawn()
-    {
-        yield return _wait;
+        private void OnSelectRandomTimeline(PlayableDirector playableDirector)
+        {
+            int randomIndex = UnityEngine.Random.Range(0, _timelineAssets.Length);
+            playableDirector.playableAsset = _timelineAssets[randomIndex];
 
-        _playableDirector.Play();
+            if (gameObject.activeSelf)
+                StartCoroutine(WaitSpawn());
+        }
+
+        private IEnumerator WaitSpawn()
+        {
+            yield return _wait;
+
+            _playableDirector.Play();
+        }
     }
 }

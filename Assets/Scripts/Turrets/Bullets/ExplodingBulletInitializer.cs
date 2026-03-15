@@ -1,29 +1,33 @@
-﻿using System;
+﻿using CannonTurret.Turrets.Bullets.Types;
+using System;
 using UnityEngine;
 
-public class ExplodingBulletInitializer : MonoBehaviour, IBulletInitializer
+namespace CannonTurret.Turrets.Bullets
 {
-    [SerializeField] private ExplodingBullet _explodingBulletPrefab;
-
-    public void Initialize(IBullet bullet)
+    public class ExplodingBulletInitializer : MonoBehaviour, IBulletInitializer
     {
-        if (bullet == null)
-            throw new ArgumentNullException(nameof(bullet));
+        [SerializeField] private ExplodingBullet _explodingBulletPrefab;
 
-        if (_explodingBulletPrefab == null)
-            throw new NullReferenceException(nameof(_explodingBulletPrefab));
-
-        if (bullet is Bullet bulletMono)
+        public void Initialize(IBullet bullet)
         {
-            if (bulletMono.TryGetComponent(out ExplodingBullet explodingBullet))
+            if (bullet == null)
+                throw new ArgumentNullException(nameof(bullet));
+
+            if (_explodingBulletPrefab == null)
+                throw new NullReferenceException(nameof(_explodingBulletPrefab));
+
+            if (bullet is Bullet bulletMono)
             {
-                explodingBullet.InitializeExploder(_explodingBulletPrefab.ExplosionSound);
-                explodingBullet.SetBulletRepository(_explodingBulletPrefab.BulletRepository);
+                if (bulletMono.TryGetComponent(out ExplodingBullet explodingBullet))
+                {
+                    explodingBullet.InitializeExploder(_explodingBulletPrefab.ExplosionSound);
+                    explodingBullet.SetBulletRepository(_explodingBulletPrefab.BulletRepository);
+                }
             }
-        }
-        else
-        {
-            throw new InvalidOperationException(nameof(bullet));
+            else
+            {
+                throw new InvalidOperationException(nameof(bullet));
+            }
         }
     }
 }

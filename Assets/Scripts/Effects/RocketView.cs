@@ -1,67 +1,71 @@
-﻿using System;
+﻿using CannonTurret.AudioSystem;
+using System;
 using System.Collections;
 using UnityEngine;
 
-public class RocketView : MonoBehaviour, IRocketView
+namespace CannonTurret.Effects
 {
-    private const string Fly = nameof(Fly);
-    
-    [SerializeField] private Animator _animator;
-    [SerializeField] private ParticleSystem _flyRocketParticle;
-    [SerializeField] private Sound _flySound;
-    [SerializeField] private MeshRenderer _meshRenderer;
-
-    private WaitForSeconds _waitFly;
-    private int _hashFly;
-
-    public event Action RocketFinished;
-
-    private void OnValidate()
+    public class RocketView : MonoBehaviour, IRocketView
     {
-        if (_animator == null)
-            throw new NullReferenceException(nameof(_animator));
+        private const string Fly = nameof(Fly);
 
-        if (_flyRocketParticle == null)
-            throw new NullReferenceException(nameof(_flyRocketParticle));
+        [SerializeField] private Animator _animator;
+        [SerializeField] private ParticleSystem _flyRocketParticle;
+        [SerializeField] private Sound _flySound;
+        [SerializeField] private MeshRenderer _meshRenderer;
 
-        if (_flySound == null)
-            throw new NullReferenceException(nameof(_flySound));
+        private WaitForSeconds _waitFly;
+        private int _hashFly;
 
-        if (_meshRenderer == null)
-            throw new NullReferenceException(nameof(_meshRenderer));
-    }
+        public event Action RocketFinished;
 
-    private void Awake()
-    {
-        AnimationClip[] clips = _animator.runtimeAnimatorController.animationClips;
-        AnimationClip flyClip = System.Array.Find(clips, c => c.name == Fly);
-        float flyRocketTime = flyClip.length / _animator.speed;
+        private void OnValidate()
+        {
+            if (_animator == null)
+                throw new NullReferenceException(nameof(_animator));
 
-        _waitFly = new WaitForSeconds(flyRocketTime);
-        _hashFly = Animator.StringToHash(Fly);
+            if (_flyRocketParticle == null)
+                throw new NullReferenceException(nameof(_flyRocketParticle));
 
-        _meshRenderer.enabled = false;
-        _flyRocketParticle.Stop();
-    }
+            if (_flySound == null)
+                throw new NullReferenceException(nameof(_flySound));
 
-    public void Play()
-    {
-        _meshRenderer.enabled = true;
-        _animator.SetTrigger(_hashFly);
-        _flyRocketParticle.Play();
-        _flySound.Play();
+            if (_meshRenderer == null)
+                throw new NullReferenceException(nameof(_meshRenderer));
+        }
 
-        StartCoroutine(WaitFly());
-    }
+        private void Awake()
+        {
+            AnimationClip[] clips = _animator.runtimeAnimatorController.animationClips;
+            AnimationClip flyClip = Array.Find(clips, c => c.name == Fly);
+            float flyRocketTime = flyClip.length / _animator.speed;
 
-    private IEnumerator WaitFly()
-    {
-        yield return _waitFly;
+            _waitFly = new WaitForSeconds(flyRocketTime);
+            _hashFly = Animator.StringToHash(Fly);
 
-        _meshRenderer.enabled = false;
-        _flyRocketParticle.Stop();
-        _flySound.Stop();
+            _meshRenderer.enabled = false;
+            _flyRocketParticle.Stop();
+        }
 
-        RocketFinished?.Invoke();
+        public void Play()
+        {
+            _meshRenderer.enabled = true;
+            _animator.SetTrigger(_hashFly);
+            _flyRocketParticle.Play();
+            _flySound.Play();
+
+            StartCoroutine(WaitFly());
+        }
+
+        private IEnumerator WaitFly()
+        {
+            yield return _waitFly;
+
+            _meshRenderer.enabled = false;
+            _flyRocketParticle.Stop();
+            _flySound.Stop();
+
+            RocketFinished?.Invoke();
+        }
     }
 }

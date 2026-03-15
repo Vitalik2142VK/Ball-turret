@@ -1,6 +1,9 @@
-﻿public interface IActorAudioController
+﻿namespace CannonTurret.Actors
 {
-    public void PlayHit();
+    public interface IActorAudioController
+    {
+        public void PlayHit();
 
-    public void PlayDead();
+        public void PlayDead();
+    }
 }

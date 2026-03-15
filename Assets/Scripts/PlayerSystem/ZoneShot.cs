@@ -1,17 +1,20 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Collider))]
-public class ZoneShot : MonoBehaviour
+namespace CannonTurret.PlayerSystem
 {
-    private Collider _collider;
-
-    private void Awake()
+    [RequireComponent(typeof(Collider))]
+    public class ZoneShot : MonoBehaviour
     {
-        _collider = GetComponent<Collider>();
-    }
+        private Collider _collider;
 
-    public bool IsPointInside(Vector3 point)
-    {
-        return _collider.bounds.Contains(point);
+        private void Awake()
+        {
+            _collider = GetComponent<Collider>();
+        }
+
+        public bool IsPointInside(Vector3 point)
+        {
+            return _collider.bounds.Contains(point);
+        }
     }
 }

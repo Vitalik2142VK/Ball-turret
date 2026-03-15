@@ -1,59 +1,67 @@
-﻿using System;
+﻿using CannonTurret.Actors.Debuffs;
+using CannonTurret.Actors.MoveSystem;
+using CannonTurret.DamageSystem;
+using CannonTurret.HealthSystem;
+using CannonTurret.Scriptable.Enemy;
+using System;
 using UnityEngine;
 
-public class EnemyCreator : MonoBehaviour, IEnemyCreator
+namespace CannonTurret.Actors.Enemies
 {
-    [SerializeField] private EnemyView _enemyPrefab;
-    [SerializeField] private Scriptable.EnemyAttributes _enemyAttributes;
-    [SerializeField] private ActorAudioController _audioController;
-
-    private EnemyView _createdEnemyView;
-
-    public string Name => _enemyPrefab.Name;
-
-    private void OnValidate()
+    public class EnemyCreator : MonoBehaviour, IEnemyCreator
     {
-        if (_enemyPrefab == null)
-            throw new ArgumentNullException(nameof(_enemyPrefab));
+        [SerializeField] private EnemyView _enemyPrefab;
+        [SerializeField] private EnemyAttributes _enemyAttributes;
+        [SerializeField] private ActorAudioController _audioController;
 
-        if (_enemyAttributes == null)
-            throw new ArgumentNullException(nameof(_enemyAttributes));
+        private EnemyView _createdEnemyView;
 
-        if (_audioController == null)
-            throw new NullReferenceException(nameof(_audioController));
-    }
+        public string Name => _enemyPrefab.Name;
 
-    public IEnemy Create(IActorHealthModifier healthModifier)
-    {
-        if (healthModifier == null)
-            throw new ArgumentNullException(nameof(healthModifier));
+        private void OnValidate()
+        {
+            if (_enemyPrefab == null)
+                throw new ArgumentNullException(nameof(_enemyPrefab));
 
-        EnemyView view = Instantiate(_enemyPrefab, Vector3.zero, _enemyPrefab.transform.rotation);
-        HealthImprover healthImprover = new HealthImprover(_enemyAttributes);
-        healthImprover.Improve(healthModifier.HealthCoefficient);
+            if (_enemyAttributes == null)
+                throw new ArgumentNullException(nameof(_enemyAttributes));
 
-        Damage damage = new Damage(_enemyAttributes);
-        HealthBar healthBar = view.HealthBar;
-        Health health = new Health(healthImprover, healthBar);
-        health.Restore();
+            if (_audioController == null)
+                throw new NullReferenceException(nameof(_audioController));
+        }
 
-        IDebuffHandler debuffReceiver = view.DebuffReceiver;
-        Mover mover = new Mover(view.transform);
-        EnemyPresenter presenter = new EnemyPresenter();
-        Enemy model = new Enemy(presenter, debuffReceiver, mover, damage, health);
-        view.Initialize(presenter, _audioController);
-        presenter.Initialize(model, view);
+        public IEnemy Create(IActorHealthModifier healthModifier)
+        {
+            if (healthModifier == null)
+                throw new ArgumentNullException(nameof(healthModifier));
 
-        _createdEnemyView = view;
+            EnemyView view = Instantiate(_enemyPrefab, Vector3.zero, _enemyPrefab.transform.rotation);
+            HealthImprover healthImprover = new HealthImprover(_enemyAttributes);
+            healthImprover.Improve(healthModifier.HealthCoefficient);
 
-        return model;
-    }
+            Damage damage = new Damage(_enemyAttributes);
+            HealthBar healthBar = view.HealthBar;
+            Health health = new Health(healthImprover, healthBar);
+            health.Restore();
 
-    public EnemyView ConsumeCreatedEnemyView()
-    {
-        EnemyView createdEnemyView = _createdEnemyView;
-        _createdEnemyView = null;
+            IDebuffHandler debuffReceiver = view.DebuffReceiver;
+            Mover mover = new Mover(view.transform);
+            EnemyPresenter presenter = new EnemyPresenter();
+            Enemy model = new Enemy(presenter, debuffReceiver, mover, damage, health);
+            view.Initialize(presenter, _audioController);
+            presenter.Initialize(model, view);
 
-        return createdEnemyView;
+            _createdEnemyView = view;
+
+            return model;
+        }
+
+        public EnemyView ConsumeCreatedEnemyView()
+        {
+            EnemyView createdEnemyView = _createdEnemyView;
+            _createdEnemyView = null;
+
+            return createdEnemyView;
+        }
     }
 }

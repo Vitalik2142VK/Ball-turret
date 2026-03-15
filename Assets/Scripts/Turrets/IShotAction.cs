@@ -1,6 +1,9 @@
 using System;
 
-public interface IShotAction
+namespace CannonTurret.Turrets
 {
-    public event Action Fired;
+    public interface IShotAction
+    {
+        public event Action Fired;
+    }
 }

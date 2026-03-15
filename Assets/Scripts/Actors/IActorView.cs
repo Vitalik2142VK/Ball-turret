@@ -1,6 +1,11 @@
-﻿public interface IActorView : IDestroyedObject
-{
-    public string Name { get; }
+﻿using CannonTurret.HealthSystem;
 
-    public void PrepareDeleted(IRemovedActorsCollector removedCollector);
+namespace CannonTurret.Actors
+{
+    public interface IActorView : IDestroyedObject
+    {
+        public string Name { get; }
+
+        public void PrepareDeleted(IRemovedActorsCollector removedCollector);
+    }
 }

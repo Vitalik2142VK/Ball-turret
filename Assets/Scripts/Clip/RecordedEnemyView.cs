@@ -1,69 +1,74 @@
-﻿using System;
+﻿using CannonTurret.Actors;
+using CannonTurret.Actors.Enemies;
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(EnemyAnimator))]
-public class RecordedEnemyView : MonoBehaviour
+namespace CannonTurret.Clip
 {
-    [SerializeField] private ActorParticleController _particleController;
-    [SerializeField] private SkinnedMeshRenderer _meshRenderer;
-    [SerializeField] private ActorAudioController _audioController;
-    [SerializeField] private Image _shadow;
-
-    private IEnemyAnimator _enemyAnimator;
-    private bool _isActive;
-
-    private void OnValidate()
+    [RequireComponent(typeof(EnemyAnimator))]
+    public class RecordedEnemyView : MonoBehaviour
     {
-        if (_particleController == null)
-            throw new NullReferenceException(nameof(_particleController));
+        [SerializeField] private ActorParticleController _particleController;
+        [SerializeField] private SkinnedMeshRenderer _meshRenderer;
+        [SerializeField] private ActorAudioController _audioController;
+        [SerializeField] private Image _shadow;
 
-        if (_meshRenderer == null)
-            throw new NullReferenceException(nameof(_meshRenderer));
+        private IEnemyAnimator _enemyAnimator;
+        private bool _isActive;
 
-        if (_audioController == null)
-            throw new NullReferenceException(nameof(_audioController));
+        private void OnValidate()
+        {
+            if (_particleController == null)
+                throw new NullReferenceException(nameof(_particleController));
 
-        if (_shadow == null)
-            throw new NullReferenceException(nameof(_shadow));
-    }
+            if (_meshRenderer == null)
+                throw new NullReferenceException(nameof(_meshRenderer));
 
-    private void Awake()
-    {
-        _enemyAnimator = GetComponent<IEnemyAnimator>();
-    }
+            if (_audioController == null)
+                throw new NullReferenceException(nameof(_audioController));
 
-    private void OnEnable()
-    {
-        SetEnable(true);
-    }
+            if (_shadow == null)
+                throw new NullReferenceException(nameof(_shadow));
+        }
 
-    public void SetActive(bool isActive) => gameObject.SetActive(isActive);
+        private void Awake()
+        {
+            _enemyAnimator = GetComponent<IEnemyAnimator>();
+        }
 
-    public void PlayDead()
-    {
-        if (_isActive)
-            StartCoroutine(StartDeadProcess());
-    }
+        private void OnEnable()
+        {
+            SetEnable(true);
+        }
 
-    private void SetEnable(bool isEnable)
-    {
-        _isActive = isEnable;
-        _meshRenderer.enabled = isEnable;
-        _shadow.gameObject.SetActive(isEnable);
-    }
+        public void SetActive(bool isActive) => gameObject.SetActive(isActive);
 
-    private IEnumerator StartDeadProcess()
-    {
-        _isActive = false;
-        _enemyAnimator.PlayDead();
+        public void PlayDead()
+        {
+            if (_isActive)
+                StartCoroutine(StartDeadProcess());
+        }
 
-        yield return new WaitForSeconds(_enemyAnimator.TimeCompletionDeath);
+        private void SetEnable(bool isEnable)
+        {
+            _isActive = isEnable;
+            _meshRenderer.enabled = isEnable;
+            _shadow.gameObject.SetActive(isEnable);
+        }
 
-        SetEnable(false);
+        private IEnumerator StartDeadProcess()
+        {
+            _isActive = false;
+            _enemyAnimator.PlayDead();
 
-        _audioController.PlayDead();
-        _particleController.PlayDead();
+            yield return new WaitForSeconds(_enemyAnimator.TimeCompletionDeath);
+
+            SetEnable(false);
+
+            _audioController.PlayDead();
+            _particleController.PlayDead();
+        }
     }
 }

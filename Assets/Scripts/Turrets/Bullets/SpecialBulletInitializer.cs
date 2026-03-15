@@ -1,21 +1,24 @@
 ﻿using System;
 using UnityEngine;
 
-public class SpecialBulletInitializer : MonoBehaviour, IBulletInitializer
+namespace CannonTurret.Turrets.Bullets
 {
-    public void Initialize(IBullet bullet)
+    public class SpecialBulletInitializer : MonoBehaviour, IBulletInitializer
     {
-        if (bullet == null)
-            throw new ArgumentNullException(nameof(bullet));
+        public void Initialize(IBullet bullet)
+        {
+            if (bullet == null)
+                throw new ArgumentNullException(nameof(bullet));
 
-        if (bullet is Bullet bulletMono)
-        {
-            if (bulletMono.TryGetComponent(out IInitializer initializer))
-                initializer.Initialize();
-        }
-        else
-        {
-            throw new InvalidOperationException(nameof(bullet));
+            if (bullet is Bullet bulletMono)
+            {
+                if (bulletMono.TryGetComponent(out IInitializer initializer))
+                    initializer.Initialize();
+            }
+            else
+            {
+                throw new InvalidOperationException(nameof(bullet));
+            }
         }
     }
 }

@@ -1,10 +1,15 @@
-﻿using UnityEngine;
+﻿using CannonTurret.Actors.Bonuses;
+using CannonTurret.Turrets.Bullets.Types;
+using UnityEngine;
 
-public interface IBullet : IBonusGatherer
+namespace CannonTurret.Turrets.Bullets
 {
-    public BulletType BulletType { get; }
+    public interface IBullet : IBonusGatherer
+    {
+        public BulletType BulletType { get; }
 
-    public void Move(Vector3 startPoint, Vector3 direction);
+        public void Move(Vector3 startPoint, Vector3 direction);
 
-    public void SetActive(bool isActive);
+        public void SetActive(bool isActive);
+    }
 }

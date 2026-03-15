@@ -1,33 +1,41 @@
-﻿using System;
+﻿using CannonTurret.Actors.Spawn;
+using System;
 using UnityEngine;
 
-public class StartingWaveSelector : MonoBehaviour
+namespace CannonTurret.LevelSystem
 {
-    [SerializeField] private WaveRepository _waveWithBonusesRepository;
-    [SerializeField] private WaveSelector _standartWaveSelector;
-    [SerializeField, Min(10)] private int _bonusWavesLimit = 10;
-
-    private void OnValidate()
+    public class StartingWaveSelector : MonoBehaviour
     {
-        if (_waveWithBonusesRepository == null)
-            throw new NullReferenceException(nameof(_waveWithBonusesRepository));
+        [SerializeField] private WaveRepository _waveWithBonusesRepository;
+        [SerializeField] private WaveSelector _standartWaveSelector;
+        [SerializeField, Min(10)] private int _bonusWavesLimit = 10;
 
-        if (_standartWaveSelector == null)
-            throw new NullReferenceException(nameof(_standartWaveSelector));
-    }
+        public StartingWaveSelector()
+        {
+        }
 
-    public void Initialize(System.Random random)
-    {
-        _waveWithBonusesRepository.Initialize(random);
-        _standartWaveSelector.Initialize(random);
-    }
+        private void OnValidate()
+        {
+            if (_waveWithBonusesRepository == null)
+                throw new NullReferenceException(nameof(_waveWithBonusesRepository));
 
-    public IWaveActorsPlanner GetWaveActorsPlanner(WaveMask waveMask, int waveNumber)
-    {
-        if (waveNumber < _bonusWavesLimit)
-            if (_waveWithBonusesRepository.TryGetWaveActorsPlanner(out IWaveActorsPlanner waveActors, waveMask))
-                return waveActors;
+            if (_standartWaveSelector == null)
+                throw new NullReferenceException(nameof(_standartWaveSelector));
+        }
 
-        return _standartWaveSelector.GetWaveActorsPlanner(waveMask);
+        public void Initialize(System.Random random)
+        {
+            _waveWithBonusesRepository.Initialize(random);
+            _standartWaveSelector.Initialize(random);
+        }
+
+        public IWaveActorsPlanner GetWaveActorsPlanner(WaveMask waveMask, int waveNumber)
+        {
+            if (waveNumber < _bonusWavesLimit)
+                if (_waveWithBonusesRepository.TryGetWaveActorsPlanner(out IWaveActorsPlanner waveActors, waveMask))
+                    return waveActors;
+
+            return _standartWaveSelector.GetWaveActorsPlanner(waveMask);
+        }
     }
 }

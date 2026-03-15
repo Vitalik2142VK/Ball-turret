@@ -1,4 +1,7 @@
-﻿public interface IPlayerData
+﻿namespace CannonTurret.PlayerSystem
 {
-    public string Name { get; }
+    public interface IPlayerData
+    {
+        public string Name { get; }
+    }
 }

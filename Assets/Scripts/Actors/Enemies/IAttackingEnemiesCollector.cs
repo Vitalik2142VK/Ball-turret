@@ -1,4 +1,7 @@
-﻿public interface IAttackingEnemiesCollector
+﻿namespace CannonTurret.Actors.Enemies
 {
-    public void Add(IEnemy enemy);
+    public interface IAttackingEnemiesCollector
+    {
+        public void Add(IEnemy enemy);
+    }
 }

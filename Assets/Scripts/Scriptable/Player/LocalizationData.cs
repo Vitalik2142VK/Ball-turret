@@ -1,7 +1,8 @@
-﻿using System;
+﻿using CannonTurret.SDK.Localizations;
+using System;
 using UnityEngine;
 
-namespace Scriptable
+namespace CannonTurret.Scriptable.Player
 {
     [CreateAssetMenu(menuName = "Player/LocalizationData", fileName = "LocalizationData", order = 51)]
     public class LocalizationData : ScriptableObject

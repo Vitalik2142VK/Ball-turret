@@ -1,8 +1,11 @@
-public interface ICoinAdder
+namespace CannonTurret.Coin.Wallets
 {
-    public int CoinsCountAdsView { get; }
+    public interface ICoinAdder
+    {
+        public int CoinsCountAdsView { get; }
 
-    public void SetCoinsAdsView(int coinsCount);
+        public void SetCoinsAdsView(int coinsCount);
 
-    public void AddCoins(int coinsCount);
+        public void AddCoins(int coinsCount);
+    }
 }

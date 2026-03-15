@@ -1,7 +1,9 @@
-﻿using System;
+﻿using CannonTurret.Actors.Bonuses;
+using CannonTurret.Actors.Bonuses.Activators;
+using System;
 using UnityEngine;
 
-namespace PlayLevel
+namespace CannonTurret.EntryPoints.PlayLevel.Configurators
 {
     public class BonusConfigurator : MonoBehaviour
     {

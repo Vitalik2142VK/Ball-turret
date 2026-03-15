@@ -1,4 +1,7 @@
-﻿public interface ISceneLoader
+﻿namespace CannonTurret.UI
 {
-    public void Load();
+    public interface ISceneLoader
+    {
+        public void Load();
+    }
 }

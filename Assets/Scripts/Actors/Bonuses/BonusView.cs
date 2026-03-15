@@ -1,105 +1,108 @@
-﻿using System;
+﻿using CannonTurret.AudioSystem;
+using System;
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(Collider), typeof(Rigidbody))]
-public class BonusView : MonoBehaviour, IBonusView
+namespace CannonTurret.Actors.Bonuses
 {
-    [SerializeField] private BonusTrigger _trigger;
-    [SerializeField] private Image _image;
-    [SerializeField] private ParticleSystem _destroyParticle;
-    [SerializeField] private MeshRenderer _meshRenderer;
-
-    private IBonusPresenter _presenter;
-    private ISound _takedSound;
-
-    public string Name => name;
-
-    private void OnValidate()
+    [RequireComponent(typeof(Collider), typeof(Rigidbody))]
+    public class BonusView : MonoBehaviour, IBonusView
     {
-        if (_trigger == null)
-            throw new NullReferenceException(nameof(_trigger));
+        [SerializeField] private BonusTrigger _trigger;
+        [SerializeField] private Image _image;
+        [SerializeField] private ParticleSystem _destroyParticle;
+        [SerializeField] private MeshRenderer _meshRenderer;
 
-        if (_image == null)
-            throw new NullReferenceException(nameof(_image));
+        private IBonusPresenter _presenter;
+        private ISound _takedSound;
 
-        if (_destroyParticle == null)
-            throw new NullReferenceException(nameof(_destroyParticle));
+        public string Name => name;
 
-        if (_meshRenderer == null)
-            throw new NullReferenceException(nameof(_meshRenderer));
-    }
+        private void OnValidate()
+        {
+            if (_trigger == null)
+                throw new NullReferenceException(nameof(_trigger));
 
-    private void Awake()
-    {
-        Collider collider = GetComponent<Collider>();
-        collider.isTrigger = false;
-        Rigidbody rigidbody = GetComponent<Rigidbody>();
-        rigidbody.isKinematic = true;
-        rigidbody.useGravity = false;
-    }
+            if (_image == null)
+                throw new NullReferenceException(nameof(_image));
 
-    private void OnEnable()
-    {
-        SetEnable(true);
+            if (_destroyParticle == null)
+                throw new NullReferenceException(nameof(_destroyParticle));
 
-        _trigger.SetAvtive(true);
-        _trigger.Activated += OnHandleTrigger;
-    }
+            if (_meshRenderer == null)
+                throw new NullReferenceException(nameof(_meshRenderer));
+        }
 
-    private void OnDisable()
-    {
-        _trigger.Activated -= OnHandleTrigger;
-        _trigger.SetAvtive(false);
-    }
+        private void Awake()
+        {
+            Collider collider = GetComponent<Collider>();
+            collider.isTrigger = false;
+            Rigidbody rigidbody = GetComponent<Rigidbody>();
+            rigidbody.isKinematic = true;
+            rigidbody.useGravity = false;
+        }
 
-    public void Initialize(IBonusPresenter presenter, IBonusCard bonusCard, ISound takedSound)
-    {
-        _presenter = presenter ?? throw new ArgumentNullException(nameof(presenter));
-        _takedSound = takedSound ?? throw new ArgumentNullException(nameof(takedSound));
+        private void OnEnable()
+        {
+            SetEnable(true);
 
-        if (bonusCard == null)
-            throw new ArgumentNullException(nameof(bonusCard));
+            _trigger.SetAvtive(true);
+            _trigger.Activated += OnHandleTrigger;
+        }
 
-        _image.sprite = bonusCard.Icon;
-    }
+        private void OnDisable()
+        {
+            _trigger.Activated -= OnHandleTrigger;
+            _trigger.SetAvtive(false);
+        }
 
-    public void PrepareDeleted(IRemovedActorsCollector removedCollector) => _presenter.PrepareDeleted(removedCollector);
+        public void Initialize(IBonusPresenter presenter, IBonusCard bonusCard, ISound takedSound)
+        {
+            _presenter = presenter ?? throw new ArgumentNullException(nameof(presenter));
+            _takedSound = takedSound ?? throw new ArgumentNullException(nameof(takedSound));
 
-    public void PlayTaking()
-    {
-        _takedSound.Play();
-        _trigger.SetAvtive(false);
-    }
+            if (bonusCard == null)
+                throw new ArgumentNullException(nameof(bonusCard));
 
-    public void Destroy()
-    {
-        _destroyParticle.Play();
-        var particleMain = _destroyParticle.main;
-        float timeLiveParticle = particleMain.duration + particleMain.startLifetime.constantMax;
+            _image.sprite = bonusCard.Icon;
+        }
 
-        SetEnable(false);
-        StartCoroutine(WaitDestroy(timeLiveParticle));
-    }
+        public void PrepareDeleted(IRemovedActorsCollector removedCollector) => _presenter.PrepareDeleted(removedCollector);
 
-    private void SetEnable(bool isEnable)
-    {
-        _image.enabled = isEnable;
-        _meshRenderer.enabled = isEnable;
-    }
+        public void PlayTaking()
+        {
+            _takedSound.Play();
+            _trigger.SetAvtive(false);
+        }
 
-    private void OnHandleTrigger(Collider collider)
-    {
-        if (collider.TryGetComponent(out IBonusGatherer bonusGathering))
-            _presenter.HandleBonusGatherer(bonusGathering);
-    }
+        public void Destroy()
+        {
+            _destroyParticle.Play();
+            var particleMain = _destroyParticle.main;
+            float timeLiveParticle = particleMain.duration + particleMain.startLifetime.constantMax;
 
-    private IEnumerator WaitDestroy(float waitTime)
-    {
-        yield return new WaitForSeconds(waitTime);
+            SetEnable(false);
+            StartCoroutine(WaitDestroy(timeLiveParticle));
+        }
 
-        Destroy(gameObject);
+        private void SetEnable(bool isEnable)
+        {
+            _image.enabled = isEnable;
+            _meshRenderer.enabled = isEnable;
+        }
+
+        private void OnHandleTrigger(Collider collider)
+        {
+            if (collider.TryGetComponent(out IBonusGatherer bonusGathering))
+                _presenter.HandleBonusGatherer(bonusGathering);
+        }
+
+        private IEnumerator WaitDestroy(float waitTime)
+        {
+            yield return new WaitForSeconds(waitTime);
+
+            Destroy(gameObject);
+        }
     }
 }

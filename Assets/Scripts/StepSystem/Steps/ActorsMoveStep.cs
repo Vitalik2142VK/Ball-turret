@@ -1,25 +1,29 @@
-﻿using System;
+﻿using CannonTurret.Actors.MoveSystem;
+using System;
 
-public class ActorsMoveStep : IStep, IEndPointStep
+namespace CannonTurret.StepSystem.Steps
 {
-    private IEndStep _endStep;
-    private IActorsMover _objectsMover;
-
-    public ActorsMoveStep(IActorsMover objectsMover)
+    public class ActorsMoveStep : IStep, IEndPointStep
     {
-        _objectsMover = objectsMover ?? throw new ArgumentNullException(nameof(objectsMover));
-    }
+        private IEndStep _endStep;
+        private IActorsMover _objectsMover;
 
-    public void Action()
-    {
-        _objectsMover.MoveAll();
+        public ActorsMoveStep(IActorsMover objectsMover)
+        {
+            _objectsMover = objectsMover ?? throw new ArgumentNullException(nameof(objectsMover));
+        }
 
-        if (_objectsMover.AreMovesFinished)
-            _endStep.End();
-    }
+        public void Action()
+        {
+            _objectsMover.MoveAll();
 
-    public void SetEndStep(IEndStep endStep)
-    {
-        _endStep = endStep ?? throw new ArgumentNullException(nameof(endStep));
+            if (_objectsMover.AreMovesFinished)
+                _endStep.End();
+        }
+
+        public void SetEndStep(IEndStep endStep)
+        {
+            _endStep = endStep ?? throw new ArgumentNullException(nameof(endStep));
+        }
     }
 }

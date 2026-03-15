@@ -1,8 +1,10 @@
-﻿using System;
+﻿using CannonTurret.Actors.Spawn;
+using CannonTurret.LevelSystem;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Scriptable
+namespace CannonTurret.Scriptable.Level
 {
     [CreateAssetMenu(menuName = "Level/Actors Planner Store", fileName = "ActorsPlannerStore", order = 51)]
     public class ActorsPlannerStore : ScriptableObject, IActorsPlannerStore

@@ -1,71 +1,74 @@
 ﻿using DG.Tweening;
 using UnityEngine;
 
-[RequireComponent(typeof(RectTransform), typeof(CanvasGroup))]
-public class ScaleAnimatorUI : MonoBehaviour, IAnimatorUI
+namespace CannonTurret.UI.Animations
 {
-    private const float EnableValue = 1f;
-
-    [SerializeField, Range(0.1f, 2f)] private float _duration = 0.3f;
-    [SerializeField, Range(0.1f, 1.5f)] private float _startSizeValue = 0.5f;
-
-    private CanvasGroup _canvasGroup;
-    private RectTransform _rectTransform;
-    private Sequence _animation;
-    private TweenController _controller;
-    private Vector2 _defaultSize;
-    private Vector2 _startSize;
-    private bool _isBlocksRaycasts;
-
-    private void Awake()
+    [RequireComponent(typeof(RectTransform), typeof(CanvasGroup))]
+    public class ScaleAnimatorUI : MonoBehaviour, IAnimatorUI
     {
-        _canvasGroup = GetComponent<CanvasGroup>();
-        _rectTransform = GetComponent<RectTransform>();
+        private const float EnableValue = 1f;
 
-        _defaultSize = _rectTransform.localScale;
-        _isBlocksRaycasts = _canvasGroup.blocksRaycasts;
-        _controller = new TweenController();
-        _startSize = _defaultSize * _startSizeValue;
-    }
+        [SerializeField, Range(0.1f, 2f)] private float _duration = 0.3f;
+        [SerializeField, Range(0.1f, 1.5f)] private float _startSizeValue = 0.5f;
 
-    private void Start()
-    {
-        _canvasGroup.alpha = EnableValue;
-        _canvasGroup.blocksRaycasts = _isBlocksRaycasts;
-    }
+        private CanvasGroup _canvasGroup;
+        private RectTransform _rectTransform;
+        private Sequence _animation;
+        private TweenController _controller;
+        private Vector2 _defaultSize;
+        private Vector2 _startSize;
+        private bool _isBlocksRaycasts;
 
-    private void OnDestroy()
-    {
-        _controller.KillCurrentAnimation();
-    }
+        private void Awake()
+        {
+            _canvasGroup = GetComponent<CanvasGroup>();
+            _rectTransform = GetComponent<RectTransform>();
 
-    public YieldInstruction GetYieldAnimation() => _controller.GetYieldAnimation();
+            _defaultSize = _rectTransform.localScale;
+            _isBlocksRaycasts = _canvasGroup.blocksRaycasts;
+            _controller = new TweenController();
+            _startSize = _defaultSize * _startSizeValue;
+        }
 
-    public void Show()
-    {
-        _controller.KillCurrentAnimation();
+        private void Start()
+        {
+            _canvasGroup.alpha = EnableValue;
+            _canvasGroup.blocksRaycasts = _isBlocksRaycasts;
+        }
 
-        _animation = DOTween.Sequence();
-        _animation
-            .Append(_canvasGroup.DOFade(EnableValue, _duration).From(0))
-            .Join(_rectTransform.DOScale(_defaultSize, _duration).From(_startSize))
-            .SetUpdate(true);
+        private void OnDestroy()
+        {
+            _controller.KillCurrentAnimation();
+        }
 
-        _controller.PlayAnimation(_animation);
-        _canvasGroup.blocksRaycasts = _isBlocksRaycasts;
-    }
+        public YieldInstruction GetYieldAnimation() => _controller.GetYieldAnimation();
 
-    public void Hide()
-    {
-        _controller.KillCurrentAnimation();
+        public void Show()
+        {
+            _controller.KillCurrentAnimation();
 
-        _animation = DOTween.Sequence();
-        _animation
-            .Append(_canvasGroup.DOFade(0, _duration).From(EnableValue))
-            .Join(_rectTransform.DOScale(_startSize, _duration).From(_defaultSize))
-            .SetUpdate(true);
+            _animation = DOTween.Sequence();
+            _animation
+                .Append(_canvasGroup.DOFade(EnableValue, _duration).From(0))
+                .Join(_rectTransform.DOScale(_defaultSize, _duration).From(_startSize))
+                .SetUpdate(true);
 
-        _controller.PlayAnimation(_animation);
-        _canvasGroup.blocksRaycasts = false;
+            _controller.PlayAnimation(_animation);
+            _canvasGroup.blocksRaycasts = _isBlocksRaycasts;
+        }
+
+        public void Hide()
+        {
+            _controller.KillCurrentAnimation();
+
+            _animation = DOTween.Sequence();
+            _animation
+                .Append(_canvasGroup.DOFade(0, _duration).From(EnableValue))
+                .Join(_rectTransform.DOScale(_startSize, _duration).From(_defaultSize))
+                .SetUpdate(true);
+
+            _controller.PlayAnimation(_animation);
+            _canvasGroup.blocksRaycasts = false;
+        }
     }
 }

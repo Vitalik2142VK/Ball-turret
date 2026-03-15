@@ -1,4 +1,7 @@
-﻿public interface IActivableUI
+﻿namespace CannonTurret.UI
 {
-    public bool IsActive { get; }
+    public interface IActivableUI
+    {
+        public bool IsActive { get; }
+    }
 }

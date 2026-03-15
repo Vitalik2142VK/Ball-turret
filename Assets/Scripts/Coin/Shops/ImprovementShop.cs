@@ -1,75 +1,81 @@
-﻿using System;
+﻿using CannonTurret.Coin.Products;
+using CannonTurret.Coin.Transactions;
+using CannonTurret.Coin.Wallets;
+using System;
 using System.Collections.Generic;
 
-public class ImprovementShop : IImprovementShop
+namespace CannonTurret.Coin.Shops
 {
-    private Dictionary<Type, IGamePayTransaction> _transactions;
-    private Dictionary<Type, IImprovementProduct> _products;
-    private IWallet _wallet;
-
-    public ImprovementShop(IWallet wallet, IEnumerable<IGamePayTransaction> transactions, IEnumerable<IImprovementProduct> products)
+    public class ImprovementShop : IImprovementShop
     {
-        _wallet = wallet ?? throw new ArgumentNullException(nameof(wallet));
-        _transactions = AddTransactions(transactions);
-        _products = AddProducts(products);
-    }
+        private Dictionary<Type, IGamePayTransaction> _transactions;
+        private Dictionary<Type, IImprovementProduct> _products;
+        private IWallet _wallet;
 
-    public bool TryMakeTransaction(IGamePayTransaction transaction)
-    {
-        if (transaction == null) 
-            throw new ArgumentNullException(nameof(transaction));
+        public ImprovementShop(IWallet wallet, IEnumerable<IGamePayTransaction> transactions, IEnumerable<IImprovementProduct> products)
+        {
+            _wallet = wallet ?? throw new ArgumentNullException(nameof(wallet));
+            _transactions = AddTransactions(transactions);
+            _products = AddProducts(products);
+        }
 
-        if (transaction.Price > _wallet.CountCoins)
-            return false;
+        public bool TryMakeTransaction(IGamePayTransaction transaction)
+        {
+            if (transaction == null)
+                throw new ArgumentNullException(nameof(transaction));
 
-        return transaction.TrySpend(_wallet);
-    }
+            if (transaction.Price > _wallet.CountCoins)
+                return false;
 
-    public IGamePayTransaction GetTransaction(Type type)
-    {
-        if (_transactions.ContainsKey(type) == false)
-            throw new ArgumentOutOfRangeException(nameof(type));
+            return transaction.TrySpend(_wallet);
+        }
 
-        return _transactions[type];
-    }
+        public IGamePayTransaction GetTransaction(Type type)
+        {
+            if (_transactions.ContainsKey(type) == false)
+                throw new ArgumentOutOfRangeException(nameof(type));
 
-    public IImprovementProduct GetProduct(Type type)
-    {
-        if (_products.ContainsKey(type) == false)
-            throw new ArgumentOutOfRangeException(nameof(type));
+            return _transactions[type];
+        }
 
-        return _products[type];
-    }
+        public IImprovementProduct GetProduct(Type type)
+        {
+            if (_products.ContainsKey(type) == false)
+                throw new ArgumentOutOfRangeException(nameof(type));
 
-    private Dictionary<Type, IGamePayTransaction> AddTransactions(IEnumerable<IGamePayTransaction> transactions)
-    {
-        if (transactions == null)
-            throw new ArgumentNullException(nameof(transactions));
+            return _products[type];
+        }
 
-        Dictionary<Type, IGamePayTransaction> addedTransactions = new Dictionary<Type, IGamePayTransaction>();
+        private Dictionary<Type, IGamePayTransaction> AddTransactions(IEnumerable<IGamePayTransaction> transactions)
+        {
+            if (transactions == null)
+                throw new ArgumentNullException(nameof(transactions));
 
-        foreach (var transaction in transactions)
-            addedTransactions.Add(transaction.GetType(), transaction);
+            Dictionary<Type, IGamePayTransaction> addedTransactions = new Dictionary<Type, IGamePayTransaction>();
 
-        if (addedTransactions.Count == 0)
-            throw new ArgumentOutOfRangeException(nameof(transactions));
+            foreach (var transaction in transactions)
+                addedTransactions.Add(transaction.GetType(), transaction);
 
-        return addedTransactions;
-    }
+            if (addedTransactions.Count == 0)
+                throw new ArgumentOutOfRangeException(nameof(transactions));
 
-    private Dictionary<Type, IImprovementProduct> AddProducts(IEnumerable<IImprovementProduct> products)
-    {
-        if (products == null)
-            throw new ArgumentNullException(nameof(products));
+            return addedTransactions;
+        }
 
-        Dictionary<Type, IImprovementProduct> addedProducts = new Dictionary<Type, IImprovementProduct>();
+        private Dictionary<Type, IImprovementProduct> AddProducts(IEnumerable<IImprovementProduct> products)
+        {
+            if (products == null)
+                throw new ArgumentNullException(nameof(products));
 
-        foreach (var transaction in products)
-            addedProducts.Add(transaction.GetType(), transaction);
+            Dictionary<Type, IImprovementProduct> addedProducts = new Dictionary<Type, IImprovementProduct>();
 
-        if (addedProducts.Count == 0)
-            throw new ArgumentOutOfRangeException(nameof(products));
+            foreach (var transaction in products)
+                addedProducts.Add(transaction.GetType(), transaction);
 
-        return addedProducts;
+            if (addedProducts.Count == 0)
+                throw new ArgumentOutOfRangeException(nameof(products));
+
+            return addedProducts;
+        }
     }
 }

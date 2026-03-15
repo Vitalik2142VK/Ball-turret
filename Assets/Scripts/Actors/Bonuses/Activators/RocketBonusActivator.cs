@@ -1,37 +1,41 @@
-﻿using System;
+﻿using CannonTurret.Effects;
+using System;
 
-public class RocketBonusActivator : IBonusActivator
+namespace CannonTurret.Actors.Bonuses.Activators
 {
-    private IRocketView _rocketView;
-    private IBonusActivator _bigBangBonusActivator;
-    private bool _isActivateStarted;
-
-    public RocketBonusActivator(IRocketView rocketView, IBonusActivator bigBangBonusActivator)
+    public class RocketBonusActivator : IBonusActivator
     {
-        _rocketView = rocketView ?? throw new ArgumentNullException(nameof(rocketView));
-        _bigBangBonusActivator = bigBangBonusActivator ?? throw new ArgumentNullException(nameof(bigBangBonusActivator));
-        _isActivateStarted = false;
+        private IRocketView _rocketView;
+        private IBonusActivator _bigBangBonusActivator;
+        private bool _isActivateStarted;
 
-        _rocketView.RocketFinished += OnFinishRocket;
-    }
+        public RocketBonusActivator(IRocketView rocketView, IBonusActivator bigBangBonusActivator)
+        {
+            _rocketView = rocketView ?? throw new ArgumentNullException(nameof(rocketView));
+            _bigBangBonusActivator = bigBangBonusActivator ?? throw new ArgumentNullException(nameof(bigBangBonusActivator));
+            _isActivateStarted = false;
 
-    public void Activate()
-    {
-        if (_isActivateStarted)
-            return;
+            _rocketView.RocketFinished += OnFinishRocket;
+        }
 
-        _isActivateStarted = true;
-        _rocketView.Play();
-    }
+        public void Activate()
+        {
+            if (_isActivateStarted)
+                return;
 
-    public void Disable()
-    {
-        _rocketView.RocketFinished -= OnFinishRocket;
-    }
+            _isActivateStarted = true;
+            _rocketView.Play();
+        }
 
-    private void OnFinishRocket()
-    {
-        _bigBangBonusActivator.Activate();
-        _isActivateStarted = false;
+        public void Disable()
+        {
+            _rocketView.RocketFinished -= OnFinishRocket;
+        }
+
+        private void OnFinishRocket()
+        {
+            _bigBangBonusActivator.Activate();
+            _isActivateStarted = false;
+        }
     }
 }

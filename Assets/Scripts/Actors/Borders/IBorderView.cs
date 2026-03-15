@@ -1,8 +1,13 @@
-﻿public interface IBorderView : IActorView, IDamagedObject, IArmoredObject 
+﻿using CannonTurret.DamageSystem;
+
+namespace CannonTurret.Actors.Borders
 {
-    public bool IsActive { get; }
+    public interface IBorderView : IActorView, IDamagedObject, IArmoredObject
+    {
+        public bool IsActive { get; }
 
-    public void PlayDamage();
+        public void PlayDamage();
 
-    public void PlayDead();
+        public void PlayDead();
+    }
 }

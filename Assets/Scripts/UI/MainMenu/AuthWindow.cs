@@ -1,72 +1,76 @@
+using CannonTurret.UI.Animations;
 using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using YG;
 
-public class AuthWindow : MonoBehaviour
+namespace CannonTurret.UI.MainMenu
 {
-    [SerializeField, SerializeIterface(typeof(IAnimatorUI))] private GameObject _authWindowAnimator;
-    [SerializeField] private Button _confirmationButton;
-    [SerializeField] private Button _cancelButton;
-
-    private IAnimatorUI _animator;
-
-    private void OnValidate()
+    public class AuthWindow : MonoBehaviour
     {
-        if (_authWindowAnimator == null)
-            throw new NullReferenceException(nameof(_authWindowAnimator));
+        [SerializeField, SerializeIterface(typeof(IAnimatorUI))] private GameObject _authWindowAnimator;
+        [SerializeField] private Button _confirmationButton;
+        [SerializeField] private Button _cancelButton;
 
-        if (_confirmationButton == null)
-            throw new NullReferenceException(nameof(_confirmationButton));
+        private IAnimatorUI _animator;
 
-        if (_cancelButton == null)
-            throw new NullReferenceException(nameof(_cancelButton));
-    }
+        private void OnValidate()
+        {
+            if (_authWindowAnimator == null)
+                throw new NullReferenceException(nameof(_authWindowAnimator));
 
-    private void Awake()
-    {
-        _animator = _authWindowAnimator.GetComponent<IAnimatorUI>();
+            if (_confirmationButton == null)
+                throw new NullReferenceException(nameof(_confirmationButton));
 
-        gameObject.SetActive(false);
-    }
+            if (_cancelButton == null)
+                throw new NullReferenceException(nameof(_cancelButton));
+        }
 
-    private void OnEnable()
-    {
-        _confirmationButton.onClick.AddListener(OnAuthorize);
-        _cancelButton.onClick.AddListener(OnClose);
-    }
+        private void Awake()
+        {
+            _animator = _authWindowAnimator.GetComponent<IAnimatorUI>();
 
-    private void OnDisable()
-    {
-        _confirmationButton.onClick.RemoveListener(OnAuthorize);
-        _cancelButton.onClick.RemoveListener(OnClose);
-    }
+            gameObject.SetActive(false);
+        }
 
-    public void Open()
-    {
-        gameObject.SetActive(true);
-        _animator.Show();
-    }
+        private void OnEnable()
+        {
+            _confirmationButton.onClick.AddListener(OnAuthorize);
+            _cancelButton.onClick.AddListener(OnClose);
+        }
 
-    private void OnAuthorize()
-    {
-        OnClose();
+        private void OnDisable()
+        {
+            _confirmationButton.onClick.RemoveListener(OnAuthorize);
+            _cancelButton.onClick.RemoveListener(OnClose);
+        }
 
-        YG2.OpenAuthDialog();
-    }
+        public void Open()
+        {
+            gameObject.SetActive(true);
+            _animator.Show();
+        }
 
-    private void OnClose()
-    {
-        _animator.Hide();
+        private void OnAuthorize()
+        {
+            OnClose();
 
-        StartCoroutine(WaitClosure());
-    }
+            YG2.OpenAuthDialog();
+        }
 
-    private IEnumerator WaitClosure()
-    {
-        yield return _animator.GetYieldAnimation();
+        private void OnClose()
+        {
+            _animator.Hide();
 
-        gameObject.SetActive(false);
+            StartCoroutine(WaitClosure());
+        }
+
+        private IEnumerator WaitClosure()
+        {
+            yield return _animator.GetYieldAnimation();
+
+            gameObject.SetActive(false);
+        }
     }
 }

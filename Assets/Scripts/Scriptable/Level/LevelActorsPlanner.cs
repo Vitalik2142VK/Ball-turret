@@ -1,7 +1,8 @@
-﻿using System;
+﻿using CannonTurret.Actors.Spawn;
+using System;
 using UnityEngine;
 
-namespace Scriptable
+namespace CannonTurret.Scriptable.Level
 {
     [CreateAssetMenu(menuName = "Level/Level Actors Planner", fileName = "LevelActorsPlanner", order = 51)]
     public class LevelActorsPlanner : ScriptableObject, ILevelActorsPlanner

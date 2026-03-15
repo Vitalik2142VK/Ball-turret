@@ -1,4 +1,7 @@
-public interface IWinStatus
+namespace CannonTurret.LevelSystem
 {
-    public bool IsWin { get; }
+    public interface IWinStatus
+    {
+        public bool IsWin { get; }
+    }
 }

@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 
-public interface IExploder
+namespace CannonTurret.Effects
 {
-    public void Explode(Vector3 pointContact);
+    public interface IExploder
+    {
+        public void Explode(Vector3 pointContact);
+    }
 }

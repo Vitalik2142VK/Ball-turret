@@ -4,41 +4,44 @@ using UnityEngine;
 using UnityEngine.UI;
 using YG;
 
-[RequireComponent(typeof(ImageLoadYG))]
-public class AuthPlayerView : MonoBehaviour
+namespace CannonTurret.SDK.Auth
 {
-    [SerializeField] private Image _icon;
-    [SerializeField] private TextMeshProUGUI _name;
-
-    private ImageLoadYG _imageLoad;
-
-    public bool IsAuthorized { get; private set; }
-
-    private void OnValidate()
+    [RequireComponent(typeof(ImageLoadYG))]
+    public class AuthPlayerView : MonoBehaviour
     {
-        if (_icon == null)
-            throw new NullReferenceException(nameof(_icon));
+        [SerializeField] private Image _icon;
+        [SerializeField] private TextMeshProUGUI _name;
 
-        if (_name == null)
-            throw new NullReferenceException(nameof(_name));
-    }
+        private ImageLoadYG _imageLoad;
 
-    private void Awake()
-    {
-        _imageLoad = GetComponent<ImageLoadYG>();
+        public bool IsAuthorized { get; private set; }
 
-        IsAuthorized = false;
-    }
+        private void OnValidate()
+        {
+            if (_icon == null)
+                throw new NullReferenceException(nameof(_icon));
 
-    public void SetDataAuthPlayer(string urlIcon, string name)
-    {
-        if (urlIcon == null)
-            throw new ArgumentNullException(nameof(urlIcon));
+            if (_name == null)
+                throw new NullReferenceException(nameof(_name));
+        }
 
-        _name.text = name ?? throw new ArgumentNullException(nameof(name));
-        _imageLoad.spriteImage = _icon;
-        _imageLoad.Load(urlIcon);
+        private void Awake()
+        {
+            _imageLoad = GetComponent<ImageLoadYG>();
 
-        IsAuthorized = true;
+            IsAuthorized = false;
+        }
+
+        public void SetDataAuthPlayer(string urlIcon, string name)
+        {
+            if (urlIcon == null)
+                throw new ArgumentNullException(nameof(urlIcon));
+
+            _name.text = name ?? throw new ArgumentNullException(nameof(name));
+            _imageLoad.spriteImage = _icon;
+            _imageLoad.Load(urlIcon);
+
+            IsAuthorized = true;
+        }
     }
 }

@@ -1,7 +1,9 @@
-﻿using System;
+﻿using CannonTurret.Turrets;
+using CannonTurret.UI.PlayerScene;
+using System;
 using UnityEngine;
 
-namespace PlayLevel
+namespace CannonTurret.EntryPoints.PlayLevel.Configurators
 {
     public class BonusesWindowHiderConfigurator : MonoBehaviour
     {

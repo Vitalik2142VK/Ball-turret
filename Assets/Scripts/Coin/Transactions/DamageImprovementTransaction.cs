@@ -1,50 +1,56 @@
-﻿using System;
+﻿using CannonTurret.Coin.Shops;
+using CannonTurret.Coin.Wallets;
+using CannonTurret.PlayerSystem;
+using System;
 
-public class DamageImprovementTransaction : IGamePayTransaction
+namespace CannonTurret.Coin.Transactions
 {
-    private IPlayerSaver _playerSaver;
-    private IWallet _wallet;
-    private ITurretImprover _turretImprover;
-    private IPriceEnlarger _priceEnlarger;
-
-    public DamageImprovementTransaction(IPlayerSaver playerSaver, IWallet wallet, ITurretImprover turretImprover, IPriceEnlarger priceEnlarger)
+    public class DamageImprovementTransaction : IGamePayTransaction
     {
-        _playerSaver = playerSaver ?? throw new ArgumentNullException(nameof(playerSaver));
-        _wallet = wallet ?? throw new ArgumentNullException(nameof(wallet));
-        _turretImprover = turretImprover ?? throw new ArgumentNullException(nameof(turretImprover));
-        _priceEnlarger = priceEnlarger ?? throw new ArgumentNullException(nameof(priceEnlarger));
+        private IPlayerSaver _playerSaver;
+        private IWallet _wallet;
+        private ITurretImprover _turretImprover;
+        private IPriceEnlarger _priceEnlarger;
 
-        _priceEnlarger.IncreaseByLevel(_turretImprover.LevelDamageImprovement);
-    }
-
-    public int Price => _priceEnlarger.Price;
-    public bool IsLocked => Price > _wallet.CountCoins;
-
-    public bool TrySpend(IWallet wallet)
-    {
-        if (wallet == null)
-            throw new ArgumentNullException(nameof(wallet));
-
-        if (_wallet != wallet)
-            return false;
-
-        if (_wallet.TryPay(Price))
+        public DamageImprovementTransaction(IPlayerSaver playerSaver, IWallet wallet, ITurretImprover turretImprover, IPriceEnlarger priceEnlarger)
         {
-            _turretImprover.ImproveDamage();
-            _priceEnlarger.IncreaseByLevel(_turretImprover.LevelDamageImprovement);
-            _playerSaver.Save();
+            _playerSaver = playerSaver ?? throw new ArgumentNullException(nameof(playerSaver));
+            _wallet = wallet ?? throw new ArgumentNullException(nameof(wallet));
+            _turretImprover = turretImprover ?? throw new ArgumentNullException(nameof(turretImprover));
+            _priceEnlarger = priceEnlarger ?? throw new ArgumentNullException(nameof(priceEnlarger));
 
-            return true;
+            _priceEnlarger.IncreaseByLevel(_turretImprover.LevelDamageImprovement);
         }
 
-        return false;
-    }
+        public int Price => _priceEnlarger.Price;
+        public bool IsLocked => Price > _wallet.CountCoins;
 
-    public int GetMissingAmount()
-    {
-        if (IsLocked)
-            return Price - (int)_wallet.CountCoins;
-        else
-            return 0;
+        public bool TrySpend(IWallet wallet)
+        {
+            if (wallet == null)
+                throw new ArgumentNullException(nameof(wallet));
+
+            if (_wallet != wallet)
+                return false;
+
+            if (_wallet.TryPay(Price))
+            {
+                _turretImprover.ImproveDamage();
+                _priceEnlarger.IncreaseByLevel(_turretImprover.LevelDamageImprovement);
+                _playerSaver.Save();
+
+                return true;
+            }
+
+            return false;
+        }
+
+        public int GetMissingAmount()
+        {
+            if (IsLocked)
+                return Price - (int)_wallet.CountCoins;
+            else
+                return 0;
+        }
     }
 }

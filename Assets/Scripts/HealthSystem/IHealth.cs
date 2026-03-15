@@ -1,6 +1,11 @@
-﻿public interface IHealth : IDamagedObject
-{
-    public bool IsAlive { get; }
+﻿using CannonTurret.DamageSystem;
 
-    public void Restore();
+namespace CannonTurret.HealthSystem
+{
+    public interface IHealth : IDamagedObject
+    {
+        public bool IsAlive { get; }
+
+        public void Restore();
+    }
 }

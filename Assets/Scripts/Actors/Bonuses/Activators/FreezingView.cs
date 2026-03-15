@@ -1,56 +1,62 @@
-﻿using System;
+﻿using CannonTurret.AudioSystem;
+using CannonTurret.Effects.Freezing;
+using CannonTurret.UI.Animations;
+using System;
 using System.Collections;
 using UnityEngine;
 
-public class FreezingView : MonoBehaviour, IBonusActicatorView
+namespace CannonTurret.Actors.Bonuses.Activators
 {
-    [SerializeField, SerializeIterface(typeof(IAnimatorUI))] private GameObject _imageFreeze;
-    [SerializeField] private ActorsFreezerView _freezer;
-    [SerializeField] private Sound _soundFreeze;
-
-    private IAnimatorUI _animator;
-
-    private void OnValidate()
+    public class FreezingView : MonoBehaviour, IBonusActicatorView
     {
-        if (_imageFreeze == null)
-            throw new NullReferenceException(nameof(_imageFreeze));
+        [SerializeField, SerializeIterface(typeof(IAnimatorUI))] private GameObject _imageFreeze;
+        [SerializeField] private ActorsFreezerView _freezer;
+        [SerializeField] private Sound _soundFreeze;
 
-        if (_freezer == null)
-            throw new NullReferenceException(nameof(_freezer));
+        private IAnimatorUI _animator;
 
-        if (_soundFreeze == null)
-            throw new NullReferenceException(nameof(_soundFreeze));
-    }
+        private void OnValidate()
+        {
+            if (_imageFreeze == null)
+                throw new NullReferenceException(nameof(_imageFreeze));
 
-    private void Awake()
-    {
-        _animator = _imageFreeze.GetComponent<IAnimatorUI>();
-        _imageFreeze.SetActive(false);
-    }
+            if (_freezer == null)
+                throw new NullReferenceException(nameof(_freezer));
 
-    public void PlayActivation()
-    {
-        _freezer.Freeze();
-        _imageFreeze.SetActive(true);
-        _animator.Show();
-        _soundFreeze.Play();
+            if (_soundFreeze == null)
+                throw new NullReferenceException(nameof(_soundFreeze));
+        }
 
-        StartCoroutine(WaitOpening());
-    }
+        private void Awake()
+        {
+            _animator = _imageFreeze.GetComponent<IAnimatorUI>();
+            _imageFreeze.SetActive(false);
+        }
 
-    private IEnumerator WaitOpening()
-    {
-        yield return _animator.GetYieldAnimation();
+        public void PlayActivation()
+        {
+            _freezer.Freeze();
+            _imageFreeze.SetActive(true);
+            _animator.Show();
+            _soundFreeze.Play();
 
-        _animator.Hide();
+            StartCoroutine(WaitOpening());
+        }
 
-        StartCoroutine(WaitClosure());
-    }
+        private IEnumerator WaitOpening()
+        {
+            yield return _animator.GetYieldAnimation();
 
-    private IEnumerator WaitClosure()
-    {
-        yield return _animator.GetYieldAnimation();
+            _animator.Hide();
 
-        _imageFreeze.SetActive(false);
+            StartCoroutine(WaitClosure());
+        }
+
+        private IEnumerator WaitClosure()
+        {
+            yield return _animator.GetYieldAnimation();
+
+            _imageFreeze.SetActive(false);
+        }
     }
 }

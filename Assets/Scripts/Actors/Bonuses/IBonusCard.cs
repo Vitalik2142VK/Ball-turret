@@ -1,9 +1,13 @@
-﻿using UnityEngine;
+﻿using CannonTurret.SDK.Localizations;
+using UnityEngine;
 
-public interface IBonusCard
+namespace CannonTurret.Actors.Bonuses
 {
-    public Sprite Icon { get; }
-    public string Name { get; }
+    public interface IBonusCard
+    {
+        public Sprite Icon { get; }
+        public string Name { get; }
 
-    public string GetDescription(Language language);
+        public string GetDescription(Language language);
+    }
 }

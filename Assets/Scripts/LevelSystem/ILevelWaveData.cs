@@ -1,6 +1,9 @@
-﻿public interface ILevelWaveData
+﻿namespace CannonTurret.LevelSystem
 {
-    public int CurrentWaveNumber { get; }
-    public int WavesCount { get; }
-    public bool AreWavesOver { get; }
+    public interface ILevelWaveData
+    {
+        public int CurrentWaveNumber { get; }
+        public int WavesCount { get; }
+        public bool AreWavesOver { get; }
+    }
 }

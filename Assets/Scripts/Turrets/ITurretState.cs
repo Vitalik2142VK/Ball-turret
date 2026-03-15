@@ -1,4 +1,7 @@
-﻿public interface ITurretState
+﻿namespace CannonTurret.Turrets
 {
-    public bool IsDestroyed { get; }
+    public interface ITurretState
+    {
+        public bool IsDestroyed { get; }
+    }
 }

@@ -1,36 +1,40 @@
-﻿using System.Collections.Generic;
+﻿using CannonTurret.UI.Animations;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class HiderUI : MonoBehaviour
+namespace CannonTurret.UI
 {
-    [SerializeField, SerializeIterface(typeof(IAnimatorUI))] private GameObject[] _interferingUI;
-
-    private Dictionary<GameObject, IAnimatorUI> _animators;
-
-    private void Awake()
+    public class HiderUI : MonoBehaviour
     {
-        _animators = new Dictionary<GameObject, IAnimatorUI>();
+        [SerializeField, SerializeIterface(typeof(IAnimatorUI))] private GameObject[] _interferingUI;
 
-        foreach (var userInterface in _interferingUI)
-            if (userInterface != null)
-                _animators.Add(userInterface, userInterface.GetComponent<IAnimatorUI>());
-    }
+        private Dictionary<GameObject, IAnimatorUI> _animators;
 
-    public void Show()
-    {
-        foreach (var animator in _animators)
-            if (animator.Key != null)
-                animator.Value.Show();
-    }
-
-    public void Hide()
-    {
-        foreach (var animator in _animators)
+        private void Awake()
         {
-            GameObject gameObject = animator.Key;
+            _animators = new Dictionary<GameObject, IAnimatorUI>();
 
-            if (gameObject != null && gameObject.activeSelf)
-                animator.Value.Hide();
+            foreach (var userInterface in _interferingUI)
+                if (userInterface != null)
+                    _animators.Add(userInterface, userInterface.GetComponent<IAnimatorUI>());
+        }
+
+        public void Show()
+        {
+            foreach (var animator in _animators)
+                if (animator.Key != null)
+                    animator.Value.Show();
+        }
+
+        public void Hide()
+        {
+            foreach (var animator in _animators)
+            {
+                GameObject gameObject = animator.Key;
+
+                if (gameObject != null && gameObject.activeSelf)
+                    animator.Value.Hide();
+            }
         }
     }
 }

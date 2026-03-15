@@ -1,9 +1,13 @@
-﻿using UnityEngine.SceneManagement;
+﻿using CannonTurret.UI;
+using UnityEngine.SceneManagement;
 
-public class StartSceneLoader : ISceneLoader
+namespace CannonTurret.LevelSystem
 {
-    public void Load()
+    public class StartSceneLoader : ISceneLoader
     {
-        SceneManager.LoadScene((int)SceneIndex.StartScene);
+        public void Load()
+        {
+            SceneManager.LoadScene((int)SceneIndex.StartScene);
+        }
     }
 }

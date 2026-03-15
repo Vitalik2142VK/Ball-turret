@@ -1,4 +1,9 @@
-﻿public interface IBulletFactory
+﻿using CannonTurret.Turrets.Bullets.Types;
+
+namespace CannonTurret.Turrets.Bullets.Creation
 {
-    public IBullet Create(BulletType type);
+    public interface IBulletFactory
+    {
+        public IBullet Create(BulletType type);
+    }
 }

@@ -1,8 +1,10 @@
-﻿using System;
+﻿using CannonTurret.Actors.Bonuses;
+using CannonTurret.SDK.Localizations;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Scriptable
+namespace CannonTurret.Scriptable.Bonus
 {
     [CreateAssetMenu(menuName = "Description/Bonus Card", fileName = "BonusCard", order = 51)]
     public class BonusCard : ScriptableObject, IBonusCard

@@ -1,29 +1,33 @@
-﻿using System;
+﻿using CannonTurret.DamageSystem;
+using System;
 
-public class ArmoredEnemyPresenter : IArmoredEnemyPresenter
+namespace CannonTurret.Actors.Enemies.Armored
 {
-    private IArmoredObject _armoredModel;
-    private IEnemy _model;
-    private IEnemyView _view;
-
-    public ArmoredEnemyPresenter(IEnemy model, IEnemyView view)
+    public class ArmoredEnemyPresenter : IArmoredEnemyPresenter
     {
-        if (model is IArmoredObject armoredModel)
-            _armoredModel = armoredModel;
-        else
-            throw new ArgumentException($"<{nameof(model)}> must implement {nameof(IArmoredObject)}");
+        private IArmoredObject _armoredModel;
+        private IEnemy _model;
+        private IEnemyView _view;
 
-        _model = model ?? throw new ArgumentNullException(nameof(model));
-        _view = view ?? throw new ArgumentNullException(nameof(view));
-    }
+        public ArmoredEnemyPresenter(IEnemy model, IEnemyView view)
+        {
+            if (model is IArmoredObject armoredModel)
+                _armoredModel = armoredModel;
+            else
+                throw new ArgumentException($"<{nameof(model)}> must implement {nameof(IArmoredObject)}");
 
-    public void IgnoreArmor(IDamageAttributes damage)
-    {
-        _armoredModel.IgnoreArmor(damage);
+            _model = model ?? throw new ArgumentNullException(nameof(model));
+            _view = view ?? throw new ArgumentNullException(nameof(view));
+        }
 
-        if (_model.IsEnable)
-            _view.PlayDamage();
-        else
-            _view.PlayDead();
+        public void IgnoreArmor(IDamageAttributes damage)
+        {
+            _armoredModel.IgnoreArmor(damage);
+
+            if (_model.IsEnable)
+                _view.PlayDamage();
+            else
+                _view.PlayDead();
+        }
     }
 }

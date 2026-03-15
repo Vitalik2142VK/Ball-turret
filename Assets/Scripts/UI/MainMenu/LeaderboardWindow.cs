@@ -1,44 +1,48 @@
+using CannonTurret.UI.Animations;
 using System;
 using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(HiderUI), typeof(ShiftAnimatorUI))]
-public class LeaderboardWindow : MonoBehaviour
+namespace CannonTurret.UI.MainMenu
 {
-    private IWindow _previousWindow;
-    private IAnimatorUI _animator;
-    private HiderUI _hiderUI;
-
-    private void Awake()
+    [RequireComponent(typeof(HiderUI), typeof(ShiftAnimatorUI))]
+    public class LeaderboardWindow : MonoBehaviour
     {
-        _hiderUI = GetComponent<HiderUI>();
-        _animator = GetComponent<ShiftAnimatorUI>();
+        private IWindow _previousWindow;
+        private IAnimatorUI _animator;
+        private HiderUI _hiderUI;
 
-        gameObject.SetActive(false);
-    }
+        private void Awake()
+        {
+            _hiderUI = GetComponent<HiderUI>();
+            _animator = GetComponent<ShiftAnimatorUI>();
 
-    public void OnClose()
-    {
-        _hiderUI.Show();
-        _animator.Hide();
+            gameObject.SetActive(false);
+        }
 
-        StartCoroutine(WaitClosure());
-    }
+        public void OnClose()
+        {
+            _hiderUI.Show();
+            _animator.Hide();
 
-    public void Open(IWindow previousWindow)
-    {
-        _previousWindow = previousWindow ?? throw new ArgumentNullException(nameof(previousWindow));
+            StartCoroutine(WaitClosure());
+        }
 
-        gameObject.SetActive(true);
-        _hiderUI.Hide();
-        _animator.Show();
-    }
+        public void Open(IWindow previousWindow)
+        {
+            _previousWindow = previousWindow ?? throw new ArgumentNullException(nameof(previousWindow));
 
-    private IEnumerator WaitClosure()
-    {
-        yield return _animator.GetYieldAnimation();
+            gameObject.SetActive(true);
+            _hiderUI.Hide();
+            _animator.Show();
+        }
 
-        gameObject.SetActive(false);
-        _previousWindow.Enable();
+        private IEnumerator WaitClosure()
+        {
+            yield return _animator.GetYieldAnimation();
+
+            gameObject.SetActive(false);
+            _previousWindow.Enable();
+        }
     }
 }

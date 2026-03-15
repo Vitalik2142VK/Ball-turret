@@ -1,6 +1,9 @@
-﻿public enum Language
+﻿namespace CannonTurret.SDK.Localizations
 {
-    EN,
-    RU,
-    TR
+    public enum Language
+    {
+        EN,
+        RU,
+        TR
+    }
 }

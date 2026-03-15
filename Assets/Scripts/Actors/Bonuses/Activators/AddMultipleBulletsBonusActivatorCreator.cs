@@ -1,25 +1,31 @@
-﻿using System;
+﻿using CannonTurret.Turrets.Bullets.Creation;
+using CannonTurret.Turrets.Bullets.Types;
+using CannonTurret.Turrets.Guns;
+using System;
 using UnityEngine;
 
-public class AddMultipleBulletsBonusActivatorCreator : MonoBehaviour, IBonusActivatorCreator
+namespace CannonTurret.Actors.Bonuses.Activators
 {
-    [SerializeField] private BulletFactory _bulletFactory;
-    [SerializeField] private Gun _gun;
-    [SerializeField, Min(2)] private int _countBullets;
-
-    private void OnValidate()
+    public class AddMultipleBulletsBonusActivatorCreator : MonoBehaviour, IBonusActivatorCreator
     {
-        if (_bulletFactory == null)
-            throw new NullReferenceException(nameof(_bulletFactory));
+        [SerializeField] private BulletFactory _bulletFactory;
+        [SerializeField] private Gun _gun;
+        [SerializeField, Min(2)] private int _countBullets;
 
-        if (_gun == null)
-            throw new NullReferenceException(nameof(_gun));
-    }
+        private void OnValidate()
+        {
+            if (_bulletFactory == null)
+                throw new NullReferenceException(nameof(_bulletFactory));
 
-    public IBonusActivator Create()
-    {
-        AddBulletBonusActivator addBulletBonusActivator = new AddBulletBonusActivator(_bulletFactory, _gun, BulletType.Default);
+            if (_gun == null)
+                throw new NullReferenceException(nameof(_gun));
+        }
 
-        return new MultipleBonusActivator(addBulletBonusActivator, _countBullets);
+        public IBonusActivator Create()
+        {
+            AddBulletBonusActivator addBulletBonusActivator = new AddBulletBonusActivator(_bulletFactory, _gun, BulletType.Default);
+
+            return new MultipleBonusActivator(addBulletBonusActivator, _countBullets);
+        }
     }
 }

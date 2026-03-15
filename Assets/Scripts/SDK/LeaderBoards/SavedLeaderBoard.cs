@@ -1,25 +1,28 @@
 ﻿using System;
 using YG;
 
-public class SavedLeaderBoard : ISavedLeaderBoard
+namespace CannonTurret.SDK.LeaderBoards
 {
-    private SavesYG _savesYG;
-
-    public SavedLeaderBoard()
+    public class SavedLeaderBoard : ISavedLeaderBoard
     {
-        if (YG2.isSDKEnabled == false)
-            throw new InvalidOperationException("The Yandex SDK is not Enabled");
+        private SavesYG _savesYG;
 
-        _savesYG = YG2.saves;
-    }
+        public SavedLeaderBoard()
+        {
+            if (YG2.isSDKEnabled == false)
+                throw new InvalidOperationException("The Yandex SDK is not Enabled");
 
-    public int MaxAchievedWave => _savesYG.MaxAchievedWave;
+            _savesYG = YG2.saves;
+        }
 
-    public void SaveNextAchievedWave()
-    {
-        _savesYG.MaxAchievedWave++;
+        public int MaxAchievedWave => _savesYG.MaxAchievedWave;
 
-        YG2.SaveProgress();
-        YG2.SetLeaderboard(Leaderboard.Name, _savesYG.MaxAchievedWave);
+        public void SaveNextAchievedWave()
+        {
+            _savesYG.MaxAchievedWave++;
+
+            YG2.SaveProgress();
+            YG2.SetLeaderboard(Leaderboard.Name, _savesYG.MaxAchievedWave);
+        }
     }
 }

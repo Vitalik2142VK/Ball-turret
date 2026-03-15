@@ -1,7 +1,10 @@
-﻿using System;
+﻿using CannonTurret.Coin.Wallets;
+using CannonTurret.PlayerSystem;
+using CannonTurret.SDK.Shops;
+using System;
 using UnityEngine;
 
-namespace Scriptable
+namespace CannonTurret.Scriptable.Player
 {
     [CreateAssetMenu(menuName = "Player/Cached user", fileName = "CachedUser", order = 51)]
     public class CachedPlayer : ScriptableObject, IPlayer

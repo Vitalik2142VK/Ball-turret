@@ -1,4 +1,9 @@
-﻿public interface IArmoredObject
+﻿using CannonTurret.DamageSystem;
+
+namespace CannonTurret.Actors
 {
-    public void IgnoreArmor(IDamageAttributes damage);
+    public interface IArmoredObject
+    {
+        public void IgnoreArmor(IDamageAttributes damage);
+    }
 }

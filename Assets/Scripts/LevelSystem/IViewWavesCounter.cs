@@ -1,6 +1,9 @@
-﻿public interface IViewWavesCounter
+﻿namespace CannonTurret.LevelSystem
 {
-    public void Initialize(ILevelWaveData levelWaveData);
+    public interface IViewWavesCounter
+    {
+        public void Initialize(ILevelWaveData levelWaveData);
 
-    public void UpdateData();
+        public void UpdateData();
+    }
 }

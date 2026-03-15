@@ -1,6 +1,7 @@
+using CannonTurret.HealthSystem;
 using UnityEngine;
 
-namespace Scriptable
+namespace CannonTurret.Scriptable.Health
 {
     [CreateAssetMenu(menuName = "Attributes/Health attributes", fileName = "HealthAttributes", order = 51)]
     public class HealthAttributes : ScriptableObject, IHealthAttributes

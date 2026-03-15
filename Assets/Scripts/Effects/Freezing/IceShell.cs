@@ -2,70 +2,73 @@
 using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(ScaleAnimator), typeof(MeshRenderer))]
-public class IceShell : MonoBehaviour, IIceShell
+namespace CannonTurret.Effects.Freezing
 {
-    [SerializeField] private Vector3 _positionOffset = Vector3.zero;
-
-    private IIceShellPool _pool;
-    private Transform _transform;
-    private MeshRenderer _mesh;
-    private ScaleAnimator _animator;
-
-    public event Action Disabled;
-
-    private void Awake()
+    [RequireComponent(typeof(ScaleAnimator), typeof(MeshRenderer))]
+    public class IceShell : MonoBehaviour, IIceShell
     {
-        _transform = transform;
-        _mesh = GetComponent<MeshRenderer>();
-        _animator = GetComponent<ScaleAnimator>();
-        _animator.Initicalize();
-    }
+        [SerializeField] private Vector3 _positionOffset = Vector3.zero;
 
-    private void OnEnable()
-    {
-        _mesh.enabled = false;
-    }
+        private IIceShellPool _pool;
+        private Transform _transform;
+        private MeshRenderer _mesh;
+        private ScaleAnimator _animator;
 
-    public void Initialize(IIceShellPool pool)
-    {
-        _pool = pool ?? throw new NullReferenceException(nameof(pool));
-    }
+        public event Action Disabled;
 
-    public void SetScale(Vector3 scale)
-    {
-        if (scale == Vector3.zero)
-            throw new ArgumentOutOfRangeException(nameof(scale));
+        private void Awake()
+        {
+            _transform = transform;
+            _mesh = GetComponent<MeshRenderer>();
+            _animator = GetComponent<ScaleAnimator>();
+            _animator.Initicalize();
+        }
 
-        _transform.localScale = scale;
-        _animator.UpdateScale();
-    }
+        private void OnEnable()
+        {
+            _mesh.enabled = false;
+        }
 
-    public void SetPosition(Vector3 position)
-    {
-        _transform.position = position + _positionOffset;
-    }
+        public void Initialize(IIceShellPool pool)
+        {
+            _pool = pool ?? throw new NullReferenceException(nameof(pool));
+        }
 
-    public void Enable()
-    {
-        _transform.rotation = UnityEngine.Random.rotation;
-        _animator.Show();
-        _mesh.enabled = true;
-    }
+        public void SetScale(Vector3 scale)
+        {
+            if (scale == Vector3.zero)
+                throw new ArgumentOutOfRangeException(nameof(scale));
 
-    public void Disable()
-    {
-        _animator.Hide();
+            _transform.localScale = scale;
+            _animator.UpdateScale();
+        }
 
-        Disabled?.Invoke();
+        public void SetPosition(Vector3 position)
+        {
+            _transform.position = position + _positionOffset;
+        }
 
-        StartCoroutine(WaitEndAnimation());
-    }
+        public void Enable()
+        {
+            _transform.rotation = UnityEngine.Random.rotation;
+            _animator.Show();
+            _mesh.enabled = true;
+        }
 
-    private IEnumerator WaitEndAnimation()
-    {
-        yield return _animator.GetYieldAnimation();
+        public void Disable()
+        {
+            _animator.Hide();
 
-        _pool.Put(this);
+            Disabled?.Invoke();
+
+            StartCoroutine(WaitEndAnimation());
+        }
+
+        private IEnumerator WaitEndAnimation()
+        {
+            yield return _animator.GetYieldAnimation();
+
+            _pool.Put(this);
+        }
     }
 }

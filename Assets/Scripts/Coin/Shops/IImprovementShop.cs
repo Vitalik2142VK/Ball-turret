@@ -1,10 +1,15 @@
-﻿using System;
+﻿using CannonTurret.Coin.Products;
+using CannonTurret.Coin.Transactions;
+using System;
 
-public interface IImprovementShop
+namespace CannonTurret.Coin.Shops
 {
-    public bool TryMakeTransaction(IGamePayTransaction transaction);
+    public interface IImprovementShop
+    {
+        public bool TryMakeTransaction(IGamePayTransaction transaction);
 
-    public IGamePayTransaction GetTransaction(Type type);
+        public IGamePayTransaction GetTransaction(Type type);
 
-    public IImprovementProduct GetProduct(Type type);
+        public IImprovementProduct GetProduct(Type type);
+    }
 }

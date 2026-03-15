@@ -1,4 +1,7 @@
-﻿public interface IShooterView
+﻿namespace CannonTurret.Turrets.Shooters
 {
-    public void PlayWin();
+    public interface IShooterView
+    {
+        public void PlayWin();
+    }
 }

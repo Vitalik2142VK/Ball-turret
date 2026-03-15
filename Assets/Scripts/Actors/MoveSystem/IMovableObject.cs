@@ -1,0 +1,15 @@
+﻿using UnityEngine;
+
+namespace CannonTurret.Actors.MoveSystem
+{
+    public interface IMovableObject
+    {
+        public bool IsFinished { get; }
+
+        public void SetStartPosition(Vector3 startPosition);
+
+        public void EstablishPoint(Vector3 distance, float speed);
+
+        public void Move();
+    }
+}

@@ -1,4 +1,7 @@
-﻿public interface IViewableBonusCreator : IBonusCreator
+﻿namespace CannonTurret.Actors.Bonuses
 {
-    public IViewableBonus Create(IBonus bonus);
+    public interface IViewableBonusCreator : IBonusCreator
+    {
+        public IViewableBonus Create(IBonus bonus);
+    }
 }

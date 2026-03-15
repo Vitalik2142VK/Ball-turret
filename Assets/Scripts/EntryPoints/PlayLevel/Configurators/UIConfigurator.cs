@@ -1,7 +1,12 @@
-﻿using System;
+﻿using CannonTurret.AudioSystem;
+using CannonTurret.LevelSystem;
+using CannonTurret.StepSystem;
+using CannonTurret.UI;
+using CannonTurret.UI.PlayerScene;
+using System;
 using UnityEngine;
 
-namespace PlayLevel
+namespace CannonTurret.EntryPoints.PlayLevel.Configurators
 {
     public class UIConfigurator : MonoBehaviour
     {

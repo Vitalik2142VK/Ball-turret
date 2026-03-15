@@ -1,4 +1,7 @@
-﻿public interface IDamageImproverAttributes
+﻿namespace CannonTurret.DamageSystem
 {
-    public float DamageСoefficient { get; }
+    public interface IDamageImproverAttributes
+    {
+        public float DamageСoefficient { get; }
+    }
 }

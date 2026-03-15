@@ -1,4 +1,9 @@
-﻿public interface IDebuffReceiver
+﻿using CannonTurret.Effects;
+
+namespace CannonTurret.Actors
 {
-    public void AddDebuff(IDebuff debaff);
+    public interface IDebuffReceiver
+    {
+        public void AddDebuff(IDebuff debaff);
+    }
 }

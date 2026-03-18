@@ -23,6 +23,7 @@ namespace CannonTurret.Turrets
         private Vector3 _touchPosition;
 
         public Vector3 Direction => _muzzle.Direction;
+
         public bool IsReadyShoot => _targetPoint.IsInsideZoneEnemy;
 
         private void OnValidate()

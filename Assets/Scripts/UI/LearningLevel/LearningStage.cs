@@ -9,13 +9,15 @@ namespace CannonTurret.UI.LearningLevel
     {
         [SerializeField] private TextInputSimulator _textInputSimulator;
         [SerializeField] private TextLocalizer[] _localizedTexts;
-        [SerializeField, Min(1)] private int _waveNumber;
+        [SerializeField][Min(1)] private int _waveNumber;
 
         private Queue<TextLocalizer> _texts;
         private TextLocalizer _currentTextLocalizer;
 
         public int NumberStages => _localizedTexts.Length;
+
         public int WaveNumber => _waveNumber;
+
         public bool IsActive => gameObject.activeSelf;
 
         public int CurrentStage { get; private set; }
@@ -29,8 +31,10 @@ namespace CannonTurret.UI.LearningLevel
                 throw new InvalidOperationException(nameof(_localizedTexts));
 
             foreach (var localizedText in _localizedTexts)
+            {
                 if (localizedText == null)
                     throw new InvalidOperationException(nameof(_localizedTexts));
+            }
         }
 
         public void Initialize()

@@ -23,7 +23,9 @@ namespace CannonTurret.Actors.Spawn
         }
 
         public string NameActor { get; }
+
         public int LineNumber { get; }
+
         public int ColumnNumber { get; }
     }
 }

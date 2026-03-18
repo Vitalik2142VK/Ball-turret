@@ -5,12 +5,13 @@ namespace CannonTurret.StepSystem
 {
     public class DynamicNextStep : IDynamicEndStep
     {
-        private IStepController _stepController;
+        private readonly IStepController StepController;
+
         private IStep _nextStep;
 
         public DynamicNextStep(IStepController stepController)
         {
-            _stepController = stepController ?? throw new ArgumentNullException(nameof(stepController));
+            StepController = stepController ?? throw new ArgumentNullException(nameof(stepController));
         }
 
         public void SetNextStep(IStep nextStep)
@@ -20,7 +21,7 @@ namespace CannonTurret.StepSystem
 
         public void End()
         {
-            _stepController.EstablishNextStep(_nextStep);
+            StepController.EstablishNextStep(_nextStep);
         }
     }
 }

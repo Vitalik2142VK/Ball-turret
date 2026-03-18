@@ -17,7 +17,6 @@ namespace CannonTurret.Actors.Enemies
 
         public void AddDebuff(IDebuff debaff) => _model.AddDebuff(debaff);
 
-
         public void PrepareDeleted(IRemovedActorsCollector removedCollector)
         {
             removedCollector.Add(_model);

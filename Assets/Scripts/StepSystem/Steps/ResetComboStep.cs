@@ -5,17 +5,18 @@ namespace CannonTurret.StepSystem.Steps
 {
     public class ResetComboStep : IStep, IEndPointStep
     {
+        private readonly IComboCounterResetter Resetter;
+
         private IEndStep _endStep;
-        private IComboCounterResetter _resetter;
 
         public ResetComboStep(IComboCounterResetter resetter)
         {
-            _resetter = resetter ?? throw new ArgumentNullException(nameof(resetter));
+            Resetter = resetter ?? throw new ArgumentNullException(nameof(resetter));
         }
 
         public void Action()
         {
-            _resetter.ResetCombo();
+            Resetter.ResetCombo();
             _endStep.End();
         }
 

@@ -10,7 +10,7 @@ namespace CannonTurret.LevelSystem
         [SerializeField] private StartingWaveSelector _startingWaveSelector;
         [SerializeField] private WaveSelector _hardWaveSelector;
 
-        [SerializeField, Min(20)] private int _standartWavesLimit = 20;
+        [SerializeField][Min(20)] private int _standartWavesLimit = 20;
 
         private int _waveMaskCount;
 

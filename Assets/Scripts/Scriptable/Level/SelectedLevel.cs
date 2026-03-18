@@ -12,12 +12,19 @@ namespace CannonTurret.Scriptable.Level
         private IViewWavesCounter _viewWavesCounter;
 
         public float HealthCoefficient => _level.HealthCoefficient;
+
         public int Index => _level.Index;
+
         public int CurrentWaveNumber => _level.CurrentWaveNumber;
+
         public int WavesCount => _level.WavesCount;
+
         public int CountCoinsForWin => _level.CountCoinsForWin;
+
         public int CountCoinsForWaves => _level.CountCoinsForWaves;
+
         public bool AreWavesOver => _level.AreWavesOver;
+
         public bool HasLevel => _level != null;
 
         public bool IsFinished { get; private set; }

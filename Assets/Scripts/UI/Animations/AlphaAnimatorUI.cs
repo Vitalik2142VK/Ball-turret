@@ -8,8 +8,8 @@ namespace CannonTurret.UI.Animations
     {
         private const float EnableValue = 1f;
 
-        [SerializeField, Range(0.1f, 3f)] private float _showDuration = 0.3f;
-        [SerializeField, Range(0.1f, 3f)] private float _hideDuration = 0.3f;
+        [SerializeField][Range(0.1f, 3f)] private float _showDuration = 0.3f;
+        [SerializeField][Range(0.1f, 3f)] private float _hideDuration = 0.3f;
 
         private CanvasGroup _canvasGroup;
         private Tween _animation;

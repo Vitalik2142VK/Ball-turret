@@ -5,8 +5,8 @@ namespace CannonTurret.UI.Animations
 {
     public class PulsingScaleAnimation : MonoBehaviour
     {
-        [SerializeField, Range(0.1f, 2f)] private float _duration = 0.3f;
-        [SerializeField, Range(.1f, 2f)] private float _scaleCoeficient = 1.5f;
+        [SerializeField][Range(0.1f, 2f)] private float _duration = 0.3f;
+        [SerializeField][Range(.1f, 2f)] private float _scaleCoeficient = 1.5f;
 
         private Transform _transform;
         private TweenController _controller;

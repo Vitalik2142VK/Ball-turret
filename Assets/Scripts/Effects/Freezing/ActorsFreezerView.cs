@@ -6,12 +6,13 @@ namespace CannonTurret.Effects.Freezing
 {
     public class ActorsFreezerView : MonoBehaviour, IActorsFreezerView
     {
+        private const float HalfValue = 0.5f;
+
         [SerializeField] private IceShellPool _iceShellPool;
         [SerializeField] private ActorZone _actorZone;
         [SerializeField] private LayerMask _layerMask;
 
         private BoxCollider _box;
-        private float _halfValue = 0.5f;
 
         private void OnValidate()
         {
@@ -32,7 +33,7 @@ namespace CannonTurret.Effects.Freezing
         public void Freeze()
         {
             Vector3 center = _box.center;
-            Vector3 halfExtents = Vector3.Scale(_box.size * _halfValue, _box.transform.lossyScale);
+            Vector3 halfExtents = Vector3.Scale(_box.size * HalfValue, _box.transform.lossyScale);
             Quaternion orientation = _box.transform.rotation;
 
             var colliders = Physics.OverlapBox(center, halfExtents, orientation, _layerMask);

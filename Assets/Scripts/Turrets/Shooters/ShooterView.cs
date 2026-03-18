@@ -17,6 +17,7 @@ namespace CannonTurret.Turrets.Shooters
         private int _getHitCasch;
         private int _winCasch;
         private int _runAwayCasch;
+
         private void Awake()
         {
             _animator = GetComponent<Animator>();

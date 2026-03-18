@@ -12,12 +12,19 @@ namespace CannonTurret.Scriptable.Player
         private IPlayer _player;
 
         public IWallet Wallet => _player.Wallet;
+
         public ITurretImprover TurretImprover => _player.TurretImprover;
+
         public IPurchasesStorage PurchasesStorage => _player.PurchasesStorage;
+
         public float HealthCoefficient => _player.HealthCoefficient;
+
         public float DamageCoefficient => _player.DamageCoefficient;
+
         public int AchievedLevelIndex => _player.AchievedLevelIndex;
+
         public bool IsLearningComplete => _player.IsLearningComplete;
+
         public bool IsSaved => _player != null;
 
         public void SetPlayer(IPlayer player)

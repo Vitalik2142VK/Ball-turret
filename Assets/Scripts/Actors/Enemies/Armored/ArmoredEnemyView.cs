@@ -12,6 +12,7 @@ namespace CannonTurret.Actors.Enemies.Armored
         private IEnemyView _enemyView;
 
         public string Name => _enemyView.Name;
+
         public bool IsActive => _enemyView.IsActive;
 
         private void Awake()

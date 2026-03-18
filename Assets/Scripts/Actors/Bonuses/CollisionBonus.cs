@@ -6,40 +6,41 @@ namespace CannonTurret.Actors.Bonuses
 {
     public class CollisionBonus : IViewableBonus
     {
-        private IBonus _bonus;
-        private IBonusPresenter _presenter;
-        private IMovableObject _mover;
+        private readonly IBonus Bonus;
+        private readonly IBonusPresenter Presenter;
+        private readonly IMovableObject Mover;
 
         public CollisionBonus(IBonus bonus, IBonusPresenter presenter, IMovableObject mover)
         {
-            _bonus = bonus ?? throw new ArgumentNullException(nameof(bonus));
-            _presenter = presenter ?? throw new ArgumentNullException(nameof(presenter));
-            _mover = mover ?? throw new ArgumentNullException(nameof(mover));
+            Bonus = bonus ?? throw new ArgumentNullException(nameof(bonus));
+            Presenter = presenter ?? throw new ArgumentNullException(nameof(presenter));
+            Mover = mover ?? throw new ArgumentNullException(nameof(mover));
 
             IsEnable = true;
         }
-        public IBonusCard BonusCard => _bonus.BonusCard;
-        public bool IsFinished => _mover.IsFinished;
+        public IBonusCard BonusCard => Bonus.BonusCard;
+
+        public bool IsFinished => Mover.IsFinished;
 
         public bool IsEnable { get; private set; }
 
-        public void Activate() => _bonus.Activate();
+        public void Activate() => Bonus.Activate();
 
-        public void SetStartPosition(Vector3 startPosition) => _mover.SetStartPosition(startPosition);
+        public void SetStartPosition(Vector3 startPosition) => Mover.SetStartPosition(startPosition);
 
-        public void EstablishPoint(Vector3 distance, float speed) => _mover.EstablishPoint(distance, speed);
+        public void EstablishPoint(Vector3 distance, float speed) => Mover.EstablishPoint(distance, speed);
 
-        public void Move() => _mover.Move();
+        public void Move() => Mover.Move();
 
         public void HandleBonusGatherer(IBonusGatherer bonusGatherer)
         {
-            bonusGatherer.Gather(_bonus);
+            bonusGatherer.Gather(Bonus);
             IsEnable = false;
         }
 
         public void Destroy()
         {
-            _presenter.Destroy();
+            Presenter.Destroy();
             IsEnable = false;
         }
     }

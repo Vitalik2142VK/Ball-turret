@@ -5,17 +5,18 @@ namespace CannonTurret.Actors.Bonuses.Activators
 {
     public class RocketBonusActivator : IBonusActivator
     {
-        private IRocketView _rocketView;
-        private IBonusActivator _bigBangBonusActivator;
+        private readonly IRocketView RocketView;
+        private readonly IBonusActivator BigBangBonusActivator;
+
         private bool _isActivateStarted;
 
         public RocketBonusActivator(IRocketView rocketView, IBonusActivator bigBangBonusActivator)
         {
-            _rocketView = rocketView ?? throw new ArgumentNullException(nameof(rocketView));
-            _bigBangBonusActivator = bigBangBonusActivator ?? throw new ArgumentNullException(nameof(bigBangBonusActivator));
+            RocketView = rocketView ?? throw new ArgumentNullException(nameof(rocketView));
+            BigBangBonusActivator = bigBangBonusActivator ?? throw new ArgumentNullException(nameof(bigBangBonusActivator));
             _isActivateStarted = false;
 
-            _rocketView.RocketFinished += OnFinishRocket;
+            RocketView.RocketFinished += OnFinishRocket;
         }
 
         public void Activate()
@@ -24,17 +25,17 @@ namespace CannonTurret.Actors.Bonuses.Activators
                 return;
 
             _isActivateStarted = true;
-            _rocketView.Play();
+            RocketView.Play();
         }
 
         public void Disable()
         {
-            _rocketView.RocketFinished -= OnFinishRocket;
+            RocketView.RocketFinished -= OnFinishRocket;
         }
 
         private void OnFinishRocket()
         {
-            _bigBangBonusActivator.Activate();
+            BigBangBonusActivator.Activate();
             _isActivateStarted = false;
         }
     }

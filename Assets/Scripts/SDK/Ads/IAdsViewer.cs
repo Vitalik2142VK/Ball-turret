@@ -9,6 +9,7 @@ namespace CannonTurret.SDK.Ads
         public event Action TimerRewardAdReseted;
 
         public bool CanShowRewardAd { get; }
+
         public bool IsAdsDisable { get; }
 
         public void ShowRewardAd(string rewardId);

@@ -5,8 +5,8 @@ namespace CannonTurret.Actors.Debuffs
 {
     public class DebuffAmplifier : MonoBehaviour, IDebuffHandler
     {
-        [SerializeField, SerializeIterface(typeof(IDebuffHandler))] private GameObject _debuffHandlerGameObject;
-        [SerializeField, Min(1f)] private float _gainFactor;
+        [SerializeField][SerializeIterface(typeof(IDebuffHandler))] private GameObject _debuffHandlerGameObject;
+        [SerializeField][Min(1f)] private float _gainFactor;
         [SerializeField] private DebuffType _vulnerableDebuffType;
 
         private IDebuffHandler _debuffHandler;

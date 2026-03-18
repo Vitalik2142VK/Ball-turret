@@ -12,6 +12,7 @@ namespace CannonTurret.Scriptable.Player
         public event Action LanguageChanged;
 
         public Language Language => _localizationService.Language;
+
         public bool IsLanguageEstablished => _localizationService != null;
 
         public void EstablishLanguage(ILocalisatorService localizationService)

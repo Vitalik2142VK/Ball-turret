@@ -9,7 +9,7 @@ namespace CannonTurret.Actors.Bonuses.Activators
     public class ChoiceBonusActivatorCreator : MonoBehaviour, IBonusActivatorCreator
     {
         [SerializeField] private BonusChoiceMenu _bonusChoiceMenu;
-        [SerializeField, SerializeIterface(typeof(IBonusCreator))] private GameObject[] _randomBonusCreators;
+        [SerializeField][SerializeIterface(typeof(IBonusCreator))] private GameObject[] _randomBonusCreators;
 
         private ChoiceBonusActivator _bonusActivators;
 
@@ -22,8 +22,10 @@ namespace CannonTurret.Actors.Bonuses.Activators
                 throw new InvalidOperationException(nameof(_randomBonusCreators));
 
             foreach (var bonusConfigurator in _randomBonusCreators)
+            {
                 if (bonusConfigurator == null)
                     throw new NullReferenceException($"{_randomBonusCreators} contains null objects");
+            }
         }
 
         public IBonusActivator Create()

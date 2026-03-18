@@ -6,7 +6,7 @@ namespace CannonTurret.UI
 {
     public class HiderUI : MonoBehaviour
     {
-        [SerializeField, SerializeIterface(typeof(IAnimatorUI))] private GameObject[] _interferingUI;
+        [SerializeField][SerializeIterface(typeof(IAnimatorUI))] private GameObject[] _interferingUI;
 
         private Dictionary<GameObject, IAnimatorUI> _animators;
 
@@ -15,15 +15,19 @@ namespace CannonTurret.UI
             _animators = new Dictionary<GameObject, IAnimatorUI>();
 
             foreach (var userInterface in _interferingUI)
+            {
                 if (userInterface != null)
                     _animators.Add(userInterface, userInterface.GetComponent<IAnimatorUI>());
+            }
         }
 
         public void Show()
         {
             foreach (var animator in _animators)
+            {
                 if (animator.Key != null)
                     animator.Value.Show();
+            }
         }
 
         public void Hide()

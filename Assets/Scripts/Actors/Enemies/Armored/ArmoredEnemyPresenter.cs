@@ -5,29 +5,29 @@ namespace CannonTurret.Actors.Enemies.Armored
 {
     public class ArmoredEnemyPresenter : IArmoredEnemyPresenter
     {
-        private IArmoredObject _armoredModel;
-        private IEnemy _model;
-        private IEnemyView _view;
+        private readonly IArmoredObject ArmoredModel;
+        private readonly IEnemy Model;
+        private readonly IEnemyView View;
 
         public ArmoredEnemyPresenter(IEnemy model, IEnemyView view)
         {
             if (model is IArmoredObject armoredModel)
-                _armoredModel = armoredModel;
+                ArmoredModel = armoredModel;
             else
                 throw new ArgumentException($"<{nameof(model)}> must implement {nameof(IArmoredObject)}");
 
-            _model = model ?? throw new ArgumentNullException(nameof(model));
-            _view = view ?? throw new ArgumentNullException(nameof(view));
+            Model = model ?? throw new ArgumentNullException(nameof(model));
+            View = view ?? throw new ArgumentNullException(nameof(view));
         }
 
         public void IgnoreArmor(IDamageAttributes damage)
         {
-            _armoredModel.IgnoreArmor(damage);
+            ArmoredModel.IgnoreArmor(damage);
 
-            if (_model.IsEnable)
-                _view.PlayDamage();
+            if (Model.IsEnable)
+                View.PlayDamage();
             else
-                _view.PlayDead();
+                View.PlayDead();
         }
     }
 }

@@ -10,8 +10,8 @@ namespace CannonTurret.SDK.Ads
     {
         private static bool s_IsInitialized = false;
 
-        [SerializeField, Range(60f, 180f)] private float _timeWaitNextFullScreenAd = 120f;
-        [SerializeField, Range(10f, 60f)] private float _timeWaitNextRewardAd = 20f;
+        [SerializeField][Range(60f, 180f)] private float _timeWaitNextFullScreenAd = 120f;
+        [SerializeField][Range(10f, 60f)] private float _timeWaitNextRewardAd = 20f;
 
         private IPlayerPurchase _disableAdsPurchase;
         private WaitForSeconds _waitNextAdFullScreenAd;

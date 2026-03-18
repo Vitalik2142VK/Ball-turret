@@ -34,28 +34,28 @@ namespace CannonTurret.UI.Animations
             }
         }
 
-        private Vector2 GetUp()
+        readonly private Vector2 GetUp()
         {
             float shift = Screen.height * _offsetShift;
 
             return new Vector2(_finishPosition.x, shift);
         }
 
-        private Vector2 GetDown()
+        readonly private Vector2 GetDown()
         {
             float shift = -Screen.height * _offsetShift;
 
             return new Vector2(_finishPosition.x, shift);
         }
 
-        private Vector2 GetLeft()
+        readonly private Vector2 GetLeft()
         {
             float shift = Screen.width * _offsetShift;
 
             return new Vector2(shift, _finishPosition.y);
         }
 
-        private Vector2 GetRight()
+        readonly private Vector2 GetRight()
         {
             float shift = -Screen.width * _offsetShift;
 

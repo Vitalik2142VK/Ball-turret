@@ -20,6 +20,7 @@ namespace CannonTurret.Actors.Bonuses.Activators
             if (_gun == null)
                 throw new NullReferenceException(nameof(_gun));
         }
+
         public IBonusActivator Create()
         {
             return new AddBulletBonusActivator(_bulletFactory, _gun, _bulletType);

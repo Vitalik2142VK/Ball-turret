@@ -43,8 +43,10 @@ namespace CannonTurret.Actors.Spawn
         public void FreeAllSpawnPoints()
         {
             for (int i = 0; i < _spawnPoints.Length; i++)
+            {
                 for (int j = 0; j < _spawnPoints.GetLength(0); j++)
                     _spawnPoints[i, j].FreePoint();
+            }
         }
 
         private SpawnPoint[,] CreatePoints()

@@ -5,31 +5,31 @@ namespace CannonTurret.UI.PlayerScene
 {
     public class BonusesWindowHiderActivator
     {
-        private IOpenWindowButton _openWindowButton;
-        private IReservedBonusesWindow _reservedBonusesWindow;
-        private IShotAction _shotAction;
+        private readonly IOpenWindowButton OpenWindowButton;
+        private readonly IReservedBonusesWindow ReservedBonusesWindow;
+        private readonly IShotAction ShotAction;
 
         public BonusesWindowHiderActivator(IOpenWindowButton openWindowButton, IReservedBonusesWindow reservedBonusesWindow, IShotAction shotAction)
         {
-            _openWindowButton = openWindowButton ?? throw new ArgumentNullException(nameof(openWindowButton));
-            _reservedBonusesWindow = reservedBonusesWindow ?? throw new ArgumentNullException(nameof(reservedBonusesWindow));
-            _shotAction = shotAction ?? throw new ArgumentNullException(nameof(shotAction));
+            OpenWindowButton = openWindowButton ?? throw new ArgumentNullException(nameof(openWindowButton));
+            ReservedBonusesWindow = reservedBonusesWindow ?? throw new ArgumentNullException(nameof(reservedBonusesWindow));
+            ShotAction = shotAction ?? throw new ArgumentNullException(nameof(shotAction));
 
-            _shotAction.Fired += OnHide;
+            ShotAction.Fired += OnHide;
         }
 
         public void Disable()
         {
-            _shotAction.Fired -= OnHide;
+            ShotAction.Fired -= OnHide;
         }
 
         private void OnHide()
         {
-            if (_openWindowButton.IsActive)
-                _openWindowButton.Hide();
+            if (OpenWindowButton.IsActive)
+                OpenWindowButton.Hide();
 
-            if (_reservedBonusesWindow.IsActive)
-                _reservedBonusesWindow.Hide();
+            if (ReservedBonusesWindow.IsActive)
+                ReservedBonusesWindow.Hide();
         }
     }
 }

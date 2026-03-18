@@ -25,8 +25,9 @@ namespace CannonTurret.CameraControl
         public event Action OrientationChanged;
         public event Action RatioChanged;
 
-        public float CameraHeight => _transform.position.y;
         public Vector3 Rotation => _transform.rotation.eulerAngles;
+
+        public float CameraHeight => _transform.position.y;
 
         public bool IsPortraitOrientation { get; private set; }
 

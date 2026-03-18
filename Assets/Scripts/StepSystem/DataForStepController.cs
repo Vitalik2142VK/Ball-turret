@@ -8,9 +8,9 @@ using System;
 
 namespace CannonTurret.StepSystem
 {
-    public class DataForStepSystem : IDataForStepSystem
+    public class DataForStepController : IDataForStepController
     {
-        public DataForStepSystem(ITurret turret, IAdsViewer adsViewer, IRewardIssuer rewardIssuer, IPlayerController playerController, IVictoryController victoryController, IActorsControllersAccess controllersAccess, ILevelStatus levelStatus)
+        public DataForStepController(ITurret turret, IAdsViewer adsViewer, IRewardIssuer rewardIssuer, IPlayerController playerController, IVictoryController victoryController, IActorsControllersAccess controllersAccess, ILevelStatus levelStatus)
         {
             Turret = turret ?? throw new ArgumentNullException(nameof(turret));
             AdsViewer = adsViewer ?? throw new ArgumentNullException(nameof(adsViewer));
@@ -22,11 +22,17 @@ namespace CannonTurret.StepSystem
         }
 
         public ITurret Turret { get; }
+
         public IAdsViewer AdsViewer { get; }
+
         public IRewardIssuer RewardIssuer { get; }
+
         public IPlayerController PlayerController { get; }
+
         public IVictoryController VictoryController { get; }
+
         public IActorsControllersAccess ControllersAccess { get; }
+
         public ILevelStatus LevelStatus { get; }
     }
 }

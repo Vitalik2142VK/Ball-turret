@@ -9,7 +9,9 @@ namespace CannonTurret.Turrets
         private Transform _transform;
 
         public Vector3 BulletSpawnPoint => _bulletSpawnPoint.position;
+
         public Vector3 Position => _transform.position;
+
         public Vector3 Direction => _transform.forward;
 
         private void OnValidate()

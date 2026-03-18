@@ -22,7 +22,7 @@ namespace CannonTurret.Scriptable.Level
                 throw new NullReferenceException(nameof(_actorsPlannerStore));
         }
 
-        public void Initioalize(ICoinCountRandomizer coinCountRandomizer, float actorsHealthCoefficientByLevel)
+        public void Initialize(ICoinCountRandomizer coinCountRandomizer, float actorsHealthCoefficientByLevel)
         {
             if (actorsHealthCoefficientByLevel < ILevelFactory.MinActorsHealthCoefficientByLevel)
                 throw new ArgumentOutOfRangeException(nameof(actorsHealthCoefficientByLevel));

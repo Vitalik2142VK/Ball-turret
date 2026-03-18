@@ -8,45 +8,45 @@ namespace CannonTurret.Actors.Enemies.Armored
 {
     public class ArmoredEnemy : IEnemy, IArmoredObject
     {
-        private IEnemy _enemy;
-        private IArmor _armor;
+        private readonly IEnemy Enemy;
+        private readonly IArmor Armor;
 
         public ArmoredEnemy(IEnemy enemy, IArmor armor)
         {
-            _enemy = enemy ?? throw new ArgumentNullException(nameof(enemy));
-            _armor = armor ?? throw new ArgumentNullException(nameof(armor));
+            Enemy = enemy ?? throw new ArgumentNullException(nameof(enemy));
+            Armor = armor ?? throw new ArgumentNullException(nameof(armor));
         }
 
-        public bool IsEnable => _enemy.IsEnable;
-        public bool IsFinished => _enemy.IsFinished;
+        public bool IsEnable => Enemy.IsEnable;
+        public bool IsFinished => Enemy.IsFinished;
 
-        public void ActivateDebuffs() => _enemy.ActivateDebuffs();
+        public void ActivateDebuffs() => Enemy.ActivateDebuffs();
 
-        public void AddDebuff(IDebuff debaff) => _enemy.AddDebuff(debaff);
+        public void AddDebuff(IDebuff debaff) => Enemy.AddDebuff(debaff);
 
-        public void ApplyDamage(IDamagedObject damagedObject) => _enemy.ApplyDamage(damagedObject);
+        public void ApplyDamage(IDamagedObject damagedObject) => Enemy.ApplyDamage(damagedObject);
 
-        public void SetStartPosition(Vector3 startPosition) => _enemy.SetStartPosition(startPosition);
+        public void SetStartPosition(Vector3 startPosition) => Enemy.SetStartPosition(startPosition);
 
-        public void EstablishPoint(Vector3 distance, float speed) => _enemy.EstablishPoint(distance, speed);
+        public void EstablishPoint(Vector3 distance, float speed) => Enemy.EstablishPoint(distance, speed);
 
-        public void Move() => _enemy.Move();
+        public void Move() => Enemy.Move();
 
-        public void Destroy() => _enemy.Destroy();
+        public void Destroy() => Enemy.Destroy();
 
-        public void Win() => _enemy.Win();
+        public void Win() => Enemy.Win();
 
         public void TakeDamage(IDamageAttributes damage)
         {
             if (damage == null)
                 throw new ArgumentNullException(nameof(damage));
 
-            _armor.ReduceDamage(damage);
+            Armor.ReduceDamage(damage);
         }
 
         public void IgnoreArmor(IDamageAttributes attributes)
         {
-            _enemy.TakeDamage(attributes);
+            Enemy.TakeDamage(attributes);
         }
     }
 }

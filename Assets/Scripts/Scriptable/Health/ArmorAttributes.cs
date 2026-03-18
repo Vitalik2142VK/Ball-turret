@@ -10,7 +10,7 @@ namespace CannonTurret.Scriptable.Health
         private const float MaxPersent = 90.0f;
         private const float Percent = 0.01f;
 
-        [SerializeField, Range(0f, MaxPersent)] private float _armorPercent;
+        [SerializeField][Range(0f, MaxPersent)] private float _armorPercent;
 
         public float DamageReductionCoefficient { get; private set; }
 

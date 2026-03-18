@@ -26,8 +26,10 @@ namespace CannonTurret.UI.MainMenu
                 _gameProductWindows = new GameProductWindow[MaxCountProductWindows];
 
             foreach (var window in _gameProductWindows)
+            {
                 if (window == null)
                     throw new NullReferenceException($"{_gameProductWindows} contains null objects");
+            }
         }
 
         private void Awake()

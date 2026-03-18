@@ -10,6 +10,7 @@ namespace CannonTurret.Scriptable.Move
         [SerializeField] private float _speed;
 
         Vector3 IMoveAttributes.Distance => _distance;
+
         float IMoveAttributes.Speed => _speed;
     }
 }

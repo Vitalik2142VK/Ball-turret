@@ -22,7 +22,9 @@ namespace CannonTurret.UI.MainMenu
         public event Action<int> Clicked;
 
         public string TextIndex { get; private set; }
+
         public int Index { get; private set; }
+
         public bool IsBocked { get; private set; }
 
         private void OnValidate()

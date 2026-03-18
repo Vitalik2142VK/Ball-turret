@@ -5,19 +5,20 @@ namespace CannonTurret.StepSystem.Steps
 {
     public class ActorsMoveStep : IStep, IEndPointStep
     {
-        private IEndStep _endStep;
-        private IActorsMover _objectsMover;
+        private readonly IActorsMover ActorsMover;
 
-        public ActorsMoveStep(IActorsMover objectsMover)
+        private IEndStep _endStep;
+
+        public ActorsMoveStep(IActorsMover actorsMover)
         {
-            _objectsMover = objectsMover ?? throw new ArgumentNullException(nameof(objectsMover));
+            ActorsMover = actorsMover ?? throw new ArgumentNullException(nameof(actorsMover));
         }
 
         public void Action()
         {
-            _objectsMover.MoveAll();
+            ActorsMover.MoveAll();
 
-            if (_objectsMover.AreMovesFinished)
+            if (ActorsMover.AreMovesFinished)
                 _endStep.End();
         }
 

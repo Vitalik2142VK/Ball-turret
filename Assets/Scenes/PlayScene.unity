@@ -7871,10 +7871,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 272c1d3d12ac1cb4f848aa6a99e3e3b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _explosionRadius: 20
   _layerMask:
     serializedVersion: 2
     m_Bits: 768
+  _explosionRadius: 20
+  _countColliders: 32
   _isDebugOn: 0
 --- !u!114 &799205655
 MonoBehaviour:

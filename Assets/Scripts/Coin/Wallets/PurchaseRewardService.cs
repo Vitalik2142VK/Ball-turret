@@ -6,16 +6,16 @@ namespace CannonTurret.Coin.Wallets
     {
         private const float MaxPriceCoefficient = 1.0f;
 
-        private ICoinAdder _coinAdder;
-        private float _priceCoefficient;
+        private readonly ICoinAdder CoinAdder;
+        private readonly float PriceCoefficient;
 
         public PurchaseRewardService(ICoinAdder coinAdder, float priceCoefficient = MaxPriceCoefficient)
         {
             if (priceCoefficient < 0.0f || priceCoefficient > MaxPriceCoefficient)
                 throw new ArgumentOutOfRangeException(nameof(priceCoefficient));
 
-            _coinAdder = coinAdder ?? throw new ArgumentNullException(nameof(coinAdder));
-            _priceCoefficient = priceCoefficient;
+            CoinAdder = coinAdder ?? throw new ArgumentNullException(nameof(coinAdder));
+            PriceCoefficient = priceCoefficient;
         }
 
         public bool CanProvideReward(int fullPrice, int missingAmount)
@@ -26,7 +26,7 @@ namespace CannonTurret.Coin.Wallets
             if (missingAmount < 0)
                 throw new ArgumentOutOfRangeException(nameof(missingAmount));
 
-            int maxReward = (int)(fullPrice * _priceCoefficient);
+            int maxReward = (int)(fullPrice * PriceCoefficient);
 
             return missingAmount <= maxReward;
         }
@@ -36,7 +36,7 @@ namespace CannonTurret.Coin.Wallets
             if (missingAmount < 0)
                 throw new ArgumentOutOfRangeException(nameof(missingAmount));
 
-            _coinAdder.SetCoinsAdsView(missingAmount);
+            CoinAdder.SetCoinsAdsView(missingAmount);
         }
     }
 }

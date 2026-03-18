@@ -7,8 +7,8 @@ namespace CannonTurret.EntryPoints.PlayLevel.Configurators
 {
     public class BonusConfigurator : MonoBehaviour
     {
-        [SerializeField, SerializeIterface(typeof(IBonusCreator))] private GameObject _bonusCreator;
-        [SerializeField, SerializeIterface(typeof(IBonusActivatorCreator))] private GameObject _bonusActivatorCreator;
+        [SerializeField][SerializeIterface(typeof(IBonusCreator))] private GameObject _bonusCreator;
+        [SerializeField][SerializeIterface(typeof(IBonusActivatorCreator))] private GameObject _bonusActivatorCreator;
 
         private IBonusActivatorCreator _activatorCreator;
 

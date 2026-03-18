@@ -6,13 +6,13 @@ namespace CannonTurret.Actors.Enemies
 {
     public class EnemiesAttacker : IEnemiesAttacker, IAttackingEnemiesCollector
     {
-        private List<IEnemy> _attackingEnemies;
-        private IDamagedObject _damagedObject;
+        private readonly List<IEnemy> AttackingEnemies;
+        private readonly IDamagedObject DamagedObject;
 
         public EnemiesAttacker(IDamagedObject damagedObject)
         {
-            _damagedObject = damagedObject ?? throw new ArgumentNullException(nameof(damagedObject));
-            _attackingEnemies = new List<IEnemy>();
+            DamagedObject = damagedObject ?? throw new ArgumentNullException(nameof(damagedObject));
+            AttackingEnemies = new List<IEnemy>();
         }
 
         public void Add(IEnemy enemy)
@@ -20,15 +20,15 @@ namespace CannonTurret.Actors.Enemies
             if (enemy == null)
                 throw new ArgumentNullException(nameof(enemy));
 
-            _attackingEnemies.Add(enemy);
+            AttackingEnemies.Add(enemy);
         }
 
         public void AttackAll()
         {
-            foreach (var enemy in _attackingEnemies)
-                enemy.ApplyDamage(_damagedObject);
+            foreach (var enemy in AttackingEnemies)
+                enemy.ApplyDamage(DamagedObject);
 
-            _attackingEnemies.Clear();
+            AttackingEnemies.Clear();
         }
     }
 }

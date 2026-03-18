@@ -5,14 +5,14 @@ namespace CannonTurret.Actors.Bonuses
 {
     public class BonusFactory
     {
-        private Dictionary<string, IBonusCreator> _creators;
+        private readonly Dictionary<string, IBonusCreator> Creators;
 
         public BonusFactory(IEnumerable<IBonusCreator> bonusCreators)
         {
             if (bonusCreators == null)
                 throw new ArgumentNullException(nameof(bonusCreators));
 
-            _creators = CreateDictionaryPrefabs(bonusCreators);
+            Creators = CreateDictionaryPrefabs(bonusCreators);
         }
 
         public IBonus Create(string nameTypeActor)
@@ -20,7 +20,7 @@ namespace CannonTurret.Actors.Bonuses
             if (IsCanCreate(nameTypeActor) == false)
                 throw new ArgumentOutOfRangeException(nameof(nameTypeActor));
 
-            return _creators[nameTypeActor].Create();
+            return Creators[nameTypeActor].Create();
         }
 
         private bool IsCanCreate(string nameTypeActor)
@@ -28,7 +28,7 @@ namespace CannonTurret.Actors.Bonuses
             if (nameTypeActor == null || nameTypeActor.Length == 0)
                 throw new ArgumentOutOfRangeException(nameof(nameTypeActor));
 
-            return _creators.ContainsKey(nameTypeActor);
+            return Creators.ContainsKey(nameTypeActor);
         }
 
         private Dictionary<string, IBonusCreator> CreateDictionaryPrefabs(IEnumerable<IBonusCreator> bonusPrefabs)

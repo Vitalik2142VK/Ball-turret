@@ -4,24 +4,24 @@ namespace CannonTurret.Actors.Enemies
 {
     public class EnemiesController : IEnemiesController
     {
-        private IAdvancedActorsPreparator _actorsPreparator;
-        private IEnemiesAttacker _enemyAttacker;
+        private readonly IAdvancedActorsPreparator ActorsPreparator;
+        private readonly IEnemiesAttacker EnemyAttacker;
 
         public EnemiesController(IAdvancedActorsPreparator actorsPreparator, IEnemiesAttacker enemyAttacker)
         {
-            _actorsPreparator = actorsPreparator ?? throw new ArgumentNullException(nameof(actorsPreparator));
-            _enemyAttacker = enemyAttacker ?? throw new ArgumentNullException(nameof(enemyAttacker));
+            ActorsPreparator = actorsPreparator ?? throw new ArgumentNullException(nameof(actorsPreparator));
+            EnemyAttacker = enemyAttacker ?? throw new ArgumentNullException(nameof(enemyAttacker));
         }
 
-        public bool AreNoEnemies => _actorsPreparator.EnemiesCount == 0;
+        public bool AreNoEnemies => ActorsPreparator.EnemiesCount == 0;
 
-        public void AttackAll() => _enemyAttacker.AttackAll();
+        public void AttackAll() => EnemyAttacker.AttackAll();
 
-        public void Count() => _actorsPreparator.CountRemainingEnemies();
+        public void Count() => ActorsPreparator.CountRemainingEnemies();
 
         public void WinAll()
         {
-            var enemies = _actorsPreparator.GetEnemies();
+            var enemies = ActorsPreparator.GetEnemies();
 
             foreach (var enemy in enemies)
                 enemy.Win();

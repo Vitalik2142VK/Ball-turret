@@ -12,51 +12,54 @@ namespace CannonTurret.LevelSystem
         private const float MinHealthMultiplierPerWave = 0.1f;
         private const float ReducingCoefficientCoins = 1.25f;
 
-        private ILevel _endlesslevel;
-        private ISavedLeaderBoard _savedLeaderBoard;
-        private float _healthMultiplierPerWave;
-        private float _countCoinsMultiplier;
-        private int _waveNumberReward;
+        private readonly ILevel Endlesslevel;
+        private readonly ISavedLeaderBoard SavedLeaderBoard;
+        private readonly float HealthMultiplierPerWave;
+        private readonly float CountCoinsMultiplier;
+        private readonly int WaveNumberReward;
 
         public EndlessLevel(ILevel endlesslevel, ISavedLeaderBoard savedLeaderBoard, float healthMultiplierPerWave)
         {
             if (healthMultiplierPerWave < MinHealthMultiplierPerWave)
                 throw new ArgumentOutOfRangeException($"{nameof(healthMultiplierPerWave)} cannot be less than {MinHealthMultiplierPerWave}");
 
-            _endlesslevel = endlesslevel ?? throw new ArgumentNullException(nameof(endlesslevel));
-            _savedLeaderBoard = savedLeaderBoard ?? throw new ArgumentNullException(nameof(savedLeaderBoard));
-            _healthMultiplierPerWave = healthMultiplierPerWave;
-            _countCoinsMultiplier = DefaultCoefficient + healthMultiplierPerWave * ReducingCoefficientCoins;
-            _waveNumberReward = WaveRepository.WaveDivider;
+            Endlesslevel = endlesslevel ?? throw new ArgumentNullException(nameof(endlesslevel));
+            SavedLeaderBoard = savedLeaderBoard ?? throw new ArgumentNullException(nameof(savedLeaderBoard));
+            HealthMultiplierPerWave = healthMultiplierPerWave;
+            CountCoinsMultiplier = DefaultCoefficient + healthMultiplierPerWave * ReducingCoefficientCoins;
+            WaveNumberReward = WaveRepository.WaveDivider;
 
             CountCoinsForWin = 0;
         }
 
         public int CountCoinsForWin { get; private set; }
 
-        public float HealthCoefficient => DefaultCoefficient + _healthMultiplierPerWave * CurrentWaveNumber;
-        public int Index => IndexLevel;
-        public int CurrentWaveNumber => _endlesslevel.CurrentWaveNumber;
-        public int WavesCount => _endlesslevel.WavesCount;
-        public int CountCoinsForWaves => (int)((_endlesslevel.CountCoinsForWaves + CountCoinsForWin) * _countCoinsMultiplier);
-        public bool AreWavesOver => _endlesslevel.AreWavesOver;
+        public float HealthCoefficient => DefaultCoefficient + HealthMultiplierPerWave * CurrentWaveNumber;
 
+        public int Index => IndexLevel;
+
+        public int CurrentWaveNumber => Endlesslevel.CurrentWaveNumber;
+
+        public int WavesCount => Endlesslevel.WavesCount;
+
+        public int CountCoinsForWaves => (int)((Endlesslevel.CountCoinsForWaves + CountCoinsForWin) * CountCoinsMultiplier);
+
+        public bool AreWavesOver => Endlesslevel.AreWavesOver;
 
         public bool TryGetNextWaveActorsPlanner(out IWaveActorsPlanner waveActorsPlanner)
         {
-            if (CurrentWaveNumber != 0 && CurrentWaveNumber % _waveNumberReward == 0)
-                CountCoinsForWin += (int)(_endlesslevel.CountCoinsForWin * _countCoinsMultiplier);
+            if (CurrentWaveNumber != 0 && CurrentWaveNumber % WaveNumberReward == 0)
+                CountCoinsForWin += (int)(Endlesslevel.CountCoinsForWin * CountCoinsMultiplier);
 
-            if (CurrentWaveNumber > _savedLeaderBoard.MaxAchievedWave)
-                _savedLeaderBoard.SaveNextAchievedWave();
+            if (CurrentWaveNumber > SavedLeaderBoard.MaxAchievedWave)
+                SavedLeaderBoard.SaveNextAchievedWave();
 
-            return _endlesslevel.TryGetNextWaveActorsPlanner(out waveActorsPlanner);
+            return Endlesslevel.TryGetNextWaveActorsPlanner(out waveActorsPlanner);
         }
 
         public ILevel Clone()
         {
-            return new EndlessLevel(_endlesslevel, _savedLeaderBoard, _healthMultiplierPerWave);
+            return new EndlessLevel(Endlesslevel, SavedLeaderBoard, HealthMultiplierPerWave);
         }
-
     }
 }

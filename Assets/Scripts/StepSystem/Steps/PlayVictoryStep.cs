@@ -5,17 +5,18 @@ namespace CannonTurret.StepSystem.Steps
 {
     public class PlayVictoryStep : IStep, IEndPointStep
     {
+        private readonly IVictoryController VictoryController;
+
         private IEndStep _endStep;
-        private IVictoryController _victoryController;
 
         public PlayVictoryStep(IVictoryController victoryController)
         {
-            _victoryController = victoryController ?? throw new ArgumentNullException(nameof(victoryController));
+            VictoryController = victoryController ?? throw new ArgumentNullException(nameof(victoryController));
         }
 
         public void Action()
         {
-            _victoryController.PlayVictory();
+            VictoryController.PlayVictory();
             _endStep.End();
         }
 

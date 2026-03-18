@@ -10,7 +10,7 @@ namespace CannonTurret.Scriptable.Damage
         private const float MinPersent = -99.9f;
         private const float Percent = 0.01f;
 
-        [SerializeField, Min(MinPersent)] private float _percentageDamageIncrease = 0f;
+        [SerializeField][Min(MinPersent)] private float _percentageDamageIncrease = 0f;
 
         public float DamageСoefficient => DefaultСoefficient + _percentageDamageIncrease * Percent;
     }

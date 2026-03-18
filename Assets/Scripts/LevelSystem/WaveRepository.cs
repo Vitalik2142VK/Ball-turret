@@ -13,7 +13,6 @@ namespace CannonTurret.LevelSystem
         [SerializeField] private WaveMask _waveMask;
 
         private System.Random _random;
-        private string _name;
 
         private void OnValidate()
         {
@@ -21,14 +20,15 @@ namespace CannonTurret.LevelSystem
                 throw new InvalidOperationException(nameof(_waves));
 
             foreach (var waveRepository in _waves)
+            {
                 if (waveRepository == null)
                     throw new NullReferenceException($"{_waves} has null elements");
+            }
         }
 
         public void Initialize(System.Random random)
         {
             _random = random ?? throw new ArgumentNullException(nameof(random));
-            _name = gameObject.name;
         }
 
         public bool TryGetWaveActorsPlanner(out IWaveActorsPlanner planner, WaveMask waveMask)

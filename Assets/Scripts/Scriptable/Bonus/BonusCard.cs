@@ -22,6 +22,10 @@ namespace CannonTurret.Scriptable.Bonus
 
         private Dictionary<Language, string> _descriptions;
 
+        public Sprite Icon => _icon;
+
+        public string Name => _name;
+
         private void OnValidate()
         {
             if (_view != null)
@@ -39,9 +43,6 @@ namespace CannonTurret.Scriptable.Bonus
             if (_trDescription.Length == 0)
                 throw new IndexOutOfRangeException(nameof(_trDescription));
         }
-
-        public Sprite Icon => _icon;
-        public string Name => _name;
 
         public string GetDescription(Language language)
         {

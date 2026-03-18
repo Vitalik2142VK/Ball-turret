@@ -6,23 +6,23 @@ namespace CannonTurret.LevelSystem
 {
     public class VictoryController : IVictoryController
     {
-        private IEnemiesWinPlayer _enemiesWin;
-        private IShooterView _shooterView;
-        private IWinStatus _winStatus;
+        private readonly IEnemiesWinPlayer EnemiesWin;
+        private readonly IShooterView ShooterView;
+        private readonly IWinStatus WinStatus;
 
         public VictoryController(IEnemiesWinPlayer enemiesWin, IShooterView shooterView, IWinStatus winStatus)
         {
-            _enemiesWin = enemiesWin ?? throw new ArgumentNullException(nameof(enemiesWin));
-            _shooterView = shooterView ?? throw new ArgumentNullException(nameof(shooterView));
-            _winStatus = winStatus ?? throw new ArgumentNullException(nameof(winStatus));
+            EnemiesWin = enemiesWin ?? throw new ArgumentNullException(nameof(enemiesWin));
+            ShooterView = shooterView ?? throw new ArgumentNullException(nameof(shooterView));
+            WinStatus = winStatus ?? throw new ArgumentNullException(nameof(winStatus));
         }
 
         public void PlayVictory()
         {
-            if (_winStatus.IsWin)
-                _shooterView.PlayWin();
+            if (WinStatus.IsWin)
+                ShooterView.PlayWin();
             else
-                _enemiesWin.WinAll();
+                EnemiesWin.WinAll();
         }
     }
 }

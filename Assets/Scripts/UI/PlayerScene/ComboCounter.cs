@@ -12,9 +12,9 @@ namespace CannonTurret.UI.PlayerScene
         [SerializeField] private TextMeshProUGUI _comboCounterTitle;
         [SerializeField] private TextMeshProUGUI _comboCounter;
         [SerializeField] private Gradient _colorCombo;
-        [SerializeField, Min(0.5f)] private float _timeRemove = 1f;
-        [SerializeField, Min(9)] private int _maxCombo = 30;
-        [SerializeField, Min(3)] private int _minCombo = 3;
+        [SerializeField][Min(0.5f)] private float _timeRemove = 1f;
+        [SerializeField][Min(9)] private int _maxCombo = 30;
+        [SerializeField][Min(3)] private int _minCombo = 3;
 
         private PulsingScaleAnimation _pulsingScaleAnimation;
         private WaitForSeconds _wait;

@@ -6,21 +6,22 @@ namespace CannonTurret.Actors.Bonuses.Activators
 {
     public class BigBangBonusActivator : IBonusActivator
     {
-        private IExploder _exploder;
-        private IEnemyCounter _enemyCounter;
+        private readonly IExploder Exploder;
+        private readonly IEnemyCounter EnemyCounter;
+
         private Vector3 _pointExplosionPosition;
 
         public BigBangBonusActivator(IExploder exploder, IEnemyCounter enemyCounter, Vector3 pointExplosionPosition)
         {
-            _exploder = exploder ?? throw new ArgumentNullException(nameof(exploder));
-            _enemyCounter = enemyCounter ?? throw new ArgumentNullException(nameof(enemyCounter));
+            Exploder = exploder ?? throw new ArgumentNullException(nameof(exploder));
+            EnemyCounter = enemyCounter ?? throw new ArgumentNullException(nameof(enemyCounter));
             _pointExplosionPosition = pointExplosionPosition;
         }
 
         public void Activate()
         {
-            _exploder.Explode(_pointExplosionPosition);
-            _enemyCounter.Count();
+            Exploder.Explode(_pointExplosionPosition);
+            EnemyCounter.Count();
         }
     }
 }

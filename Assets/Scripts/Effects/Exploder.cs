@@ -7,8 +7,9 @@ namespace CannonTurret.Effects
 {
     public class Exploder : MonoBehaviour, IExploder
     {
-        [SerializeField, Min(1f)] private float _explosionRadius;
         [SerializeField] private LayerMask _layerMask;
+        [SerializeField, Min(1f)] private float _explosionRadius;
+        [SerializeField][Range(1, 64)] private int _countColliders = 16;
 
         [Header("Debug")]
         [SerializeField] private bool _isDebugOn = false;
@@ -16,6 +17,7 @@ namespace CannonTurret.Effects
         private IDamage _damage;
         private ISound _sound;
         private IExplosionView _explosionView;
+        private Collider[] _colliders;
 
         public void Initialize(IDamageAttributes attributes, ISound sound, IExplosionView explosionView)
         {
@@ -25,6 +27,8 @@ namespace CannonTurret.Effects
             _sound = sound ?? throw new ArgumentNullException(nameof(sound));
             _explosionView = explosionView ?? throw new ArgumentNullException(nameof(explosionView));
             _damage = new Damage(attributes);
+
+            _colliders = new Collider[_countColliders];
         }
 
         public void Explode(Vector3 pointContact)
@@ -32,10 +36,12 @@ namespace CannonTurret.Effects
             _sound.Play();
             _explosionView.Play();
 
-            Collider[] colliders = Physics.OverlapSphere(pointContact, _explosionRadius, _layerMask, QueryTriggerInteraction.Ignore);
+            int count = Physics.OverlapSphereNonAlloc(pointContact, _explosionRadius, _colliders, _layerMask, QueryTriggerInteraction.Ignore);
 
-            foreach (var collider in colliders)
+            for (int i = 0; i < count; i++)
             {
+                Collider collider = _colliders[i];
+
                 if (collider.TryGetComponent(out IDamagedObject damagedObject))
                     _damage.Apply(damagedObject);
             }

@@ -10,10 +10,11 @@ namespace CannonTurret.AudioSystem
         [SerializeField] private AudioMixerGroup _audioMixerGroup;
         [SerializeField] private Sound _soundEffectExample;
 
-        public float MusicVolumeCoefficient { get; private set; }
-        public float EffectsVolumeCoefficient { get; private set; }
-
         public bool IsEnableSound => _audioData.IsEnableSound;
+
+        public float MusicVolumeCoefficient { get; private set; }
+
+        public float EffectsVolumeCoefficient { get; private set; }
 
         private void OnValidate()
         {

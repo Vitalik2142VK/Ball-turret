@@ -20,12 +20,17 @@ namespace CannonTurret.PlayerSystem
         }
 
         public float HealthCoefficient => TurretImprover.HealthCoefficient;
+
         public float DamageCoefficient => TurretImprover.DamageCoefficient;
 
         public IWallet Wallet { get; }
+
         public ITurretImprover TurretImprover { get; }
+
         public bool IsLearningComplete { get; }
+
         public IPurchasesStorage PurchasesStorage { get; private set; }
+
         public int AchievedLevelIndex { get; private set; }
 
         public void IncreaseAchievedLevel()

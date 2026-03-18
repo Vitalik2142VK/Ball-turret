@@ -16,9 +16,9 @@ namespace CannonTurret.Turrets.Bullets.Types
     public class ExplodingBullet : MonoBehaviour, IBullet, IInitializer
     {
         [SerializeField] private DamageImproverAttributes _damageImproverAttributes;
-        [SerializeField, SerializeIterface(typeof(IBulletPhysics))] private GameObject _bulletPhysicsGameObject;
-        [SerializeField, SerializeIterface(typeof(IExplosionView))] private GameObject _explosionParticle;
-        [SerializeField, Range(0.2f, 3f)] private float _waitTimeToPut = 0.5f;
+        [SerializeField][SerializeIterface(typeof(IBulletPhysics))] private GameObject _bulletPhysicsGameObject;
+        [SerializeField][SerializeIterface(typeof(IExplosionView))] private GameObject _explosionParticle;
+        [SerializeField][Range(0.2f, 3f)] private float _waitTimeToPut = 0.5f;
 
         private IExploder _exploder;
         private IBulletPhysics _bulletPhysics;
@@ -28,10 +28,11 @@ namespace CannonTurret.Turrets.Bullets.Types
         private Renderer _renderer;
         private WaitForSeconds _wait;
 
-        public ISound ExplosionSound { get; private set; }
-        public IBulletRepository BulletRepository { get; private set; }
-
         public BulletType BulletType => _bullet.BulletType;
+
+        public ISound ExplosionSound { get; private set; }
+
+        public IBulletRepository BulletRepository { get; private set; }
 
         private void OnValidate()
         {
@@ -39,10 +40,12 @@ namespace CannonTurret.Turrets.Bullets.Types
                 throw new NullReferenceException(nameof(_damageImproverAttributes));
 
             if (_bulletPhysicsGameObject == null)
+            {
                 if (TryGetComponent(out IBulletPhysics _))
                     _bulletPhysicsGameObject = gameObject;
                 else
                     throw new NullReferenceException(nameof(_damageImproverAttributes));
+            }
 
             if (_explosionParticle == null)
                 throw new NullReferenceException(nameof(_explosionParticle));

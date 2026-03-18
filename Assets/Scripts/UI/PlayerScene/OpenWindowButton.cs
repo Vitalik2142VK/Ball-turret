@@ -9,7 +9,7 @@ namespace CannonTurret.UI.PlayerScene
     [RequireComponent(typeof(IAnimatorUI), typeof(Button))]
     public class OpenWindowButton : MonoBehaviour, IOpenWindowButton
     {
-        [SerializeField, SerializeIterface(typeof(IWindow))] private GameObject _windowGameObject;
+        [SerializeField][SerializeIterface(typeof(IWindow))] private GameObject _windowGameObject;
 
         private Button _button;
         private IAnimatorUI _animator;

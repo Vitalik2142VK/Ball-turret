@@ -5,11 +5,11 @@ namespace CannonTurret.Actors
 {
     public class ActorsRemover : IRemovedActorsRepository
     {
-        private List<IActor> _removedActors;
+        private readonly List<IActor> RemovedActors;
 
         public ActorsRemover()
         {
-            _removedActors = new List<IActor>();
+            RemovedActors = new List<IActor>();
         }
 
         public void Add(IActor actor)
@@ -17,7 +17,7 @@ namespace CannonTurret.Actors
             if (actor == null)
                 throw new ArgumentNullException(nameof(actor));
 
-            _removedActors.Add(actor);
+            RemovedActors.Add(actor);
         }
 
         public void AddRange(IEnumerable<IActor> actors)
@@ -25,15 +25,15 @@ namespace CannonTurret.Actors
             if (actors == null)
                 throw new ArgumentNullException(nameof(actors));
 
-            _removedActors.AddRange(actors);
+            RemovedActors.AddRange(actors);
         }
 
         public void RemoveAll()
         {
-            foreach (var actor in _removedActors)
+            foreach (var actor in RemovedActors)
                 actor.Destroy();
 
-            _removedActors.Clear();
+            RemovedActors.Clear();
         }
     }
 }

@@ -11,7 +11,7 @@ namespace CannonTurret.Turrets.Bullets.Physics
         [SerializeField] private AdvancedBulletPhysicsAttributes _attributes;
         [SerializeField] private TrajectoryBullet _trajectory;
         [SerializeField] private LayerMask _collisionMask;
-        [SerializeField, Min(0)] private float _maxDirectionalError = 0.2f;
+        [SerializeField][Min(0)] private float _maxDirectionalError = 0.2f;
 
         public event Action<Collider> EnteredCollision;
 
@@ -74,11 +74,13 @@ namespace CannonTurret.Turrets.Bullets.Physics
             UseGravity(deltaTime);
 
             if (TryGetCollision(out Collider collider))
+            {
                 if (LayerMaskTool.IsInLayerMask(collider.gameObject, _attributes.LayerMaskBounce))
                 {
                     point.SetCollidedObject(collider);
                     _trajectory.RecordCollision();
                 }
+            }
 
             _rigidbody.MovePosition(_transform.position + _velocity);
 

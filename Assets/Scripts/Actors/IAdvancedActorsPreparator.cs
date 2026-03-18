@@ -8,7 +8,9 @@ namespace CannonTurret.Actors
     public interface IAdvancedActorsPreparator : IActorsPreparator
     {
         public IActorsMover ActorsMover { get; }
+
         public int EnemiesCount { get; }
+
         public bool AreWavesOver { get; }
 
         public IEnumerable<IActor> PopActors();

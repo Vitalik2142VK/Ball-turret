@@ -30,8 +30,10 @@ namespace CannonTurret.UI.PlayerScene
                 _bonusChoiceButtons = new BonusChoiceButton[MaxCountBonusButtons];
 
             foreach (var button in _bonusChoiceButtons)
+            {
                 if (button == null)
                     throw new NullReferenceException(nameof(button));
+            }
 
             if (_pause == null)
                 throw new NullReferenceException(nameof(_pause));

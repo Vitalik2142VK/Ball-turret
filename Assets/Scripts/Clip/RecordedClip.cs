@@ -10,7 +10,7 @@ namespace CannonTurret.Clip
     public class RecordedClip : MonoBehaviour
     {
         [SerializeField] private TimelineAsset[] _timelineAssets;
-        [SerializeField, Min(1f)] private float _waitTime;
+        [SerializeField][Min(1f)] private float _waitTime;
 
         private PlayableDirector _playableDirector;
         private WaitForSeconds _wait;

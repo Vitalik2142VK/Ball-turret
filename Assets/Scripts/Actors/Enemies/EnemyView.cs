@@ -12,7 +12,7 @@ namespace CannonTurret.Actors.Enemies
     [RequireComponent(typeof(CapsuleCollider), typeof(Rigidbody), typeof(EnemyAnimator))]
     public class EnemyView : MonoBehaviour, IEnemyView
     {
-        [SerializeField, SerializeIterface(typeof(IDebuffHandler))] private GameObject _debuffReceiverGameObject;
+        [SerializeField][SerializeIterface(typeof(IDebuffHandler))] private GameObject _debuffReceiverGameObject;
         [SerializeField] private SkinnedMeshRenderer _meshRenderer;
         [SerializeField] private ActorParticleController _particleController;
         [SerializeField] private Image _shadow;
@@ -27,6 +27,7 @@ namespace CannonTurret.Actors.Enemies
         public string Name => name;
 
         public IDebuffHandler DebuffReceiver { get; private set; }
+
         public bool IsActive { get; private set; }
 
         private void OnValidate()

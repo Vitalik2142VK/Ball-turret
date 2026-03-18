@@ -13,6 +13,7 @@ namespace CannonTurret.Turrets.Bullets
         private int _currentIndexBullet;
 
         public bool HasFreeBullets => _bullets.Count > _currentIndexBullet;
+
         public bool AreBulletsReturned => _countActiveBullets == 0;
 
         private void Awake()

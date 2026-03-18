@@ -54,8 +54,10 @@ namespace CannonTurret.EntryPoints.MainMenu.Configurators
                 throw new InvalidOperationException(nameof(_addCoinsButtons));
 
             foreach (var button in _addCoinsButtons)
+            {
                 if (button == null)
                     throw new NullReferenceException($"{_addCoinsButtons} contains null objects");
+            }
         }
 
         public void SetImprovementShop(IImprovementShop improvementShop)

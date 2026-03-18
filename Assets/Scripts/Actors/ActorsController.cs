@@ -5,47 +5,47 @@ namespace CannonTurret.Actors
 {
     public class ActorsController : IActorsController
     {
-        private IAdvancedActorsPreparator _actorsPreparator;
-        private IRemovedActorsRepository _removedActorsRepository;
-        private IActorsMover _actorsMover;
+        private readonly IAdvancedActorsPreparator ActorsPreparator;
+        private readonly IRemovedActorsRepository RemovedActorsRepository;
+        private readonly IActorsMover ActorsMover;
 
-        public bool AreMovesFinished => _actorsMover.AreMovesFinished;
+        public bool AreMovesFinished => ActorsMover.AreMovesFinished;
 
         public ActorsController(IAdvancedActorsPreparator actorsPreparator, IRemovedActorsRepository removedActorsRepository)
         {
-            _actorsPreparator = actorsPreparator ?? throw new ArgumentNullException(nameof(actorsPreparator));
-            _removedActorsRepository = removedActorsRepository ?? throw new ArgumentNullException(nameof(removedActorsRepository));
+            ActorsPreparator = actorsPreparator ?? throw new ArgumentNullException(nameof(actorsPreparator));
+            RemovedActorsRepository = removedActorsRepository ?? throw new ArgumentNullException(nameof(removedActorsRepository));
 
-            _actorsMover = _actorsPreparator.ActorsMover ?? throw new NullReferenceException(nameof(_actorsPreparator.ActorsMover));
+            ActorsMover = ActorsPreparator.ActorsMover ?? throw new NullReferenceException(nameof(ActorsPreparator.ActorsMover));
         }
 
-        public void MoveAll() => _actorsMover.MoveAll();
+        public void MoveAll() => ActorsMover.MoveAll();
 
         public void Prepare()
         {
-            if (_actorsPreparator.EnemiesCount > 0)
+            if (ActorsPreparator.EnemiesCount > 0)
             {
-                _actorsPreparator.ActivateDebuffablies();
-                _actorsPreparator.CountRemainingEnemies();
+                ActorsPreparator.ActivateDebuffablies();
+                ActorsPreparator.CountRemainingEnemies();
             }
 
-            if (_actorsPreparator.EnemiesCount == 0)
+            if (ActorsPreparator.EnemiesCount == 0)
                 RemoveAll();
 
-            _actorsPreparator.Prepare();
+            ActorsPreparator.Prepare();
         }
 
         public void RemoveAll()
         {
-            var removedActors = _actorsPreparator.PopActors();
-            _removedActorsRepository.AddRange(removedActors);
-            _removedActorsRepository.RemoveAll();
+            var removedActors = ActorsPreparator.PopActors();
+            RemovedActorsRepository.AddRange(removedActors);
+            RemovedActorsRepository.RemoveAll();
         }
 
         public void RemoveAllDisabled()
         {
-            _removedActorsRepository.RemoveAll();
-            _actorsPreparator.CountRemainingEnemies();
+            RemovedActorsRepository.RemoveAll();
+            ActorsPreparator.CountRemainingEnemies();
         }
     }
 }

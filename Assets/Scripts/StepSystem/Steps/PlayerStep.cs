@@ -7,24 +7,25 @@ namespace CannonTurret.StepSystem.Steps
 {
     public class PlayerStep : IStep, IEndPointStep
     {
+        private readonly IPlayerController PlayerController;
+        private readonly IEnemiesController EnemiesController;
+        private readonly IActivableUI ReservedBonusesWindow;
+
         private IEndStep _endStep;
-        private IPlayerController _playerController;
-        private IEnemiesController _enemiesController;
-        private IActivableUI _reservedBonusesWindow;
 
         public PlayerStep(IPlayerController playerController, IEnemiesController enemiesController, IActivableUI reservedBonusesWindow)
         {
-            _playerController = playerController ?? throw new ArgumentNullException(nameof(playerController));
-            _enemiesController = enemiesController ?? throw new ArgumentNullException(nameof(enemiesController));
-            _reservedBonusesWindow = reservedBonusesWindow ?? throw new ArgumentNullException(nameof(reservedBonusesWindow));
+            PlayerController = playerController ?? throw new ArgumentNullException(nameof(playerController));
+            EnemiesController = enemiesController ?? throw new ArgumentNullException(nameof(enemiesController));
+            ReservedBonusesWindow = reservedBonusesWindow ?? throw new ArgumentNullException(nameof(reservedBonusesWindow));
         }
 
         public void Action()
         {
-            if (_reservedBonusesWindow.IsActive == false)
-                _playerController.SelectTarget();
+            if (ReservedBonusesWindow.IsActive == false)
+                PlayerController.SelectTarget();
 
-            if (_enemiesController.AreNoEnemies)
+            if (EnemiesController.AreNoEnemies)
                 _endStep.End();
         }
 

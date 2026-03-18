@@ -21,8 +21,10 @@ namespace CannonTurret.Scriptable.Level
                 throw new NullReferenceException(nameof(_levelActorsPlanners));
 
             foreach (var actorsPlanner in _levelActorsPlanners)
+            {
                 if (actorsPlanner == null)
                     throw new NullReferenceException($"{_levelActorsPlanners} has null elements");
+            }
         }
 
         public void Initialize()

@@ -5,27 +5,27 @@ namespace CannonTurret.SDK.Shops
 {
     public class OneTimePurchaseActivator : IPurchaseActivator
     {
-        private IPlayerPurchase _purchase;
+        private readonly IPlayerPurchase Purchase;
 
         public OneTimePurchaseActivator(IPlayerPurchase purchase)
         {
-            _purchase = purchase ?? throw new ArgumentNullException(nameof(purchase));
+            Purchase = purchase ?? throw new ArgumentNullException(nameof(purchase));
         }
 
-        public string PurchaseId => _purchase.Id;
+        public string PurchaseId => Purchase.Id;
 
         public void Activate(string purchaseId)
         {
             if (purchaseId == null)
                 throw new ArgumentNullException(nameof(purchaseId));
 
-            if (purchaseId != _purchase.Id)
-                throw new ArgumentException($"The purchase ID - '{purchaseId}' does not match the activator ID - '{_purchase.Id}'");
+            if (purchaseId != Purchase.Id)
+                throw new ArgumentException($"The purchase ID - '{purchaseId}' does not match the activator ID - '{Purchase.Id}'");
 
-            YG2.saves.ActivatePurchase(_purchase.Id);
+            YG2.saves.ActivatePurchase(Purchase.Id);
             YG2.SaveProgress();
 
-            _purchase.Update();
+            Purchase.Update();
         }
     }
 }

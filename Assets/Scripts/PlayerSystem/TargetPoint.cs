@@ -9,7 +9,7 @@ namespace CannonTurret.PlayerSystem
         [Header("Debug")]
         [SerializeField] private bool _isDebugOn = false;
         [SerializeField] private Color _color = Color.red;
-        [SerializeField, Min(0.1f)] private float _radusSphere = 1f;
+        [SerializeField][Min(0.1f)] private float _radusSphere = 1f;
 
         private Transform _transform;
         private Vector3 _startPosition;

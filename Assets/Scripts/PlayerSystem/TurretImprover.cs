@@ -7,7 +7,7 @@ namespace CannonTurret.PlayerSystem
     {
         private const float DefaultCoefficient = 1f;
 
-        private IImprovementTurretAttributes _improvementAttributes;
+        private readonly IImprovementTurretAttributes ImprovementAttributes;
 
         public TurretImprover(IImprovementTurretAttributes improvementAttributes, float healthCoefficient = DefaultCoefficient, float damageCoefficient = DefaultCoefficient)
         {
@@ -17,30 +17,34 @@ namespace CannonTurret.PlayerSystem
             if (damageCoefficient < DefaultCoefficient)
                 throw new ArgumentOutOfRangeException(nameof(damageCoefficient));
 
-            _improvementAttributes = improvementAttributes ?? throw new ArgumentNullException(nameof(improvementAttributes));
+            ImprovementAttributes = improvementAttributes ?? throw new ArgumentNullException(nameof(improvementAttributes));
 
             HealthCoefficient = healthCoefficient;
             DamageCoefficient = damageCoefficient;
         }
 
         public float HealthCoefficient { get; private set; }
+
         public float DamageCoefficient { get; private set; }
-        public int LevelHealthImprovement => MathTool.GetStepIndex(HealthCoefficient, DefaultCoefficient, _improvementAttributes.MaxHealthCoefficient, ImproveHealthCoefficient);
-        public int LevelDamageImprovement => MathTool.GetStepIndex(DamageCoefficient, DefaultCoefficient, _improvementAttributes.MaxDamageCoefficient, ImproveDamageCoefficient);
 
-        public float ImproveHealthCoefficient => _improvementAttributes.ImproveHealthCoefficient;
-        public float ImproveDamageCoefficient => _improvementAttributes.ImproveDamageCoefficient;
-        public bool CanImproveHealth => _improvementAttributes.MaxHealthCoefficient > HealthCoefficient;
-        public bool CanImproveDamage => _improvementAttributes.MaxDamageCoefficient > DamageCoefficient;
+        public int LevelHealthImprovement => MathTool.GetStepIndex(HealthCoefficient, DefaultCoefficient, ImprovementAttributes.MaxHealthCoefficient, ImproveHealthCoefficient);
 
+        public int LevelDamageImprovement => MathTool.GetStepIndex(DamageCoefficient, DefaultCoefficient, ImprovementAttributes.MaxDamageCoefficient, ImproveDamageCoefficient);
 
+        public float ImproveHealthCoefficient => ImprovementAttributes.ImproveHealthCoefficient;
+
+        public float ImproveDamageCoefficient => ImprovementAttributes.ImproveDamageCoefficient;
+
+        public bool CanImproveHealth => ImprovementAttributes.MaxHealthCoefficient > HealthCoefficient;
+
+        public bool CanImproveDamage => ImprovementAttributes.MaxDamageCoefficient > DamageCoefficient;
 
         public void ImproveHealth()
         {
             if (CanImproveHealth == false)
                 throw new InvalidOperationException(nameof(HealthCoefficient));
 
-            HealthCoefficient += _improvementAttributes.ImproveHealthCoefficient;
+            HealthCoefficient += ImprovementAttributes.ImproveHealthCoefficient;
         }
 
         public void ImproveDamage()
@@ -48,7 +52,7 @@ namespace CannonTurret.PlayerSystem
             if (CanImproveDamage == false)
                 throw new InvalidOperationException(nameof(DamageCoefficient));
 
-            DamageCoefficient += _improvementAttributes.ImproveDamageCoefficient;
+            DamageCoefficient += ImprovementAttributes.ImproveDamageCoefficient;
         }
     }
 }

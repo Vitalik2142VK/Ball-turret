@@ -8,15 +8,15 @@ namespace CannonTurret.Coin.Shops
 {
     public class ImprovementShop : IImprovementShop
     {
-        private Dictionary<Type, IGamePayTransaction> _transactions;
-        private Dictionary<Type, IImprovementProduct> _products;
-        private IWallet _wallet;
+        private readonly Dictionary<Type, IGamePayTransaction> Transactions;
+        private readonly Dictionary<Type, IImprovementProduct> Products;
+        private readonly IWallet Wallet;
 
         public ImprovementShop(IWallet wallet, IEnumerable<IGamePayTransaction> transactions, IEnumerable<IImprovementProduct> products)
         {
-            _wallet = wallet ?? throw new ArgumentNullException(nameof(wallet));
-            _transactions = AddTransactions(transactions);
-            _products = AddProducts(products);
+            Wallet = wallet ?? throw new ArgumentNullException(nameof(wallet));
+            Transactions = AddTransactions(transactions);
+            Products = AddProducts(products);
         }
 
         public bool TryMakeTransaction(IGamePayTransaction transaction)
@@ -24,26 +24,26 @@ namespace CannonTurret.Coin.Shops
             if (transaction == null)
                 throw new ArgumentNullException(nameof(transaction));
 
-            if (transaction.Price > _wallet.CountCoins)
+            if (transaction.Price > Wallet.CountCoins)
                 return false;
 
-            return transaction.TrySpend(_wallet);
+            return transaction.TrySpend(Wallet);
         }
 
         public IGamePayTransaction GetTransaction(Type type)
         {
-            if (_transactions.ContainsKey(type) == false)
+            if (Transactions.ContainsKey(type) == false)
                 throw new ArgumentOutOfRangeException(nameof(type));
 
-            return _transactions[type];
+            return Transactions[type];
         }
 
         public IImprovementProduct GetProduct(Type type)
         {
-            if (_products.ContainsKey(type) == false)
+            if (Products.ContainsKey(type) == false)
                 throw new ArgumentOutOfRangeException(nameof(type));
 
-            return _products[type];
+            return Products[type];
         }
 
         private Dictionary<Type, IGamePayTransaction> AddTransactions(IEnumerable<IGamePayTransaction> transactions)

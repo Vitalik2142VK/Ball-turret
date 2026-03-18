@@ -6,22 +6,22 @@ namespace CannonTurret.Actors.Bonuses.Activators
 {
     public class FreezingBonusActivator : IBonusActivator
     {
-        private IDynamicEndStep _nextStepPrepareActors;
-        private IBonusActicatorView _view;
-        private IStep _freezeStep;
+        private readonly IDynamicEndStep NextStepPrepareActors;
+        private readonly IBonusActicatorView View;
+        private readonly IStep FreezeStep;
 
         public FreezingBonusActivator(IDynamicEndStep nextStepPrepareActors, IBonusActicatorView view, IStep freezeStep)
         {
-            _nextStepPrepareActors = nextStepPrepareActors ?? throw new NullReferenceException(nameof(nextStepPrepareActors));
-            _view = view ?? throw new NullReferenceException(nameof(view));
-            _freezeStep = freezeStep ?? throw new NullReferenceException(nameof(freezeStep));
+            NextStepPrepareActors = nextStepPrepareActors ?? throw new NullReferenceException(nameof(nextStepPrepareActors));
+            View = view ?? throw new NullReferenceException(nameof(view));
+            FreezeStep = freezeStep ?? throw new NullReferenceException(nameof(freezeStep));
 
         }
 
         public void Activate()
         {
-            _nextStepPrepareActors.SetNextStep(_freezeStep);
-            _view.PlayActivation();
+            NextStepPrepareActors.SetNextStep(FreezeStep);
+            View.PlayActivation();
         }
     }
 }

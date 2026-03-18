@@ -10,6 +10,8 @@ namespace CannonTurret.Actors.Enemies.Armored
         [SerializeField] private EnemyCreator _enemyCreator;
         [SerializeField] private ArmorAttributes _armorAttributes;
 
+        public string Name => _enemyCreator.Name;
+
         private void OnValidate()
         {
             if (_enemyCreator == null)
@@ -27,8 +29,6 @@ namespace CannonTurret.Actors.Enemies.Armored
             if (_armorAttributes == null)
                 throw new ArgumentNullException(nameof(_armorAttributes));
         }
-
-        public string Name => _enemyCreator.Name;
 
         private void Awake()
         {

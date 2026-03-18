@@ -15,9 +15,13 @@ namespace CannonTurret.EntryPoints.PlayLevel
         }
 
         public StepControllerConfigurator StepSystemConfigurator { get; }
+
         public ActorsConfigurator ActorsConfigurator { get; }
+
         public UIConfigurator UIConfigurator { get; }
+
         public FinishWindowConfigurator FinishWindowConfigurator { get; }
+
         public IWinStatus WinStatus { get; }
     }
 }

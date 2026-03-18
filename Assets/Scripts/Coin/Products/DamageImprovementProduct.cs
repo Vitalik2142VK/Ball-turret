@@ -7,20 +7,22 @@ namespace CannonTurret.Coin.Products
     {
         private const int Remains = 2;
 
-        private ITurretImprover _turretImprover;
-        private float _damage;
+        private readonly ITurretImprover TurretImprover;
+        private readonly float Damage;
 
         public DamageImprovementProduct(ITurretImprover turretImprover, float damage)
         {
             if (damage <= 0)
                 throw new ArgumentOutOfRangeException(nameof(damage));
 
-            _turretImprover = turretImprover ?? throw new ArgumentNullException(nameof(turretImprover));
-            _damage = damage;
+            TurretImprover = turretImprover ?? throw new ArgumentNullException(nameof(turretImprover));
+            Damage = damage;
         }
 
-        public float ImproveValue => (float)Math.Round(_damage * _turretImprover.ImproveDamageCoefficient, Remains);
-        public int CurrentValue => (int)Math.Round(_damage * _turretImprover.DamageCoefficient);
-        public bool CanImprove => _turretImprover.CanImproveDamage;
+        public float ImproveValue => (float)Math.Round(Damage * TurretImprover.ImproveDamageCoefficient, Remains);
+
+        public int CurrentValue => (int)Math.Round(Damage * TurretImprover.DamageCoefficient);
+
+        public bool CanImprove => TurretImprover.CanImproveDamage;
     }
 }

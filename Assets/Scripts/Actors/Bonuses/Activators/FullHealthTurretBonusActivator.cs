@@ -5,19 +5,19 @@ namespace CannonTurret.Actors.Bonuses.Activators
 {
     public class FullHealthTurretBonusActivator : IBonusActivator
     {
-        private IHealth _turretHealth;
-        private IBonusActicatorView _view;
+        private readonly IHealth TurretHealth;
+        private readonly IBonusActicatorView View;
 
         public FullHealthTurretBonusActivator(IHealth turretHealth, IBonusActicatorView view)
         {
-            _turretHealth = turretHealth ?? throw new ArgumentNullException(nameof(turretHealth));
-            _view = view ?? throw new ArgumentNullException(nameof(view));
+            TurretHealth = turretHealth ?? throw new ArgumentNullException(nameof(turretHealth));
+            View = view ?? throw new ArgumentNullException(nameof(view));
         }
 
         public void Activate()
         {
-            _turretHealth.Restore();
-            _view.PlayActivation();
+            TurretHealth.Restore();
+            View.PlayActivation();
         }
     }
 }

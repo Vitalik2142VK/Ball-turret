@@ -15,8 +15,10 @@ namespace CannonTurret.Clip
                 throw new InvalidOperationException(nameof(_enemies));
 
             foreach (var enemy in _enemies)
+            {
                 if (enemy == null)
                     throw new NullReferenceException($"{_enemies} contains null objects");
+            }
         }
 
         private void Awake()

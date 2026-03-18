@@ -8,10 +8,10 @@ namespace CannonTurret.Coin.Shops
         private const float MinMagnificationFactor = 1.1f;
         private const float MinLowImprovementCoefficient = 0.01f;
 
-        private float _magnificationFactor;
-        private float _lowImprovementCoefficient;
-        private int _initialPrice;
-        private int _maxLevelImprovement;
+        private readonly float MagnificationFactor;
+        private readonly float LowImprovementCoefficient;
+        private readonly int InitialPrice;
+        private readonly int MaxLevelImprovement;
 
         public PriceEnlarger(int initialPrice, int maxLevelImprovement, float magnificationFactor = MinMagnificationFactor, float lowImprovementCoefficient = MinLowImprovementCoefficient)
         {
@@ -27,12 +27,12 @@ namespace CannonTurret.Coin.Shops
             if (lowImprovementCoefficient < MinLowImprovementCoefficient)
                 throw new ArgumentOutOfRangeException(nameof(lowImprovementCoefficient));
 
-            _initialPrice = initialPrice;
-            _maxLevelImprovement = maxLevelImprovement;
-            _magnificationFactor = magnificationFactor;
-            _lowImprovementCoefficient = lowImprovementCoefficient;
+            InitialPrice = initialPrice;
+            MaxLevelImprovement = maxLevelImprovement;
+            MagnificationFactor = magnificationFactor;
+            LowImprovementCoefficient = lowImprovementCoefficient;
 
-            Price = _initialPrice;
+            Price = InitialPrice;
         }
 
         public int Price { get; private set; }
@@ -42,14 +42,14 @@ namespace CannonTurret.Coin.Shops
             if (levelImprovement < 0)
                 throw new ArgumentNullException(nameof(levelImprovement));
 
-            float lowImprovementCoefficient = (float)Math.Exp(levelImprovement * _lowImprovementCoefficient);
+            float lowImprovementCoefficient = (float)Math.Exp(levelImprovement * LowImprovementCoefficient);
 
-            if (levelImprovement > _maxLevelImprovement)
-                levelImprovement = _maxLevelImprovement;
+            if (levelImprovement > MaxLevelImprovement)
+                levelImprovement = MaxLevelImprovement;
 
-            float improvementCoefficient = MathTool.Pow(_magnificationFactor, levelImprovement);
+            float improvementCoefficient = MathTool.Pow(MagnificationFactor, levelImprovement);
 
-            Price = (int)Math.Round(_initialPrice * improvementCoefficient * lowImprovementCoefficient);
+            Price = (int)Math.Round(InitialPrice * improvementCoefficient * lowImprovementCoefficient);
         }
     }
 }

@@ -10,10 +10,11 @@
             _currentBonusesCount = 0;
         }
 
-        public int MaxBonusesCount { get; }
-
         public bool IsCanActivate => CurrentBonusesCount > 0;
+
         public bool IsFull => CurrentBonusesCount >= MaxBonusesCount;
+
+        public int MaxBonusesCount { get; }
 
         public int CurrentBonusesCount
         {

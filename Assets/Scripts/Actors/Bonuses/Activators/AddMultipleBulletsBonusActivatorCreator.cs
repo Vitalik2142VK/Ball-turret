@@ -10,7 +10,7 @@ namespace CannonTurret.Actors.Bonuses.Activators
     {
         [SerializeField] private BulletFactory _bulletFactory;
         [SerializeField] private Gun _gun;
-        [SerializeField, Min(2)] private int _countBullets;
+        [SerializeField][Min(2)] private int _countBullets;
 
         private void OnValidate()
         {

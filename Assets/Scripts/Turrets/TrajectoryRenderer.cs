@@ -8,10 +8,10 @@ namespace CannonTurret.Turrets
     [RequireComponent(typeof(LineRenderer))]
     public class TrajectoryRenderer : MonoBehaviour, ITrajectoryRenderer
     {
-        [SerializeField, SerializeIterface(typeof(IBulletPhysics))] private GameObject _bulletImitator;
+        [SerializeField][SerializeIterface(typeof(IBulletPhysics))] private GameObject _bulletImitator;
         [SerializeField] private TrajectoryBullet _trajectoryBullet;
         [SerializeField] private bool _isInstallFixUpdate = true;
-        [SerializeField, Range(0.01f, 0.03f)] private float _timeStep = 0.02f;
+        [SerializeField][Range(0.01f, 0.03f)] private float _timeStep = 0.02f;
 
         private IBulletPhysics _bulletPhysics;
         private LineRenderer _lineRenderer;
@@ -36,8 +36,6 @@ namespace CannonTurret.Turrets
             _lineRenderer = GetComponent<LineRenderer>();
 
             _lineRenderer.alignment = LineAlignment.TransformZ;
-            //_lineRenderer.numCapVertices = 0;
-            //_lineRenderer.numCornerVertices = 0;
             _lineRenderer.widthMultiplier = 0.2f;
 
             transform.forward = Camera.main.transform.forward;

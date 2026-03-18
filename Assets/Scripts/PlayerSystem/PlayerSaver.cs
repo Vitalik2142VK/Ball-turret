@@ -5,21 +5,21 @@ namespace CannonTurret.PlayerSystem
 {
     public class PlayerSaver : IPlayerSaver
     {
-        private IPlayer _player;
-        private ISavedPlayerData _savesData;
+        private readonly IPlayer Player;
+        private readonly ISavedPlayerData SavesData;
 
         public PlayerSaver(IPlayer player, ISavedPlayerData savesData)
         {
-            _player = player ?? throw new NullReferenceException(nameof(player));
-            _savesData = savesData ?? throw new NullReferenceException(nameof(savesData));
+            Player = player ?? throw new NullReferenceException(nameof(player));
+            SavesData = savesData ?? throw new NullReferenceException(nameof(savesData));
         }
 
         public void Save()
         {
-            _savesData.SetHealthCoefficient(_player.HealthCoefficient);
-            _savesData.SetDamageCoefficient(_player.DamageCoefficient);
-            _savesData.SetCountCoins(_player.Wallet.CountCoins);
-            _savesData.SetAchievedLevelIndex(_player.AchievedLevelIndex);
+            SavesData.SetHealthCoefficient(Player.HealthCoefficient);
+            SavesData.SetDamageCoefficient(Player.DamageCoefficient);
+            SavesData.SetCountCoins(Player.Wallet.CountCoins);
+            SavesData.SetAchievedLevelIndex(Player.AchievedLevelIndex);
 
             YG2.SaveProgress();
         }

@@ -7,37 +7,38 @@ namespace CannonTurret.Coin.Transactions
 {
     public class HealthImprovementTransaction : IGamePayTransaction
     {
-        private IPlayerSaver _playerSaver;
-        private IWallet _wallet;
-        private ITurretImprover _turretImprover;
-        private IPriceEnlarger _priceEnlarger;
+        private readonly IPlayerSaver PlayerSaver;
+        private readonly IWallet Wallet;
+        private readonly ITurretImprover TurretImprover;
+        private readonly IPriceEnlarger PriceEnlarger;
 
         public HealthImprovementTransaction(IPlayerSaver playerSaver, IWallet wallet, ITurretImprover turretImprover, IPriceEnlarger priceEnlarger)
         {
-            _playerSaver = playerSaver ?? throw new ArgumentNullException(nameof(playerSaver));
-            _wallet = wallet ?? throw new ArgumentNullException(nameof(wallet));
-            _turretImprover = turretImprover ?? throw new ArgumentNullException(nameof(turretImprover));
-            _priceEnlarger = priceEnlarger ?? throw new ArgumentNullException(nameof(priceEnlarger));
+            PlayerSaver = playerSaver ?? throw new ArgumentNullException(nameof(playerSaver));
+            Wallet = wallet ?? throw new ArgumentNullException(nameof(wallet));
+            TurretImprover = turretImprover ?? throw new ArgumentNullException(nameof(turretImprover));
+            PriceEnlarger = priceEnlarger ?? throw new ArgumentNullException(nameof(priceEnlarger));
 
-            _priceEnlarger.IncreaseByLevel(_turretImprover.LevelHealthImprovement);
+            PriceEnlarger.IncreaseByLevel(TurretImprover.LevelHealthImprovement);
         }
 
-        public int Price => _priceEnlarger.Price;
-        public bool IsLocked => Price > _wallet.CountCoins;
+        public int Price => PriceEnlarger.Price;
+
+        public bool IsLocked => Price > Wallet.CountCoins;
 
         public bool TrySpend(IWallet wallet)
         {
             if (wallet == null)
                 throw new ArgumentNullException(nameof(wallet));
 
-            if (_wallet != wallet)
+            if (Wallet != wallet)
                 return false;
 
-            if (_wallet.TryPay(Price))
+            if (Wallet.TryPay(Price))
             {
-                _turretImprover.ImproveHealth();
-                _priceEnlarger.IncreaseByLevel(_turretImprover.LevelHealthImprovement);
-                _playerSaver.Save();
+                TurretImprover.ImproveHealth();
+                PriceEnlarger.IncreaseByLevel(TurretImprover.LevelHealthImprovement);
+                PlayerSaver.Save();
 
                 return true;
             }
@@ -48,7 +49,7 @@ namespace CannonTurret.Coin.Transactions
         public int GetMissingAmount()
         {
             if (IsLocked)
-                return Price - (int)_wallet.CountCoins;
+                return Price - (int)Wallet.CountCoins;
             else
                 return 0;
         }

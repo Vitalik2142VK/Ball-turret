@@ -24,7 +24,7 @@ namespace CannonTurret.EntryPoints.PlayLevel.Configurators
         [SerializeField] private ReservedBonusesWindow _reservedBonusesWindow;
         [SerializeField] private ActorsFreezerView _freezer;
 
-        private IDataForStepSystem _dataForStepSystem;
+        private IDataForStepController _dataForStepSystem;
         private IDynamicEndStep _nextStepPrepareActors;
         private PlayerStep _playerStep;
         private ResetComboStep _resetComboStep;
@@ -67,7 +67,7 @@ namespace CannonTurret.EntryPoints.PlayLevel.Configurators
                 throw new NullReferenceException(nameof(_freezer));
         }
 
-        public void Configure(IDataForStepSystem dataForStepSystem)
+        public void Configure(IDataForStepController dataForStepSystem)
         {
             _dataForStepSystem = dataForStepSystem ?? throw new NullReferenceException(nameof(dataForStepSystem));
 

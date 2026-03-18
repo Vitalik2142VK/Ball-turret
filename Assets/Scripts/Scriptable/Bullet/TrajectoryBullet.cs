@@ -9,18 +9,21 @@ namespace CannonTurret.Scriptable.Bullet
     [CreateAssetMenu(menuName = "Trajectory bullet", fileName = "TrajectoryBullet", order = 51)]
     public class TrajectoryBullet : ScriptableObject
     {
-        [SerializeField, Range(30, 200)] private int _maxCountPoints;
-        [SerializeField, Range(5, 50)] private int _maxCountPointsAfterCollision;
+        [SerializeField][Range(30, 200)] private int _maxCountPoints;
+        [SerializeField][Range(5, 50)] private int _maxCountPointsAfterCollision;
 
         private Dictionary<int, IBulletTrajectoryPoint> _points;
         private int _countPointsBeforeCollision;
         private bool _isWasCollision;
 
         public Vector3 Direction { get; set; }
+
         public float DeltaTime { get; private set; }
+
         public bool IsFinished { get; private set; }
 
         public int MaxCountPoints => _maxCountPoints;
+
         public bool IsEmpty => _points == null || _points.Count == 0;
 
         public void CreateNewTrajectory(float deltaTime)
@@ -37,7 +40,7 @@ namespace CannonTurret.Scriptable.Bullet
 
         public void RecordCollision()
         {
-            if (_isWasCollision) 
+            if (_isWasCollision)
                 return;
 
             _isWasCollision = true;
@@ -57,7 +60,7 @@ namespace CannonTurret.Scriptable.Bullet
 
         public IBulletTrajectoryPoint GetPoint(int frame)
         {
-            if (_points.ContainsKey(frame) == false) 
+            if (_points.ContainsKey(frame) == false)
                 throw new ArgumentOutOfRangeException(nameof(frame));
 
             return _points[frame];

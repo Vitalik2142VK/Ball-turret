@@ -7,24 +7,25 @@ namespace CannonTurret.Effects
     {
         private const float MinGainFactor = 1f;
 
+        private readonly IDamagedObject DamagedObject;
+
         private IDamageAttributes _damageAttributes;
-        private IDamagedObject _damagedObject;
 
         public FireDebuff(IDamagedObject damagedObject, IDamageAttributes damageAttributes)
         {
-            _damagedObject = damagedObject ?? throw new ArgumentNullException(nameof(damagedObject));
+            DamagedObject = damagedObject ?? throw new ArgumentNullException(nameof(damagedObject));
             _damageAttributes = damageAttributes ?? throw new ArgumentNullException(nameof(damageAttributes));
 
             IsExecutionCompleted = false;
         }
 
-        public bool IsExecutionCompleted { get; private set; }
-
         public DebuffType DebuffType => DebuffType.Fire;
+
+        public bool IsExecutionCompleted { get; private set; }
 
         public void Activate()
         {
-            _damagedObject.TakeDamage(_damageAttributes);
+            DamagedObject.TakeDamage(_damageAttributes);
 
             IsExecutionCompleted = true;
         }

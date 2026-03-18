@@ -43,8 +43,10 @@ namespace CannonTurret.UI.PlayerScene
                 throw new InvalidOperationException(nameof(_finishButtons));
 
             foreach (var button in _finishButtons)
+            {
                 if (button == null)
                     throw new NullReferenceException($"{_finishButtons} contains null objects");
+            }
         }
 
         private void Awake()

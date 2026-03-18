@@ -8,22 +8,23 @@ namespace CannonTurret.Actors.Bonuses.ReserveredBonuses
     {
         private const int MaxCountBonuses = 3;
 
-        private Dictionary<string, IReservatedBonus> _reservedBonuses;
+        private readonly Dictionary<string, IReservatedBonus> ReservedBonuses;
 
         public BonusReservator(IEnumerable<IBonus> reservedBonuses)
         {
             if (reservedBonuses == null)
                 throw new ArgumentNullException(nameof(reservedBonuses));
 
-            _reservedBonuses = CreateDictionaryPrefabs(reservedBonuses);
+            ReservedBonuses = CreateDictionaryPrefabs(reservedBonuses);
 
             IsBonusActivated = false;
         }
 
-        public bool IsBonusActivated { get; private set; }
+        public IEnumerable<IReservatedBonus> Bonuses => ReservedBonuses.Values.ToArray();
 
-        public IEnumerable<IReservatedBonus> Bonuses => _reservedBonuses.Values.ToArray();
         public bool HasBonuses => IsCanActivateBonuses();
+
+        public bool IsBonusActivated { get; private set; }
 
         public void ActivateBonus(string nameBonus)
         {
@@ -33,10 +34,10 @@ namespace CannonTurret.Actors.Bonuses.ReserveredBonuses
             if (string.IsNullOrEmpty(nameBonus))
                 throw new ArgumentException(nameof(nameBonus));
 
-            if (_reservedBonuses.ContainsKey(nameBonus) == false)
-                throw new InvalidOperationException($"'{_reservedBonuses}' does not contain key '{nameof(nameBonus)}'");
+            if (ReservedBonuses.ContainsKey(nameBonus) == false)
+                throw new InvalidOperationException($"'{ReservedBonuses}' does not contain key '{nameof(nameBonus)}'");
 
-            var bonus = _reservedBonuses[nameBonus];
+            var bonus = ReservedBonuses[nameBonus];
 
             if (bonus.IsCanActivate)
             {
@@ -51,10 +52,10 @@ namespace CannonTurret.Actors.Bonuses.ReserveredBonuses
             if (string.IsNullOrEmpty(nameBonus))
                 throw new ArgumentException(nameof(nameBonus));
 
-            if (_reservedBonuses.ContainsKey(nameBonus) == false)
+            if (ReservedBonuses.ContainsKey(nameBonus) == false)
                 return false;
 
-            var bonus = _reservedBonuses[nameBonus];
+            var bonus = ReservedBonuses[nameBonus];
 
             return bonus.TryAddBonus(nameBonus);
         }
@@ -84,7 +85,7 @@ namespace CannonTurret.Actors.Bonuses.ReserveredBonuses
 
         private bool IsCanActivateBonuses()
         {
-            foreach (var bonus in _reservedBonuses.Values)
+            foreach (var bonus in ReservedBonuses.Values)
                 if (bonus.IsCanActivate)
                     return true;
 

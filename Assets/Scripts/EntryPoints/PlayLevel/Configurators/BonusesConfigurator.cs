@@ -28,22 +28,28 @@ namespace CannonTurret.EntryPoints.PlayLevel.Configurators
                 throw new InvalidOperationException(nameof(_reservatedBonusCards));
 
             foreach (var reservatedBonusCard in _reservatedBonusCards)
+            {
                 if (reservatedBonusCard == null)
                     throw new NullReferenceException($"{_reservatedBonusCards} contains null objects");
+            }
 
             if (_bonusConfigurators == null || _bonusConfigurators.Length == 0)
                 throw new InvalidOperationException(nameof(_bonusConfigurators));
 
             foreach (var bonusConfigurator in _bonusConfigurators)
+            {
                 if (bonusConfigurator == null)
                     throw new NullReferenceException($"{_bonusConfigurators} contains null objects");
+            }
 
             if (_choiceBonusActivatorCreators == null || _choiceBonusActivatorCreators.Length == 0)
                 throw new InvalidOperationException(nameof(_reservatedBonusCards));
 
             foreach (var activatorCreator in _choiceBonusActivatorCreators)
+            {
                 if (activatorCreator == null)
                     throw new NullReferenceException($"{_choiceBonusActivatorCreators} contains null objects");
+            }
 
             if (_bigBangBonusActivatorCreator == null)
                 throw new NullReferenceException(nameof(_bigBangBonusActivatorCreator));
@@ -100,8 +106,10 @@ namespace CannonTurret.EntryPoints.PlayLevel.Configurators
             List<IViewableBonusCreator> collisionBonusCreators = new List<IViewableBonusCreator>();
 
             foreach (var creator in bonusCreators)
+            {
                 if (creator is IViewableBonusCreator viewableBonusCreator)
                     collisionBonusCreators.Add(viewableBonusCreator);
+            }
 
             _bonusFactory.Initialize(collisionBonusCreators);
         }

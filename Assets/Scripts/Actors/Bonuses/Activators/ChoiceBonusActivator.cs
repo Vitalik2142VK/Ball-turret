@@ -6,15 +6,16 @@ namespace CannonTurret.Actors.Bonuses.Activators
 {
     public class ChoiceBonusActivator : IBonusActivator
     {
-        private IBonusChoiceMenu _choiceBonusMenu;
-        private IBonusRandomizer _bonusRandomizer;
+        private readonly IBonusChoiceMenu ChoiceBonusMenu;
+        private readonly IBonusRandomizer BonusRandomizer;
+
         private IBonusReservator _bonusReservator;
         private bool _isActive;
 
         public ChoiceBonusActivator(IBonusChoiceMenu choiceBonusMenu, IBonusRandomizer bonusRandomizer)
         {
-            _choiceBonusMenu = choiceBonusMenu ?? throw new ArgumentNullException(nameof(choiceBonusMenu));
-            _bonusRandomizer = bonusRandomizer ?? throw new ArgumentNullException(nameof(bonusRandomizer));
+            ChoiceBonusMenu = choiceBonusMenu ?? throw new ArgumentNullException(nameof(choiceBonusMenu));
+            BonusRandomizer = bonusRandomizer ?? throw new ArgumentNullException(nameof(bonusRandomizer));
             _isActive = false;
         }
 
@@ -25,9 +26,9 @@ namespace CannonTurret.Actors.Bonuses.Activators
 
             _isActive = true;
 
-            _choiceBonusMenu.BonusSelected += OnHandleBonus;
-            _choiceBonusMenu.SetBonusRandomizer(_bonusRandomizer);
-            _choiceBonusMenu.Enable();
+            ChoiceBonusMenu.BonusSelected += OnHandleBonus;
+            ChoiceBonusMenu.SetBonusRandomizer(BonusRandomizer);
+            ChoiceBonusMenu.Enable();
         }
 
         public void SetBonusReservator(IBonusReservator bonusReservator)
@@ -37,10 +38,10 @@ namespace CannonTurret.Actors.Bonuses.Activators
 
         private void OnHandleBonus()
         {
-            _choiceBonusMenu.BonusSelected -= OnHandleBonus;
+            ChoiceBonusMenu.BonusSelected -= OnHandleBonus;
             _isActive = false;
 
-            var bonus = _choiceBonusMenu.SelectedBonus;
+            var bonus = ChoiceBonusMenu.SelectedBonus;
 
             if (_bonusReservator == null || _bonusReservator.TryAddBonusByName(bonus.BonusCard.Name) == false)
                 bonus.Activate();

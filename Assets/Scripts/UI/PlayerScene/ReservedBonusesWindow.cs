@@ -51,12 +51,14 @@ namespace CannonTurret.UI.PlayerScene
             _closeButton.onClick.AddListener(OnClose);
 
             if (_reservedBonusButtons != null)
+            {
                 foreach (var button in _reservedBonusButtons)
                 {
                     button.Enable();
                     button.Clicked += OnSelectButton;
                     button.BonusActivated += OnClose;
                 }
+            }
         }
 
         private void OnDisable()
@@ -64,11 +66,13 @@ namespace CannonTurret.UI.PlayerScene
             _closeButton.onClick.RemoveListener(OnClose);
 
             if (_reservedBonusButtons != null)
+            {
                 foreach (var button in _reservedBonusButtons)
                 {
                     button.Clicked -= OnSelectButton;
                     button.BonusActivated -= OnClose;
                 }
+            }
         }
 
         public void Initialize(IBonusReservator bonusReservator)
@@ -123,8 +127,10 @@ namespace CannonTurret.UI.PlayerScene
         private void OnSelectButton(int buttonIndex)
         {
             foreach (var button in _reservedBonusButtons)
+            {
                 if (button.Index != buttonIndex)
                     button.Enable();
+            }
         }
 
         private IEnumerator WaitDisable()

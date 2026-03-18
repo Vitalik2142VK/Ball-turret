@@ -9,7 +9,7 @@ namespace CannonTurret.Actors.Bonuses.Activators
 {
     public class FreezingView : MonoBehaviour, IBonusActicatorView
     {
-        [SerializeField, SerializeIterface(typeof(IAnimatorUI))] private GameObject _imageFreeze;
+        [SerializeField][SerializeIterface(typeof(IAnimatorUI))] private GameObject _imageFreeze;
         [SerializeField] private ActorsFreezerView _freezer;
         [SerializeField] private Sound _soundFreeze;
 

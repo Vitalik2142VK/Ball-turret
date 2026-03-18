@@ -10,18 +10,19 @@ namespace CannonTurret.Coin.Rewards
     {
         private const float AdditionalReward = 0.5f;
 
-        private ICoinAdder _coinAdder;
-        private IPlayer _player;
-        private ISelectedLevel _level;
+        private readonly ICoinAdder CoinAdder;
+        private readonly IPlayer Player;
+        private readonly ISelectedLevel Level;
+
         private int _reward;
         private int _bonusReward;
-        public bool _isRewardIssued;
+        private bool _isRewardIssued;
 
         public RewardIssuer(ICoinAdder coinAdder, IPlayer player, ISelectedLevel level)
         {
-            _coinAdder = coinAdder ?? throw new ArgumentNullException(nameof(coinAdder));
-            _player = player ?? throw new ArgumentNullException(nameof(player));
-            _level = level ?? throw new ArgumentNullException(nameof(level));
+            CoinAdder = coinAdder ?? throw new ArgumentNullException(nameof(coinAdder));
+            Player = player ?? throw new ArgumentNullException(nameof(player));
+            Level = level ?? throw new ArgumentNullException(nameof(level));
             _reward = 0;
             _bonusReward = 0;
             _isRewardIssued = false;
@@ -30,7 +31,7 @@ namespace CannonTurret.Coin.Rewards
         public int Reward => _reward;
         public int MaxReward => _reward + _bonusReward;
 
-        private bool IsFirstPass => _level.Index == _player.AchievedLevelIndex;
+        private bool IsFirstPass => Level.Index == Player.AchievedLevelIndex;
 
         public void PayReward() => PayReward(_reward);
 
@@ -38,13 +39,13 @@ namespace CannonTurret.Coin.Rewards
 
         public void CalculateRevard()
         {
-            _reward = _level.CountCoinsForWaves;
+            _reward = Level.CountCoinsForWaves;
 
-            if (_level.IsFinished)
-                _reward += _level.CountCoinsForWin;
+            if (Level.IsFinished)
+                _reward += Level.CountCoinsForWin;
 
             _bonusReward = _reward;
-            _coinAdder.SetCoinsAdsView(_bonusReward);
+            CoinAdder.SetCoinsAdsView(_bonusReward);
 
             CalculateAddReward();
         }
@@ -54,10 +55,10 @@ namespace CannonTurret.Coin.Rewards
             if (_isRewardIssued)
                 throw new InvalidOperationException("Reward has already been issued");
 
-            if (IsFirstPass && _level.IsFinished)
-                _player.IncreaseAchievedLevel();
+            if (IsFirstPass && Level.IsFinished)
+                Player.IncreaseAchievedLevel();
 
-            _coinAdder.AddCoins(reward);
+            CoinAdder.AddCoins(reward);
 
             _isRewardIssued = true;
         }
@@ -66,10 +67,10 @@ namespace CannonTurret.Coin.Rewards
         {
             int addedRevard = 0;
 
-            if (IsFirstPass && _level.IsFinished)
+            if (IsFirstPass && Level.IsFinished)
                 addedRevard = (int)(AdditionalReward * _reward);
 
-            if (_player.PurchasesStorage.TryGetPurchase(out IPlayerPurchase purchase, PurchasesTypes.DisableAds))
+            if (Player.PurchasesStorage.TryGetPurchase(out IPlayerPurchase purchase, PurchasesTypes.DisableAds))
                 if (purchase.IsPurchased)
                     addedRevard = (int)(AdditionalReward * MaxReward);
 

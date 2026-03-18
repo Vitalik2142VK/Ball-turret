@@ -4,24 +4,25 @@ namespace CannonTurret.Turrets.Guns
 {
     public class GunMagazine : IGunMagazine
     {
-        private IBulletRepository _bulletRepository;
+        private readonly IBulletRepository BulletRepository;
 
         public GunMagazine(IBulletRepository bulletRepository)
         {
-            _bulletRepository = bulletRepository ?? throw new System.ArgumentNullException(nameof(bulletRepository));
+            BulletRepository = bulletRepository ?? throw new System.ArgumentNullException(nameof(bulletRepository));
         }
 
-        public bool HasFreeBullets => _bulletRepository.HasFreeBullets;
-        public bool IsFull => _bulletRepository.AreBulletsReturned;
+        public bool HasFreeBullets => BulletRepository.HasFreeBullets;
+
+        public bool IsFull => BulletRepository.AreBulletsReturned;
 
         public void AddBullet(IBullet bullet)
         {
-            _bulletRepository.Add(bullet);
+            BulletRepository.Add(bullet);
         }
 
         public IBullet GetBullet()
         {
-            return _bulletRepository.Get();
+            return BulletRepository.Get();
         }
     }
 }

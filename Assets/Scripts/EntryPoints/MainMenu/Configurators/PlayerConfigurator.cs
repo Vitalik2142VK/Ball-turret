@@ -1,11 +1,11 @@
 ﻿using CannonTurret.Coin.Wallets;
-using System;
-using UnityEngine;
 using CannonTurret.PlayerSystem;
 using CannonTurret.Scriptable.Player;
 using CannonTurret.SDK.Ads;
 using CannonTurret.SDK.Auth;
 using CannonTurret.SDK.Shops;
+using System;
+using UnityEngine;
 
 namespace CannonTurret.EntryPoints.MainMenu.Configurators
 {
@@ -20,11 +20,13 @@ namespace CannonTurret.EntryPoints.MainMenu.Configurators
         private ISavedPlayerData _savedData;
         private CoinAdder _coinAdder;
 
-        public IPlayerSaver PlayerSaver { get; private set; }
-
         public ITurretImprover TurretImprover => _cachedUser.TurretImprover;
+
         public IPlayer Player => _cachedUser;
+
         public ICoinAdder CoinAdder => _coinAdder;
+
+        public IPlayerSaver PlayerSaver { get; private set; }
 
         private void OnValidate()
         {

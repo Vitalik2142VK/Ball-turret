@@ -57,17 +57,6 @@ namespace CannonTurret.UI
             OnChangeScrollSetting();
         }
 
-
-        private void Start()
-        {
-            //if (_cameraAdapter != null)
-            //    return;
-
-            //_cameraAdapter = FindCameraAdapter();
-
-            //OnChangeScrollSetting();
-        }
-
         private void OnDisable()
         {
             if (_cameraAdapter == null)

@@ -8,11 +8,7 @@ namespace CannonTurret.LevelSystem
     {
         [SerializeField] private WaveRepository _waveWithBonusesRepository;
         [SerializeField] private WaveSelector _standartWaveSelector;
-        [SerializeField, Min(10)] private int _bonusWavesLimit = 10;
-
-        public StartingWaveSelector()
-        {
-        }
+        [SerializeField][Min(10)] private int _bonusWavesLimit = 10;
 
         private void OnValidate()
         {
@@ -32,8 +28,10 @@ namespace CannonTurret.LevelSystem
         public IWaveActorsPlanner GetWaveActorsPlanner(WaveMask waveMask, int waveNumber)
         {
             if (waveNumber < _bonusWavesLimit)
+            {
                 if (_waveWithBonusesRepository.TryGetWaveActorsPlanner(out IWaveActorsPlanner waveActors, waveMask))
                     return waveActors;
+            }
 
             return _standartWaveSelector.GetWaveActorsPlanner(waveMask);
         }

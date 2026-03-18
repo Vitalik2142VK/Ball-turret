@@ -14,7 +14,9 @@ namespace CannonTurret.UI.LearningLevel
         private ILearningStage _currentStage;
 
         public int WaveNumberStage => _currentStage.WaveNumber;
+
         public bool IsProcess => gameObject.activeSelf;
+
         public bool IsFinished => _stages.Count == 0 && _currentStage == null;
 
         private void OnValidate()

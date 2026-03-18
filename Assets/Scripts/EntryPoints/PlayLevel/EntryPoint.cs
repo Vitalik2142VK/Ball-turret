@@ -107,9 +107,9 @@ namespace CannonTurret.EntryPoints.PlayLevel
             var actorsControllersAccess = _actorsConfigurator.ControllersAccess;
             var enemiesController = actorsControllersAccess.EnemiesController;
             VictoryController victoryController = new VictoryController(enemiesController, shooterView, winStatus);
-            DataForStepSystem dataForStepSystem = new DataForStepSystem(turret, _adsViewer, rewardIssuer, playerController, victoryController, actorsControllersAccess, levelStatus);
+            DataForStepController dataForStepController = new DataForStepController(turret, _adsViewer, rewardIssuer, playerController, victoryController, actorsControllersAccess, levelStatus);
 
-            _stepControllerConfigurator.Configure(dataForStepSystem);
+            _stepControllerConfigurator.Configure(dataForStepController);
             _bonusPrefabConfigurator.Configure(enemiesController);
             _stepControllerConfigurator.ConfigureBonusActivationStep(_bonusPrefabConfigurator.BonusReservator);
 

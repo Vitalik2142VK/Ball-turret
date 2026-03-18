@@ -8,8 +8,8 @@ namespace CannonTurret.UI.Animations
     {
         private const float EnableValue = 1f;
 
-        [SerializeField, Range(0.1f, 2f)] private float _duration = 0.3f;
-        [SerializeField, Range(0.1f, 1.5f)] private float _startSizeValue = 0.5f;
+        [SerializeField][Range(0.1f, 2f)] private float _duration = 0.3f;
+        [SerializeField][Range(0.1f, 1.5f)] private float _startSizeValue = 0.5f;
 
         private CanvasGroup _canvasGroup;
         private RectTransform _rectTransform;

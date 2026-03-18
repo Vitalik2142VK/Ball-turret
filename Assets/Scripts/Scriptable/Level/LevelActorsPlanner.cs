@@ -9,17 +9,19 @@ namespace CannonTurret.Scriptable.Level
     {
         [SerializeField] private WaveActorsPlanner[] _waves;
 
+        public int WavesCount => _waves.Length;
+
         private void OnValidate()
         {
             if (_waves == null || _waves.Length == 0)
                 throw new NullReferenceException(nameof(_waves));
 
             foreach (var wave in _waves)
+            {
                 if (wave == null)
                     throw new NullReferenceException($"{_waves} has null elements");
+            }
         }
-
-        public int WavesCount => _waves.Length;
 
         public IWaveActorsPlanner GetWaveActorsPlanner(int waveNumber)
         {

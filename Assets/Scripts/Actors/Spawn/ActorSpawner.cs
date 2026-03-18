@@ -6,13 +6,13 @@ namespace CannonTurret.Actors.Spawn
 {
     public class ActorSpawner : IActorSpawner
     {
-        private ISpawnPointsRepository _spawnPointsRepository;
-        private IActorFactoriesRepository _factoryRepository;
+        private readonly ISpawnPointsRepository SpawnPointsRepository;
+        private readonly IActorFactoriesRepository FactoryRepository;
 
         public ActorSpawner(ISpawnPointsRepository spawnPointsRepository, IActorFactoriesRepository factoryRepository)
         {
-            _spawnPointsRepository = spawnPointsRepository ?? throw new ArgumentNullException(nameof(spawnPointsRepository));
-            _factoryRepository = factoryRepository ?? throw new ArgumentNullException(nameof(factoryRepository));
+            SpawnPointsRepository = spawnPointsRepository ?? throw new ArgumentNullException(nameof(spawnPointsRepository));
+            FactoryRepository = factoryRepository ?? throw new ArgumentNullException(nameof(factoryRepository));
         }
 
         public List<IActor> Spawn(IWaveActorsPlanner planner)
@@ -39,8 +39,8 @@ namespace CannonTurret.Actors.Spawn
         private IActor CreateActor(IActorPlanner actorPlanner)
         {
             string nameActor = actorPlanner.NameActor;
-            Vector3 startPosition = _spawnPointsRepository.GetPositionSpawnPoint(actorPlanner.ColumnNumber, actorPlanner.LineNumber);
-            IActorFactory actorFactory = _factoryRepository.GetFactoryByNameTypeActor(nameActor);
+            Vector3 startPosition = SpawnPointsRepository.GetPositionSpawnPoint(actorPlanner.ColumnNumber, actorPlanner.LineNumber);
+            IActorFactory actorFactory = FactoryRepository.GetFactoryByNameTypeActor(nameActor);
             IActor actor = actorFactory.Create(nameActor);
             actor.SetStartPosition(startPosition);
 

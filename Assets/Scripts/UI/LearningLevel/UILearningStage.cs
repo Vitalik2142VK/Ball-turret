@@ -5,7 +5,7 @@ namespace CannonTurret.UI.LearningLevel
 {
     public class UILearningStage : MonoBehaviour, ILearningStage
     {
-        [SerializeField, SerializeIterface(typeof(ILearningStage))] private GameObject _learningStageGameObject;
+        [SerializeField][SerializeIterface(typeof(ILearningStage))] private GameObject _learningStageGameObject;
         [SerializeField] private StageElements[] _stages;
 
         private ILearningStage _learningStage;
@@ -23,8 +23,11 @@ namespace CannonTurret.UI.LearningLevel
         }
 
         public int NumberStages => _learningStage.NumberStages;
+
         public int CurrentStage => _learningStage.CurrentStage;
+
         public int WaveNumber => _learningStage.WaveNumber;
+
         public bool IsActive => _learningStage.IsActive;
 
         public void Initialize()

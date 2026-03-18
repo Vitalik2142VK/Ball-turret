@@ -10,8 +10,8 @@ namespace CannonTurret.Turrets.Shooters
     {
         private const float MinSqrMagnitude = 0.001f;
 
-        [SerializeField, Min(1f)] private float _runningTime = 1f;
-        [SerializeField, Min(0.25f)] private float _timeWait = 0.25f;
+        [SerializeField][Min(1f)] private float _runningTime = 1f;
+        [SerializeField][Min(0.25f)] private float _timeWait = 0.25f;
 
         private Transform _transform;
         private ShooterView _shooterView;

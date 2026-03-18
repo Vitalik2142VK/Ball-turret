@@ -10,68 +10,68 @@ namespace CannonTurret.Actors.Enemies
 {
     public class Enemy : IEnemy
     {
-        private IEnemyPresenter _presenter;
-        private IDebuffHandler _debuffReceiver;
-        private IMovableObject _mover;
-        private IDamage _damage;
-        private IHealth _health;
+        private readonly IEnemyPresenter Presenter;
+        private readonly IDebuffHandler DebuffReceiver;
+        private readonly IMovableObject Mover;
+        private readonly IDamage Damage;
+        private readonly IHealth Health;
 
         public Enemy(IEnemyPresenter presenter, IDebuffHandler debuffReceiver, IMovableObject mover, IDamage damage, IHealth health)
         {
-            _presenter = presenter ?? throw new ArgumentNullException(nameof(presenter));
-            _debuffReceiver = debuffReceiver ?? throw new ArgumentNullException(nameof(debuffReceiver));
-            _mover = mover ?? throw new ArgumentNullException(nameof(mover));
-            _damage = damage ?? throw new ArgumentNullException(nameof(damage));
-            _health = health ?? throw new ArgumentNullException(nameof(health));
+            Presenter = presenter ?? throw new ArgumentNullException(nameof(presenter));
+            DebuffReceiver = debuffReceiver ?? throw new ArgumentNullException(nameof(debuffReceiver));
+            Mover = mover ?? throw new ArgumentNullException(nameof(mover));
+            Damage = damage ?? throw new ArgumentNullException(nameof(damage));
+            Health = health ?? throw new ArgumentNullException(nameof(health));
 
             Enable();
         }
 
-        public bool IsFinished => _mover.IsFinished;
+        public bool IsFinished => Mover.IsFinished;
 
         public bool IsEnable { get; private set; }
 
-        public void AddDebuff(IDebuff debaff) => _debuffReceiver.AddDebuff(debaff);
+        public void AddDebuff(IDebuff debaff) => DebuffReceiver.AddDebuff(debaff);
 
-        public void ApplyDamage(IDamagedObject damagedObject) => _damage.Apply(damagedObject);
+        public void ApplyDamage(IDamagedObject damagedObject) => Damage.Apply(damagedObject);
 
-        public void SetStartPosition(Vector3 startPosition) => _mover.SetStartPosition(startPosition);
+        public void SetStartPosition(Vector3 startPosition) => Mover.SetStartPosition(startPosition);
 
-        public void EstablishPoint(Vector3 distance, float speed) => _mover.EstablishPoint(distance, speed);
+        public void EstablishPoint(Vector3 distance, float speed) => Mover.EstablishPoint(distance, speed);
 
-        public void Win() => _presenter.Win();
+        public void Win() => Presenter.Win();
 
         public void Move()
         {
-            _mover.Move();
-            _presenter.Move();
+            Mover.Move();
+            Presenter.Move();
         }
 
         public void ActivateDebuffs()
         {
-            _debuffReceiver.ActivateDebuffs();
-            _debuffReceiver.RemoveCompletedDebuffs();
+            DebuffReceiver.ActivateDebuffs();
+            DebuffReceiver.RemoveCompletedDebuffs();
         }
 
         public void TakeDamage(IDamageAttributes damage)
         {
-            _health.TakeDamage(damage);
+            Health.TakeDamage(damage);
 
-            if (_health.IsAlive == false)
+            if (Health.IsAlive == false)
                 IsEnable = false;
         }
 
         public void Destroy()
         {
             IsEnable = false;
-            _debuffReceiver.Clean();
-            _presenter.Destroy();
+            DebuffReceiver.Clean();
+            Presenter.Destroy();
         }
 
         private void Enable()
         {
             IsEnable = true;
-            _health.Restore();
+            Health.Restore();
         }
     }
 }

@@ -5,40 +5,40 @@ namespace CannonTurret.Actors.Bonuses
 {
     public class BonusRandomizer : IBonusRandomizer
     {
-        private List<IBonus> _prefabs;
-        private Random _random;
+        private readonly List<IBonus> Prefabs;
+        private readonly Random Random;
 
         public BonusRandomizer(IEnumerable<IBonus> prefabs)
         {
             if (prefabs == null)
                 throw new ArgumentNullException(nameof(prefabs));
 
-            _prefabs = new List<IBonus>(prefabs);
+            Prefabs = new List<IBonus>(prefabs);
 
-            if (_prefabs.Count == 0)
+            if (Prefabs.Count == 0)
                 throw new ArgumentOutOfRangeException(nameof(prefabs));
 
-            _random = new Random();
+            Random = new Random();
         }
 
         public IEnumerable<IBonus> GetBonuses(int countBonuses)
         {
-            if (countBonuses > _prefabs.Count)
+            if (countBonuses > Prefabs.Count)
                 throw new ArgumentOutOfRangeException(nameof(countBonuses));
 
-            if (countBonuses == _prefabs.Count)
-                return _prefabs.ToArray();
+            if (countBonuses == Prefabs.Count)
+                return Prefabs.ToArray();
 
             IBonus[] randomBonuses = new IBonus[countBonuses];
 
             for (int i = 0; i < randomBonuses.Length; i++)
             {
-                int randomIndex = _random.Next(0, _prefabs.Count);
-                randomBonuses[i] = _prefabs[randomIndex];
-                _prefabs.RemoveAt(randomIndex);
+                int randomIndex = Random.Next(0, Prefabs.Count);
+                randomBonuses[i] = Prefabs[randomIndex];
+                Prefabs.RemoveAt(randomIndex);
             }
 
-            _prefabs.AddRange(randomBonuses);
+            Prefabs.AddRange(randomBonuses);
 
             return randomBonuses;
         }

@@ -8,6 +8,7 @@ namespace CannonTurret.PlayerSystem
         public event Action PressFinished;
 
         public Vector3 TouchPositionInMap { get; }
+
         public bool IsPress { get; }
 
         public void UpdateInput();

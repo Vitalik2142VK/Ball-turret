@@ -6,8 +6,8 @@ namespace CannonTurret.UI.Animations
     [RequireComponent(typeof(RectTransform))]
     public class ScaleButtonAnimator : MonoBehaviour, IButtonAnimator
     {
-        [SerializeField, Range(-0.95f, 0.95f)] private float _clickSizeValue = -0.1f;
-        [SerializeField, Range(0.05f, 0.3f)] private float _duration = 0.1f;
+        [SerializeField][Range(-0.95f, 0.95f)] private float _clickSizeValue = -0.1f;
+        [SerializeField][Range(0.05f, 0.3f)] private float _duration = 0.1f;
 
         private Tween _animation;
         private RectTransform _rectTransform;

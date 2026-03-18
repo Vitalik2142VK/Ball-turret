@@ -22,9 +22,13 @@ namespace CannonTurret.Turrets.Bullets.Physics
         }
 
         public Vector3 Velocity { get; set; }
+
         public Vector3 Position { get; set; }
+
         public Collider CollidedObject { get; private set; }
+
         public int Frame { get; private set; }
+
         public bool IsThereCollision { get; private set; }
 
         public void SetCollidedObject(Collider collidedObject)

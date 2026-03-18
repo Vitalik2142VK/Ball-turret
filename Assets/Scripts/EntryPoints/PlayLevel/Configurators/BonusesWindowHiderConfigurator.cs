@@ -25,8 +25,10 @@ namespace CannonTurret.EntryPoints.PlayLevel.Configurators
                 throw new InvalidOperationException(nameof(_bonusesWindowHiders));
 
             foreach (var bonusesWindowHider in _bonusesWindowHiders)
+            {
                 if (bonusesWindowHider == null)
                     throw new NullReferenceException($"{_bonusesWindowHiders} contains null objects");
+            }
         }
 
         private void OnDisable()

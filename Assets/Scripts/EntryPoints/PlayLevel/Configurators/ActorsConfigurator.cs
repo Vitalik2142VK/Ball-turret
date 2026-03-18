@@ -5,12 +5,12 @@ using CannonTurret.Actors.Enemies;
 using CannonTurret.Actors.MoveSystem;
 using CannonTurret.Actors.Spawn;
 using CannonTurret.DamageSystem;
-using System;
-using System.Collections.Generic;
-using UnityEngine;
 using CannonTurret.HealthSystem;
 using CannonTurret.LevelSystem;
 using CannonTurret.Scriptable.Move;
+using System;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace CannonTurret.EntryPoints.PlayLevel.Configurators
 {

@@ -11,7 +11,7 @@ namespace CannonTurret.Turrets.Bullets.Types
     [RequireComponent(typeof(Bullet), typeof(FireBulletDebuff))]
     public class FireBullet : MonoBehaviour, IBullet, IInitializer
     {
-        [SerializeField, SerializeIterface(typeof(IBulletPhysics))] private GameObject _bulletPhysicsGameObject;
+        [SerializeField][SerializeIterface(typeof(IBulletPhysics))] private GameObject _bulletPhysicsGameObject;
         [SerializeField] private DamageImproverAttributes _damageImproverAttributes;
 
         private IBullet _bullet;

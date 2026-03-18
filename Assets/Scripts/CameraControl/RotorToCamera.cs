@@ -25,7 +25,6 @@ namespace CannonTurret.CameraControl
             _cameraAdapter.OrientationChanged += OnRotate;
         }
 
-
         private void Start()
         {
             OnRotate();

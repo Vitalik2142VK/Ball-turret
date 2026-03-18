@@ -13,6 +13,7 @@ namespace CannonTurret.Scriptable.Player
         [SerializeField] private HealthAttributes _turretHealthAttributes;
 
         public float MaxHealth => _turretHealthAttributes.MaxHealth;
+
         public float Damage => _bulletDamageAttributes.Damage;
 
         private void OnValidate()

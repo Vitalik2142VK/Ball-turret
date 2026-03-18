@@ -12,6 +12,7 @@ namespace CannonTurret.SDK.Shops
         }
 
         public string Id => _purchase.Id;
+
         public bool IsPurchased => _purchase.IsPurchased;
 
         public void Update()

@@ -5,17 +5,18 @@ namespace CannonTurret.StepSystem.Steps
 {
     public class RemoveActorsStep : IStep, IEndPointStep
     {
+        private readonly IDisableActorsRemover ActorsRemover;
+
         private IEndStep _endStep;
-        private IDisableActorsRemover _actorsRemover;
 
         public RemoveActorsStep(IDisableActorsRemover actorsRemover)
         {
-            _actorsRemover = actorsRemover ?? throw new ArgumentNullException(nameof(actorsRemover));
+            ActorsRemover = actorsRemover ?? throw new ArgumentNullException(nameof(actorsRemover));
         }
 
         public void Action()
         {
-            _actorsRemover.RemoveAllDisabled();
+            ActorsRemover.RemoveAllDisabled();
             _endStep.End();
         }
 

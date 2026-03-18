@@ -1,6 +1,4 @@
 ﻿using CannonTurret.Actors.Bonuses.Activators;
-using System;
-using UnityEngine;
 using CannonTurret.HealthSystem;
 using CannonTurret.PlayerSystem;
 using CannonTurret.Scriptable.Gun;
@@ -11,6 +9,8 @@ using CannonTurret.Turrets.Bullets.Creation;
 using CannonTurret.Turrets.Bullets.Types;
 using CannonTurret.Turrets.Guns;
 using CannonTurret.Turrets.Shooters;
+using System;
+using UnityEngine;
 
 namespace CannonTurret.EntryPoints.PlayLevel.Configurators
 {
@@ -22,7 +22,7 @@ namespace CannonTurret.EntryPoints.PlayLevel.Configurators
         [SerializeField] private Gun _gun;
         [SerializeField] private HealthBar _healthBar;
         [SerializeField] private TurretView _turretView;
-        [SerializeField, SerializeIterface(typeof(ITrajectoryRenderer))] private GameObject _trajectoryRendererGameObject;
+        [SerializeField][SerializeIterface(typeof(ITrajectoryRenderer))] private GameObject _trajectoryRendererGameObject;
 
         [Header("Bullets")]
         [SerializeField] private BulletsCollector _bulletCollector;
@@ -33,12 +33,13 @@ namespace CannonTurret.EntryPoints.PlayLevel.Configurators
 
         [Header("Other")]
         [SerializeField] private FullHealthTurretActivatorCreator _fullHealthTurretBonus;
-        [SerializeField, SerializeIterface(typeof(IShooterView))] private GameObject _shooterView;
+        [SerializeField][SerializeIterface(typeof(IShooterView))] private GameObject _shooterView;
 
         private Turret _turret;
         private ITrajectoryRenderer _trajectoryRenderer;
 
         public ITurret Turret => _turret;
+
         public IShotAction ShotAction => _turret;
 
         public IShooterView ShooterView { get; private set; }

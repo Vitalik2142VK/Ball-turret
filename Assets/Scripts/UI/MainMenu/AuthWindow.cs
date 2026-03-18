@@ -9,7 +9,7 @@ namespace CannonTurret.UI.MainMenu
 {
     public class AuthWindow : MonoBehaviour
     {
-        [SerializeField, SerializeIterface(typeof(IAnimatorUI))] private GameObject _authWindowAnimator;
+        [SerializeField][SerializeIterface(typeof(IAnimatorUI))] private GameObject _authWindowAnimator;
         [SerializeField] private Button _confirmationButton;
         [SerializeField] private Button _cancelButton;
 

@@ -5,11 +5,11 @@ namespace CannonTurret.Actors.Bonuses
 {
     public class Bonus : IBonus
     {
-        private IBonusActivator _activator;
+        private readonly IBonusActivator Activator;
 
         public Bonus(IBonusCard bonusCard, IBonusActivator bonusActivator)
         {
-            _activator ??= bonusActivator ?? throw new ArgumentNullException(nameof(bonusActivator));
+            Activator ??= bonusActivator ?? throw new ArgumentNullException(nameof(bonusActivator));
 
             BonusCard = bonusCard ?? throw new ArgumentNullException(nameof(bonusCard));
         }
@@ -18,7 +18,7 @@ namespace CannonTurret.Actors.Bonuses
 
         public void Activate()
         {
-            _activator.Activate();
+            Activator.Activate();
         }
     }
 }

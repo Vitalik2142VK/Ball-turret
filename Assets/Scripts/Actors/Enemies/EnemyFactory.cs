@@ -8,7 +8,7 @@ namespace CannonTurret.Actors.Enemies
 {
     public class EnemyFactory : MonoBehaviour, IActorFactory
     {
-        [SerializeField, SerializeIterface(typeof(IEnemyCreator))] private GameObject[] _enemyCreators;
+        [SerializeField][SerializeIterface(typeof(IEnemyCreator))] private GameObject[] _enemyCreators;
 
         private Dictionary<string, IEnemyCreator> _creators;
         private IActorHealthModifier _healthModifier;
@@ -19,8 +19,10 @@ namespace CannonTurret.Actors.Enemies
                 throw new InvalidOperationException(nameof(_enemyCreators));
 
             foreach (var gameObject in _enemyCreators)
+            {
                 if (gameObject.TryGetComponent(out IEnemyCreator _) == false)
                     throw new InvalidOperationException($"One or more objects do not have a component <{nameof(IEnemyCreator)}>");
+            }
         }
 
         private void Awake()
@@ -55,8 +57,10 @@ namespace CannonTurret.Actors.Enemies
             Dictionary<string, IEnemyCreator> prefabs = new Dictionary<string, IEnemyCreator>(lenght);
 
             foreach (var gameObject in _enemyCreators)
+            {
                 if (gameObject.TryGetComponent(out IEnemyCreator creator))
                     prefabs.Add(creator.Name, creator);
+            }
 
             return prefabs;
         }

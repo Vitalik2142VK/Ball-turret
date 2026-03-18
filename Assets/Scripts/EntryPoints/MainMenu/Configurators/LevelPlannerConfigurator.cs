@@ -14,9 +14,10 @@ namespace CannonTurret.EntryPoints.MainMenu.Configurators
         [SerializeField] private LevelFactory _levelFactory;
 
         [Header("Actors health coefficient by level")]
-        [SerializeField, Range(0.3f, 2f)] private float _healthCoefficient;
+        [SerializeField][Range(0.3f, 2f)] private float _healthCoefficient;
 
         public ILevelFactory LevelFactory { get; private set; }
+
         public ICoinCountRandomizer CoinCountRandomizer { get; private set; }
 
         private void OnValidate()
@@ -44,7 +45,7 @@ namespace CannonTurret.EntryPoints.MainMenu.Configurators
             CoinCountRandomizer = new CoinCountRandomizer(achievedLevelIndex, coinsForRewardAdCoefficient);
 
             _endlessLevelPlanner.Initialize();
-            _levelFactory.Initioalize(CoinCountRandomizer, _healthCoefficient);
+            _levelFactory.Initialize(CoinCountRandomizer, _healthCoefficient);
 
             LevelFactory = new AdvancedLevelFactory(_levelFactory, _endlessLevelPlanner, CoinCountRandomizer, _healthCoefficient, achievedLevelIndex);
         }

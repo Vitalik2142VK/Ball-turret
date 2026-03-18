@@ -6,18 +6,18 @@ namespace CannonTurret.Coin.Wallets
 {
     public class CoinAdder : ICoinAdder
     {
-        private IPlayerSaver _playerSaver;
-        private IWallet _wallet;
-        private IAdsViewer _adsViewer;
+        private readonly IPlayerSaver PlayerSaver;
+        private readonly IWallet Wallet;
+        private readonly IAdsViewer AdsViewer;
 
         public CoinAdder(IPlayerSaver playerSaver, IWallet wallet, IAdsViewer adsViewer)
         {
-            _playerSaver = playerSaver ?? throw new ArgumentNullException(nameof(playerSaver));
-            _wallet = wallet ?? throw new ArgumentNullException(nameof(wallet));
-            _adsViewer = adsViewer ?? throw new ArgumentNullException(nameof(adsViewer));
+            PlayerSaver = playerSaver ?? throw new ArgumentNullException(nameof(playerSaver));
+            Wallet = wallet ?? throw new ArgumentNullException(nameof(wallet));
+            AdsViewer = adsViewer ?? throw new ArgumentNullException(nameof(adsViewer));
             CoinsCountAdsView = 0;
 
-            _adsViewer.RewardAdShowed += OnAddCoins;
+            AdsViewer.RewardAdShowed += OnAddCoins;
         }
 
         public int CoinsCountAdsView { get; private set; }
@@ -35,13 +35,13 @@ namespace CannonTurret.Coin.Wallets
             if (coinsCount < 0)
                 throw new ArgumentOutOfRangeException(nameof(coinsCount));
 
-            _wallet.AddCoins(coinsCount);
-            _playerSaver.Save();
+            Wallet.AddCoins(coinsCount);
+            PlayerSaver.Save();
         }
 
         public void Disable()
         {
-            _adsViewer.RewardAdShowed -= OnAddCoins;
+            AdsViewer.RewardAdShowed -= OnAddCoins;
         }
 
         private void OnAddCoins(string rewardId)

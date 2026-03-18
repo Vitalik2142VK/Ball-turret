@@ -46,8 +46,10 @@ namespace CannonTurret.Scriptable.Level
         private bool IsEmpty()
         {
             foreach (var line in _lines)
+            {
                 if (line.IsEmpty() == false)
                     return false;
+            }
 
             return true;
         }

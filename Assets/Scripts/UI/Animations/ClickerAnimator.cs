@@ -30,7 +30,6 @@ namespace CannonTurret.UI.Animations
             _cameraAdapter.OrientationChanged += OnChangeAnimation;
         }
 
-
         private void Start()
         {
             OnChangeAnimation();

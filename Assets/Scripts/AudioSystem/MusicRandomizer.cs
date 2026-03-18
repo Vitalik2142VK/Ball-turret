@@ -47,7 +47,9 @@ namespace CannonTurret.AudioSystem
                 _audioSource.clip = _currentClip;
                 _audioSource.Play();
 
-                yield return new WaitForSeconds(_currentClip.length + _additionalSitchingTime); ;
+                float playTime = _currentClip.length + _additionalSitchingTime;
+
+                yield return new WaitForSeconds(playTime);
             }
         }
 

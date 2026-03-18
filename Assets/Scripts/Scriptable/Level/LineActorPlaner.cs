@@ -29,8 +29,10 @@ namespace CannonTurret.Scriptable.Level
         public bool IsEmpty()
         {
             foreach (var actor in _actors)
+            {
                 if (actor != null)
                     return false;
+            }
 
             return true;
         }
@@ -58,9 +60,13 @@ namespace CannonTurret.Scriptable.Level
         private bool IsValidGameObjects()
         {
             foreach (var actor in _actors)
+            {
                 if (actor != null)
+                {
                     if (actor.TryGetComponent(out IActorView _) == false)
                         return false;
+                }
+            }
 
             return true;
         }

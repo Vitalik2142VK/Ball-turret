@@ -5,12 +5,13 @@ namespace CannonTurret.Actors.MoveSystem
 {
     public class ActorsMover : IAdvancedActorsMover
     {
-        private List<IMovableObject> _movableObjects;
+        private readonly List<IMovableObject> MovableObjects;
+
         private IMoveAttributes _moveAttributes;
 
         public ActorsMover()
         {
-            _movableObjects = new List<IMovableObject>();
+            MovableObjects = new List<IMovableObject>();
         }
 
         public bool AreMovesFinished { get; private set; }
@@ -25,10 +26,10 @@ namespace CannonTurret.Actors.MoveSystem
             if (movableObjects == null)
                 throw new ArgumentNullException(nameof(movableObjects));
 
-            if (_movableObjects.Count != 0)
-                _movableObjects.Clear();
+            if (MovableObjects.Count != 0)
+                MovableObjects.Clear();
 
-            _movableObjects.AddRange(movableObjects);
+            MovableObjects.AddRange(movableObjects);
 
             SpecifyNewPosition();
         }
@@ -41,7 +42,7 @@ namespace CannonTurret.Actors.MoveSystem
             {
                 SpecifyNewPosition();
 
-                _movableObjects.Clear();
+                MovableObjects.Clear();
             }
         }
 
@@ -49,7 +50,7 @@ namespace CannonTurret.Actors.MoveSystem
         {
             AreMovesFinished = true;
 
-            foreach (var movableObject in _movableObjects)
+            foreach (var movableObject in MovableObjects)
             {
                 movableObject.Move();
 
@@ -60,7 +61,7 @@ namespace CannonTurret.Actors.MoveSystem
 
         private void SpecifyNewPosition()
         {
-            foreach (var movableObject in _movableObjects)
+            foreach (var movableObject in MovableObjects)
                 movableObject.EstablishPoint(_moveAttributes.Distance, _moveAttributes.Speed);
         }
     }

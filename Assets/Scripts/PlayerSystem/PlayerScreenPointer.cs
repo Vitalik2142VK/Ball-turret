@@ -11,7 +11,7 @@ namespace CannonTurret.PlayerSystem
     {
         [SerializeField] private CameraAdapter _cameraAdapter;
         [SerializeField] private CanvasPointerChecker _canvasPointerChecker;
-        [SerializeField, Min(10f)] private float _maxDistanceRay = 100f;
+        [SerializeField][Min(10f)] private float _maxDistanceRay = 100f;
         [SerializeField] private LayerMask _layerMask;
 
         private EventSystem _eventSystem;
@@ -19,6 +19,7 @@ namespace CannonTurret.PlayerSystem
         public event Action PressFinished;
 
         public Vector3 TouchPositionInMap { get; private set; }
+
         public bool IsPress { get; private set; }
 
         private void OnValidate()

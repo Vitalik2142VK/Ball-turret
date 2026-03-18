@@ -1,4 +1,7 @@
-﻿public interface IComboCounterResetter
+﻿namespace CannonTurret.UI.PlayerScene
 {
-    public void ResetCombo();
+    public interface IComboCounterResetter
+    {
+        public void ResetCombo();
+    }
 }

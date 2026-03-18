@@ -1,17 +1,22 @@
-﻿public class ChangeSceneStep : IChangeSceneStep
+﻿using CannonTurret.UI;
+
+namespace CannonTurret.StepSystem.Steps
 {
-    private ISceneLoader _sceneLoader;
-
-    public void Action()
+    public class ChangeSceneStep : IChangeSceneStep
     {
-        if (_sceneLoader == null)
-            return;
+        private ISceneLoader _sceneLoader;
 
-        _sceneLoader.Load();
-    }
+        public void Action()
+        {
+            if (_sceneLoader == null)
+                return;
 
-    public void SetSceneLoader(ISceneLoader sceneLoader)
-    {
-        _sceneLoader = sceneLoader ?? throw new System.ArgumentNullException(nameof(sceneLoader));
+            _sceneLoader.Load();
+        }
+
+        public void SetSceneLoader(ISceneLoader sceneLoader)
+        {
+            _sceneLoader = sceneLoader ?? throw new System.ArgumentNullException(nameof(sceneLoader));
+        }
     }
 }

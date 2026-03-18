@@ -1,75 +1,79 @@
-﻿using System;
+﻿using CannonTurret.UI.Animations;
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(IAnimatorUI), typeof(Button))]
-public class OpenWindowButton : MonoBehaviour, IOpenWindowButton
+namespace CannonTurret.UI.PlayerScene
 {
-    [SerializeField, SerializeIterface(typeof(IWindow))] private GameObject _windowGameObject;
-
-    private Button _button;
-    private IAnimatorUI _animator;
-    private IWindow _window;
-
-    public bool IsActive => gameObject.activeSelf;
-
-    private void OnValidate()
+    [RequireComponent(typeof(IAnimatorUI), typeof(Button))]
+    public class OpenWindowButton : MonoBehaviour, IOpenWindowButton
     {
-        if (_windowGameObject == null)
-            throw new NullReferenceException(nameof(_windowGameObject));
-    }
+        [SerializeField, SerializeIterface(typeof(IWindow))] private GameObject _windowGameObject;
 
-    private void Awake()
-    {
-        _button = GetComponent<Button>();
-        _animator = GetComponent<IAnimatorUI>();
-        _window = _windowGameObject.GetComponent<IWindow>();
-    }
+        private Button _button;
+        private IAnimatorUI _animator;
+        private IWindow _window;
 
-    private void OnEnable()
-    {
-        _button.onClick.AddListener(OnClick);
-    }
+        public bool IsActive => gameObject.activeSelf;
 
-    private void OnDisable()
-    {
-        _button.onClick.RemoveListener(OnClick);
-    }
+        private void OnValidate()
+        {
+            if (_windowGameObject == null)
+                throw new NullReferenceException(nameof(_windowGameObject));
+        }
 
-    public void SetPauseMenu(IWindow window)
-    {
-        _window = window ?? throw new ArgumentNullException(nameof(window));
-    }
+        private void Awake()
+        {
+            _button = GetComponent<Button>();
+            _animator = GetComponent<IAnimatorUI>();
+            _window = _windowGameObject.GetComponent<IWindow>();
+        }
 
-    public void Show()
-    {
-        if (gameObject.activeSelf)
-            return;
+        private void OnEnable()
+        {
+            _button.onClick.AddListener(OnClick);
+        }
 
-        gameObject.SetActive(true);
+        private void OnDisable()
+        {
+            _button.onClick.RemoveListener(OnClick);
+        }
 
-        _animator.Show();
-    }
+        public void SetPauseMenu(IWindow window)
+        {
+            _window = window ?? throw new ArgumentNullException(nameof(window));
+        }
 
-    public void Hide()
-    {
-        _animator.Hide();
+        public void Show()
+        {
+            if (gameObject.activeSelf)
+                return;
 
-        StartCoroutine(WaitClosure());
-    }
+            gameObject.SetActive(true);
 
-    private void OnClick()
-    {
-        _window.Enable();
+            _animator.Show();
+        }
 
-        Hide();
-    }
+        public void Hide()
+        {
+            _animator.Hide();
 
-    private IEnumerator WaitClosure()
-    {
-        yield return _animator.GetYieldAnimation();
+            StartCoroutine(WaitClosure());
+        }
 
-        gameObject.SetActive(false);
+        private void OnClick()
+        {
+            _window.Enable();
+
+            Hide();
+        }
+
+        private IEnumerator WaitClosure()
+        {
+            yield return _animator.GetYieldAnimation();
+
+            gameObject.SetActive(false);
+        }
     }
 }

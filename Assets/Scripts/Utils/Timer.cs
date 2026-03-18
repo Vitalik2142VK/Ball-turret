@@ -1,36 +1,39 @@
 using UnityEngine;
 
-public class Timer
+namespace CannonTurret.Utils
 {
-    private float _time;
-    private float _waitingTime;
-
-    public Timer(float waitTime)
+    public class Timer
     {
-        _time = waitTime;
-        _waitingTime = _time;
-    }
+        private float _time;
+        private float _waitingTime;
 
-    public bool IsTimeUp => _waitingTime <= 0;
+        public Timer(float waitTime)
+        {
+            _time = waitTime;
+            _waitingTime = _time;
+        }
 
-    public void MakeCountdown(float deltaTime)
-    {
-        if (IsTimeUp == false)
-            _waitingTime -= deltaTime;
-    }
+        public bool IsTimeUp => _waitingTime <= 0;
 
-    public void UpdateWaitingTime()
-    {
-        _waitingTime = _time;
-    }
+        public void MakeCountdown(float deltaTime)
+        {
+            if (IsTimeUp == false)
+                _waitingTime -= deltaTime;
+        }
 
-    public void SetWaitTime(float waitTime)
-    {
-        _time = waitTime;
-    }
+        public void UpdateWaitingTime()
+        {
+            _waitingTime = _time;
+        }
 
-    public void SetRandomWaitTime(float minTime, float maxTime)
-    {
-        _time = Random.Range(minTime, maxTime);
+        public void SetWaitTime(float waitTime)
+        {
+            _time = waitTime;
+        }
+
+        public void SetRandomWaitTime(float minTime, float maxTime)
+        {
+            _time = Random.Range(minTime, maxTime);
+        }
     }
 }

@@ -1,71 +1,75 @@
+using CannonTurret.CameraControl;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(RectTransform), typeof(GridLayoutGroup))]
-public class GroupSizeAdapter : MonoBehaviour
+namespace CannonTurret.UI
 {
-    private ICameraAdapter _cameraAdapter;
-    private RectTransform _rectTransform;
-    private GridLayoutGroup _gridLayoutGroup;
-    private int _countElementsGroup;
-
-    private void Awake()
+    [RequireComponent(typeof(RectTransform), typeof(GridLayoutGroup))]
+    public class GroupSizeAdapter : MonoBehaviour
     {
-        _rectTransform = GetComponent<RectTransform>();
-        _gridLayoutGroup = GetComponent<GridLayoutGroup>();
-        _countElementsGroup = transform.childCount;
+        private ICameraAdapter _cameraAdapter;
+        private RectTransform _rectTransform;
+        private GridLayoutGroup _gridLayoutGroup;
+        private int _countElementsGroup;
 
-        Camera camera = Camera.main;
+        private void Awake()
+        {
+            _rectTransform = GetComponent<RectTransform>();
+            _gridLayoutGroup = GetComponent<GridLayoutGroup>();
+            _countElementsGroup = transform.childCount;
 
-        if (camera.TryGetComponent(out ICameraAdapter cameraAdapter) == false)
-            throw new System.InvalidOperationException($"The main camera does not contain the component: <{nameof(ICameraAdapter)}>");
+            Camera camera = Camera.main;
 
-        _cameraAdapter = cameraAdapter;
-    }
+            if (camera.TryGetComponent(out ICameraAdapter cameraAdapter) == false)
+                throw new System.InvalidOperationException($"The main camera does not contain the component: <{nameof(ICameraAdapter)}>");
 
-    private void OnEnable()
-    {
-        _cameraAdapter.OrientationChanged += OnUpdateCellSize;
-        _cameraAdapter.RatioChanged += OnUpdateCellSize;
-    }
+            _cameraAdapter = cameraAdapter;
+        }
 
-    private void Start()
-    {
-        OnUpdateCellSize();
-    }
+        private void OnEnable()
+        {
+            _cameraAdapter.OrientationChanged += OnUpdateCellSize;
+            _cameraAdapter.RatioChanged += OnUpdateCellSize;
+        }
 
-    private void OnDisable()
-    {
-        _cameraAdapter.OrientationChanged -= OnUpdateCellSize;
-        _cameraAdapter.RatioChanged -= OnUpdateCellSize;
-    }
+        private void Start()
+        {
+            OnUpdateCellSize();
+        }
 
-    private void OnUpdateCellSize()
-    {
-        StartCoroutine(UpdateSize());
-    }
+        private void OnDisable()
+        {
+            _cameraAdapter.OrientationChanged -= OnUpdateCellSize;
+            _cameraAdapter.RatioChanged -= OnUpdateCellSize;
+        }
 
-    private IEnumerator UpdateSize()
-    {
-        yield return null;
+        private void OnUpdateCellSize()
+        {
+            StartCoroutine(UpdateSize());
+        }
 
-        int offset = 1;
-        var rect = _rectTransform.rect;
-        var padding = _gridLayoutGroup.padding;
-        var spacing = _gridLayoutGroup.spacing;
-        int offsetsCount = _countElementsGroup - offset;
-        float widthSpacing = spacing.x * offsetsCount;
-        float heightSpacing = spacing.y * offsetsCount;
-        float widthRect = rect.size.x - padding.right - padding.left - widthSpacing;
-        float heightRect = rect.size.y - padding.bottom - padding.top - heightSpacing;
-        var startAxis = _gridLayoutGroup.startAxis;
+        private IEnumerator UpdateSize()
+        {
+            yield return null;
 
-        if (startAxis == GridLayoutGroup.Axis.Vertical)
-            heightRect = (heightRect - offset) / _countElementsGroup;
-        else
-            widthRect = (widthRect - offset) / _countElementsGroup;
+            int offset = 1;
+            var rect = _rectTransform.rect;
+            var padding = _gridLayoutGroup.padding;
+            var spacing = _gridLayoutGroup.spacing;
+            int offsetsCount = _countElementsGroup - offset;
+            float widthSpacing = spacing.x * offsetsCount;
+            float heightSpacing = spacing.y * offsetsCount;
+            float widthRect = rect.size.x - padding.right - padding.left - widthSpacing;
+            float heightRect = rect.size.y - padding.bottom - padding.top - heightSpacing;
+            var startAxis = _gridLayoutGroup.startAxis;
 
-        _gridLayoutGroup.cellSize = new Vector2(widthRect, heightRect);
+            if (startAxis == GridLayoutGroup.Axis.Vertical)
+                heightRect = (heightRect - offset) / _countElementsGroup;
+            else
+                widthRect = (widthRect - offset) / _countElementsGroup;
+
+            _gridLayoutGroup.cellSize = new Vector2(widthRect, heightRect);
+        }
     }
 }

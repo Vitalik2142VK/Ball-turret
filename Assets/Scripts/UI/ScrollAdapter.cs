@@ -1,142 +1,146 @@
+using CannonTurret.CameraControl;
 using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(ScrollRect))]
-public class ScrollAdapter : MonoBehaviour
+namespace CannonTurret.UI
 {
-    [SerializeField] private ContentSizeFitter _contentSizeFitter;
-    [SerializeField] private GridLayoutGroup _gridLayoutGroup;
-
-    private ICameraAdapter _cameraAdapter;
-    private ScrollRect _scrollRect;
-    private RectTransform _contentRectTransform;
-    private Vector2 _defaultCellSize;
-
-    private void OnValidate()
+    [RequireComponent(typeof(ScrollRect))]
+    public class ScrollAdapter : MonoBehaviour
     {
-        if (_contentSizeFitter == null)
-            _contentSizeFitter = GetComponentInChildren<ContentSizeFitter>();
+        [SerializeField] private ContentSizeFitter _contentSizeFitter;
+        [SerializeField] private GridLayoutGroup _gridLayoutGroup;
 
-        if (_contentSizeFitter == null)
-            throw new NullReferenceException(nameof(_contentSizeFitter));
+        private ICameraAdapter _cameraAdapter;
+        private ScrollRect _scrollRect;
+        private RectTransform _contentRectTransform;
+        private Vector2 _defaultCellSize;
 
-        if (_gridLayoutGroup == null)
-            _gridLayoutGroup = GetComponentInChildren<GridLayoutGroup>();
+        private void OnValidate()
+        {
+            if (_contentSizeFitter == null)
+                _contentSizeFitter = GetComponentInChildren<ContentSizeFitter>();
 
-        if (_gridLayoutGroup == null)
-            throw new NullReferenceException(nameof(_gridLayoutGroup));
-    }
+            if (_contentSizeFitter == null)
+                throw new NullReferenceException(nameof(_contentSizeFitter));
 
-    private void Awake()
-    {
-        _scrollRect = GetComponent<ScrollRect>();
-        _contentRectTransform = _contentSizeFitter.GetComponent<RectTransform>();
+            if (_gridLayoutGroup == null)
+                _gridLayoutGroup = GetComponentInChildren<GridLayoutGroup>();
 
-        Camera camera = Camera.main;
+            if (_gridLayoutGroup == null)
+                throw new NullReferenceException(nameof(_gridLayoutGroup));
+        }
 
-        if (camera.TryGetComponent(out ICameraAdapter cameraAdapter) == false)
-            throw new InvalidOperationException($"The main camera does not contain the component: <{nameof(ICameraAdapter)}>");
+        private void Awake()
+        {
+            _scrollRect = GetComponent<ScrollRect>();
+            _contentRectTransform = _contentSizeFitter.GetComponent<RectTransform>();
 
-        _cameraAdapter = cameraAdapter;
-        _defaultCellSize = _gridLayoutGroup.cellSize;
-    }
+            Camera camera = Camera.main;
 
-    private void OnEnable()
-    {
-        if (_cameraAdapter == null)
-            return;
+            if (camera.TryGetComponent(out ICameraAdapter cameraAdapter) == false)
+                throw new InvalidOperationException($"The main camera does not contain the component: <{nameof(ICameraAdapter)}>");
 
-        _cameraAdapter.OrientationChanged += OnChangeScrollSetting;
-        _cameraAdapter.RatioChanged += OnChangeScrollSetting;
+            _cameraAdapter = cameraAdapter;
+            _defaultCellSize = _gridLayoutGroup.cellSize;
+        }
 
-        OnChangeScrollSetting();
-    }
+        private void OnEnable()
+        {
+            if (_cameraAdapter == null)
+                return;
+
+            _cameraAdapter.OrientationChanged += OnChangeScrollSetting;
+            _cameraAdapter.RatioChanged += OnChangeScrollSetting;
+
+            OnChangeScrollSetting();
+        }
 
 
-    private void Start()
-    {
-        //if (_cameraAdapter != null)
-        //    return;
+        private void Start()
+        {
+            //if (_cameraAdapter != null)
+            //    return;
 
-        //_cameraAdapter = FindCameraAdapter();
+            //_cameraAdapter = FindCameraAdapter();
 
-        //OnChangeScrollSetting();
-    }
+            //OnChangeScrollSetting();
+        }
 
-    private void OnDisable()
-    {
-        if (_cameraAdapter == null)
-            return;
+        private void OnDisable()
+        {
+            if (_cameraAdapter == null)
+                return;
 
-        _cameraAdapter.OrientationChanged -= OnChangeScrollSetting;
-        _cameraAdapter.RatioChanged -= OnChangeScrollSetting;
-    }
+            _cameraAdapter.OrientationChanged -= OnChangeScrollSetting;
+            _cameraAdapter.RatioChanged -= OnChangeScrollSetting;
+        }
 
-    private ICameraAdapter FindCameraAdapter()
-    {
-        Camera camera = Camera.main;
+        private ICameraAdapter FindCameraAdapter()
+        {
+            Camera camera = Camera.main;
 
-        if (camera.TryGetComponent(out ICameraAdapter cameraAdapter) == false)
-            throw new InvalidOperationException($"The main camera does not contain the component: <{nameof(ICameraAdapter)}>");
+            if (camera.TryGetComponent(out ICameraAdapter cameraAdapter) == false)
+                throw new InvalidOperationException($"The main camera does not contain the component: <{nameof(ICameraAdapter)}>");
 
-        return cameraAdapter;
-    }
+            return cameraAdapter;
+        }
 
-    private void OnChangeScrollSetting()
-    {
-        if (_cameraAdapter.IsPortraitOrientation)
-            EstablishVerticalSettings();
-        else
-            EstablishHorisontalSettings();
-    }
+        private void OnChangeScrollSetting()
+        {
+            if (_cameraAdapter.IsPortraitOrientation)
+                EstablishVerticalSettings();
+            else
+                EstablishHorisontalSettings();
+        }
 
-    private void EstablishVerticalSettings()
-    {
-        _scrollRect.vertical = true;
-        _scrollRect.horizontal = false;
-        _contentSizeFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
-        _contentSizeFitter.horizontalFit = ContentSizeFitter.FitMode.Unconstrained;
-        _gridLayoutGroup.startAxis = GridLayoutGroup.Axis.Horizontal;
-        _gridLayoutGroup.constraint = GridLayoutGroup.Constraint.Flexible;
+        private void EstablishVerticalSettings()
+        {
+            _scrollRect.vertical = true;
+            _scrollRect.horizontal = false;
+            _contentSizeFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+            _contentSizeFitter.horizontalFit = ContentSizeFitter.FitMode.Unconstrained;
+            _gridLayoutGroup.startAxis = GridLayoutGroup.Axis.Horizontal;
+            _gridLayoutGroup.constraint = GridLayoutGroup.Constraint.Flexible;
 
-        UpdateCellSize();
-        StartCoroutine(UpdateSize());
-    }
+            UpdateCellSize();
+            StartCoroutine(UpdateSize());
+        }
 
-    private void EstablishHorisontalSettings()
-    {
-        _scrollRect.vertical = false;
-        _scrollRect.horizontal = true;
-        _contentSizeFitter.verticalFit = ContentSizeFitter.FitMode.Unconstrained;
-        _contentSizeFitter.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
-        _gridLayoutGroup.startAxis = GridLayoutGroup.Axis.Vertical;
-        _gridLayoutGroup.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
-        _gridLayoutGroup.constraintCount = _contentRectTransform.childCount;
+        private void EstablishHorisontalSettings()
+        {
+            _scrollRect.vertical = false;
+            _scrollRect.horizontal = true;
+            _contentSizeFitter.verticalFit = ContentSizeFitter.FitMode.Unconstrained;
+            _contentSizeFitter.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
+            _gridLayoutGroup.startAxis = GridLayoutGroup.Axis.Vertical;
+            _gridLayoutGroup.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
+            _gridLayoutGroup.constraintCount = _contentRectTransform.childCount;
 
-        UpdateCellSize();
-        StartCoroutine(UpdateSize());
-    }
+            UpdateCellSize();
+            StartCoroutine(UpdateSize());
+        }
 
-    private IEnumerator UpdateSize()
-    {
-        yield return null;
+        private IEnumerator UpdateSize()
+        {
+            yield return null;
 
-        _contentRectTransform.offsetMin = Vector2.zero;
-        _contentRectTransform.offsetMax = Vector2.zero;
+            _contentRectTransform.offsetMin = Vector2.zero;
+            _contentRectTransform.offsetMax = Vector2.zero;
 
-        UpdateCellSize();
-    }
+            UpdateCellSize();
+        }
 
-    private void UpdateCellSize()
-    {
-        float heightRect = _contentRectTransform.rect.size.y;
-        float heightByAnchors = (_contentRectTransform.anchorMax.y - _contentRectTransform.anchorMin.y) * heightRect - _gridLayoutGroup.padding.bottom;
+        private void UpdateCellSize()
+        {
+            float heightRect = _contentRectTransform.rect.size.y;
+            float heightByAnchors = (_contentRectTransform.anchorMax.y - _contentRectTransform.anchorMin.y) * heightRect - _gridLayoutGroup.padding.bottom;
 
-        if (_defaultCellSize.y < heightByAnchors)
-            _gridLayoutGroup.cellSize = _defaultCellSize;
-        else
-            _gridLayoutGroup.cellSize = new Vector2(heightByAnchors, heightByAnchors);
+            if (_defaultCellSize.y < heightByAnchors)
+                _gridLayoutGroup.cellSize = _defaultCellSize;
+            else
+                _gridLayoutGroup.cellSize = new Vector2(heightByAnchors, heightByAnchors);
+        }
     }
 }

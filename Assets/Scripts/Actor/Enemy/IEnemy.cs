@@ -1,6 +1,0 @@
-﻿public interface IEnemy : IActor, IDamagedObject, IDebuffable
-{
-    public void ApplyDamage(IDamagedObject damagedObject);
-
-    public void Win(bool isWin);
-}

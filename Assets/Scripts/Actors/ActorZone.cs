@@ -1,0 +1,35 @@
+using CannonTurret.Actors.Enemies;
+using System;
+using UnityEngine;
+
+namespace CannonTurret.Actors
+{
+    [RequireComponent(typeof(BoxCollider))]
+    public class ActorZone : MonoBehaviour
+    {
+        private IAttackingEnemiesCollector _attackingEnemies;
+        private IRemovedActorsCollector _removedActors;
+
+        private void OnTriggerExit(Collider other)
+        {
+            CheckExitActor(other);
+        }
+
+        public void Initialize(IRemovedActorsCollector removedActorsCollector, IAttackingEnemiesCollector attackingEnemiesCollector)
+        {
+            _attackingEnemies = attackingEnemiesCollector ?? throw new ArgumentNullException(nameof(attackingEnemiesCollector));
+            _removedActors = removedActorsCollector ?? throw new ArgumentNullException(nameof(removedActorsCollector));
+        }
+
+        private void CheckExitActor(Collider other)
+        {
+            if (other.gameObject.TryGetComponent(out IActorView actorView) == false)
+                return;
+
+            if (actorView is IEnemyView enemyView)
+                enemyView.PrepareAttacked(_attackingEnemies);
+
+            actorView.PrepareDeleted(_removedActors);
+        }
+    }
+}

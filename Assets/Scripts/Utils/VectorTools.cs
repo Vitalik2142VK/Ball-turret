@@ -1,9 +1,12 @@
 using UnityEngine;
 
-public static class VectorTools
+namespace CannonTurret.Utils
 {
-    public static bool AreVectorsClose(Vector3 a, Vector3 b, float distance = 0.01f)
+    public static class VectorTools
     {
-        return Vector3.Distance(a, b) < distance;
+        public static bool AreVectorsClose(Vector3 a, Vector3 b, float distance = 0.01f)
+        {
+            return Vector3.Distance(a, b) < distance;
+        }
     }
 }

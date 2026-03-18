@@ -840,6 +840,7 @@ GameObject:
   - component: {fileID: 1289624641548975531}
   - component: {fileID: 2940073467529895562}
   - component: {fileID: 3775860796279193896}
+  - component: {fileID: -3497649482914435679}
   m_Layer: 9
   m_Name: Drop
   m_TagString: Untagged
@@ -982,6 +983,18 @@ MonoBehaviour:
   _particleController: {fileID: 333772974569288074}
   _shadow: {fileID: 2199926433157464723}
   <HealthBar>k__BackingField: {fileID: 8246079941478455576}
+--- !u!114 &-3497649482914435679
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7690942557182064526}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 285fd6d5c53c0554eb84c1b7ec554e55, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &4329984650171752179
 PrefabInstance:
   m_ObjectHideFlags: 0

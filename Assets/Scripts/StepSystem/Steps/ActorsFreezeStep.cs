@@ -1,25 +1,32 @@
-﻿using System;
+﻿using CannonTurret.Effects.Freezing;
+using System;
 
-public class ActorsFreezeStep : IStep, IEndPointStep
+namespace CannonTurret.StepSystem.Steps
 {
-    private IEndStep _endStep;
-    private IDynamicEndStep _nextStepPrepareActors;
-    private IStep _interruptedStep;
-
-    public ActorsFreezeStep(IDynamicEndStep nextStepPrepareActors, IStep interruptedStep)
+    public class ActorsFreezeStep : IStep, IEndPointStep
     {
-        _nextStepPrepareActors = nextStepPrepareActors ?? throw new NullReferenceException(nameof(nextStepPrepareActors));
-        _interruptedStep = interruptedStep ?? throw new NullReferenceException(nameof(interruptedStep));
-    }
+        private IEndStep _endStep;
+        private IDynamicEndStep _nextStepPrepareActors;
+        private IActorsFreezerView _freezer;
+        private IStep _interruptedStep;
 
-    public void Action()
-    {
-        _nextStepPrepareActors.SetNextStep(_interruptedStep);
-        _endStep.End();
-    }
+        public ActorsFreezeStep(IDynamicEndStep nextStepPrepareActors, IStep interruptedStep, IActorsFreezerView freezer)
+        {
+            _nextStepPrepareActors = nextStepPrepareActors ?? throw new NullReferenceException(nameof(nextStepPrepareActors));
+            _interruptedStep = interruptedStep ?? throw new NullReferenceException(nameof(interruptedStep));
+            _freezer = freezer ?? throw new NullReferenceException(nameof(freezer));
+        }
 
-    public void SetEndStep(IEndStep endStep)
-    {
-        _endStep = endStep ?? throw new ArgumentNullException(nameof(endStep));
+        public void Action()
+        {
+            _nextStepPrepareActors.SetNextStep(_interruptedStep);
+            _freezer.Defrost();
+            _endStep.End();
+        }
+
+        public void SetEndStep(IEndStep endStep)
+        {
+            _endStep = endStep ?? throw new ArgumentNullException(nameof(endStep));
+        }
     }
 }

@@ -1,23 +1,27 @@
-﻿using System;
+﻿using CannonTurret.Actors;
+using System;
 
-public class RemoveActorsStep : IStep, IEndPointStep
+namespace CannonTurret.StepSystem.Steps
 {
-    private IEndStep _endStep;
-    private IActorsRemover _actorsRemover;
-
-    public RemoveActorsStep(IActorsRemover actorsRemover)
+    public class RemoveActorsStep : IStep, IEndPointStep
     {
-        _actorsRemover = actorsRemover ?? throw new ArgumentNullException(nameof(actorsRemover));
-    }
+        private IEndStep _endStep;
+        private IDisableActorsRemover _actorsRemover;
 
-    public void Action()
-    {
-        _actorsRemover.RemoveAllDisabled();
-        _endStep.End();
-    }
+        public RemoveActorsStep(IDisableActorsRemover actorsRemover)
+        {
+            _actorsRemover = actorsRemover ?? throw new ArgumentNullException(nameof(actorsRemover));
+        }
 
-    public void SetEndStep(IEndStep endStep)
-    {
-        _endStep = endStep ?? throw new ArgumentNullException(nameof(endStep));
+        public void Action()
+        {
+            _actorsRemover.RemoveAllDisabled();
+            _endStep.End();
+        }
+
+        public void SetEndStep(IEndStep endStep)
+        {
+            _endStep = endStep ?? throw new ArgumentNullException(nameof(endStep));
+        }
     }
 }

@@ -1,4 +1,7 @@
-﻿public interface IWindow
+﻿namespace CannonTurret.UI
 {
-    public void Enable();
+    public interface IWindow
+    {
+        public void Enable();
+    }
 }

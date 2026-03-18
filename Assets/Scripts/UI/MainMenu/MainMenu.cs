@@ -1,71 +1,75 @@
-﻿using System;
+﻿using CannonTurret.UI.Animations;
+using System;
 using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(ShiftAnimatorUI))]
-public class MainMenu : MonoBehaviour, IWindow
+namespace CannonTurret.UI.MainMenu
 {
-    [SerializeField] private PlayMenu _playMenu;
-    [SerializeField] private ImprovementMenu _improvementMenu;
-    [SerializeField] private SettingMenu _settingMenu;
-    [SerializeField] private LeaderboardWindow _leaderboardWindow;
-
-    private IAnimatorUI _animator;
-
-    private void OnValidate()
+    [RequireComponent(typeof(ShiftAnimatorUI))]
+    public class MainMenu : MonoBehaviour, IWindow
     {
-        if (_playMenu == null)
-            throw new NullReferenceException(nameof(_playMenu));
+        [SerializeField] private PlayMenu _playMenu;
+        [SerializeField] private ImprovementMenu _improvementMenu;
+        [SerializeField] private SettingMenu _settingMenu;
+        [SerializeField] private LeaderboardWindow _leaderboardWindow;
 
-        if (_improvementMenu == null)
-            throw new NullReferenceException(nameof(_improvementMenu));
+        private IAnimatorUI _animator;
 
-        if (_settingMenu == null)
-            throw new NullReferenceException(nameof(_settingMenu));
+        private void OnValidate()
+        {
+            if (_playMenu == null)
+                throw new NullReferenceException(nameof(_playMenu));
 
-        if (_leaderboardWindow == null)
-            throw new NullReferenceException(nameof(_leaderboardWindow));
-    }
+            if (_improvementMenu == null)
+                throw new NullReferenceException(nameof(_improvementMenu));
 
-    private void Awake()
-    {
-        _animator = GetComponent<IAnimatorUI>();
-    }
+            if (_settingMenu == null)
+                throw new NullReferenceException(nameof(_settingMenu));
 
-    public void OnOpenPlayMenu()
-    {
-        StartCoroutine(Close(_playMenu.Open));
-    }
+            if (_leaderboardWindow == null)
+                throw new NullReferenceException(nameof(_leaderboardWindow));
+        }
 
-    public void OnOpenShopMenu()
-    {
-        StartCoroutine(Close(_improvementMenu.Open));
-    }
+        private void Awake()
+        {
+            _animator = GetComponent<IAnimatorUI>();
+        }
 
-    public void OnOpenSettingMenu()
-    {
-        StartCoroutine(Close(_settingMenu.Open));
-    }
+        public void OnOpenPlayMenu()
+        {
+            StartCoroutine(Close(_playMenu.Open));
+        }
 
-    public void OnOpenLeaderboard()
-    {
-        StartCoroutine(Close(_leaderboardWindow.Open));
-    }
+        public void OnOpenShopMenu()
+        {
+            StartCoroutine(Close(_improvementMenu.Open));
+        }
 
-    public void Enable()
-    {
-        gameObject.SetActive(true);
-        _animator.Show();
-    }
+        public void OnOpenSettingMenu()
+        {
+            StartCoroutine(Close(_settingMenu.Open));
+        }
 
-    private IEnumerator Close(Action<IWindow> openOtherWindow)
-    {
-        _animator.Hide();
+        public void OnOpenLeaderboard()
+        {
+            StartCoroutine(Close(_leaderboardWindow.Open));
+        }
 
-        yield return _animator.GetYieldAnimation();
+        public void Enable()
+        {
+            gameObject.SetActive(true);
+            _animator.Show();
+        }
 
-        gameObject.SetActive(false);
+        private IEnumerator Close(Action<IWindow> openOtherWindow)
+        {
+            _animator.Hide();
 
-        openOtherWindow?.Invoke(this);
+            yield return _animator.GetYieldAnimation();
+
+            gameObject.SetActive(false);
+
+            openOtherWindow?.Invoke(this);
+        }
     }
 }

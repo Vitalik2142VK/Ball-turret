@@ -1,22 +1,26 @@
-﻿using System;
+﻿using CannonTurret.StepSystem.Steps;
+using System;
 
-public class DynamicNextStep : IDynamicEndStep
+namespace CannonTurret.StepSystem
 {
-    private IStepSystem _stepSystem;
-    private IStep _nextStep;
-
-    public DynamicNextStep(IStepSystem stepSystem)
+    public class DynamicNextStep : IDynamicEndStep
     {
-        _stepSystem = stepSystem ?? throw new ArgumentNullException(nameof(stepSystem));
-    }
+        private IStepController _stepController;
+        private IStep _nextStep;
 
-    public void SetNextStep(IStep nextStep)
-    {
-        _nextStep = nextStep ?? throw new ArgumentNullException(nameof(nextStep));
-    }
+        public DynamicNextStep(IStepController stepController)
+        {
+            _stepController = stepController ?? throw new ArgumentNullException(nameof(stepController));
+        }
 
-    public void End()
-    {
-        _stepSystem.EstablishNextStep(_nextStep);
+        public void SetNextStep(IStep nextStep)
+        {
+            _nextStep = nextStep ?? throw new ArgumentNullException(nameof(nextStep));
+        }
+
+        public void End()
+        {
+            _stepController.EstablishNextStep(_nextStep);
+        }
     }
 }

@@ -2,47 +2,50 @@
 using TMPro;
 using UnityEngine;
 
-public class GameProductData : MonoBehaviour
+namespace CannonTurret.UI.MainMenu
 {
-    [SerializeField] private TextMeshProUGUI _currentValue;
-    [SerializeField] private TextMeshProUGUI _improveValue;
-    [SerializeField] private TextMeshProUGUI _price;
-
-    private void OnValidate()
+    public class GameProductData : MonoBehaviour
     {
-        if (_currentValue == null)
-            throw new NullReferenceException(nameof(_currentValue));
+        [SerializeField] private TextMeshProUGUI _currentValue;
+        [SerializeField] private TextMeshProUGUI _improveValue;
+        [SerializeField] private TextMeshProUGUI _price;
 
-        if (_improveValue == null)
-            throw new NullReferenceException(nameof(_improveValue));
+        private void OnValidate()
+        {
+            if (_currentValue == null)
+                throw new NullReferenceException(nameof(_currentValue));
 
-        if (_price == null)
-            throw new NullReferenceException(nameof(_price));
-    }
+            if (_improveValue == null)
+                throw new NullReferenceException(nameof(_improveValue));
 
-    public void SetActive(bool isActive) => gameObject.SetActive(isActive);
+            if (_price == null)
+                throw new NullReferenceException(nameof(_price));
+        }
 
-    public void SetCurrentValue(string currentValue)
-    {
-        if (string.IsNullOrEmpty(currentValue))
-            throw new ArgumentException(nameof(currentValue));
+        public void SetActive(bool isActive) => gameObject.SetActive(isActive);
 
-        _currentValue.text = currentValue;
-    }
+        public void SetCurrentValue(string currentValue)
+        {
+            if (string.IsNullOrEmpty(currentValue))
+                throw new ArgumentException(nameof(currentValue));
 
-    public void SetImproveValue(string improveValue)
-    {
-        if (string.IsNullOrEmpty(improveValue))
-            throw new ArgumentException(nameof(improveValue));
+            _currentValue.text = currentValue;
+        }
 
-        _improveValue.text = improveValue;
-    }
+        public void SetImproveValue(string improveValue)
+        {
+            if (string.IsNullOrEmpty(improveValue))
+                throw new ArgumentException(nameof(improveValue));
 
-    public void SetPrice(string price)
-    {
-        if (string.IsNullOrEmpty(price))
-            throw new ArgumentException(nameof(price));
+            _improveValue.text = improveValue;
+        }
 
-        _price.text = price;
+        public void SetPrice(string price)
+        {
+            if (string.IsNullOrEmpty(price))
+                throw new ArgumentException(nameof(price));
+
+            _price.text = price;
+        }
     }
 }

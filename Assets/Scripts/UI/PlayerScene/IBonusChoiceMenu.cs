@@ -1,10 +1,14 @@
-﻿using System;
+﻿using CannonTurret.Actors.Bonuses;
+using System;
 
-public interface IBonusChoiceMenu : IWindow
+namespace CannonTurret.UI.PlayerScene
 {
-    public event Action BonusSelected;
+    public interface IBonusChoiceMenu : IWindow
+    {
+        public event Action BonusSelected;
 
-    public IBonus SelectedBonus { get; }
+        public IBonus SelectedBonus { get; }
 
-    public void SetBonusRandomizer(IBonusRandomizer randomizer);
+        public void SetBonusRandomizer(IBonusRandomizer randomizer);
+    }
 }

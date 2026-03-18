@@ -1,29 +1,32 @@
 ﻿using UnityEngine;
 
-[RequireComponent(typeof(CanvasGroup))]
-public class ChoiceButton : MonoBehaviour, IChoiceButton
+namespace CannonTurret.UI
 {
-    private const float AphaEnable = 1f;
-    private const float AphaDisable = 0.5f;
-
-    private CanvasGroup _canvasGroup;
-
-    private void Awake()
+    [RequireComponent(typeof(CanvasGroup))]
+    public class ChoiceButton : MonoBehaviour, IChoiceButton
     {
-        _canvasGroup = GetComponent<CanvasGroup>();
-    }
+        private const float AphaEnable = 1f;
+        private const float AphaDisable = 0.5f;
 
-    public void Enable()
-    {
-        _canvasGroup.alpha = AphaEnable;
-        _canvasGroup.interactable = true;
-        _canvasGroup.blocksRaycasts = true;
-    }
+        private CanvasGroup _canvasGroup;
 
-    public void Disable()
-    {
-        _canvasGroup.alpha = AphaDisable;
-        _canvasGroup.interactable = false;
-        _canvasGroup.blocksRaycasts = false;
+        private void Awake()
+        {
+            _canvasGroup = GetComponent<CanvasGroup>();
+        }
+
+        public void Enable()
+        {
+            _canvasGroup.alpha = AphaEnable;
+            _canvasGroup.interactable = true;
+            _canvasGroup.blocksRaycasts = true;
+        }
+
+        public void Disable()
+        {
+            _canvasGroup.alpha = AphaDisable;
+            _canvasGroup.interactable = false;
+            _canvasGroup.blocksRaycasts = false;
+        }
     }
 }

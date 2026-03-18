@@ -1,114 +1,129 @@
+using CannonTurret.SDK.Shops;
 using System;
 using System.Collections;
 using UnityEngine;
 using YG;
 
-public class AdsViewer : MonoBehaviour, IAdsViewer
+namespace CannonTurret.SDK.Ads
 {
-    private static bool s_IsInitialized = false;
-
-    [SerializeField, Range(60f, 180f)] private float _timeWaitNextFullScreenAd = 120f;
-    [SerializeField, Range(10f, 60f)] private float _timeWaitNextRewardAd = 20f;
-
-    private IPlayerPurchase _disableAdsPurchase;
-    private WaitForSeconds _waitNextAdFullScreenAd;
-    private WaitForSeconds _waitNextAdRewardAd;
-    private bool _canShowFullScreen;
-
-    public event Action<string> RewardAdShowed;
-    public event Action ShowCompleted;
-    public event Action TimerRewardAdReseted;
-
-    public bool IsAdsDisable => _disableAdsPurchase.IsPurchased;
-
-    public bool CanShowRewardAd { get; private set; }
-
-    private void Awake()
+    public class AdsViewer : MonoBehaviour, IAdsViewer
     {
-        if (s_IsInitialized)
+        private static bool s_IsInitialized = false;
+
+        [SerializeField, Range(60f, 180f)] private float _timeWaitNextFullScreenAd = 120f;
+        [SerializeField, Range(10f, 60f)] private float _timeWaitNextRewardAd = 20f;
+
+        private IPlayerPurchase _disableAdsPurchase;
+        private WaitForSeconds _waitNextAdFullScreenAd;
+        private WaitForSeconds _waitNextAdRewardAd;
+        private bool _canShowFullScreen;
+
+        public event Action<string> RewardAdShowed;
+        public event Action<bool> ShowCompleted;
+        public event Action TimerRewardAdReseted;
+
+        public bool IsAdsDisable => _disableAdsPurchase.IsPurchased;
+
+        public bool CanShowRewardAd { get; private set; }
+
+        private void Awake()
         {
-            Destroy(gameObject);
-            return;
+            if (s_IsInitialized)
+            {
+                Destroy(gameObject);
+                return;
+            }
+
+            s_IsInitialized = true;
+            DontDestroyOnLoad(gameObject);
+
+            _waitNextAdFullScreenAd = new WaitForSeconds(_timeWaitNextFullScreenAd);
+            _waitNextAdRewardAd = new WaitForSeconds(_timeWaitNextRewardAd);
+            _canShowFullScreen = true;
+
+            CanShowRewardAd = true;
         }
 
-        s_IsInitialized = true;
-        DontDestroyOnLoad(gameObject);
-
-        _waitNextAdFullScreenAd = new WaitForSeconds(_timeWaitNextFullScreenAd);
-        _waitNextAdRewardAd = new WaitForSeconds(_timeWaitNextRewardAd);
-        _canShowFullScreen = true;
-
-        CanShowRewardAd = true;
-    }
-
-    private void OnEnable()
-    {
-        YG2.onRewardAdv += OnConfirmReward;
-    }
-
-    private void OnDisable()
-    {
-        YG2.onRewardAdv -= OnConfirmReward;
-    }
-
-    public void Initialize(IPurchasesStorage purchasesStorage)
-    {
-        if (purchasesStorage == null)
-            throw new ArgumentNullException(nameof(purchasesStorage));
-
-        var purchaseId = PurchasesTypes.DisableAds;
-
-        if (purchasesStorage.TryGetPurchase(out IPlayerPurchase purchase, purchaseId) == false)
-            throw new ArgumentOutOfRangeException($"Purchase with id '{purchaseId}' not found.");
-
-        _disableAdsPurchase = purchase;
-    }
-
-    public void ShowFullScreenAd()
-    {
-        if (_canShowFullScreen && _disableAdsPurchase.IsPurchased == false)
-            StartCoroutine(WaitShowFullScreen());
-    }
-
-    public void ShowRewardAd(string rewardId)
-    {
-        if (rewardId == null)
-            throw new ArgumentNullException(nameof(rewardId));
-
-        if (CanShowRewardAd)
+        private void OnEnable()
         {
-            YG2.RewardedAdvShow(rewardId);
-            StartCoroutine(WaitShowRewardAd(rewardId));
+            YG2.onRewardAdv += OnConfirmReward;
+            YG2.onCloseRewardedAdv += OnRefuseReward;
+            YG2.onErrorRewardedAdv += OnRefuseReward;
         }
-    }
 
-    private void OnConfirmReward(string rewardId)
-    {
-        if (string.IsNullOrEmpty(rewardId))
-            throw new ArgumentOutOfRangeException(nameof(rewardId));
+        private void OnDisable()
+        {
+            YG2.onRewardAdv -= OnConfirmReward;
+            YG2.onCloseRewardedAdv += OnRefuseReward;
+            YG2.onErrorRewardedAdv += OnRefuseReward;
+        }
 
-        RewardAdShowed?.Invoke(rewardId);
-        ShowCompleted?.Invoke();
-    }
+        public void Initialize(IPurchasesStorage purchasesStorage)
+        {
+            if (purchasesStorage == null)
+                throw new ArgumentNullException(nameof(purchasesStorage));
 
-    private IEnumerator WaitShowFullScreen()
-    {
-        _canShowFullScreen = false;
+            var purchaseId = PurchasesTypes.DisableAds;
 
-        YG2.InterstitialAdvShow();
+            if (purchasesStorage.TryGetPurchase(out IPlayerPurchase purchase, purchaseId) == false)
+                throw new ArgumentOutOfRangeException($"Purchase with id '{purchaseId}' not found.");
 
-        yield return _waitNextAdFullScreenAd;
+            _disableAdsPurchase = purchase;
 
-        _canShowFullScreen = true;
-    }
+            YG2.StickyAdActivity(purchase.IsPurchased == false);
+        }
 
-    private IEnumerator WaitShowRewardAd(string rewardId)
-    {
-        CanShowRewardAd = false;
+        public void ShowFullScreenAd()
+        {
+            if (_canShowFullScreen && _disableAdsPurchase.IsPurchased == false)
+                StartCoroutine(WaitShowFullScreen());
+        }
 
-        yield return _waitNextAdRewardAd;
+        public void ShowRewardAd(string rewardId)
+        {
+            if (rewardId == null)
+                throw new ArgumentNullException(nameof(rewardId));
 
-        CanShowRewardAd = true;
-        TimerRewardAdReseted?.Invoke();
+            if (CanShowRewardAd)
+            {
+                YG2.RewardedAdvShow(rewardId);
+                StartCoroutine(WaitShowRewardAd(rewardId));
+            }
+        }
+
+        private void OnConfirmReward(string rewardId)
+        {
+            if (string.IsNullOrEmpty(rewardId))
+                throw new ArgumentOutOfRangeException(nameof(rewardId));
+
+            RewardAdShowed?.Invoke(rewardId);
+            ShowCompleted?.Invoke(true);
+        }
+
+        private void OnRefuseReward()
+        {
+            ShowCompleted?.Invoke(false);
+        }
+
+        private IEnumerator WaitShowFullScreen()
+        {
+            _canShowFullScreen = false;
+
+            YG2.InterstitialAdvShow();
+
+            yield return _waitNextAdFullScreenAd;
+
+            _canShowFullScreen = true;
+        }
+
+        private IEnumerator WaitShowRewardAd(string rewardId)
+        {
+            CanShowRewardAd = false;
+
+            yield return _waitNextAdRewardAd;
+
+            CanShowRewardAd = true;
+            TimerRewardAdReseted?.Invoke();
+        }
     }
 }

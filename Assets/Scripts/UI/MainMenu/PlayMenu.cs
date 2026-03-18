@@ -1,86 +1,92 @@
-﻿using System;
+﻿using CannonTurret.LevelSystem;
+using CannonTurret.PlayerSystem;
+using CannonTurret.UI.Animations;
+using System;
 using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(HiderUI), typeof(ShiftAnimatorUI))]
-public class PlayMenu : MonoBehaviour
+namespace CannonTurret.UI.MainMenu
 {
-    [SerializeField] private PlaySceneLoader _sceneLoader;
-    [SerializeField] private SelectLevelScroll _selectLevelScroll;
-
-    private IWindow _previousWindow;
-    private ILevelFactory _levelFactory;
-    private IAnimatorUI _animator;
-    private HiderUI _hiderUI;
-    private int _achievedLevelIndex;
-
-    private void OnValidate()
+    [RequireComponent(typeof(HiderUI), typeof(ShiftAnimatorUI))]
+    public class PlayMenu : MonoBehaviour
     {
-        if (_sceneLoader == null)
-            throw new NullReferenceException(nameof(_sceneLoader));
+        [SerializeField] private PlaySceneLoader _sceneLoader;
+        [SerializeField] private SelectLevelScroll _selectLevelScroll;
 
-        if (_selectLevelScroll == null)
-            throw new NullReferenceException(nameof(_selectLevelScroll));
-    }
+        private IWindow _previousWindow;
+        private ILevelFactory _levelFactory;
+        private IAnimatorUI _animator;
+        private HiderUI _hiderUI;
+        private int _achievedLevelIndex;
 
-    private void Awake()
-    {
-        _hiderUI = GetComponent<HiderUI>();
-        _animator = GetComponent<IAnimatorUI>();
+        private void OnValidate()
+        {
+            if (_sceneLoader == null)
+                throw new NullReferenceException(nameof(_sceneLoader));
 
-        gameObject.SetActive(false);
-    }
+            if (_selectLevelScroll == null)
+                throw new NullReferenceException(nameof(_selectLevelScroll));
+        }
 
-    public void Initialize(IPlayer user, ILevelFactory levelFactory)
-    {
-        if (user == null)
-            throw new ArgumentNullException(nameof(user));
+        private void Awake()
+        {
+            _hiderUI = GetComponent<HiderUI>();
+            _animator = GetComponent<IAnimatorUI>();
 
-        _levelFactory = levelFactory ?? throw new ArgumentNullException(nameof(levelFactory));
+            gameObject.SetActive(false);
+        }
 
-        _selectLevelScroll.Initialize(levelFactory.LevelsCount, user.AchievedLevelIndex);
-        _achievedLevelIndex = user.AchievedLevelIndex;
-    }
+        public void Initialize(IPlayer user, ILevelFactory levelFactory)
+        {
+            if (user == null)
+                throw new ArgumentNullException(nameof(user));
 
-    public void Open(IWindow previousWindow)
-    {
-        _previousWindow = previousWindow ?? throw new ArgumentNullException(nameof(previousWindow));
+            _levelFactory = levelFactory ?? throw new ArgumentNullException(nameof(levelFactory));
 
-        gameObject.SetActive(true);
-        _hiderUI.Hide();
-        _animator.Show();
+            _selectLevelScroll.Initialize(levelFactory.LevelsCount, user.AchievedLevelIndex);
+            _achievedLevelIndex = user.AchievedLevelIndex;
+        }
 
-        StartCoroutine(WaitOpening());
-    }
+        public void Open(IWindow previousWindow)
+        {
+            _previousWindow = previousWindow ?? throw new ArgumentNullException(nameof(previousWindow));
 
-    public void OnClose()
-    {
-        _hiderUI.Show();
-        _animator.Hide();
+            gameObject.SetActive(true);
+            _hiderUI.Hide();
+            _animator.Show();
 
-        StartCoroutine(WaitClosure());
-    }
+            StartCoroutine(WaitOpening());
+        }
 
-    public void OnPlay()
-    {
-        var indexLevel = _selectLevelScroll.SelectedLevelIndex;
-        var level = _levelFactory.Create(indexLevel);
-        _sceneLoader.SetSelectedLevel(level);
-        _sceneLoader.Load();
-    }
+        public void OnClose()
+        {
+            _hiderUI.Show();
+            _animator.Hide();
 
-    private IEnumerator WaitOpening()
-    {
-        yield return _animator.GetYieldAnimation();
+            StartCoroutine(WaitClosure());
+        }
 
-        _selectLevelScroll.SelectButton(_achievedLevelIndex);
-    }
+        public void OnPlay()
+        {
+            var indexLevel = _selectLevelScroll.SelectedLevelIndex;
+            var level = _levelFactory.Create(indexLevel);
+            _sceneLoader.SetSelectedLevel(level);
+            _sceneLoader.Load();
+        }
 
-    private IEnumerator WaitClosure()
-    {
-        yield return _animator.GetYieldAnimation();
+        private IEnumerator WaitOpening()
+        {
+            yield return _animator.GetYieldAnimation();
 
-        gameObject.SetActive(false);
-        _previousWindow.Enable();
+            _selectLevelScroll.SelectButton(_achievedLevelIndex);
+        }
+
+        private IEnumerator WaitClosure()
+        {
+            yield return _animator.GetYieldAnimation();
+
+            gameObject.SetActive(false);
+            _previousWindow.Enable();
+        }
     }
 }

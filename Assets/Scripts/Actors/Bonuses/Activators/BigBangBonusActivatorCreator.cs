@@ -1,0 +1,55 @@
+﻿using CannonTurret.AudioSystem;
+using CannonTurret.DamageSystem;
+using CannonTurret.Effects;
+using CannonTurret.Scriptable.Player;
+using System;
+using UnityEngine;
+
+namespace CannonTurret.Actors.Bonuses.Activators
+{
+    [RequireComponent(typeof(Exploder))]
+    public class BigBangBonusActivatorCreator : MonoBehaviour, IBonusActivatorCreator
+    {
+        [SerializeField] private CachedPlayer _player;
+        [SerializeField] private Scriptable.Damage.DamageAttributes _explosionDamageAttributes;
+        [SerializeField] private Transform _pointExplosion;
+        [SerializeField] private Sound _bigBangSound;
+        [SerializeField] private ExplosionView _explosionView;
+
+        private IEnemyCounter _enemyCounter;
+
+        private void OnValidate()
+        {
+            if (_player == null)
+                throw new NullReferenceException(nameof(_player));
+
+            if (_pointExplosion == null)
+                throw new NullReferenceException(nameof(_pointExplosion));
+
+            if (_bigBangSound == null)
+                throw new NullReferenceException(nameof(_bigBangSound));
+
+            if (_explosionView == null)
+                throw new NullReferenceException(nameof(_explosionView));
+
+            if (_explosionDamageAttributes == null)
+                throw new NullReferenceException(nameof(_explosionDamageAttributes));
+        }
+
+        public void Initialize(IEnemyCounter enemyCounter)
+        {
+            _enemyCounter = enemyCounter ?? throw new ArgumentNullException(nameof(enemyCounter));
+        }
+
+        public IBonusActivator Create()
+        {
+            Exploder exploder = GetComponent<Exploder>();
+            DamageChanger damageChanger = new DamageChanger(_explosionDamageAttributes);
+            float damageCoefficient = _player.DamageCoefficient;
+            damageChanger.Change(damageCoefficient);
+            exploder.Initialize(damageChanger, _bigBangSound, _explosionView);
+
+            return new BigBangBonusActivator(exploder, _enemyCounter, _pointExplosion.position);
+        }
+    }
+}

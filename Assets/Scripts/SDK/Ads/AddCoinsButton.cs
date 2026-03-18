@@ -1,87 +1,94 @@
+using CannonTurret.Coin.Wallets;
 using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(Button), typeof(AdsViewButton))]
-public class AddCoinsButton : MonoBehaviour
+namespace CannonTurret.SDK.Ads
 {
-    [SerializeField] private TextMeshProUGUI _addCoinsText;
-
-    private ICoinAdder _coinAdder;
-    private IAdsViewer _adsViewer;
-    private AdsViewButton _adsViewButton;
-    private Button _button;
-
-    public event Action Clicked;
-
-    private void OnValidate()
+    [RequireComponent(typeof(Button), typeof(AdsViewButton))]
+    public class AddCoinsButton : MonoBehaviour
     {
-        if (_addCoinsText == null)
-            throw new ArgumentNullException(nameof(_addCoinsText));
-    }
+        [SerializeField] private TextMeshProUGUI _addCoinsText;
 
-    private void Awake()
-    {
-        _adsViewButton = GetComponent<AdsViewButton>();
-        _button = GetComponent<Button>();
-        _button.interactable = false;
-    }
+        private ICoinAdder _coinAdder;
+        private IAdsViewer _adsViewer;
+        private AdsViewButton _adsViewButton;
+        private Button _button;
 
-    private void OnEnable()
-    {
-        if (_coinAdder == null || _adsViewer == null)
-            return;
+        public event Action Clicked;
 
-        _adsViewer.TimerRewardAdReseted += OnUpdateInteractable;
-        _button.onClick.AddListener(OnClick);
-    }
+        public bool IsEnbale => _adsViewer.CanShowRewardAd;
 
-    private void Start()
-    {
-        if (_coinAdder == null || _adsViewer == null)
-            return;
+        private void OnValidate()
+        {
+            if (_addCoinsText == null)
+                throw new ArgumentNullException(nameof(_addCoinsText));
+        }
 
-        _button.interactable = _adsViewer.CanShowRewardAd;
-        _addCoinsText.text = $"+{_coinAdder.CoinsCountAdsView}";
-    }
-
-    private void OnDisable()
-    {
-        if (_coinAdder == null || _adsViewer == null)
-            return;
-
-        _adsViewer.TimerRewardAdReseted -= OnUpdateInteractable;
-        _button.onClick.RemoveListener(OnClick);
-    }
-
-    public void Initialize(ICoinAdder coinAdder, IAdsViewer adsViewer, string rewardId)
-    {
-        _coinAdder = coinAdder ?? throw new ArgumentNullException(nameof(coinAdder));
-        _adsViewer = adsViewer ?? throw new ArgumentNullException(nameof(adsViewer));
-
-        if (_adsViewButton == null)
+        private void Awake()
+        {
             _adsViewButton = GetComponent<AdsViewButton>();
+            _button = GetComponent<Button>();
+            _button.interactable = false;
+        }
 
-        _adsViewButton.Initialize(adsViewer, rewardId);
-    }
+        private void OnEnable()
+        {
+            if (_coinAdder == null || _adsViewer == null)
+                return;
 
-    public void SetActive(bool isActive) => gameObject.SetActive(isActive);
+            _adsViewer.TimerRewardAdReseted += OnUpdateInteractable;
+            _button.onClick.AddListener(OnClick);
+            OnUpdateInteractable();
+        }
 
-    public void UpdateData()
-    {
-        _addCoinsText.text = $"+{_coinAdder.CoinsCountAdsView}";
-    }
+        private void Start()
+        {
+            if (_coinAdder == null || _adsViewer == null)
+                return;
 
-    private void OnClick()
-    {
-        OnUpdateInteractable();
+            _button.interactable = _adsViewer.CanShowRewardAd;
+            _addCoinsText.text = $"+{_coinAdder.CoinsCountAdsView}";
+        }
 
-        Clicked?.Invoke();
-    }
+        private void OnDisable()
+        {
+            if (_coinAdder == null || _adsViewer == null)
+                return;
 
-    private void OnUpdateInteractable()
-    {
-        _button.interactable = _adsViewer.CanShowRewardAd;
+            _adsViewer.TimerRewardAdReseted -= OnUpdateInteractable;
+            _button.onClick.RemoveListener(OnClick);
+        }
+
+        public void Initialize(ICoinAdder coinAdder, IAdsViewer adsViewer, string rewardId)
+        {
+            _coinAdder = coinAdder ?? throw new ArgumentNullException(nameof(coinAdder));
+            _adsViewer = adsViewer ?? throw new ArgumentNullException(nameof(adsViewer));
+
+            if (_adsViewButton == null)
+                _adsViewButton = GetComponent<AdsViewButton>();
+
+            _adsViewButton.Initialize(adsViewer, rewardId);
+        }
+
+        public void SetActive(bool isActive) => gameObject.SetActive(isActive);
+
+        public void UpdateData()
+        {
+            _addCoinsText.text = $"+{_coinAdder.CoinsCountAdsView}";
+        }
+
+        private void OnClick()
+        {
+            _button.interactable = false;
+
+            Clicked?.Invoke();
+        }
+
+        private void OnUpdateInteractable()
+        {
+            _button.interactable = _adsViewer.CanShowRewardAd;
+        }
     }
 }

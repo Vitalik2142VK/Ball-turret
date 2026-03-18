@@ -1,25 +1,28 @@
 using System;
 using System.Linq;
 
-public static class EnumHelper
+namespace CannonTurret.Utils
 {
-    public static int GetActiveValuesCount<T>() where T : Enum
+    public static class EnumHelper
     {
-        return GetActiveValues<T>().Length;
-    }
+        public static int GetActiveValuesCount<T>() where T : Enum
+        {
+            return GetActiveValues<T>().Length;
+        }
 
-    public static T[] GetActiveValues<T>() where T : Enum
-    {
-        return Enum.GetValues(typeof(T))
-            .Cast<T>()
-            .Where(v => !IsObsolete(v))
-            .ToArray();
-    }
+        public static T[] GetActiveValues<T>() where T : Enum
+        {
+            return Enum.GetValues(typeof(T))
+                .Cast<T>()
+                .Where(v => !IsObsolete(v))
+                .ToArray();
+        }
 
-    private static bool IsObsolete<T>(T value)
-    {
-        var memInfo = typeof(T).GetMember(value.ToString());
-        var attributes = memInfo[0].GetCustomAttributes(typeof(ObsoleteAttribute), false);
-        return attributes.Length > 0;
+        private static bool IsObsolete<T>(T value)
+        {
+            var memInfo = typeof(T).GetMember(value.ToString());
+            var attributes = memInfo[0].GetCustomAttributes(typeof(ObsoleteAttribute), false);
+            return attributes.Length > 0;
+        }
     }
 }

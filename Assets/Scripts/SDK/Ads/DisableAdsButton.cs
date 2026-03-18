@@ -1,3 +1,4 @@
+using CannonTurret.SDK.Shops;
 using System;
 using TMPro;
 using UnityEngine;
@@ -5,74 +6,86 @@ using UnityEngine.UI;
 using YG;
 using YG.Utils.Pay;
 
-[RequireComponent(typeof(Button))]
-public class DisableAdsButton : MonoBehaviour
+namespace CannonTurret.SDK.Ads
 {
-    private const string DisableAdsPurchseId = PurchasesTypes.DisableAds;
-
-    [SerializeField] private TextMeshProUGUI _currencyPrice;
-
-    private Button _button;
-
-    private void OnValidate()
+    [RequireComponent(typeof(Button), typeof(ImageLoadYG))]
+    public class DisableAdsButton : MonoBehaviour
     {
-        if (_currencyPrice == null)
-            throw new NullReferenceException(nameof(_currencyPrice));
-    }
+        private const string DisableAdsPurchseId = PurchasesTypes.DisableAds;
 
-    private void Awake()
-    {
-        _button = GetComponent<Button>();
-    }
+        [SerializeField] private TextMeshProUGUI _currencyPrice;
 
-    private void OnEnable()
-    {
-        _button.onClick.AddListener(OnPayPurchase);
+        private Button _button;
+        private ImageLoadYG _imageLoader;
 
-        YG2.onPurchaseSuccess += OnRemove;
-    }
+        private void OnValidate()
+        {
+            if (_currencyPrice == null)
+                throw new NullReferenceException(nameof(_currencyPrice));
+        }
 
-    private void OnDisable()
-    {
-        _button.onClick.RemoveListener(OnPayPurchase);
+        private void Awake()
+        {
+            _button = GetComponent<Button>();
+            _imageLoader = GetComponent<ImageLoadYG>();
+        }
 
-        YG2.onPurchaseSuccess -= OnRemove;
-    }
+        private void OnEnable()
+        {
+            _button.onClick.AddListener(OnPayPurchase);
 
-    public void Initialize(IPurchasesStorage purchasesStorage)
-    {
-        if (purchasesStorage == null)
-            throw new ArgumentNullException(nameof(purchasesStorage));
+            YG2.onPurchaseSuccess += OnRemove;
+        }
 
-        if (purchasesStorage.TryGetPurchase(out IPlayerPurchase playerPurchase, DisableAdsPurchseId) == false)
-            throw new ArgumentOutOfRangeException($"Purchase with id '{DisableAdsPurchseId}' not found.");
+        private void OnDisable()
+        {
+            _button.onClick.RemoveListener(OnPayPurchase);
 
-        if (playerPurchase.IsPurchased == false)
-            Enable(playerPurchase);
-        else
+            YG2.onPurchaseSuccess -= OnRemove;
+        }
+
+        public void Initialize(IPurchasesStorage purchasesStorage)
+        {
+            if (purchasesStorage == null)
+                throw new ArgumentNullException(nameof(purchasesStorage));
+
+            if (purchasesStorage.TryGetPurchase(out IPlayerPurchase playerPurchase, DisableAdsPurchseId) == false)
+                throw new ArgumentOutOfRangeException($"Purchase with id '{DisableAdsPurchseId}' not found.");
+
+            if (playerPurchase.IsPurchased)
+                Destroy(gameObject);
+            else
+                Enable(playerPurchase);
+        }
+
+        private void Enable(IPlayerPurchase playerPurchase)
+        {
+            Purchase purchase = YG2.PurchaseByID(playerPurchase.Id);
+
+            if (purchase == null)
+                throw new NullReferenceException(nameof(purchase));
+
+            _currencyPrice.text = purchase.priceValue;
+
+            string currencyImageURL = purchase.currencyImageURL;
+
+            if (string.IsNullOrEmpty(currencyImageURL) == false)
+                _imageLoader.Load(currencyImageURL);
+        }
+
+        private void OnPayPurchase()
+        {
+            YG2.BuyPayments(DisableAdsPurchseId);
+        }
+
+        private void OnRemove(string purchseId)
+        {
+            if (purchseId != DisableAdsPurchseId)
+                return;
+
+            YG2.StickyAdActivity(false);
+
             Destroy(gameObject);
-    }
-
-    private void Enable(IPlayerPurchase playerPurchase)
-    {
-        Purchase purchase = YG2.PurchaseByID(playerPurchase.Id);
-
-        if (purchase == null)
-            throw new NullReferenceException(nameof(purchase));
-
-        _currencyPrice.text = purchase.priceValue;
-    }
-
-    private void OnPayPurchase()
-    {
-        YG2.BuyPayments(DisableAdsPurchseId);
-    }
-
-    private void OnRemove(string purchseId)
-    {
-        if (purchseId != DisableAdsPurchseId)
-            return;
-
-        Destroy(gameObject);
+        }
     }
 }

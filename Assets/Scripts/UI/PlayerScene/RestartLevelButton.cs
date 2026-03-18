@@ -1,50 +1,55 @@
-﻿using System;
+﻿using CannonTurret.LevelSystem;
+using CannonTurret.StepSystem;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(Button), typeof(ChangeSceneButton))]
-public class RestartLevelButton : MonoBehaviour
+namespace CannonTurret.UI.PlayerScene
 {
-    [SerializeField] private PlaySceneLoader _sceneLoader;
-    [SerializeField] private ChangeSceneButton _changeSceneButton;
-
-    private Button _button;
-    private ILevel _currentLevel;
-
-    private void OnValidate()
+    [RequireComponent(typeof(Button), typeof(ChangeSceneButton))]
+    public class RestartLevelButton : MonoBehaviour
     {
-        if (_sceneLoader == null)
-            throw new NullReferenceException(nameof(_sceneLoader));
+        [SerializeField] private PlaySceneLoader _sceneLoader;
+        [SerializeField] private ChangeSceneButton _changeSceneButton;
 
-        if (_changeSceneButton == null)
-            _changeSceneButton = GetComponent<ChangeSceneButton>();
-    }
+        private Button _button;
+        private ILevel _currentLevel;
 
-    private void Awake()
-    {
-        _button = GetComponent<Button>();
-    }
+        private void OnValidate()
+        {
+            if (_sceneLoader == null)
+                throw new NullReferenceException(nameof(_sceneLoader));
 
-    private void OnEnable()
-    {
-        _button.onClick.AddListener(OnEstablishLevel);
-    }
+            if (_changeSceneButton == null)
+                _changeSceneButton = GetComponent<ChangeSceneButton>();
+        }
 
-    private void OnDisable()
-    {
-        _button.onClick.RemoveListener(OnEstablishLevel);
-    }
+        private void Awake()
+        {
+            _button = GetComponent<Button>();
+        }
 
-    public void Initialize(IChangeSceneStep changeSceneStep, ILevel currentLevel)
-    {
-        _currentLevel = currentLevel ?? throw new ArgumentNullException(nameof(currentLevel));
+        private void OnEnable()
+        {
+            _button.onClick.AddListener(OnEstablishLevel);
+        }
 
-        _changeSceneButton.Initialize(changeSceneStep, _sceneLoader);
-    }
+        private void OnDisable()
+        {
+            _button.onClick.RemoveListener(OnEstablishLevel);
+        }
 
-    private void OnEstablishLevel()
-    {
-        ILevel level = _currentLevel.Clone();
-        _sceneLoader.SetSelectedLevel(level);
+        public void Initialize(IChangeSceneStep changeSceneStep, ILevel currentLevel)
+        {
+            _currentLevel = currentLevel ?? throw new ArgumentNullException(nameof(currentLevel));
+
+            _changeSceneButton.Initialize(changeSceneStep, _sceneLoader);
+        }
+
+        private void OnEstablishLevel()
+        {
+            ILevel level = _currentLevel.Clone();
+            _sceneLoader.SetSelectedLevel(level);
+        }
     }
 }

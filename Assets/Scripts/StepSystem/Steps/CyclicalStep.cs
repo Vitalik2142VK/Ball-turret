@@ -7,21 +7,25 @@ namespace CannonTurret.StepSystem.Steps
 {
     public class CyclicalStep : IStep
     {
-        private readonly IActorsRemover ActorsRemover;
-        private readonly IEnemiesController EnemiesController;
-        private readonly ILevelStatus LevelStatus;
-        private readonly IDynamicEndStep DynamicEndStep;
+        private readonly IActorsRemover _actorsRemover;
+        private readonly IEnemiesController _enemiesController;
+        private readonly ILevelStatus _levelStatus;
+        private readonly IDynamicEndStep _dynamicEndStep;
 
         private IStep _startStep;
         private IStep _loopingStep;
         private IStep _finishStep;
 
-        public CyclicalStep(IDynamicEndStep dynamicEndStep, IActorsRemover actorsRemover, IEnemiesController enemiesController, ILevelStatus levelStatus)
+        public CyclicalStep(
+            IDynamicEndStep dynamicEndStep,
+            IActorsRemover actorsRemover,
+            IEnemiesController enemiesController,
+            ILevelStatus levelStatus)
         {
-            DynamicEndStep = dynamicEndStep ?? throw new ArgumentNullException(nameof(dynamicEndStep));
-            ActorsRemover = actorsRemover ?? throw new ArgumentNullException(nameof(actorsRemover));
-            EnemiesController = enemiesController ?? throw new ArgumentNullException(nameof(enemiesController));
-            LevelStatus = levelStatus ?? throw new ArgumentNullException(nameof(levelStatus));
+            _dynamicEndStep = dynamicEndStep ?? throw new ArgumentNullException(nameof(dynamicEndStep));
+            _actorsRemover = actorsRemover ?? throw new ArgumentNullException(nameof(actorsRemover));
+            _enemiesController = enemiesController ?? throw new ArgumentNullException(nameof(enemiesController));
+            _levelStatus = levelStatus ?? throw new ArgumentNullException(nameof(levelStatus));
         }
 
         public void SetStartStep(IStep startStep)
@@ -41,21 +45,21 @@ namespace CannonTurret.StepSystem.Steps
 
         public void Action()
         {
-            if (EnemiesController.AreNoEnemies && LevelStatus.IsComplete || LevelStatus.IsLose)
+            if (_enemiesController.AreNoEnemies && _levelStatus.IsComplete || _levelStatus.IsLose)
             {
-                DynamicEndStep.SetNextStep(_finishStep);
+                _dynamicEndStep.SetNextStep(_finishStep);
             }
-            else if (EnemiesController.AreNoEnemies)
+            else if (_enemiesController.AreNoEnemies)
             {
-                ActorsRemover.RemoveAll();
-                DynamicEndStep.SetNextStep(_startStep);
+                _actorsRemover.RemoveAll();
+                _dynamicEndStep.SetNextStep(_startStep);
             }
             else
             {
-                DynamicEndStep.SetNextStep(_loopingStep);
+                _dynamicEndStep.SetNextStep(_loopingStep);
             }
 
-            DynamicEndStep.End();
+            _dynamicEndStep.End();
         }
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 namespace CannonTurret.Scriptable.Bullet
 {
     [CreateAssetMenu(menuName = "Attributes/Advanced bullet physics attributes", fileName = "AdvancedBulletPhysicsAttributes", order = 51)]
-    public class AdvancedBulletPhysicsAttributes : ScriptableObject, IBulletPhysicsAttributes
+    public class AdvancedBulletPhysicsAttributes : ScriptableObject
     {
         [SerializeField] private BulletPhysicsAttributes _attributes;
         [SerializeField][Min(0.001f)] private float _coefficientDeltaTime;

@@ -6,30 +6,30 @@ namespace CannonTurret.StepSystem.Steps
 {
     public class LearningStep : IStep, IEndPointStep
     {
-        private readonly ILearningUI LearningUI;
-        private readonly ILevel Level;
+        private readonly ILearningUI _learningUI;
+        private readonly ILevel _level;
 
         private IEndStep _endStep;
         private bool _isFinished;
 
         public LearningStep(ILearningUI learningUI, ILevel level)
         {
-            LearningUI = learningUI ?? throw new ArgumentNullException(nameof(learningUI));
-            Level = level ?? throw new ArgumentNullException(nameof(level));
+            _learningUI = learningUI ?? throw new ArgumentNullException(nameof(learningUI));
+            _level = level ?? throw new ArgumentNullException(nameof(level));
             _isFinished = true;
         }
 
         public void Action()
         {
-            if (_isFinished && LearningUI.IsFinished == false)
+            if (_isFinished && _learningUI.IsFinished == false)
             {
-                if (Level.CurrentWaveNumber == LearningUI.WaveNumberStage && LearningUI.IsProcess == false)
-                    LearningUI.ShowLearning(Level.CurrentWaveNumber);
+                if (_level.CurrentWaveNumber == _learningUI.WaveNumberStage && _learningUI.IsProcess == false)
+                    _learningUI.ShowLearning(_level.CurrentWaveNumber);
 
                 _isFinished = false;
             }
 
-            if (LearningUI.IsProcess == false)
+            if (_learningUI.IsProcess == false)
             {
                 _isFinished = true;
                 _endStep.End();

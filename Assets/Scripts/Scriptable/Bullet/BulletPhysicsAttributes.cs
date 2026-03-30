@@ -4,7 +4,7 @@ using UnityEngine;
 namespace CannonTurret.Scriptable.Bullet
 {
     [CreateAssetMenu(menuName = "Attributes/Bullet physics attributes", fileName = "BulletPhysicsAttributes", order = 51)]
-    public class BulletPhysicsAttributes : ScriptableObject, IBulletPhysicsAttributes
+    public class BulletPhysicsAttributes : ScriptableObject
     {
         [SerializeField][Min(0.1f)] private float _speed;
         [SerializeField][Min(0.1f)] private float _gravity;

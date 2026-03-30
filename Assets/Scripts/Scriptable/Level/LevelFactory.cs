@@ -11,7 +11,6 @@ namespace CannonTurret.Scriptable.Level
 
         [SerializeField] private ActorsPlannerStore _actorsPlannerStore;
 
-        private ICoinCountRandomizer _coinCountRandomizer;
         private float _actorsHealthCoefficientByLevel;
 
         public int LevelsCount => _actorsPlannerStore.LevelsCount;
@@ -22,12 +21,11 @@ namespace CannonTurret.Scriptable.Level
                 throw new NullReferenceException(nameof(_actorsPlannerStore));
         }
 
-        public void Initialize(ICoinCountRandomizer coinCountRandomizer, float actorsHealthCoefficientByLevel)
+        public void Initialize(float actorsHealthCoefficientByLevel)
         {
             if (actorsHealthCoefficientByLevel < ILevelFactory.MinActorsHealthCoefficientByLevel)
                 throw new ArgumentOutOfRangeException(nameof(actorsHealthCoefficientByLevel));
 
-            _coinCountRandomizer = coinCountRandomizer ?? throw new ArgumentNullException(nameof(coinCountRandomizer));
             _actorsHealthCoefficientByLevel = actorsHealthCoefficientByLevel;
             _actorsPlannerStore.Initialize();
         }
@@ -40,7 +38,7 @@ namespace CannonTurret.Scriptable.Level
             var levelActorsPlanner = _actorsPlannerStore.GetLevelActorsPlanner(indexLevel);
             float actorsHealthCoefficient = CalculateActorsHealthCoefficient(indexLevel);
 
-            return new LevelSystem.Level(levelActorsPlanner, _coinCountRandomizer, actorsHealthCoefficient, indexLevel);
+            return new LevelSystem.Level(levelActorsPlanner, actorsHealthCoefficient, indexLevel);
         }
 
         private float CalculateActorsHealthCoefficient(int indexLevel)

@@ -33,7 +33,10 @@ namespace CannonTurret.Turrets.Bullets.Physics
 
         public void SetCollidedObject(Collider collidedObject)
         {
-            CollidedObject = collidedObject != null ? collidedObject : throw new ArgumentNullException(nameof(collidedObject));
+            if (collidedObject == null)
+                throw new ArgumentNullException(nameof(collidedObject));
+
+            CollidedObject = collidedObject;
             IsThereCollision = true;
         }
     }

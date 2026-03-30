@@ -5,23 +5,35 @@ namespace CannonTurret.StepSystem.Steps
 {
     public class ActorsFreezeStep : IStep, IEndPointStep
     {
-        private readonly IDynamicEndStep NextStepPrepareActors;
-        private readonly IActorsFreezerView Freezer;
-        private readonly IStep InterruptedStep;
+        private readonly IDynamicEndStep _nextStepPrepareActors;
+        private readonly IActorsFreezerView _freezer;
+        private readonly IStep _interruptedStep;
 
         private IEndStep _endStep;
 
-        public ActorsFreezeStep(IDynamicEndStep nextStepPrepareActors, IStep interruptedStep, IActorsFreezerView freezer)
+        public ActorsFreezeStep(
+            IDynamicEndStep nextStepPrepareActors,
+            IStep interruptedStep,
+            IActorsFreezerView freezer)
         {
-            NextStepPrepareActors = nextStepPrepareActors ?? throw new NullReferenceException(nameof(nextStepPrepareActors));
-            InterruptedStep = interruptedStep ?? throw new NullReferenceException(nameof(interruptedStep));
-            Freezer = freezer ?? throw new NullReferenceException(nameof(freezer));
+            if (nextStepPrepareActors == null)
+                throw new NullReferenceException(nameof(nextStepPrepareActors));
+
+            if (interruptedStep == null)
+                throw new NullReferenceException(nameof(interruptedStep));
+
+            if (freezer == null)
+                throw new NullReferenceException(nameof(freezer));
+
+            _nextStepPrepareActors = nextStepPrepareActors;
+            _interruptedStep = interruptedStep;
+            _freezer = freezer;
         }
 
         public void Action()
         {
-            NextStepPrepareActors.SetNextStep(InterruptedStep);
-            Freezer.Defrost();
+            _nextStepPrepareActors.SetNextStep(_interruptedStep);
+            _freezer.Defrost();
             _endStep.End();
         }
 

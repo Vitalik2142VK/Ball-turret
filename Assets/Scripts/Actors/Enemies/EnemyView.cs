@@ -67,10 +67,6 @@ namespace CannonTurret.Actors.Enemies
             _audioController = audioController ?? throw new ArgumentNullException(nameof(audioController));
         }
 
-        public void PrepareDeleted(IRemovedActorsCollector removedCollector) => _presenter.PrepareDeleted(removedCollector);
-
-        public void PrepareAttacked(IAttackingEnemiesCollector attackingCollector) => _presenter.PrepareAttacked(attackingCollector);
-
         public void AddDebuff(IDebuff debaff) => _presenter.AddDebuff(debaff);
 
         public void TakeDamage(IDamageAttributes damage) => _presenter.TakeDamage(damage);
@@ -78,6 +74,16 @@ namespace CannonTurret.Actors.Enemies
         public void PlayMovement(bool isMovinng) => _enemyAnimator.PlayMovement(isMovinng);
 
         public void PlayVictory() => _enemyAnimator.PlayVictory();
+
+        public void PrepareDeleted(IRemovedActorsCollector removedCollector)
+        {
+            _presenter.PrepareDeleted(removedCollector);
+        }
+
+        public void PrepareAttacked(IAttackingEnemiesCollector attackingCollector)
+        {
+            _presenter.PrepareAttacked(attackingCollector);
+        }
 
         public void PlayDamage()
         {

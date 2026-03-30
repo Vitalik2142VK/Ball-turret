@@ -2,9 +2,8 @@
 
 namespace CannonTurret.LevelSystem
 {
-    public class CoinCountRandomizer : ICoinCountRandomizer
+    public class CoinCountRandomizer
     {
-        private const float DefaultCoinsRewardCoefficient = 3f;
         private const float DefaultCoefficient = 1f;
         private const float CoinCoefficientByLevel = 0.45f;
         private const int DefaultCoinsWin = 1000;
@@ -12,24 +11,12 @@ namespace CannonTurret.LevelSystem
         private const int DefaultCoinsWinOffset = 200;
         private const int DefaultCoinsWaveOffset = 50;
 
-        private readonly Random Random;
-        private readonly float CoinsForRewardAdCoefficient;
-        private readonly int CurrenMaxLevelPlayer;
+        private readonly Random _random;
 
-        public CoinCountRandomizer(int currentMaxLevelPlayer = 0, float coinsForRewardAdCoefficient = DefaultCoinsRewardCoefficient)
+        public CoinCountRandomizer()
         {
-            if (currentMaxLevelPlayer < 0)
-                throw new ArgumentOutOfRangeException(nameof(currentMaxLevelPlayer));
-
-            if (DefaultCoefficient < 0)
-                throw new ArgumentOutOfRangeException(nameof(coinsForRewardAdCoefficient));
-
-            Random = new Random();
-            CurrenMaxLevelPlayer = currentMaxLevelPlayer;
-            CoinsForRewardAdCoefficient = coinsForRewardAdCoefficient;
+            _random = new Random();
         }
-
-        public int CountCoinsForRewardAd => (int)(DefaultCoinsWin * CoinsForRewardAdCoefficient * CalculateCoefficient(CurrenMaxLevelPlayer));
 
         public int GetCountCoinsForWin(int indexLevel)
         {
@@ -37,7 +24,7 @@ namespace CannonTurret.LevelSystem
             maxCoinsWin = (int)(maxCoinsWin * CalculateCoefficient(indexLevel));
             int minCoinsWin = (int)(DefaultCoinsWin * CalculateCoefficient(indexLevel));
 
-            return Random.Next(minCoinsWin, ++maxCoinsWin);
+            return _random.Next(minCoinsWin, ++maxCoinsWin);
         }
 
         public int GetCountCoinsForWave(int indexLevel)
@@ -46,7 +33,7 @@ namespace CannonTurret.LevelSystem
             maxCoinsWin = (int)(maxCoinsWin * CalculateCoefficient(indexLevel));
             int minCoinsWin = (int)(DefaultCoinsWave * CalculateCoefficient(indexLevel));
 
-            return Random.Next(minCoinsWin, ++maxCoinsWin);
+            return _random.Next(minCoinsWin, ++maxCoinsWin);
         }
 
         private float CalculateCoefficient(int indexLevel)

@@ -7,12 +7,15 @@ namespace CannonTurret.LevelSystem
     {
         private const float DefaultHealthCoefficient = 1f;
 
-        private readonly ILevelActorsPlanner ActorsPlanner;
-        private readonly ICoinCountRandomizer CoinCountRandomizer;
+        private readonly ILevelActorsPlanner _actorsPlanner;
+        private readonly CoinCountRandomizer _coinCountRandomizer;
 
         private int _passedWavesNumber;
 
-        public Level(ILevelActorsPlanner actorsPlanner, ICoinCountRandomizer coinCountRandomizer, float actorsHealthCoefficient = DefaultHealthCoefficient, int index = 0)
+        public Level(
+            ILevelActorsPlanner actorsPlanner,
+            float actorsHealthCoefficient = DefaultHealthCoefficient,
+            int index = 0)
         {
             if (actorsHealthCoefficient < 0f)
                 throw new ArgumentOutOfRangeException("The coefficient cannot be less than 0");
@@ -20,8 +23,9 @@ namespace CannonTurret.LevelSystem
             if (index < 0)
                 throw new ArgumentOutOfRangeException(nameof(index));
 
-            ActorsPlanner = actorsPlanner ?? throw new ArgumentNullException(nameof(actorsPlanner));
-            CoinCountRandomizer = coinCountRandomizer ?? throw new ArgumentNullException(nameof(coinCountRandomizer));
+            _actorsPlanner = actorsPlanner ?? throw new ArgumentNullException(nameof(actorsPlanner));
+
+            _coinCountRandomizer = new CoinCountRandomizer();
             _passedWavesNumber = 0;
 
             CurrentWaveNumber = 0;
@@ -29,13 +33,13 @@ namespace CannonTurret.LevelSystem
             Index = index;
         }
 
-        public int WavesCount => ActorsPlanner.WavesCount;
+        public int WavesCount => _actorsPlanner.WavesCount;
 
-        public int CountCoinsForWin => CoinCountRandomizer.GetCountCoinsForWin(Index);
+        public int CountCoinsForWin => _coinCountRandomizer.GetCountCoinsForWin(Index);
 
-        public int CountCoinsForWaves => CoinCountRandomizer.GetCountCoinsForWave(Index) * _passedWavesNumber;
+        public int CountCoinsForWaves => _coinCountRandomizer.GetCountCoinsForWave(Index) * _passedWavesNumber;
 
-        public bool AreWavesOver => ActorsPlanner.WavesCount <= CurrentWaveNumber;
+        public bool AreWavesOver => _actorsPlanner.WavesCount <= CurrentWaveNumber;
 
         public float HealthCoefficient { get; }
 
@@ -47,7 +51,7 @@ namespace CannonTurret.LevelSystem
         {
             if (AreWavesOver == false)
             {
-                waveActorsPlanner = ActorsPlanner.GetWaveActorsPlanner(++CurrentWaveNumber);
+                waveActorsPlanner = _actorsPlanner.GetWaveActorsPlanner(++CurrentWaveNumber);
                 _passedWavesNumber = CurrentWaveNumber - 1;
 
                 return true;
@@ -55,7 +59,7 @@ namespace CannonTurret.LevelSystem
             else
             {
                 waveActorsPlanner = null;
-                _passedWavesNumber = ActorsPlanner.WavesCount;
+                _passedWavesNumber = _actorsPlanner.WavesCount;
 
                 return false;
             }
@@ -63,7 +67,7 @@ namespace CannonTurret.LevelSystem
 
         public ILevel Clone()
         {
-            return new Level(ActorsPlanner, CoinCountRandomizer, HealthCoefficient, Index);
+            return new Level(_actorsPlanner, HealthCoefficient, Index);
         }
     }
 }

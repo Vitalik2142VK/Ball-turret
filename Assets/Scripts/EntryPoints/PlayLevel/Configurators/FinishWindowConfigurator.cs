@@ -42,7 +42,13 @@ namespace CannonTurret.EntryPoints.PlayLevel.Configurators
                 throw new NullReferenceException(nameof(_levelFactory));
         }
 
-        public void Configure(ICoinAdder coinAdder, IRewardData rewardData, IAdsViewer adsViewer, IWinStatus winStatus, IChangeSceneStep changeSceneStep, ILevel currentLevel)
+        public void Configure(
+            ICoinAdder coinAdder,
+            IRewardData rewardData,
+            IAdsViewer adsViewer,
+            IWinStatus winStatus,
+            IChangeSceneStep changeSceneStep,
+            ILevel currentLevel)
         {
 
             if (coinAdder == null)

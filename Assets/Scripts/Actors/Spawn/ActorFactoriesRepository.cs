@@ -6,14 +6,14 @@ namespace CannonTurret.Actors.Spawn
 {
     public class ActorFactoriesRepository : IActorFactoriesRepository
     {
-        private readonly List<IActorFactory> Factories;
+        private readonly List<IActorFactory> _factories;
 
         public ActorFactoriesRepository(IEnumerable<IActorFactory> factories)
         {
             if (factories == null || factories.Count() == 0)
                 throw new ArgumentOutOfRangeException(nameof(factories));
 
-            Factories = new List<IActorFactory>(factories);
+            _factories = new List<IActorFactory>(factories);
         }
 
         public void AddFactory(IActorFactory factory)
@@ -21,7 +21,7 @@ namespace CannonTurret.Actors.Spawn
             if (factory == null)
                 throw new ArgumentNullException(nameof(factory));
 
-            Factories.Add(factory);
+            _factories.Add(factory);
         }
 
         public IActorFactory GetFactoryByNameTypeActor(string nameTypeActor)
@@ -29,7 +29,7 @@ namespace CannonTurret.Actors.Spawn
             if (nameTypeActor == null || nameTypeActor.Length == 0)
                 throw new ArgumentOutOfRangeException(nameof(nameTypeActor));
 
-            foreach (var factory in Factories)
+            foreach (var factory in _factories)
             {
                 if (factory.CanCreate(nameTypeActor))
                     return factory;

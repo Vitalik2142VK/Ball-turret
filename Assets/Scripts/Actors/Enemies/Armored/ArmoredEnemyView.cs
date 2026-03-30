@@ -25,10 +25,6 @@ namespace CannonTurret.Actors.Enemies.Armored
             _presenter = presenter ?? throw new ArgumentNullException(nameof(presenter));
         }
 
-        public void PrepareAttacked(IAttackingEnemiesCollector attackingCollector) => _enemyView.PrepareAttacked(attackingCollector);
-
-        public void PrepareDeleted(IRemovedActorsCollector removedCollector) => _enemyView.PrepareDeleted(removedCollector);
-
         public void AddDebuff(IDebuff debaff) => _enemyView.AddDebuff(debaff);
 
         public void TakeDamage(IDamageAttributes damage) => _enemyView.TakeDamage(damage);
@@ -44,5 +40,15 @@ namespace CannonTurret.Actors.Enemies.Armored
         public void PlayDead() => _enemyView.PlayDead();
 
         public void Destroy() => _enemyView.Destroy();
+
+        public void PrepareAttacked(IAttackingEnemiesCollector attackingCollector)
+        {
+            _enemyView.PrepareAttacked(attackingCollector);
+        }
+
+        public void PrepareDeleted(IRemovedActorsCollector removedCollector)
+        {
+            _enemyView.PrepareDeleted(removedCollector);
+        }
     }
 }

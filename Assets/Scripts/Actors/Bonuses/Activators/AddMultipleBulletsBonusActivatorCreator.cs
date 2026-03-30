@@ -23,7 +23,10 @@ namespace CannonTurret.Actors.Bonuses.Activators
 
         public IBonusActivator Create()
         {
-            AddBulletBonusActivator addBulletBonusActivator = new AddBulletBonusActivator(_bulletFactory, _gun, BulletType.Default);
+            AddBulletBonusActivator addBulletBonusActivator = new AddBulletBonusActivator(
+                _bulletFactory, 
+                _gun, 
+                BulletType.Default);
 
             return new MultipleBonusActivator(addBulletBonusActivator, _countBullets);
         }

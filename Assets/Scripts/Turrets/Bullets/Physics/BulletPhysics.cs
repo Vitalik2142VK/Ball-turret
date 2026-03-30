@@ -169,7 +169,15 @@ namespace CannonTurret.Turrets.Bullets.Physics
             if (_isThereCollision == false)
                 direction += Vector3.down;
 
-            if (UnityEngine.Physics.RaycastNonAlloc(_transform.position, direction, _hitsArray, distance, _collisionMask, QueryTriggerInteraction.Ignore) != 0)
+            bool hasHits = UnityEngine.Physics.RaycastNonAlloc(
+                _transform.position, 
+                direction, 
+                _hitsArray, 
+                distance, 
+                _collisionMask, 
+                QueryTriggerInteraction.Ignore) != 0;
+
+            if (hasHits)
             {
                 _isThereCollision = true;
 

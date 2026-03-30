@@ -7,7 +7,7 @@ using UnityEngine;
 namespace CannonTurret.Scriptable.Level
 {
     [CreateAssetMenu(menuName = "Level/Actors Planner Store", fileName = "ActorsPlannerStore", order = 51)]
-    public class ActorsPlannerStore : ScriptableObject, IActorsPlannerStore
+    public class ActorsPlannerStore : ScriptableObject
     {
         [SerializeField] private LevelActorsPlanner[] _levelActorsPlanners;
 

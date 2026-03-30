@@ -11,8 +11,6 @@ namespace CannonTurret.Actors
 
         public int EnemiesCount { get; }
 
-        public bool AreWavesOver { get; }
-
         public IEnumerable<IActor> PopActors();
 
         public void CountRemainingEnemies();

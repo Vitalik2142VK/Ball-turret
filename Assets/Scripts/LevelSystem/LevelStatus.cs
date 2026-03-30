@@ -5,16 +5,16 @@ namespace CannonTurret.LevelSystem
 {
     public class LevelStatus : ILevelStatus
     {
-        private readonly ITurret Turret;
-        private readonly ISelectedLevel SelectedLevel;
+        private readonly ITurret _turret;
+        private readonly ISelectedLevel _selectedLevel;
 
         public LevelStatus(ITurret turret, ISelectedLevel selectedLevel)
         {
-            Turret = turret ?? throw new ArgumentNullException(nameof(turret));
-            SelectedLevel = selectedLevel ?? throw new ArgumentNullException(nameof(selectedLevel));
+            _turret = turret ?? throw new ArgumentNullException(nameof(turret));
+            _selectedLevel = selectedLevel ?? throw new ArgumentNullException(nameof(selectedLevel));
         }
 
-        public bool IsComplete => SelectedLevel.IsFinished;
-        public bool IsLose => Turret.IsDestroyed;
+        public bool IsComplete => _selectedLevel.IsFinished;
+        public bool IsLose => _turret.IsDestroyed;
     }
 }

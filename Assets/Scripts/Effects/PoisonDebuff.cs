@@ -8,14 +8,14 @@ namespace CannonTurret.Effects
         private const float MinGainFactor = 1f;
         private const int CountOperations = 3;
 
-        private readonly IDamagedObject DamagedObject;
+        private readonly IDamagedObject _damagedObject;
 
         private IDamageAttributes _damageAttributes;
         private int _currentOperation;
 
         public PoisonDebuff(IDamagedObject damagedObject, IDamageAttributes damageAttributes)
         {
-            DamagedObject = damagedObject ?? throw new ArgumentNullException(nameof(damagedObject));
+            _damagedObject = damagedObject ?? throw new ArgumentNullException(nameof(damagedObject));
             _damageAttributes = damageAttributes ?? throw new ArgumentNullException(nameof(damageAttributes));
             _currentOperation = 0;
         }
@@ -26,7 +26,7 @@ namespace CannonTurret.Effects
 
         public void Activate()
         {
-            DamagedObject.TakeDamage(_damageAttributes);
+            _damagedObject.TakeDamage(_damageAttributes);
             _currentOperation++;
         }
 

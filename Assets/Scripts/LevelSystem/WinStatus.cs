@@ -5,15 +5,15 @@ namespace CannonTurret.LevelSystem
 {
     public class WinStatus : IWinStatus
     {
-        private readonly ITurret Turret;
-        private readonly ISelectedLevel SelectedLevel;
+        private readonly ITurret _turret;
+        private readonly ISelectedLevel _selectedLevel;
 
         public WinStatus(ITurret turret, ISelectedLevel selectedLevel)
         {
-            Turret = turret ?? throw new ArgumentNullException(nameof(turret));
-            SelectedLevel = selectedLevel ?? throw new ArgumentNullException(nameof(selectedLevel));
+            _turret = turret ?? throw new ArgumentNullException(nameof(turret));
+            _selectedLevel = selectedLevel ?? throw new ArgumentNullException(nameof(selectedLevel));
         }
 
-        public bool IsWin => Turret.IsDestroyed == false && SelectedLevel.IsFinished;
+        public bool IsWin => _turret.IsDestroyed == false && _selectedLevel.IsFinished;
     }
 }

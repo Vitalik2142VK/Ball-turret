@@ -7,8 +7,8 @@ namespace CannonTurret.StepSystem.Steps
 {
     public class RewardStep : IStep, IEndPointStep
     {
-        private readonly IAdsViewer AdsViewer;
-        private readonly IRewardIssuer RewardIssuer;
+        private readonly IAdsViewer _adsViewer;
+        private readonly IRewardIssuer _rewardIssuer;
 
         private IEndStep _endStep;
         private IWindow _finishWindow;
@@ -16,18 +16,18 @@ namespace CannonTurret.StepSystem.Steps
         public RewardStep(IWindow finishWindow, IAdsViewer adsViewer, IRewardIssuer rewardIssuer)
         {
             _finishWindow = finishWindow ?? throw new ArgumentNullException(nameof(finishWindow));
-            AdsViewer = adsViewer ?? throw new ArgumentNullException(nameof(adsViewer));
-            RewardIssuer = rewardIssuer ?? throw new ArgumentNullException(nameof(rewardIssuer));
+            _adsViewer = adsViewer ?? throw new ArgumentNullException(nameof(adsViewer));
+            _rewardIssuer = rewardIssuer ?? throw new ArgumentNullException(nameof(rewardIssuer));
         }
 
         public void Action()
         {
-            RewardIssuer.CalculateRevard();
+            _rewardIssuer.CalculateRevard();
 
-            if (AdsViewer.IsAdsDisable || RewardIssuer.Reward == 0)
-                RewardIssuer.PayMaxReward();
+            if (_adsViewer.IsAdsDisable || _rewardIssuer.Reward == 0)
+                _rewardIssuer.PayMaxReward();
             else
-                RewardIssuer.PayReward();
+                _rewardIssuer.PayReward();
 
             _finishWindow.Enable();
             _endStep.End();

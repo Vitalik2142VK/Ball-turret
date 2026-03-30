@@ -6,7 +6,7 @@ namespace CannonTurret.Actors.MoveSystem
 {
     public class Mover : IMovableObject
     {
-        private readonly Transform Transform;
+        private readonly Transform _transform;
 
         private Vector3 _point;
         private float _speed;
@@ -18,15 +18,15 @@ namespace CannonTurret.Actors.MoveSystem
             if (movingObject == null)
                 throw new ArgumentNullException(nameof(movingObject));
 
-            Transform = movingObject;
+            _transform = movingObject;
 
             IsFinished = true;
         }
 
         public void SetStartPosition(Vector3 startPosition)
         {
-            float y = Transform.position.y;
-            Transform.position = new Vector3(startPosition.x, y, startPosition.z);
+            float y = _transform.position.y;
+            _transform.position = new Vector3(startPosition.x, y, startPosition.z);
         }
 
         public void EstablishPoint(Vector3 distance, float speed)
@@ -34,7 +34,7 @@ namespace CannonTurret.Actors.MoveSystem
             if (speed <= 0f)
                 throw new ArgumentOutOfRangeException();
 
-            _point = Transform.position + distance;
+            _point = _transform.position + distance;
             _speed = speed;
 
             IsFinished = false;
@@ -45,13 +45,13 @@ namespace CannonTurret.Actors.MoveSystem
             if (IsFinished)
                 return;
 
-            if (VectorTools.AreVectorsClose(Transform.position, _point) == false)
+            if (VectorTools.AreVectorsClose(_transform.position, _point) == false)
             {
-                Transform.position = Vector3.MoveTowards(Transform.position, _point, _speed * Time.deltaTime);
+                _transform.position = Vector3.MoveTowards(_transform.position, _point, _speed * Time.deltaTime);
             }
             else
             {
-                Transform.position = _point;
+                _transform.position = _point;
 
                 IsFinished = true;
             }

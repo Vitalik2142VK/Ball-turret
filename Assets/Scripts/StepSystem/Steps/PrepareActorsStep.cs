@@ -6,30 +6,34 @@ namespace CannonTurret.StepSystem.Steps
 {
     public class PrepareActorsStep : IStep
     {
-        private readonly IActorsPreparator ActorsPreparator;
-        private readonly IEnemiesController EnemiesController;
-        private readonly IDynamicEndStep DynamicEndStep;
-        private readonly IStep DefaultNextStep;
+        private readonly IActorsPreparator _actorsPreparator;
+        private readonly IEnemiesController _enemiesController;
+        private readonly IDynamicEndStep _dynamicEndStep;
+        private readonly IStep _defaultNextStep;
 
-        public PrepareActorsStep(IActorsPreparator actorsPreparator, IEnemiesController enemiesController, IDynamicEndStep dynamicEndStep, IStep defaultNextStep)
+        public PrepareActorsStep(
+            IActorsPreparator actorsPreparator,
+            IEnemiesController enemiesController,
+            IDynamicEndStep dynamicEndStep,
+            IStep defaultNextStep)
         {
-            ActorsPreparator = actorsPreparator ?? throw new ArgumentNullException(nameof(actorsPreparator));
-            EnemiesController = enemiesController ?? throw new ArgumentNullException(nameof(enemiesController));
-            DynamicEndStep = dynamicEndStep ?? throw new ArgumentNullException(nameof(dynamicEndStep));
-            DefaultNextStep = defaultNextStep ?? throw new ArgumentNullException(nameof(defaultNextStep));
+            _actorsPreparator = actorsPreparator ?? throw new ArgumentNullException(nameof(actorsPreparator));
+            _enemiesController = enemiesController ?? throw new ArgumentNullException(nameof(enemiesController));
+            _dynamicEndStep = dynamicEndStep ?? throw new ArgumentNullException(nameof(dynamicEndStep));
+            _defaultNextStep = defaultNextStep ?? throw new ArgumentNullException(nameof(defaultNextStep));
 
-            DynamicEndStep.SetNextStep(DefaultNextStep);
+            _dynamicEndStep.SetNextStep(_defaultNextStep);
         }
 
         public void Action()
         {
-            EnemiesController.Count();
+            _enemiesController.Count();
 
-            if (EnemiesController.AreNoEnemies)
-                DynamicEndStep.SetNextStep(DefaultNextStep);
+            if (_enemiesController.AreNoEnemies)
+                _dynamicEndStep.SetNextStep(_defaultNextStep);
 
-            ActorsPreparator.Prepare();
-            DynamicEndStep.End();
+            _actorsPreparator.Prepare();
+            _dynamicEndStep.End();
         }
     }
 }

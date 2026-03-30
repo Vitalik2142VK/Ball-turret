@@ -5,18 +5,18 @@ namespace CannonTurret.StepSystem
 {
     public class NextStep : IEndStep
     {
-        private readonly IStepController StepController;
-        private readonly IStep FollowingStep;
+        private readonly IStepController _stepController;
+        private readonly IStep _nextStep;
 
-        public NextStep(IStepController stepController, IStep followingStep)
+        public NextStep(IStepController stepController, IStep nextStep)
         {
-            StepController = stepController ?? throw new ArgumentNullException(nameof(stepController));
-            FollowingStep = followingStep ?? throw new ArgumentNullException(nameof(followingStep));
+            _stepController = stepController ?? throw new ArgumentNullException(nameof(stepController));
+            _nextStep = nextStep ?? throw new ArgumentNullException(nameof(nextStep));
         }
 
         public void End()
         {
-            StepController.EstablishNextStep(FollowingStep);
+            _stepController.EstablishNextStep(_nextStep);
         }
     }
 }

@@ -24,7 +24,11 @@ namespace CannonTurret.UI.LearningLevel
             _changeSceneButtons = _finishWindow.GetComponentsInChildren<ChangeSceneButton>();
 
             if (_changeSceneButtons == null || _changeSceneButtons.Length == 0)
-                throw new InvalidOperationException($"{nameof(_finishWindow)} does not contain {nameof(ChangeSceneButton)}");
+            {
+                string message = $"{nameof(_finishWindow)} does not contain {nameof(ChangeSceneButton)}";
+
+                throw new InvalidOperationException(message);
+            }
 
             foreach (var button in _changeSceneButtons)
             {
@@ -35,10 +39,18 @@ namespace CannonTurret.UI.LearningLevel
             }
 
             if (_nextLevelButton == null)
-                throw new InvalidOperationException($"{nameof(_finishWindow)} does not contain {nameof(NextLevelButton)}");
+            {
+                string message = $"{nameof(_finishWindow)} does not contain {nameof(NextLevelButton)}";
+
+                throw new InvalidOperationException(message);
+            }
 
             if (_restartLevelButton == null)
-                throw new InvalidOperationException($"{nameof(_finishWindow)} does not contain {nameof(RestartLevelButton)}");
+            {
+                string message = $"{nameof(_finishWindow)} does not contain {nameof(RestartLevelButton)}";
+
+                throw new InvalidOperationException(message);
+            }
         }
 
         public void Enable()

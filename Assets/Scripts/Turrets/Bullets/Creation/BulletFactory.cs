@@ -35,11 +35,23 @@ namespace CannonTurret.Turrets.Bullets.Creation
             _bullets = CreateDictionaryPrefabs();
         }
 
-        public void Initialize(IDamageAttributes damageBulletAttributes, IComboCounter comboCounter, ISound hitBulletSound)
+        public void Initialize(
+            IDamageAttributes damageBulletAttributes,
+            IComboCounter comboCounter,
+            ISound hitBulletSound)
         {
-            _damageBulletAttributes = damageBulletAttributes ?? throw new ArgumentNullException(nameof(damageBulletAttributes));
-            _comboCounter = comboCounter ?? throw new ArgumentNullException(nameof(comboCounter));
-            _hitBulletSound = hitBulletSound ?? throw new ArgumentNullException(nameof(hitBulletSound));
+            if (damageBulletAttributes == null)
+                throw new ArgumentNullException(nameof(damageBulletAttributes));
+
+            if (comboCounter == null)
+                throw new ArgumentNullException(nameof(comboCounter));
+
+            if (hitBulletSound == null)
+                throw new ArgumentNullException(nameof(hitBulletSound));
+
+            _damageBulletAttributes = damageBulletAttributes;
+            _comboCounter = comboCounter;
+            _hitBulletSound = hitBulletSound;
         }
 
         public void AddPrefab(Bullet bullet)

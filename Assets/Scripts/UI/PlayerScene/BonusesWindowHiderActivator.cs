@@ -5,31 +5,43 @@ namespace CannonTurret.UI.PlayerScene
 {
     public class BonusesWindowHiderActivator
     {
-        private readonly IOpenWindowButton OpenWindowButton;
-        private readonly IReservedBonusesWindow ReservedBonusesWindow;
-        private readonly IShotAction ShotAction;
+        private readonly IOpenWindowButton _openWindowButton;
+        private readonly IReservedBonusesWindow _reservedBonusesWindow;
+        private readonly IShotAction _shotAction;
 
-        public BonusesWindowHiderActivator(IOpenWindowButton openWindowButton, IReservedBonusesWindow reservedBonusesWindow, IShotAction shotAction)
+        public BonusesWindowHiderActivator(
+            IOpenWindowButton openWindowButton,
+            IReservedBonusesWindow reservedBonusesWindow,
+            IShotAction shotAction)
         {
-            OpenWindowButton = openWindowButton ?? throw new ArgumentNullException(nameof(openWindowButton));
-            ReservedBonusesWindow = reservedBonusesWindow ?? throw new ArgumentNullException(nameof(reservedBonusesWindow));
-            ShotAction = shotAction ?? throw new ArgumentNullException(nameof(shotAction));
+            if (openWindowButton == null)
+                throw new ArgumentNullException(nameof(openWindowButton));
 
-            ShotAction.Fired += OnHide;
+            if (reservedBonusesWindow == null)
+                throw new ArgumentNullException(nameof(reservedBonusesWindow));
+
+            if (openWindowButton == null)
+                throw new ArgumentNullException(nameof(shotAction));
+
+            _openWindowButton = openWindowButton;
+            _reservedBonusesWindow = reservedBonusesWindow;
+            _shotAction = shotAction;
+
+            _shotAction.Fired += OnHide;
         }
 
         public void Disable()
         {
-            ShotAction.Fired -= OnHide;
+            _shotAction.Fired -= OnHide;
         }
 
         private void OnHide()
         {
-            if (OpenWindowButton.IsActive)
-                OpenWindowButton.Hide();
+            if (_openWindowButton.IsActive)
+                _openWindowButton.Hide();
 
-            if (ReservedBonusesWindow.IsActive)
-                ReservedBonusesWindow.Hide();
+            if (_reservedBonusesWindow.IsActive)
+                _reservedBonusesWindow.Hide();
         }
     }
 }

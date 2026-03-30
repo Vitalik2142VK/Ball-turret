@@ -6,13 +6,19 @@ namespace CannonTurret.Actors.Spawn
 {
     public class ActorSpawner : IActorSpawner
     {
-        private readonly ISpawnPointsRepository SpawnPointsRepository;
-        private readonly IActorFactoriesRepository FactoryRepository;
+        private readonly ISpawnPointsRepository _spawnPointsRepository;
+        private readonly IActorFactoriesRepository _factoryRepository;
 
         public ActorSpawner(ISpawnPointsRepository spawnPointsRepository, IActorFactoriesRepository factoryRepository)
         {
-            SpawnPointsRepository = spawnPointsRepository ?? throw new ArgumentNullException(nameof(spawnPointsRepository));
-            FactoryRepository = factoryRepository ?? throw new ArgumentNullException(nameof(factoryRepository));
+            if (spawnPointsRepository == null)
+                throw new ArgumentNullException(nameof(spawnPointsRepository));
+
+            if (factoryRepository == null)
+                throw new ArgumentNullException(nameof(factoryRepository));
+
+            _spawnPointsRepository = spawnPointsRepository;
+            _factoryRepository = factoryRepository;
         }
 
         public List<IActor> Spawn(IWaveActorsPlanner planner)
@@ -39,8 +45,10 @@ namespace CannonTurret.Actors.Spawn
         private IActor CreateActor(IActorPlanner actorPlanner)
         {
             string nameActor = actorPlanner.NameActor;
-            Vector3 startPosition = SpawnPointsRepository.GetPositionSpawnPoint(actorPlanner.ColumnNumber, actorPlanner.LineNumber);
-            IActorFactory actorFactory = FactoryRepository.GetFactoryByNameTypeActor(nameActor);
+            int columnNumber = actorPlanner.ColumnNumber;
+            int lineNumber = actorPlanner.LineNumber;
+            Vector3 startPosition = _spawnPointsRepository.GetPositionSpawnPoint(columnNumber, lineNumber);
+            IActorFactory actorFactory = _factoryRepository.GetFactoryByNameTypeActor(nameActor);
             IActor actor = actorFactory.Create(nameActor);
             actor.SetStartPosition(startPosition);
 

@@ -7,25 +7,37 @@ namespace CannonTurret.StepSystem.Steps
 {
     public class PlayerStep : IStep, IEndPointStep
     {
-        private readonly IPlayerController PlayerController;
-        private readonly IEnemiesController EnemiesController;
-        private readonly IActivableUI ReservedBonusesWindow;
+        private readonly IPlayerController _playerController;
+        private readonly IEnemiesController _enemiesController;
+        private readonly IActivableUI _reservedBonusesWindow;
 
         private IEndStep _endStep;
 
-        public PlayerStep(IPlayerController playerController, IEnemiesController enemiesController, IActivableUI reservedBonusesWindow)
+        public PlayerStep(
+            IPlayerController playerController,
+            IEnemiesController enemiesController,
+            IActivableUI reservedBonusesWindow)
         {
-            PlayerController = playerController ?? throw new ArgumentNullException(nameof(playerController));
-            EnemiesController = enemiesController ?? throw new ArgumentNullException(nameof(enemiesController));
-            ReservedBonusesWindow = reservedBonusesWindow ?? throw new ArgumentNullException(nameof(reservedBonusesWindow));
+            if (playerController == null)
+                throw new ArgumentNullException(nameof(playerController));
+
+            if (enemiesController == null)
+                throw new ArgumentNullException(nameof(enemiesController));
+
+            if (reservedBonusesWindow == null)
+                throw new ArgumentNullException(nameof(reservedBonusesWindow));
+
+            _playerController = playerController;
+            _enemiesController = enemiesController;
+            _reservedBonusesWindow = reservedBonusesWindow;
         }
 
         public void Action()
         {
-            if (ReservedBonusesWindow.IsActive == false)
-                PlayerController.SelectTarget();
+            if (_reservedBonusesWindow.IsActive == false)
+                _playerController.SelectTarget();
 
-            if (EnemiesController.AreNoEnemies)
+            if (_enemiesController.AreNoEnemies)
                 _endStep.End();
         }
 

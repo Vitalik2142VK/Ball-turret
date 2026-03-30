@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace CannonTurret.Turrets.Bullets
 {
-    [RequireComponent(typeof(BulletPhysics))]
+    [RequireComponent(typeof(IBulletPhysics))]
     public class Bullet : MonoBehaviour, IBullet
     {
         [SerializeField] private BulletType _bulletType;

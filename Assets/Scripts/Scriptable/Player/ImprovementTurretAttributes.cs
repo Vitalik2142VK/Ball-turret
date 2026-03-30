@@ -9,12 +9,10 @@ namespace CannonTurret.Scriptable.Player
         [Header("Health")]
         [SerializeField][Min(1.5f)] private float _maxHealthCoefficient;
         [SerializeField][Min(0.1f)] private float _improveHealthCoefficient;
-        [SerializeField][Min(1)] private int _countLevelHealthImprovements;
 
         [Header("Damege")]
         [SerializeField][Min(2f)] private float _maxDamageCoefficient;
         [SerializeField][Min(0.1f)] private float _improveDamageCoefficient;
-        [SerializeField][Min(1)] private int _countLevelDamageImprovements;
 
         public float MaxHealthCoefficient => _maxHealthCoefficient;
 
@@ -23,15 +21,5 @@ namespace CannonTurret.Scriptable.Player
         public float ImproveHealthCoefficient => _improveHealthCoefficient;
 
         public float ImproveDamageCoefficient => _improveDamageCoefficient;
-
-        public int CountLevelHealthImprovements => _countLevelHealthImprovements;
-
-        public int CountLevelDamageImprovements => _countLevelDamageImprovements;
-
-        private void OnValidate()
-        {
-            _countLevelHealthImprovements = Mathf.RoundToInt(_maxHealthCoefficient / _improveHealthCoefficient);
-            _countLevelDamageImprovements = Mathf.RoundToInt(_maxDamageCoefficient / _improveDamageCoefficient);
-        }
     }
 }

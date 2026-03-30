@@ -19,7 +19,11 @@ namespace CannonTurret.UI.Animations
             Camera camera = Camera.main;
 
             if (camera.TryGetComponent(out ICameraAdapter cameraAdapter) == false)
-                throw new System.InvalidOperationException($"The main camera does not contain the component: <{nameof(ICameraAdapter)}>");
+            {
+                string message = $"The main camera does not contain the component: <{nameof(ICameraAdapter)}>";
+
+                throw new System.InvalidOperationException(message);
+            }
 
             _cameraAdapter = cameraAdapter;
             _hashIsVertival = Animator.StringToHash(IsVertival);

@@ -5,18 +5,18 @@ namespace CannonTurret.StepSystem.Steps
 {
     public class EnemyAttackStep : IStep, IEndPointStep
     {
-        private readonly IEnemiesAttacker EnemiesAttacker;
+        private readonly IEnemiesAttacker _enemiesAttacker;
 
         private IEndStep _endStep;
 
         public EnemyAttackStep(IEnemiesAttacker enemiesAttacker)
         {
-            EnemiesAttacker = enemiesAttacker ?? throw new ArgumentNullException(nameof(enemiesAttacker));
+            _enemiesAttacker = enemiesAttacker ?? throw new ArgumentNullException(nameof(enemiesAttacker));
         }
 
         public void Action()
         {
-            EnemiesAttacker.AttackAll();
+            _enemiesAttacker.AttackAll();
             _endStep.End();
         }
 

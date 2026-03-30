@@ -70,7 +70,11 @@ namespace CannonTurret.EntryPoints.PlayLevel.Configurators
             IActorSpawner actorSpawner = CreatActorSpawner();
             ActorsMover actorsMover = new ActorsMover();
             ActorsRemover actorsRemover = new ActorsRemover();
-            ActorsPreparator actorsPreparator = new ActorsPreparator(actorSpawner, actorsMover, _startMoveAttributes, _defaultMoveAttributes);
+            ActorsPreparator actorsPreparator = new ActorsPreparator(
+                actorSpawner, 
+                actorsMover, 
+                _startMoveAttributes, 
+                _defaultMoveAttributes);
             ActorsController actorsController = new ActorsController(actorsPreparator, actorsRemover);
             actorsPreparator.SetLevel(level);
 

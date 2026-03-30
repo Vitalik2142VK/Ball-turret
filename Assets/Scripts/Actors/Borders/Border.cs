@@ -8,37 +8,37 @@ namespace CannonTurret.Actors.Borders
 {
     public class Border : IBorder
     {
-        private readonly IBorderPresenter Presenter;
-        private readonly IMovableObject Mover;
-        private readonly IArmor Armor;
-        private readonly IHealth Health;
+        private readonly IBorderPresenter _presenter;
+        private readonly IMovableObject _mover;
+        private readonly IArmor _armor;
+        private readonly IHealth _health;
 
         public Border(IBorderPresenter presenter, IMovableObject mover, IArmor armor, IHealth health)
         {
-            Presenter = presenter ?? throw new ArgumentNullException(nameof(presenter));
-            Mover = mover ?? throw new ArgumentNullException(nameof(mover));
-            Armor = armor ?? throw new ArgumentNullException(nameof(armor));
-            Health = health ?? throw new ArgumentNullException(nameof(health));
+            _presenter = presenter ?? throw new ArgumentNullException(nameof(presenter));
+            _mover = mover ?? throw new ArgumentNullException(nameof(mover));
+            _armor = armor ?? throw new ArgumentNullException(nameof(armor));
+            _health = health ?? throw new ArgumentNullException(nameof(health));
 
             Enable();
         }
 
-        public bool IsFinished => Mover.IsFinished;
+        public bool IsFinished => _mover.IsFinished;
 
         public bool IsEnable { get; private set; }
 
-        public void SetStartPosition(Vector3 startPosition) => Mover.SetStartPosition(startPosition);
+        public void SetStartPosition(Vector3 startPosition) => _mover.SetStartPosition(startPosition);
 
-        public void EstablishPoint(Vector3 distance, float speed) => Mover.EstablishPoint(distance, speed);
+        public void EstablishPoint(Vector3 distance, float speed) => _mover.EstablishPoint(distance, speed);
 
-        public void Move() => Mover.Move();
+        public void Move() => _mover.Move();
 
         public void TakeDamage(IDamageAttributes damage)
         {
             if (damage == null)
                 throw new ArgumentNullException(nameof(damage));
 
-            Armor.ReduceDamage(damage);
+            _armor.ReduceDamage(damage);
 
             CheckAlive();
         }
@@ -48,14 +48,14 @@ namespace CannonTurret.Actors.Borders
             if (damage == null)
                 throw new ArgumentNullException(nameof(damage));
 
-            Health.TakeDamage(damage);
+            _health.TakeDamage(damage);
 
             CheckAlive();
         }
 
         public void Destroy()
         {
-            Presenter.Destroy();
+            _presenter.Destroy();
             IsEnable = false;
         }
 
@@ -63,12 +63,12 @@ namespace CannonTurret.Actors.Borders
         {
             IsEnable = true;
 
-            Health.Restore();
+            _health.Restore();
         }
 
         private void CheckAlive()
         {
-            if (Health.IsAlive == false)
+            if (_health.IsAlive == false)
                 IsEnable = false;
         }
     }

@@ -6,13 +6,16 @@ namespace CannonTurret.LevelSystem
 {
     public class AdvancedLevelFactory : ILevelFactory
     {
-        private readonly ILevelFactory LevelFactory;
-        private readonly ILevelActorsPlanner EndlessLevelPlanner;
-        private readonly ICoinCountRandomizer CoinCountRandomizer;
-        private readonly float ActorsHealthCoefficientByLevel;
-        private readonly int AchievedLevelIndex;
+        private readonly ILevelFactory _levelFactory;
+        private readonly ILevelActorsPlanner _endlessLevelPlanner;
+        private readonly float _actorsHealthCoefficientByLevel;
+        private readonly int _achievedLevelIndex;
 
-        public AdvancedLevelFactory(ILevelFactory levelFactory, ILevelActorsPlanner endlessLevelPlanner, ICoinCountRandomizer coinCountRandomizer, float actorsHealthCoefficientByLevel, int achievedLevelIndex)
+        public AdvancedLevelFactory(
+            ILevelFactory levelFactory,
+            ILevelActorsPlanner endlessLevelPlanner,
+            float actorsHealthCoefficientByLevel,
+            int achievedLevelIndex)
         {
             if (actorsHealthCoefficientByLevel < ILevelFactory.MinActorsHealthCoefficientByLevel)
                 throw new ArgumentOutOfRangeException(nameof(actorsHealthCoefficientByLevel));
@@ -20,13 +23,12 @@ namespace CannonTurret.LevelSystem
             if (achievedLevelIndex < 0)
                 throw new ArgumentOutOfRangeException(nameof(achievedLevelIndex));
 
-            LevelFactory = levelFactory ?? throw new ArgumentNullException(nameof(levelFactory));
-            EndlessLevelPlanner = endlessLevelPlanner ?? throw new ArgumentNullException(nameof(endlessLevelPlanner));
-            CoinCountRandomizer = coinCountRandomizer ?? throw new ArgumentNullException(nameof(coinCountRandomizer));
-            ActorsHealthCoefficientByLevel = actorsHealthCoefficientByLevel;
-            AchievedLevelIndex = achievedLevelIndex;
+            _levelFactory = levelFactory ?? throw new ArgumentNullException(nameof(levelFactory));
+            _endlessLevelPlanner = endlessLevelPlanner ?? throw new ArgumentNullException(nameof(endlessLevelPlanner));
+            _actorsHealthCoefficientByLevel = actorsHealthCoefficientByLevel;
+            _achievedLevelIndex = achievedLevelIndex;
 
-            LevelsCount = LevelFactory.LevelsCount + 1;
+            LevelsCount = _levelFactory.LevelsCount + 1;
         }
 
         public int LevelsCount { get; }
@@ -36,15 +38,16 @@ namespace CannonTurret.LevelSystem
             if (indexLevel == EndlessLevel.IndexLevel)
                 return CreateEndlessLevel();
 
-            return LevelFactory.Create(indexLevel);
+            return _levelFactory.Create(indexLevel);
         }
 
         private EndlessLevel CreateEndlessLevel()
         {
-            Level level = new Level(EndlessLevelPlanner, CoinCountRandomizer);
+            Level level = new Level(_endlessLevelPlanner);
             SavedLeaderBoard savedLeaderBoard = new SavedLeaderBoard();
             float reducingCoefficient = 0.1f;
-            float healthMultiplierPerWave = ActorsHealthCoefficientByLevel + (float)(AchievedLevelIndex * reducingCoefficient);
+            float finishCoefficient = (float)(_achievedLevelIndex * reducingCoefficient);
+            float healthMultiplierPerWave = _actorsHealthCoefficientByLevel + finishCoefficient;
 
             return new EndlessLevel(level, savedLeaderBoard, healthMultiplierPerWave);
         }

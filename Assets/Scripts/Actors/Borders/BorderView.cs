@@ -58,11 +58,14 @@ namespace CannonTurret.Actors.Borders
             _audioController = audioController ?? throw new ArgumentNullException(nameof(audioController));
         }
 
-        public void PrepareDeleted(IRemovedActorsCollector removedCollector) => _presenter.PrepareDeleted(removedCollector);
-
         public void TakeDamage(IDamageAttributes damage) => _presenter.TakeDamage(damage);
 
         public void IgnoreArmor(IDamageAttributes damage) => _presenter.IgnoreArmor(damage);
+
+        public void PrepareDeleted(IRemovedActorsCollector removedCollector)
+        {
+            _presenter.PrepareDeleted(removedCollector);
+        }
 
         public void PlayDamage()
         {

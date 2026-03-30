@@ -107,7 +107,11 @@ namespace CannonTurret.UI.MainMenu
         private void ScrollToButton(SelectLevelButton button)
         {
             if (button.TryGetComponent(out RectTransform rectTransform) == false)
-                throw new InvalidOperationException($"{nameof(button)} does not contain the '{nameof(RectTransform)}' component");
+            {
+                string message = $"{nameof(button)} does not contain the '{nameof(RectTransform)}' component";
+
+                throw new InvalidOperationException(message);
+            }
 
             _scrollerToElement.ScrollToElement(rectTransform);
         }

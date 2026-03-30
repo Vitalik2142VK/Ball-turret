@@ -5,7 +5,12 @@ namespace CannonTurret.EntryPoints.PlayLevel
 {
     public class Config
     {
-        public Config(StepControllerConfigurator stepControllerConfigurator, ActorsConfigurator actorsConfigurator, UIConfigurator uiConfigurator, FinishWindowConfigurator finishWindowConfigurator, IWinStatus winStatus)
+        public Config(
+            StepControllerConfigurator stepControllerConfigurator,
+            ActorsConfigurator actorsConfigurator,
+            UIConfigurator uiConfigurator,
+            FinishWindowConfigurator finishWindowConfigurator,
+            IWinStatus winStatus)
         {
             StepSystemConfigurator = stepControllerConfigurator;
             ActorsConfigurator = actorsConfigurator;

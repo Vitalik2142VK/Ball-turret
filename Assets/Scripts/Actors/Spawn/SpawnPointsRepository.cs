@@ -12,7 +12,7 @@ namespace CannonTurret.Actors.Spawn
 
         [SerializeField] private Transform _startPoint;
 
-        private SpawnPoint[,] _spawnPoints;
+        private Vector3[,] _spawnPoints;
         private Vector3 _positionStartPoint;
 
         private void OnValidate()
@@ -35,31 +35,26 @@ namespace CannonTurret.Actors.Spawn
             if (lineNum < 0 || lineNum >= LinesCount)
                 throw new ArgumentOutOfRangeException($"The {nameof(lineNum)} must be from 0 to {LinesCount - 1}");
 
-            SpawnPoint spawnPoint = _spawnPoints[lineNum, columnNum];
-
-            return spawnPoint.GetPosition();
+            return _spawnPoints[lineNum, columnNum];
         }
 
-        public void FreeAllSpawnPoints()
+        private Vector3[,] CreatePoints()
         {
-            for (int i = 0; i < _spawnPoints.Length; i++)
+            Vector3[,] spawnPoints = new Vector3[LinesCount, ColumnCount];
+            float positionX = _positionStartPoint.x;
+            float positionZ = _positionStartPoint.z;
+
+            for (int i = 0; i < LinesCount; i++)
             {
-                for (int j = 0; j < _spawnPoints.GetLength(0); j++)
-                    _spawnPoints[i, j].FreePoint();
-            }
-        }
+                for (int j = 0; j < ColumnCount; j++)
+                {
+                    spawnPoints[i, j] = new Vector3(positionX, _positionStartPoint.y, positionZ);
 
-        private SpawnPoint[,] CreatePoints()
-        {
-            SpawnPoint[,] spawnPoints = new SpawnPoint[LinesCount, ColumnCount];
-            Vector3 positionNewPoint = _positionStartPoint;
+                    positionX += IntervalBetweenPoints;
+                }
 
-            for (int i = 0; i < LinesCount; i++, positionNewPoint = new Vector3(positionNewPoint.x, positionNewPoint.y, positionNewPoint.z - DistanceBetweenPoints))
-            {
-                for (int j = 0; j < ColumnCount; j++, positionNewPoint = new Vector3(positionNewPoint.x + IntervalBetweenPoints, positionNewPoint.y, positionNewPoint.z))
-                    spawnPoints[i, j] = new SpawnPoint(positionNewPoint);
-
-                positionNewPoint = new Vector3(_positionStartPoint.x, positionNewPoint.y, positionNewPoint.z);
+                positionZ -= DistanceBetweenPoints;
+                positionX = _positionStartPoint.x;
             }
 
             return spawnPoints;

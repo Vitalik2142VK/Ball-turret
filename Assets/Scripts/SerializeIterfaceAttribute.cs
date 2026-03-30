@@ -1,12 +1,15 @@
 using System;
 using UnityEngine;
 
-public class SerializeIterfaceAttribute : PropertyAttribute
+namespace CannonTurret
 {
-    public Type Type { get; }
-
-    public SerializeIterfaceAttribute(Type type)
+    public class SerializeIterfaceAttribute : PropertyAttribute
     {
-        Type = type ?? throw new ArgumentNullException(nameof(type));
-    }
+        public Type Type { get; }
+
+        public SerializeIterfaceAttribute(Type type)
+        {
+            Type = type ?? throw new ArgumentNullException(nameof(type));
+        }
+    }                                                                                                                  
 }

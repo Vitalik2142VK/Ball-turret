@@ -4,11 +4,11 @@ namespace CannonTurret.DamageSystem
 {
     public class Damage : IDamage
     {
-        private readonly IDamageAttributes Attributes;
+        private readonly IDamageAttributes _attributes;
 
         public Damage(IDamageAttributes attributes)
         {
-            Attributes = attributes ?? throw new ArgumentNullException(nameof(attributes));
+            _attributes = attributes ?? throw new ArgumentNullException(nameof(attributes));
         }
 
         public void Apply(IDamagedObject damagedObject)
@@ -16,7 +16,7 @@ namespace CannonTurret.DamageSystem
             if (damagedObject == null)
                 throw new ArgumentNullException(nameof(damagedObject));
 
-            damagedObject.TakeDamage(Attributes);
+            damagedObject.TakeDamage(_attributes);
         }
     }
 }

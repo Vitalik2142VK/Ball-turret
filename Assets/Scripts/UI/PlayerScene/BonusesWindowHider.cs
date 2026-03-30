@@ -30,8 +30,14 @@ namespace CannonTurret.UI.PlayerScene
 
         public void Initialize(IOpenWindowButton openWindowButton, IReservedBonusesWindow reservedBonusesWindow)
         {
-            _openWindowButton = openWindowButton ?? throw new ArgumentNullException(nameof(openWindowButton));
-            _reservedBonusesWindow = reservedBonusesWindow ?? throw new ArgumentNullException(nameof(reservedBonusesWindow));
+            if (openWindowButton == null)
+                throw new ArgumentNullException(nameof(openWindowButton));
+
+            if (reservedBonusesWindow == null)
+                throw new ArgumentNullException(nameof(reservedBonusesWindow));
+
+            _openWindowButton = openWindowButton;
+            _reservedBonusesWindow = reservedBonusesWindow;
             _wasButtonActive = false;
         }
 

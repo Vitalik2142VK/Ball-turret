@@ -112,7 +112,11 @@ namespace CannonTurret.EntryPoints.PlayLevel.Configurators
 
         private void CreateSteps(IActorsController actorsController, IEnemiesController enemiesController)
         {
-            _playerStep = new PlayerStep(_dataForStepSystem.PlayerController, enemiesController, _reservedBonusesWindow);
+            _playerStep = new PlayerStep(
+                _dataForStepSystem.PlayerController, 
+                enemiesController, 
+                _reservedBonusesWindow);
+
             _resetComboStep = new ResetComboStep(_comboCounter);
             _bonusActivationStep = new BonusActivationStep(_bulletCollector, _openReservedBonusesButton);
             _objectsMoveStep = new ActorsMoveStep(actorsController);
@@ -127,13 +131,22 @@ namespace CannonTurret.EntryPoints.PlayLevel.Configurators
         private void CreatePrepareActorsStep(IActorsController actorsController, IEnemiesController enemiesController)
         {
             _nextStepPrepareActors = new DynamicNextStep(_stepController);
-            _prepareActorsStep = new PrepareActorsStep(actorsController, enemiesController, _nextStepPrepareActors, _objectsMoveStep);
+            _prepareActorsStep = new PrepareActorsStep(
+                actorsController, 
+                enemiesController, 
+                _nextStepPrepareActors, 
+                _objectsMoveStep);
         }
 
         private void CreateCyclicalStep(IActorsRemover actorsRemover, IEnemiesController enemiesController)
         {
             DynamicNextStep dynamicNextStep = new DynamicNextStep(_stepController);
-            _cyclicalStep = new CyclicalStep(dynamicNextStep, actorsRemover, enemiesController, _dataForStepSystem.LevelStatus);
+            _cyclicalStep = new CyclicalStep(
+                dynamicNextStep, 
+                actorsRemover, 
+                enemiesController, 
+                _dataForStepSystem.LevelStatus);
+
             _cyclicalStep.SetStartStep(_prepareActorsStep);
             _cyclicalStep.SetLoopingStep(_playerStep);
             _cyclicalStep.SetFinishStep(_rewardStep);

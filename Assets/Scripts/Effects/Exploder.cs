@@ -36,7 +36,12 @@ namespace CannonTurret.Effects
             _sound.Play();
             _explosionView.Play();
 
-            int count = Physics.OverlapSphereNonAlloc(pointContact, _explosionRadius, _colliders, _layerMask, QueryTriggerInteraction.Ignore);
+            int count = Physics.OverlapSphereNonAlloc(
+                pointContact, 
+                _explosionRadius, 
+                _colliders, 
+                _layerMask, 
+                QueryTriggerInteraction.Ignore);
 
             for (int i = 0; i < count; i++)
             {

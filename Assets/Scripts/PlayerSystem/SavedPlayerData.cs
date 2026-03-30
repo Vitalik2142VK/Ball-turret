@@ -7,37 +7,37 @@ namespace CannonTurret.PlayerSystem
 {
     public class SavedPlayerData : ISavedPlayerData
     {
-        private readonly SavesYG SavesYG;
+        private readonly SavesYG _savesYG;
 
         public SavedPlayerData()
         {
             if (YG2.isSDKEnabled == false)
                 throw new InvalidOperationException("The Yandex SDK is not Enabled");
 
-            SavesYG = YG2.saves;
-            SavesYG.CheckPurchaseAvailability();
+            _savesYG = YG2.saves;
+            _savesYG.CheckPurchaseAvailability();
         }
 
-        public IReadOnlyCollection<IPlayerPurchase> OneTimePurchases => SavesYG.GetOneTimePurchases();
-        public float HealthCoefficient => SavesYG.HealthCoefficient;
-        public float DamageCoefficient => SavesYG.DamageCoefficient;
-        public long CountCoins => SavesYG.CountCoins;
-        public int AchievedLevelIndex => SavesYG.AchievedLevelIndex;
+        public IReadOnlyCollection<IPlayerPurchase> OneTimePurchases => _savesYG.GetOneTimePurchases();
+        public float HealthCoefficient => _savesYG.HealthCoefficient;
+        public float DamageCoefficient => _savesYG.DamageCoefficient;
+        public long CountCoins => _savesYG.CountCoins;
+        public int AchievedLevelIndex => _savesYG.AchievedLevelIndex;
 
         public void SetHealthCoefficient(float healthCoefficient)
         {
-            if (healthCoefficient < SavesYG.HealthCoefficient)
+            if (healthCoefficient < _savesYG.HealthCoefficient)
                 throw new ArgumentOutOfRangeException(nameof(healthCoefficient));
 
-            SavesYG.HealthCoefficient = healthCoefficient;
+            _savesYG.HealthCoefficient = healthCoefficient;
         }
 
         public void SetDamageCoefficient(float damageCoefficient)
         {
-            if (damageCoefficient < SavesYG.DamageCoefficient)
+            if (damageCoefficient < _savesYG.DamageCoefficient)
                 throw new ArgumentOutOfRangeException(nameof(damageCoefficient));
 
-            SavesYG.DamageCoefficient = damageCoefficient;
+            _savesYG.DamageCoefficient = damageCoefficient;
         }
 
         public void SetCountCoins(long countCoins)
@@ -45,35 +45,18 @@ namespace CannonTurret.PlayerSystem
             if (countCoins < 0)
                 throw new ArgumentOutOfRangeException(nameof(countCoins));
 
-            SavesYG.CountCoins = countCoins;
+            _savesYG.CountCoins = countCoins;
         }
 
         public void SetAchievedLevelIndex(int achievedLevelIndex)
         {
             int nextLevelIndex = 1;
-            nextLevelIndex += SavesYG.AchievedLevelIndex;
+            nextLevelIndex += _savesYG.AchievedLevelIndex;
 
-            if (achievedLevelIndex > nextLevelIndex || achievedLevelIndex < SavesYG.AchievedLevelIndex)
+            if (achievedLevelIndex > nextLevelIndex || achievedLevelIndex < _savesYG.AchievedLevelIndex)
                 throw new ArgumentOutOfRangeException(nameof(achievedLevelIndex));
 
-            SavesYG.AchievedLevelIndex = achievedLevelIndex;
-        }
-
-        public void RemoveProgerss()
-        {
-            SavesYG clearSave = new SavesYG();
-            SavesYG.HealthCoefficient = clearSave.HealthCoefficient;
-            SavesYG.DamageCoefficient = clearSave.DamageCoefficient;
-            SavesYG.CountCoins = clearSave.CountCoins;
-            SavesYG.AchievedLevelIndex = clearSave.AchievedLevelIndex;
-
-            YG2.SaveProgress();
-        }
-
-        public void RemoveAll()
-        {
-            YG2.saves = new SavesYG();
-            YG2.SaveProgress();
+            _savesYG.AchievedLevelIndex = achievedLevelIndex;
         }
     }
 }

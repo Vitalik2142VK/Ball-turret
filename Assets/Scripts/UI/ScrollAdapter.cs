@@ -40,7 +40,11 @@ namespace CannonTurret.UI
             Camera camera = Camera.main;
 
             if (camera.TryGetComponent(out ICameraAdapter cameraAdapter) == false)
-                throw new InvalidOperationException($"The main camera does not contain the component: <{nameof(ICameraAdapter)}>");
+            {
+                string message = $"The main camera does not contain the component: <{nameof(ICameraAdapter)}>";
+
+                throw new InvalidOperationException(message);
+            }
 
             _cameraAdapter = cameraAdapter;
             _defaultCellSize = _gridLayoutGroup.cellSize;
@@ -64,16 +68,6 @@ namespace CannonTurret.UI
 
             _cameraAdapter.OrientationChanged -= OnChangeScrollSetting;
             _cameraAdapter.RatioChanged -= OnChangeScrollSetting;
-        }
-
-        private ICameraAdapter FindCameraAdapter()
-        {
-            Camera camera = Camera.main;
-
-            if (camera.TryGetComponent(out ICameraAdapter cameraAdapter) == false)
-                throw new InvalidOperationException($"The main camera does not contain the component: <{nameof(ICameraAdapter)}>");
-
-            return cameraAdapter;
         }
 
         private void OnChangeScrollSetting()
@@ -124,7 +118,8 @@ namespace CannonTurret.UI
         private void UpdateCellSize()
         {
             float heightRect = _contentRectTransform.rect.size.y;
-            float heightByAnchors = (_contentRectTransform.anchorMax.y - _contentRectTransform.anchorMin.y) * heightRect - _gridLayoutGroup.padding.bottom;
+            float positionY = _contentRectTransform.anchorMax.y - _contentRectTransform.anchorMin.y;
+            float heightByAnchors = positionY * heightRect - _gridLayoutGroup.padding.bottom;
 
             if (_defaultCellSize.y < heightByAnchors)
                 _gridLayoutGroup.cellSize = _defaultCellSize;

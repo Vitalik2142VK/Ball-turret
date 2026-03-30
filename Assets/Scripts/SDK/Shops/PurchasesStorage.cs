@@ -5,17 +5,17 @@ namespace CannonTurret.SDK.Shops
 {
     public class PurchasesStorage : IPurchasesStorage
     {
-        private readonly Dictionary<string, IPlayerPurchase> Purchases;
+        private readonly Dictionary<string, IPlayerPurchase> _purchases;
 
         public PurchasesStorage(IEnumerable<IPlayerPurchase> purchases)
         {
             if (purchases == null)
                 throw new ArgumentNullException(nameof(purchases));
 
-            Purchases = new Dictionary<string, IPlayerPurchase>();
+            _purchases = new Dictionary<string, IPlayerPurchase>();
 
             foreach (var purchase in purchases)
-                Purchases.Add(purchase.Id, purchase);
+                _purchases.Add(purchase.Id, purchase);
         }
 
         public bool TryGetPurchase(out IPlayerPurchase purchase, string id)
@@ -25,9 +25,9 @@ namespace CannonTurret.SDK.Shops
 
             purchase = null;
 
-            if (Purchases.ContainsKey(id))
+            if (_purchases.ContainsKey(id))
             {
-                purchase = Purchases[id];
+                purchase = _purchases[id];
 
                 return true;
             }

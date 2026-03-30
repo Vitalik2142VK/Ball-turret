@@ -7,22 +7,22 @@ namespace CannonTurret.Coin.Products
     {
         private const int Remains = 2;
 
-        private readonly ITurretImprover TurretImprover;
-        private readonly float Heath;
+        private readonly ITurretImprover _turretImprover;
+        private readonly float _heath;
 
         public HealthImprovementProduct(ITurretImprover turretImprover, float heath)
         {
             if (heath <= 0)
                 throw new ArgumentOutOfRangeException(nameof(heath));
 
-            TurretImprover = turretImprover ?? throw new ArgumentNullException(nameof(turretImprover));
-            Heath = heath;
+            _turretImprover = turretImprover ?? throw new ArgumentNullException(nameof(turretImprover));
+            _heath = heath;
         }
 
-        public float ImproveValue => (float)Math.Round(Heath * TurretImprover.ImproveHealthCoefficient, Remains);
+        public float ImproveValue => (float)Math.Round(_heath * _turretImprover.ImproveHealthCoefficient, Remains);
 
-        public int CurrentValue => (int)Math.Round(Heath * TurretImprover.HealthCoefficient);
+        public int CurrentValue => (int)Math.Round(_heath * _turretImprover.HealthCoefficient);
 
-        public bool CanImprove => TurretImprover.CanImproveHealth;
+        public bool CanImprove => _turretImprover.CanImproveHealth;
     }
 }

@@ -32,7 +32,9 @@ namespace CannonTurret.Actors.Bonuses.Activators
         {
             if (_bonusActivators == null)
             {
-                var bonusPrefabs = _randomBonusCreators.Select(bc => bc.GetComponent<IBonusCreator>().Create()).ToArray();
+                var bonusPrefabs = _randomBonusCreators.Select(bc => 
+                bc.GetComponent<IBonusCreator>().Create()).ToArray();
+
                 BonusRandomizer bonusRandomizer = new BonusRandomizer(bonusPrefabs);
                 _bonusActivators = new ChoiceBonusActivator(_bonusChoiceMenu, bonusRandomizer);
             }
@@ -40,6 +42,9 @@ namespace CannonTurret.Actors.Bonuses.Activators
             return _bonusActivators;
         }
 
-        public void SetBonusReservator(IBonusReservator bonusReservator) => _bonusActivators.SetBonusReservator(bonusReservator);
+        public void SetBonusReservator(IBonusReservator bonusReservator)
+        {
+            _bonusActivators.SetBonusReservator(bonusReservator);
+        }
     }
 }

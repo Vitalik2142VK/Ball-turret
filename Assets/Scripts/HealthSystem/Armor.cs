@@ -5,20 +5,26 @@ namespace CannonTurret.HealthSystem
 {
     public class Armor : IArmor
     {
-        private readonly IDamagedObject ArmoredDamagedObject;
-        private readonly IArmorAttributes ArmorAttributes;
+        private readonly IDamagedObject _armoredDamagedObject;
+        private readonly IArmorAttributes _armorAttributes;
 
         public Armor(IDamagedObject armoredDamagedObject, IArmorAttributes armorAttributes)
         {
-            ArmoredDamagedObject = armoredDamagedObject ?? throw new ArgumentNullException(nameof(armoredDamagedObject));
-            ArmorAttributes = armorAttributes ?? throw new ArgumentNullException(nameof(armorAttributes));
+            if (armoredDamagedObject == null)
+                throw new ArgumentNullException(nameof(armoredDamagedObject));
+
+            if (armorAttributes == null)
+                throw new ArgumentNullException(nameof(armorAttributes));
+
+            _armoredDamagedObject = armoredDamagedObject;
+            _armorAttributes = armorAttributes;
         }
 
         public void ReduceDamage(IDamageAttributes attributes)
         {
             var damageChanger = new DamageChanger(attributes);
-            damageChanger.Change(ArmorAttributes.DamageReductionCoefficient);
-            ArmoredDamagedObject.TakeDamage(damageChanger);
+            damageChanger.Change(_armorAttributes.DamageReductionCoefficient);
+            _armoredDamagedObject.TakeDamage(damageChanger);
         }
     }
 }

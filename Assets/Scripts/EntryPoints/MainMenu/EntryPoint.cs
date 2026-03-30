@@ -67,11 +67,10 @@ namespace CannonTurret.EntryPoints.MainMenu
 
             var levelFactory = _levelsPlannerConfigurator.LevelFactory;
             var improvementShop = _shopConfigurator.ImprovementShop;
-            var coinCountRandomizer = _levelsPlannerConfigurator.CoinCountRandomizer;
 
             _userInterfaseConfigurator.SetAdsViewer(_adsViewer);
             _userInterfaseConfigurator.SetImprovementShop(improvementShop);
-            _userInterfaseConfigurator.Configure(player, coinAdder, levelFactory, coinCountRandomizer);
+            _userInterfaseConfigurator.Configure(player, coinAdder, levelFactory);
 
             YG2.GameReadyAPI();
 

@@ -10,7 +10,14 @@ namespace CannonTurret.StepSystem
 {
     public class DataForStepController : IDataForStepController
     {
-        public DataForStepController(ITurret turret, IAdsViewer adsViewer, IRewardIssuer rewardIssuer, IPlayerController playerController, IVictoryController victoryController, IActorsControllersAccess controllersAccess, ILevelStatus levelStatus)
+        public DataForStepController(
+            ITurret turret,
+            IAdsViewer adsViewer,
+            IRewardIssuer rewardIssuer,
+            IPlayerController playerController,
+            IVictoryController victoryController,
+            IActorsControllersAccess controllersAccess,
+            ILevelStatus levelStatus)
         {
             Turret = turret ?? throw new ArgumentNullException(nameof(turret));
             AdsViewer = adsViewer ?? throw new ArgumentNullException(nameof(adsViewer));

@@ -12,25 +12,39 @@ namespace CannonTurret.Actors
     {
         private List<IActor> _actors;
 
-        private readonly IActorSpawner Spawner;
-        private readonly IAdvancedActorsMover AdvancedActorsMover;
-        private readonly IMoveAttributes StartMoveAttributes;
-        private readonly IMoveAttributes DefaultMoveAttributes;
+        private readonly IActorSpawner _spawner;
+        private readonly IAdvancedActorsMover _advancedActorsMover;
+        private readonly IMoveAttributes _startMoveAttributes;
+        private readonly IMoveAttributes _defaultMoveAttributes;
 
         private ILevel _level;
 
-        public IActorsMover ActorsMover => AdvancedActorsMover;
-
-        public bool AreWavesOver => _level.AreWavesOver;
+        public IActorsMover ActorsMover => _advancedActorsMover;
 
         public int EnemiesCount { get; private set; }
 
-        public ActorsPreparator(IActorSpawner spawner, IAdvancedActorsMover actorsMover, IMoveAttributes startMoveAttributes, IMoveAttributes defaultMoveAttributes)
+        public ActorsPreparator(
+            IActorSpawner spawner,
+            IAdvancedActorsMover actorsMover,
+            IMoveAttributes startMoveAttributes,
+            IMoveAttributes defaultMoveAttributes)
         {
-            Spawner = spawner ?? throw new ArgumentNullException(nameof(startMoveAttributes));
-            AdvancedActorsMover = actorsMover ?? throw new ArgumentNullException(nameof(actorsMover));
-            StartMoveAttributes = startMoveAttributes ?? throw new ArgumentNullException(nameof(startMoveAttributes));
-            DefaultMoveAttributes = defaultMoveAttributes ?? throw new ArgumentNullException(nameof(defaultMoveAttributes));
+            if (startMoveAttributes == null)
+                throw new ArgumentNullException(nameof(startMoveAttributes));
+
+            if (actorsMover == null)
+                throw new ArgumentNullException(nameof(actorsMover));
+
+            if (startMoveAttributes == null)
+                throw new ArgumentNullException(nameof(startMoveAttributes));
+
+            if (defaultMoveAttributes == null)
+                throw new ArgumentNullException(nameof(defaultMoveAttributes));
+
+            _spawner = spawner;
+            _advancedActorsMover = actorsMover;
+            _startMoveAttributes = startMoveAttributes;
+            _defaultMoveAttributes = defaultMoveAttributes;
 
             _actors = new List<IActor>();
 
@@ -46,10 +60,10 @@ namespace CannonTurret.Actors
             }
             else
             {
-                AdvancedActorsMover.SetMoveAttributes(DefaultMoveAttributes);
+                _advancedActorsMover.SetMoveAttributes(_defaultMoveAttributes);
             }
 
-            AdvancedActorsMover.SetMovableObjects(_actors);
+            _advancedActorsMover.SetMovableObjects(_actors);
         }
 
         public IEnumerable<IActor> PopActors()
@@ -109,8 +123,8 @@ namespace CannonTurret.Actors
             if (_level.TryGetNextWaveActorsPlanner(out IWaveActorsPlanner waveActorsPlanner) == false)
                 return;
 
-            _actors = Spawner.Spawn(waveActorsPlanner);
-            AdvancedActorsMover.SetMoveAttributes(StartMoveAttributes);
+            _actors = _spawner.Spawn(waveActorsPlanner);
+            _advancedActorsMover.SetMoveAttributes(_startMoveAttributes);
         }
     }
 }

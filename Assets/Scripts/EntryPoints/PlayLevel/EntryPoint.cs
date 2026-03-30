@@ -107,7 +107,14 @@ namespace CannonTurret.EntryPoints.PlayLevel
             var actorsControllersAccess = _actorsConfigurator.ControllersAccess;
             var enemiesController = actorsControllersAccess.EnemiesController;
             VictoryController victoryController = new VictoryController(enemiesController, shooterView, winStatus);
-            DataForStepController dataForStepController = new DataForStepController(turret, _adsViewer, rewardIssuer, playerController, victoryController, actorsControllersAccess, levelStatus);
+            DataForStepController dataForStepController = new DataForStepController(
+                turret, 
+                _adsViewer, 
+                rewardIssuer, 
+                playerController, 
+                victoryController, 
+                actorsControllersAccess, 
+                levelStatus);
 
             _stepControllerConfigurator.Configure(dataForStepController);
             _bonusPrefabConfigurator.Configure(enemiesController);
@@ -116,10 +123,20 @@ namespace CannonTurret.EntryPoints.PlayLevel
             var changeSceneStep = _stepControllerConfigurator.ChangeSceneStep;
 
             _userInterfaceConfigurator.Configure(changeSceneStep, _selectedLevel);
-            _finishWindowConfigurator.Configure(_coinsAdder, rewardIssuer, _adsViewer, winStatus, changeSceneStep, _selectedLevel);
+            _finishWindowConfigurator.Configure(_coinsAdder,
+                rewardIssuer, 
+                _adsViewer, 
+                winStatus, 
+                changeSceneStep, 
+                _selectedLevel);
             _bonusesWindowHiderConfigurator.Configure(_turretConfigurator.ShotAction);
 
-            Configs = new Config(_stepControllerConfigurator, _actorsConfigurator, _userInterfaceConfigurator, _finishWindowConfigurator, winStatus);
+            Configs = new Config(
+                _stepControllerConfigurator, 
+                _actorsConfigurator, 
+                _userInterfaceConfigurator, 
+                _finishWindowConfigurator, 
+                winStatus);
 
             if (_player.AchievedLevelIndex == 0)
                 SceneManager.LoadScene((int)SceneIndex.LearningScene, LoadSceneMode.Additive);

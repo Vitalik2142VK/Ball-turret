@@ -8,8 +8,8 @@ namespace CannonTurret.StepSystem.Steps
 {
     public class BonusActivationStep : IStep, IEndPointStep
     {
-        private readonly IBonusStorage BonusStorage;
-        private readonly IOpenWindowButton OpenWindowButton;
+        private readonly IBonusStorage _bonusStorage;
+        private readonly IOpenWindowButton _openWindowButton;
 
         private IEndStep _endStep;
         private IBonusReservator _bonusReservator;
@@ -17,8 +17,8 @@ namespace CannonTurret.StepSystem.Steps
 
         public BonusActivationStep(IBonusStorage bonusStorage, IOpenWindowButton openWindowButton)
         {
-            BonusStorage = bonusStorage ?? throw new ArgumentNullException(nameof(bonusStorage));
-            OpenWindowButton = openWindowButton ?? throw new ArgumentNullException(nameof(openWindowButton));
+            _bonusStorage = bonusStorage ?? throw new ArgumentNullException(nameof(bonusStorage));
+            _openWindowButton = openWindowButton ?? throw new ArgumentNullException(nameof(openWindowButton));
         }
 
         public void Initialize(IBonusReservator bonusReservator)
@@ -30,7 +30,7 @@ namespace CannonTurret.StepSystem.Steps
         {
             if (_bonuses == null || _bonuses.Count == 0)
             {
-                if (BonusStorage.TryGetBonuses(out IReadOnlyCollection<IBonus> bonuses))
+                if (_bonusStorage.TryGetBonuses(out IReadOnlyCollection<IBonus> bonuses))
                     _bonuses = new Queue<IBonus>(bonuses);
                 else
                     FinishStep();
@@ -54,7 +54,7 @@ namespace CannonTurret.StepSystem.Steps
             _bonusReservator.Update();
 
             if (_bonusReservator.HasBonuses)
-                OpenWindowButton.Show();
+                _openWindowButton.Show();
 
             _endStep.End();
         }

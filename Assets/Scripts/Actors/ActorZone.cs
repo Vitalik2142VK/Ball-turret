@@ -15,10 +15,18 @@ namespace CannonTurret.Actors
             CheckExitActor(other);
         }
 
-        public void Initialize(IRemovedActorsCollector removedActorsCollector, IAttackingEnemiesCollector attackingEnemiesCollector)
+        public void Initialize(
+            IRemovedActorsCollector removedActorsCollector,
+            IAttackingEnemiesCollector attackingEnemiesCollector)
         {
-            _attackingEnemies = attackingEnemiesCollector ?? throw new ArgumentNullException(nameof(attackingEnemiesCollector));
-            _removedActors = removedActorsCollector ?? throw new ArgumentNullException(nameof(removedActorsCollector));
+            if (attackingEnemiesCollector == null)
+                throw new ArgumentNullException(nameof(attackingEnemiesCollector));
+
+            if (removedActorsCollector == null)
+                throw new ArgumentNullException(nameof(removedActorsCollector));
+
+            _attackingEnemies = attackingEnemiesCollector;
+            _removedActors = removedActorsCollector;
         }
 
         private void CheckExitActor(Collider other)

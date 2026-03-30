@@ -2,7 +2,7 @@
 
 namespace CannonTurret.DamageSystem
 {
-    public class DamageChanger : IDamageChanger
+    public class DamageChanger : IDamageAttributes
     {
         private const float MinDamageСoefficient = 0.1f;
 

@@ -15,10 +15,9 @@ namespace CannonTurret.EntryPoints.MainMenu.Configurators
 
         [Header("Actors health coefficient by level")]
         [SerializeField][Range(0.3f, 2f)] private float _healthCoefficient;
-
+        
         public ILevelFactory LevelFactory { get; private set; }
 
-        public ICoinCountRandomizer CoinCountRandomizer { get; private set; }
 
         private void OnValidate()
         {
@@ -40,20 +39,25 @@ namespace CannonTurret.EntryPoints.MainMenu.Configurators
             if (player == null)
                 throw new ArgumentNullException(nameof(player));
 
-            float coinsForRewardAdCoefficient = 3.5f;
             int achievedLevelIndex = player.AchievedLevelIndex;
-            CoinCountRandomizer = new CoinCountRandomizer(achievedLevelIndex, coinsForRewardAdCoefficient);
 
             _endlessLevelPlanner.Initialize();
-            _levelFactory.Initialize(CoinCountRandomizer, _healthCoefficient);
+            _levelFactory.Initialize(_healthCoefficient);
 
-            LevelFactory = new AdvancedLevelFactory(_levelFactory, _endlessLevelPlanner, CoinCountRandomizer, _healthCoefficient, achievedLevelIndex);
+            LevelFactory = new AdvancedLevelFactory(
+                _levelFactory, 
+                _endlessLevelPlanner,
+                _healthCoefficient, 
+                achievedLevelIndex);
         }
 
         public void LoadLearningLevel()
         {
             float defaultHealthCoefficient = 1f;
-            Level learningLevel = new Level(_learningLevelActorsPlanners, CoinCountRandomizer, defaultHealthCoefficient);
+            Level learningLevel = new Level(
+                _learningLevelActorsPlanners, 
+                defaultHealthCoefficient);
+
             _sceneLoader.SetSelectedLevel(learningLevel);
             _sceneLoader.Load();
         }

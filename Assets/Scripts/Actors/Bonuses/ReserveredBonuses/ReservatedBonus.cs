@@ -4,8 +4,8 @@ namespace CannonTurret.Actors.Bonuses.ReserveredBonuses
 {
     public class ReservatedBonus : IReservatedBonus
     {
-        private readonly IBonus Bonus;
-        private readonly ReservatedBonusData Data;
+        private readonly IBonus _bonus;
+        private readonly ReservatedBonusData _data;
 
         private IReservedBonusView _view;
 
@@ -14,20 +14,20 @@ namespace CannonTurret.Actors.Bonuses.ReserveredBonuses
             if (maxBonusesCount <= 0)
                 throw new ArgumentOutOfRangeException(nameof(maxBonusesCount));
 
-            Bonus = bonus ?? throw new ArgumentNullException(nameof(bonus));
-            Data = new ReservatedBonusData(maxBonusesCount);
+            _bonus = bonus ?? throw new ArgumentNullException(nameof(bonus));
+            _data = new ReservatedBonusData(maxBonusesCount);
         }
 
-        public IBonusCard BonusCard => Bonus.BonusCard;
+        public IBonusCard BonusCard => _bonus.BonusCard;
 
-        public bool IsCanActivate => Data.IsCanActivate;
+        public bool IsCanActivate => _data.IsCanActivate;
 
         public void Initialize(IReservedBonusView view)
         {
             if (_view == null)
             {
                 _view = view ?? throw new ArgumentNullException(nameof(view));
-                _view.Initialize(Data);
+                _view.Initialize(_data);
                 _view.UpdateData();
             }
         }
@@ -37,8 +37,8 @@ namespace CannonTurret.Actors.Bonuses.ReserveredBonuses
             if (IsCanActivate == false)
                 throw new InvalidOperationException();
 
-            Data.CurrentBonusesCount--;
-            Bonus.Activate();
+            _data.CurrentBonusesCount--;
+            _bonus.Activate();
             _view.UpdateData();
         }
 
@@ -47,9 +47,9 @@ namespace CannonTurret.Actors.Bonuses.ReserveredBonuses
             if (string.IsNullOrEmpty(nameBonus))
                 throw new ArgumentException(nameof(nameBonus));
 
-            if (nameBonus == BonusCard.Name && Data.IsFull == false)
+            if (nameBonus == BonusCard.Name && _data.IsFull == false)
             {
-                Data.CurrentBonusesCount++;
+                _data.CurrentBonusesCount++;
                 _view.UpdateData();
 
                 return true;

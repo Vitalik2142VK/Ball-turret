@@ -6,22 +6,26 @@ namespace CannonTurret.Actors.Bonuses.Activators
     {
         private const int MinCountActivations = 2;
 
-        private readonly IBonusActivator Activator;
-        private readonly int CountActivations;
+        private readonly IBonusActivator _activator;
+        private readonly int _countActivations;
 
         public MultipleBonusActivator(IBonusActivator activator, int countActivations)
         {
             if (countActivations < MinCountActivations)
-                throw new ArgumentOutOfRangeException($"The {nameof(countActivations)} must be greater than {MinCountActivations}");
+            {
+                string message = $"The {nameof(countActivations)} must be greater than {MinCountActivations}";
 
-            Activator = activator ?? throw new ArgumentNullException(nameof(activator));
-            CountActivations = countActivations;
+                throw new ArgumentOutOfRangeException(message);
+            }
+
+            _activator = activator ?? throw new ArgumentNullException(nameof(activator));
+            _countActivations = countActivations;
         }
 
         public void Activate()
         {
-            for (int i = 0; i < CountActivations; i++)
-                Activator.Activate();
+            for (int i = 0; i < _countActivations; i++)
+                _activator.Activate();
 
         }
     }

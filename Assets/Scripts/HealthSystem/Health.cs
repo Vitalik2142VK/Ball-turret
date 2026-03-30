@@ -5,24 +5,24 @@ namespace CannonTurret.HealthSystem
 {
     public class Health : IHealth
     {
-        private readonly IHealthAttributes Attributes;
-        private readonly IHealthBarView HealthBar;
+        private readonly IHealthAttributes _attributes;
+        private readonly IHealthBarView _healthBar;
 
         private float _currentHealth;
 
         public Health(IHealthAttributes attributes, IHealthBarView healthBar)
         {
-            Attributes = attributes ?? throw new ArgumentNullException(nameof(attributes));
-            HealthBar = healthBar ?? throw new ArgumentNullException(nameof(healthBar));
+            _attributes = attributes ?? throw new ArgumentNullException(nameof(attributes));
+            _healthBar = healthBar ?? throw new ArgumentNullException(nameof(healthBar));
         }
 
         public bool IsAlive => _currentHealth > 0;
 
         public void Restore()
         {
-            _currentHealth = Attributes.MaxHealth;
-            HealthBar.SetMaxHealth(_currentHealth);
-            HealthBar.SetActive(false);
+            _currentHealth = _attributes.MaxHealth;
+            _healthBar.SetMaxHealth(_currentHealth);
+            _healthBar.SetActive(false);
         }
 
         public void TakeDamage(IDamageAttributes damage)
@@ -33,19 +33,19 @@ namespace CannonTurret.HealthSystem
             if (damage.Damage < 0)
                 throw new ArgumentOutOfRangeException(nameof(damage.Damage));
 
-            if (HealthBar.IsActive == false)
-                HealthBar.SetActive(true);
+            if (_healthBar.IsActive == false)
+                _healthBar.SetActive(true);
 
             _currentHealth -= damage.Damage;
 
             if (IsAlive)
             {
-                HealthBar.UpdateDataHealth(_currentHealth);
+                _healthBar.UpdateDataHealth(_currentHealth);
             }
             else
             {
                 _currentHealth = 0;
-                HealthBar.SetActive(false);
+                _healthBar.SetActive(false);
             }
         }
     }

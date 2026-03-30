@@ -9,9 +9,5 @@
         public float ImproveHealthCoefficient { get; }
 
         public float ImproveDamageCoefficient { get; }
-
-        public int CountLevelHealthImprovements { get; }
-
-        public int CountLevelDamageImprovements { get; }
     }
 }

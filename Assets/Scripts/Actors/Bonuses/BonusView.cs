@@ -68,7 +68,10 @@ namespace CannonTurret.Actors.Bonuses
             _image.sprite = bonusCard.Icon;
         }
 
-        public void PrepareDeleted(IRemovedActorsCollector removedCollector) => _presenter.PrepareDeleted(removedCollector);
+        public void PrepareDeleted(IRemovedActorsCollector removedCollector)
+        {
+            _presenter.PrepareDeleted(removedCollector);
+        }
 
         public void PlayTaking()
         {

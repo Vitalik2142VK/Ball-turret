@@ -70,7 +70,7 @@ namespace CannonTurret.EntryPoints.MainMenu.Configurators
             _adsViewer = adsViewer ?? throw new ArgumentNullException(nameof(adsViewer));
         }
 
-        public void Configure(IPlayer player, ICoinAdder coinAdder, ILevelFactory levelFactory, ICoinCountRandomizer coinCountRandomizer)
+        public void Configure(IPlayer player, ICoinAdder coinAdder, ILevelFactory levelFactory)
         {
             if (player == null)
                 throw new ArgumentNullException(nameof(player));
@@ -80,9 +80,6 @@ namespace CannonTurret.EntryPoints.MainMenu.Configurators
 
             if (levelFactory == null)
                 throw new ArgumentNullException(nameof(levelFactory));
-
-            if (coinCountRandomizer == null)
-                throw new ArgumentNullException(nameof(coinCountRandomizer));
 
             _playMenu.Initialize(player, levelFactory);
             _settingMenu.Initialize(_audioSetting);

@@ -6,33 +6,33 @@ namespace CannonTurret.Utils
 {
     public class ObjectsPool<T> where T : MonoBehaviour
     {
-        private readonly Stack<T> Pool;
-        private readonly Transform Conteiner;
-        private readonly T Prefab;
+        private readonly Stack<T> _pool;
+        private readonly Transform _conteiner;
+        private readonly T _prefab;
 
         public ObjectsPool(Transform conteiner, T prefab)
         {
             if (conteiner == null)
                 throw new ArgumentNullException(nameof(conteiner));
 
-            Conteiner = conteiner;
-            Prefab = prefab ?? throw new ArgumentNullException(nameof(prefab));
+            _conteiner = conteiner;
+            _prefab = prefab ?? throw new ArgumentNullException(nameof(prefab));
 
-            Pool = new Stack<T>();
+            _pool = new Stack<T>();
         }
 
         public T GetGameObject()
         {
             T obj;
 
-            if (Pool.Count == 0)
+            if (_pool.Count == 0)
             {
-                obj = UnityEngine.Object.Instantiate(Prefab);
-                obj.transform.parent = Conteiner;
+                obj = UnityEngine.Object.Instantiate(_prefab);
+                obj.transform.parent = _conteiner;
             }
             else
             {
-                obj = Pool.Pop();
+                obj = _pool.Pop();
             }
 
             obj.gameObject.SetActive(true);
@@ -45,18 +45,18 @@ namespace CannonTurret.Utils
             if (gameObject == null)
                 throw new ArgumentNullException(nameof(gameObject));
 
-            gameObject.transform.parent = Conteiner;
+            gameObject.transform.parent = _conteiner;
             gameObject.gameObject.SetActive(false);
-            Pool.Push(gameObject);
+            _pool.Push(gameObject);
         }
 
         public void Clear()
         {
-            for (int i = 0; i < Conteiner.childCount; i++)
-                if (Conteiner.GetChild(i).gameObject.TryGetComponent(out T component))
+            for (int i = 0; i < _conteiner.childCount; i++)
+                if (_conteiner.GetChild(i).gameObject.TryGetComponent(out T component))
                     UnityEngine.Object.Destroy(component.gameObject);
 
-            Pool.Clear();
+            _pool.Clear();
         }
     }
 }

@@ -82,7 +82,11 @@ namespace CannonTurret.UI.LearningLevel
         private void SetActiveStage(bool isAvtive)
         {
             if (CurrentStage > NumberStages)
-                throw new InvalidOperationException($"{nameof(CurrentStage)} cannot be greater than {nameof(NumberStages)}");
+            {
+                string message = $"{nameof(CurrentStage)} cannot be greater than {nameof(NumberStages)}";
+
+                throw new InvalidOperationException(message);
+            }
 
             StageElements stage = _stages[_currentIndexStage];
 

@@ -4,7 +4,7 @@ using UnityEngine;
 namespace CannonTurret.Scriptable.Gun
 {
     [CreateAssetMenu(menuName = "Attributes/Gun attributes", fileName = "GunAttributes", order = 51)]
-    public class GunAttributes : ScriptableObject, IGunAttributes
+    public class GunAttributes : ScriptableObject
     {
         [SerializeField][Range(0.1f, 2.0f)] private float _timeBetweenShots;
         [SerializeField][Min(1)] private int _initialCountBulltes;

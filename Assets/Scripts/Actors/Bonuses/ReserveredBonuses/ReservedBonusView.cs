@@ -20,7 +20,10 @@ namespace CannonTurret.Actors.Bonuses.ReserveredBonuses
 
         public void Initialize(IReservatedBonusData reservatedBonusData)
         {
-            _reservatedBonusData ??= reservatedBonusData ?? throw new ArgumentOutOfRangeException(nameof(reservatedBonusData));
+            if (reservatedBonusData == null)
+                throw new ArgumentOutOfRangeException(nameof(reservatedBonusData));
+
+            _reservatedBonusData ??= reservatedBonusData;
         }
 
         public void UpdateData()

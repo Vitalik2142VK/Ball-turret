@@ -20,8 +20,10 @@ namespace CannonTurret.AudioSystem
                 throw new InvalidOperationException(nameof(_audioClips));
 
             foreach (var music in _audioClips)
+            {
                 if (music == null)
                     throw new NullReferenceException($"Null in the collection - {_audioClips}");
+            }
 
             if (_audioSource == null)
                 throw new NullReferenceException(nameof(_audioSource));

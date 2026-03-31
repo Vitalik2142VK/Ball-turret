@@ -11,14 +11,8 @@ namespace CannonTurret.Actors.Spawn
 
         public ActorSpawner(ISpawnPointsRepository spawnPointsRepository, IActorFactoriesRepository factoryRepository)
         {
-            if (spawnPointsRepository == null)
-                throw new ArgumentNullException(nameof(spawnPointsRepository));
-
-            if (factoryRepository == null)
-                throw new ArgumentNullException(nameof(factoryRepository));
-
-            _spawnPointsRepository = spawnPointsRepository;
-            _factoryRepository = factoryRepository;
+            _spawnPointsRepository = spawnPointsRepository ?? throw new ArgumentNullException(nameof(spawnPointsRepository));
+            _factoryRepository = factoryRepository ?? throw new ArgumentNullException(nameof(factoryRepository));
         }
 
         public List<IActor> Spawn(IWaveActorsPlanner planner)

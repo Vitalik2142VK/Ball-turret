@@ -29,22 +29,10 @@ namespace CannonTurret.Actors
             IMoveAttributes startMoveAttributes,
             IMoveAttributes defaultMoveAttributes)
         {
-            if (startMoveAttributes == null)
-                throw new ArgumentNullException(nameof(startMoveAttributes));
-
-            if (actorsMover == null)
-                throw new ArgumentNullException(nameof(actorsMover));
-
-            if (startMoveAttributes == null)
-                throw new ArgumentNullException(nameof(startMoveAttributes));
-
-            if (defaultMoveAttributes == null)
-                throw new ArgumentNullException(nameof(defaultMoveAttributes));
-
-            _spawner = spawner;
-            _advancedActorsMover = actorsMover;
-            _startMoveAttributes = startMoveAttributes;
-            _defaultMoveAttributes = defaultMoveAttributes;
+            _spawner = spawner ?? throw new ArgumentNullException(nameof(spawner));
+            _advancedActorsMover = actorsMover ?? throw new ArgumentNullException(nameof(actorsMover));
+            _startMoveAttributes = startMoveAttributes ?? throw new ArgumentNullException(nameof(startMoveAttributes));
+            _defaultMoveAttributes = defaultMoveAttributes ?? throw new ArgumentNullException(nameof(defaultMoveAttributes));
 
             _actors = new List<IActor>();
 

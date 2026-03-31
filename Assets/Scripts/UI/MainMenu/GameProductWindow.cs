@@ -110,8 +110,8 @@ namespace CannonTurret.UI.MainMenu
             if (_transaction.IsLocked)
             {
                 int missingAmount = _transaction.GetMissingAmount();
-                bool isViewingAdsAvailable = 
-                    _rewardService.CanProvideReward(_transaction.Price, missingAmount) && _addCoinsButton.IsEnbale;
+                bool isViewingAdsAvailable = _rewardService.CanProvideReward(_transaction.Price, missingAmount) 
+                    && _addCoinsButton.IsEnbale;
 
                 if (isViewingAdsAvailable)
                 {

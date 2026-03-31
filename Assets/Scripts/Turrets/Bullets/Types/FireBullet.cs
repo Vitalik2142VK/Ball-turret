@@ -26,10 +26,12 @@ namespace CannonTurret.Turrets.Bullets.Types
                 throw new NullReferenceException(nameof(_damageImproverAttributes));
 
             if (_bulletPhysicsGameObject == null)
+            {
                 if (TryGetComponent(out IBulletPhysics _))
                     _bulletPhysicsGameObject = gameObject;
                 else
                     throw new NullReferenceException(nameof(_damageImproverAttributes));
+            }
         }
 
         private void Awake()

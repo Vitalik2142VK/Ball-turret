@@ -29,8 +29,10 @@ namespace YG
         public OneTimePurchase GetOneTimePurchase(string purchseId)
         {
             foreach (var purchase in Purchases)
+            {
                 if (purchase.Id == purchseId)
                     return purchase;
+            }
 
             throw new InvalidOperationException($"purchase with ID {purchseId} not found");
         }

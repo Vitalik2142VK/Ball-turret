@@ -21,10 +21,7 @@ namespace CannonTurret.LevelSystem
         public EndlessLevel(ILevel endlesslevel, ISavedLeaderBoard savedLeaderBoard, float healthMultiplierPerWave)
         {
             if (healthMultiplierPerWave < MinHealthMultiplierPerWave)
-            {
-                string message = $"{nameof(healthMultiplierPerWave)} cannot be less than {MinHealthMultiplierPerWave}";
-                throw new ArgumentOutOfRangeException(message);
-            }
+                throw new ArgumentOutOfRangeException($"{nameof(healthMultiplierPerWave)} cannot be less than {MinHealthMultiplierPerWave}");
 
             _endlesslevel = endlesslevel ?? throw new ArgumentNullException(nameof(endlesslevel));
             _savedLeaderBoard = savedLeaderBoard ?? throw new ArgumentNullException(nameof(savedLeaderBoard));

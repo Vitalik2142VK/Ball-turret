@@ -12,11 +12,7 @@ namespace CannonTurret.Actors.Bonuses.Activators
         public MultipleBonusActivator(IBonusActivator activator, int countActivations)
         {
             if (countActivations < MinCountActivations)
-            {
-                string message = $"The {nameof(countActivations)} must be greater than {MinCountActivations}";
-
-                throw new ArgumentOutOfRangeException(message);
-            }
+                throw new ArgumentOutOfRangeException($"The {nameof(countActivations)} must be greater than {MinCountActivations}");
 
             _activator = activator ?? throw new ArgumentNullException(nameof(activator));
             _countActivations = countActivations;

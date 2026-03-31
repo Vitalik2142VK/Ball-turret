@@ -18,11 +18,7 @@ namespace CannonTurret.SDK.Shops
                 throw new ArgumentNullException(nameof(purchaseId));
 
             if (purchaseId != _purchase.Id)
-            {
-                string message = $"The purchase ID - '{purchaseId}' does not match the activator ID - '{_purchase.Id}'";
-
-                throw new ArgumentException(message);
-            }
+                throw new ArgumentException($"The purchase ID - '{purchaseId}' does not match the activator ID - '{_purchase.Id}'");
 
             YG2.saves.ActivatePurchase(_purchase.Id);
             YG2.SaveProgress();

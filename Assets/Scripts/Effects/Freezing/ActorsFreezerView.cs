@@ -39,8 +39,10 @@ namespace CannonTurret.Effects.Freezing
             var colliders = Physics.OverlapBox(center, halfExtents, orientation, _layerMask);
 
             foreach (var collider in colliders)
+            {
                 if (collider.TryGetComponent(out IFreesableObject freesableObject))
                     AppointIceShell(freesableObject);
+            }
         }
 
         private void AppointIceShell(IFreesableObject freesableObject)

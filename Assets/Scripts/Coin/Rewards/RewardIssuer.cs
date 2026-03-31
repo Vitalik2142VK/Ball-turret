@@ -71,8 +71,10 @@ namespace CannonTurret.Coin.Rewards
                 addedRevard = (int)(AdditionalReward * _reward);
 
             if (_player.PurchasesStorage.TryGetPurchase(out IPlayerPurchase purchase, PurchasesTypes.DisableAds))
+            {
                 if (purchase.IsPurchased)
                     addedRevard = (int)(AdditionalReward * MaxReward);
+            }
 
             _reward += addedRevard;
         }

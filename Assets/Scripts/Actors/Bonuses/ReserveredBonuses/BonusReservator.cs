@@ -35,11 +35,7 @@ namespace CannonTurret.Actors.Bonuses.ReserveredBonuses
                 throw new ArgumentException(nameof(nameBonus));
 
             if (_reservedBonuses.ContainsKey(nameBonus) == false)
-            {
-                string message = $"'{_reservedBonuses}' does not contain key '{nameof(nameBonus)}'";
-
-                throw new InvalidOperationException(message);
-            }
+                throw new InvalidOperationException($"'{_reservedBonuses}' does not contain key '{nameof(nameBonus)}'");
 
             var bonus = _reservedBonuses[nameBonus];
 

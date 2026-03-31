@@ -21,8 +21,10 @@ namespace CannonTurret.Clip
                 throw new InvalidOperationException(nameof(_timelineAssets));
 
             foreach (var timelineAsset in _timelineAssets)
+            {
                 if (timelineAsset == null)
                     throw new NullReferenceException($"{_timelineAssets} contains null objects");
+            }
         }
 
         private void Awake()

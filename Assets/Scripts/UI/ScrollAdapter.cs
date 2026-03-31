@@ -40,11 +40,7 @@ namespace CannonTurret.UI
             Camera camera = Camera.main;
 
             if (camera.TryGetComponent(out ICameraAdapter cameraAdapter) == false)
-            {
-                string message = $"The main camera does not contain the component: <{nameof(ICameraAdapter)}>";
-
-                throw new InvalidOperationException(message);
-            }
+                throw new InvalidOperationException($"The main camera does not contain the component: <{nameof(ICameraAdapter)}>");
 
             _cameraAdapter = cameraAdapter;
             _defaultCellSize = _gridLayoutGroup.cellSize;

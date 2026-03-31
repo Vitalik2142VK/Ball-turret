@@ -40,18 +40,9 @@ namespace CannonTurret.Turrets.Bullets.Creation
             IComboCounter comboCounter,
             ISound hitBulletSound)
         {
-            if (damageBulletAttributes == null)
-                throw new ArgumentNullException(nameof(damageBulletAttributes));
-
-            if (comboCounter == null)
-                throw new ArgumentNullException(nameof(comboCounter));
-
-            if (hitBulletSound == null)
-                throw new ArgumentNullException(nameof(hitBulletSound));
-
-            _damageBulletAttributes = damageBulletAttributes;
-            _comboCounter = comboCounter;
-            _hitBulletSound = hitBulletSound;
+            _damageBulletAttributes = damageBulletAttributes ?? throw new ArgumentNullException(nameof(damageBulletAttributes));
+            _comboCounter = comboCounter ?? throw new ArgumentNullException(nameof(comboCounter));
+            _hitBulletSound = hitBulletSound ?? throw new ArgumentNullException(nameof(hitBulletSound));
         }
 
         public void AddPrefab(Bullet bullet)

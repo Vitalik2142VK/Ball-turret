@@ -9,11 +9,12 @@ namespace CannonTurret.Effects
     {
         private const string Fly = nameof(Fly);
 
+        [SerializeField][SerializeIterface(typeof(ISound))] private GameObject _flySoundGameObject;
         [SerializeField] private Animator _animator;
         [SerializeField] private ParticleSystem _flyRocketParticle;
-        [SerializeField] private Sound _flySound;
         [SerializeField] private MeshRenderer _meshRenderer;
 
+        private ISound _flySound;
         private WaitForSeconds _waitFly;
         private int _hashFly;
 
@@ -21,14 +22,14 @@ namespace CannonTurret.Effects
 
         private void OnValidate()
         {
+            if (_flySoundGameObject == null)
+                throw new NullReferenceException(nameof(_flySoundGameObject));
+
             if (_animator == null)
                 throw new NullReferenceException(nameof(_animator));
 
             if (_flyRocketParticle == null)
                 throw new NullReferenceException(nameof(_flyRocketParticle));
-
-            if (_flySound == null)
-                throw new NullReferenceException(nameof(_flySound));
 
             if (_meshRenderer == null)
                 throw new NullReferenceException(nameof(_meshRenderer));
@@ -36,6 +37,8 @@ namespace CannonTurret.Effects
 
         private void Awake()
         {
+            _flySound = _flySoundGameObject.GetComponent<ISound>();
+
             AnimationClip[] clips = _animator.runtimeAnimatorController.animationClips;
             AnimationClip flyClip = Array.Find(clips, c => c.name == Fly);
             float flyRocketTime = flyClip.length / _animator.speed;

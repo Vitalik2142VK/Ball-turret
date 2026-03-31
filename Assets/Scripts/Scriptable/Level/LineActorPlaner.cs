@@ -22,11 +22,7 @@ namespace CannonTurret.Scriptable.Level
             else
             {
                 if (IsValidGameObjects() == false)
-                {
-                    string message = $"One or more objects do not contain a component <{nameof(IActorView)}>";
-
-                    throw new InvalidOperationException(message);
-                }
+                    throw new InvalidOperationException($"One or more objects do not contain a component <{nameof(IActorView)}>");
             }
         }
 

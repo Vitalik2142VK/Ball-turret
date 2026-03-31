@@ -18,18 +18,9 @@ namespace CannonTurret.StepSystem.Steps
             IEnemiesController enemiesController,
             IActivableUI reservedBonusesWindow)
         {
-            if (playerController == null)
-                throw new ArgumentNullException(nameof(playerController));
-
-            if (enemiesController == null)
-                throw new ArgumentNullException(nameof(enemiesController));
-
-            if (reservedBonusesWindow == null)
-                throw new ArgumentNullException(nameof(reservedBonusesWindow));
-
-            _playerController = playerController;
-            _enemiesController = enemiesController;
-            _reservedBonusesWindow = reservedBonusesWindow;
+            _playerController = playerController ?? throw new ArgumentNullException(nameof(playerController));
+            _enemiesController = enemiesController ?? throw new ArgumentNullException(nameof(enemiesController));
+            _reservedBonusesWindow = reservedBonusesWindow ?? throw new ArgumentNullException(nameof(reservedBonusesWindow));
         }
 
         public void Action()

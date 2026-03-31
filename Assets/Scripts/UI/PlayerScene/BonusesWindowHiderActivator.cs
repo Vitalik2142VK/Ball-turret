@@ -14,18 +14,9 @@ namespace CannonTurret.UI.PlayerScene
             IReservedBonusesWindow reservedBonusesWindow,
             IShotAction shotAction)
         {
-            if (openWindowButton == null)
-                throw new ArgumentNullException(nameof(openWindowButton));
-
-            if (reservedBonusesWindow == null)
-                throw new ArgumentNullException(nameof(reservedBonusesWindow));
-
-            if (openWindowButton == null)
-                throw new ArgumentNullException(nameof(shotAction));
-
-            _openWindowButton = openWindowButton;
-            _reservedBonusesWindow = reservedBonusesWindow;
-            _shotAction = shotAction;
+            _openWindowButton = openWindowButton ?? throw new ArgumentNullException(nameof(openWindowButton));
+            _reservedBonusesWindow = reservedBonusesWindow ?? throw new ArgumentNullException(nameof(reservedBonusesWindow));
+            _shotAction = shotAction ?? throw new ArgumentNullException(nameof(shotAction));
 
             _shotAction.Fired += OnHide;
         }

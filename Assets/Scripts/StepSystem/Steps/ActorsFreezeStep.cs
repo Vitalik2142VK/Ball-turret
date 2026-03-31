@@ -16,18 +16,9 @@ namespace CannonTurret.StepSystem.Steps
             IStep interruptedStep,
             IActorsFreezerView freezer)
         {
-            if (nextStepPrepareActors == null)
-                throw new NullReferenceException(nameof(nextStepPrepareActors));
-
-            if (interruptedStep == null)
-                throw new NullReferenceException(nameof(interruptedStep));
-
-            if (freezer == null)
-                throw new NullReferenceException(nameof(freezer));
-
-            _nextStepPrepareActors = nextStepPrepareActors;
-            _interruptedStep = interruptedStep;
-            _freezer = freezer;
+            _nextStepPrepareActors = nextStepPrepareActors ?? throw new NullReferenceException(nameof(nextStepPrepareActors));
+            _interruptedStep = interruptedStep ?? throw new NullReferenceException(nameof(interruptedStep));
+            _freezer = freezer ?? throw new NullReferenceException(nameof(freezer));
         }
 
         public void Action()

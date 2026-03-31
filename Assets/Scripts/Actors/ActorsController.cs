@@ -15,17 +15,11 @@ namespace CannonTurret.Actors
             IAdvancedActorsPreparator actorsPreparator,
             IRemovedActorsRepository removedActorsRepository)
         {
-            if (actorsPreparator == null)
-                throw new ArgumentNullException(nameof(actorsPreparator));
+            _actorsPreparator = actorsPreparator ?? throw new ArgumentNullException(nameof(actorsPreparator));
+            _removedActorsRepository = removedActorsRepository ?? throw new ArgumentNullException(nameof(removedActorsRepository));
 
-            if (removedActorsRepository == null)
-                throw new ArgumentNullException(nameof(removedActorsRepository));
-
-            if (actorsPreparator.ActorsMover == null)
-                throw new ArgumentNullException(nameof(actorsPreparator.ActorsMover));
-
-            _actorsPreparator = actorsPreparator;
-            _removedActorsRepository = removedActorsRepository;
+            if (_actorsPreparator.ActorsMover == null)
+                throw new ArgumentNullException(nameof(_actorsPreparator.ActorsMover));
 
             _actorsMover = _actorsPreparator.ActorsMover;
         }

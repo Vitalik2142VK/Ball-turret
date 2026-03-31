@@ -46,12 +46,7 @@ namespace CannonTurret.Actors.Enemies.Armored
             ArmoredEnemy model = new ArmoredEnemy(enemy, armor);
 
             if (createdEnemyView.TryGetComponent(out ArmoredEnemyView view) == false)
-            {
-                string message = $"Object {nameof(createdEnemyView)} do not have a component " +
-                    $"<{nameof(ArmoredEnemyView)}>";
-
-                throw new InvalidOperationException(message);
-            }
+                throw new InvalidOperationException($"Object {nameof(createdEnemyView)} do not have a component <{nameof(ArmoredEnemyView)}>");
 
             ArmoredEnemyPresenter presenter = new ArmoredEnemyPresenter(model, view);
             view.Initialize(presenter);

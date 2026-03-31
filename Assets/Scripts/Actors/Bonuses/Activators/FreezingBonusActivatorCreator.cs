@@ -20,14 +20,8 @@ namespace CannonTurret.Actors.Bonuses.Activators
 
         public void Initialize(IDynamicEndStep nextStepPrepareActors, ActorsFreezeStep freezeStep)
         {
-            if (nextStepPrepareActors == null)
-                throw new NullReferenceException(nameof(nextStepPrepareActors));
-
-            if (freezeStep == null)
-                throw new NullReferenceException(nameof(freezeStep));
-
-            _nextStepPrepareActors = nextStepPrepareActors;
-            _freezeStep = freezeStep;
+            _nextStepPrepareActors = nextStepPrepareActors ?? throw new NullReferenceException(nameof(nextStepPrepareActors));
+            _freezeStep = freezeStep ?? throw new NullReferenceException(nameof(freezeStep));
         }
 
         public IBonusActivator Create()

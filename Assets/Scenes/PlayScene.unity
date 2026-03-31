@@ -1328,9 +1328,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f3af67c8d4a8e14388b959bf1b838a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _flySoundGameObject: {fileID: 447019995}
   _animator: {fileID: 112581003}
   _flyRocketParticle: {fileID: 6815664776577670657}
-  _flySound: {fileID: 447019995}
   _meshRenderer: {fileID: 6815664776577670656}
 --- !u!1 &126665116
 GameObject:
@@ -4412,17 +4412,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 799992384887153203, guid: 804d1154e95de9e478b248743e5a2282, type: 3}
   m_PrefabInstance: {fileID: 447019993}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &447019995 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 765231936567737342, guid: 804d1154e95de9e478b248743e5a2282, type: 3}
+--- !u!1 &447019995 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6145943886278296092, guid: 804d1154e95de9e478b248743e5a2282, type: 3}
   m_PrefabInstance: {fileID: 447019993}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b7846b9ede6ca940b36fb227df295df, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &461851302
 GameObject:
   m_ObjectHideFlags: 0
@@ -7040,7 +7034,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7577872615982228667, guid: 1cbe4deeb05c8e845be7573a16d0ef32, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.5000019
+      value: -0.5000038
       objectReference: {fileID: 0}
     - target: {fileID: 8281250753993338027, guid: 1cbe4deeb05c8e845be7573a16d0ef32, type: 3}
       propertyPath: m_fontColorGradient.topLeft.b
@@ -13847,7 +13841,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3111531621607893462, guid: 814b412ccdf9a8b48a7fb87fb9ee9284, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -50
+      value: -49.99994
       objectReference: {fileID: 0}
     - target: {fileID: 3111531621607893462, guid: 814b412ccdf9a8b48a7fb87fb9ee9284, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -15709,7 +15703,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _imageFreeze: {fileID: 1892085831}
-  _freezer: {fileID: 513128778}
+  _freezerGameObject: {fileID: 513128777}
   _soundFreeze: {fileID: 556643514}
 --- !u!1 &1631896424
 GameObject:

@@ -10,14 +10,8 @@ namespace CannonTurret.HealthSystem
 
         public Armor(IDamagedObject armoredDamagedObject, IArmorAttributes armorAttributes)
         {
-            if (armoredDamagedObject == null)
-                throw new ArgumentNullException(nameof(armoredDamagedObject));
-
-            if (armorAttributes == null)
-                throw new ArgumentNullException(nameof(armorAttributes));
-
-            _armoredDamagedObject = armoredDamagedObject;
-            _armorAttributes = armorAttributes;
+            _armoredDamagedObject = armoredDamagedObject ?? throw new ArgumentNullException(nameof(armoredDamagedObject));
+            _armorAttributes = armorAttributes ?? throw new ArgumentNullException(nameof(armorAttributes));
         }
 
         public void ReduceDamage(IDamageAttributes attributes)

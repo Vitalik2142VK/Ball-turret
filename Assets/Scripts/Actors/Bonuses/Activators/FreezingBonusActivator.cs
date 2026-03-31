@@ -15,19 +15,9 @@ namespace CannonTurret.Actors.Bonuses.Activators
             IBonusActicatorView view,
             IStep freezeStep)
         {
-            if (nextStepPrepareActors == null)
-                throw new NullReferenceException(nameof(nextStepPrepareActors));
-
-            if (view == null)
-                throw new NullReferenceException(nameof(view));
-
-            if (freezeStep == null)
-                throw new NullReferenceException(nameof(freezeStep));
-
-            _nextStepPrepareActors = nextStepPrepareActors;
-            _view = view;
-            _freezeStep = freezeStep;
-
+            _nextStepPrepareActors = nextStepPrepareActors ?? throw new NullReferenceException(nameof(nextStepPrepareActors));
+            _view = view ?? throw new NullReferenceException(nameof(view));
+            _freezeStep = freezeStep ?? throw new NullReferenceException(nameof(freezeStep));
         }
 
         public void Activate()

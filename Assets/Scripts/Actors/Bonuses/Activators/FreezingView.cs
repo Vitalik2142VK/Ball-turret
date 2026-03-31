@@ -10,18 +10,19 @@ namespace CannonTurret.Actors.Bonuses.Activators
     public class FreezingView : MonoBehaviour, IBonusActicatorView
     {
         [SerializeField][SerializeIterface(typeof(IAnimatorUI))] private GameObject _imageFreeze;
-        [SerializeField] private ActorsFreezerView _freezer;
+        [SerializeField][SerializeIterface(typeof(IActorsFreezerView))] private GameObject _freezerGameObject;
         [SerializeField] private Sound _soundFreeze;
 
         private IAnimatorUI _animator;
+        private IActorsFreezerView _freezer;
 
         private void OnValidate()
         {
             if (_imageFreeze == null)
                 throw new NullReferenceException(nameof(_imageFreeze));
 
-            if (_freezer == null)
-                throw new NullReferenceException(nameof(_freezer));
+            if (_freezerGameObject == null)
+                throw new NullReferenceException(nameof(_freezerGameObject));
 
             if (_soundFreeze == null)
                 throw new NullReferenceException(nameof(_soundFreeze));
@@ -30,6 +31,7 @@ namespace CannonTurret.Actors.Bonuses.Activators
         private void Awake()
         {
             _animator = _imageFreeze.GetComponent<IAnimatorUI>();
+            _freezer = _freezerGameObject.GetComponent<IActorsFreezerView>();
             _imageFreeze.SetActive(false);
         }
 

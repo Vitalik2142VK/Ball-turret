@@ -20,10 +20,7 @@ namespace CannonTurret.PlayerSystem
             if (damageCoefficient < DefaultCoefficient)
                 throw new ArgumentOutOfRangeException(nameof(damageCoefficient));
 
-            if (improvementAttributes == null)
-                throw new ArgumentNullException(nameof(improvementAttributes));
-
-            _improvementAttributes = improvementAttributes;
+            _improvementAttributes = improvementAttributes ?? throw new ArgumentNullException(nameof(improvementAttributes));
 
             HealthCoefficient = healthCoefficient;
             DamageCoefficient = damageCoefficient;

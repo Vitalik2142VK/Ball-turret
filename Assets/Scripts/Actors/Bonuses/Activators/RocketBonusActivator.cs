@@ -12,14 +12,8 @@ namespace CannonTurret.Actors.Bonuses.Activators
 
         public RocketBonusActivator(IRocketView rocketView, IBonusActivator bigBangBonusActivator)
         {
-            if (rocketView == null)
-                throw new ArgumentNullException(nameof(rocketView));
-
-            if (bigBangBonusActivator == null)
-                throw new ArgumentNullException(nameof(bigBangBonusActivator));
-
-            _rocketView = rocketView;
-            _bigBangBonusActivator = bigBangBonusActivator;
+            _rocketView = rocketView ?? throw new ArgumentNullException(nameof(rocketView));
+            _bigBangBonusActivator = bigBangBonusActivator ?? throw new ArgumentNullException(nameof(bigBangBonusActivator));
             _isActivateStarted = false;
 
             _rocketView.RocketFinished += OnFinishRocket;

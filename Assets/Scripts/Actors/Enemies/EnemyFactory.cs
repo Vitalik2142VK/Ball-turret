@@ -21,11 +21,7 @@ namespace CannonTurret.Actors.Enemies
             foreach (var gameObject in _enemyCreators)
             {
                 if (gameObject.TryGetComponent(out IEnemyCreator _) == false)
-                {
-                    string message = $"One or more objects do not have a component <{nameof(IEnemyCreator)}>";
-
-                    throw new InvalidOperationException(message);
-                }
+                    throw new InvalidOperationException($"One or more objects do not have a component <{nameof(IEnemyCreator)}>");
             }
         }
 

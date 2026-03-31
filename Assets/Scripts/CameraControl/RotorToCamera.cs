@@ -15,11 +15,7 @@ namespace CannonTurret.CameraControl
             Camera camera = Camera.main;
 
             if (camera.TryGetComponent(out ICameraAdapter cameraAdapter) == false)
-            {
-                string message = $"The main camera does not contain the component: <{nameof(ICameraAdapter)}>";
-
-                throw new System.InvalidOperationException(message);
-            }
+                throw new System.InvalidOperationException($"The main camera does not contain the component: <{nameof(ICameraAdapter)}>");
 
             _cameraAdapter = cameraAdapter;
         }

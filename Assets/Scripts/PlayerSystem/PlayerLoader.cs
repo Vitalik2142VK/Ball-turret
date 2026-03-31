@@ -12,13 +12,7 @@ namespace CannonTurret.PlayerSystem
 
         public PlayerLoader(IImprovementTurretAttributes turretImproverAttributes, ISavedPlayerData savedData)
         {
-            if (turretImproverAttributes == null)
-                throw new ArgumentNullException(nameof(turretImproverAttributes));
-
-            if (savedData == null)
-                throw new ArgumentNullException(nameof(savedData));
-
-            _turretImproverAttributes = turretImproverAttributes;
+            _turretImproverAttributes = turretImproverAttributes ?? throw new ArgumentNullException(nameof(turretImproverAttributes));
             _savedData = savedData ?? throw new ArgumentNullException(nameof(savedData));
             _purchasesStorage = new PurchasesStorage(_savedData.OneTimePurchases);
         }
